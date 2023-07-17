@@ -1,4 +1,4 @@
-package touch.baton.member.domain.vo;
+package touch.baton.domain.member.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -10,12 +10,12 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class Email {
+public class GithubUrl {
 
-    @Column(name = "email")
+    @Column(name = "github_url")
     private String value;
 
-    public Email(final String value) {
+    public GithubUrl(final String value) {
         this.value = value;
     }
 }

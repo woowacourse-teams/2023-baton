@@ -1,4 +1,4 @@
-package touch.baton.member.domain.vo;
+package touch.baton.domain.member.vo;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.GeneratedValue;

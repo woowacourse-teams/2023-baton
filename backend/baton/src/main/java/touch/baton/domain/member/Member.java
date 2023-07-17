@@ -1,4 +1,4 @@
-package touch.baton.member.domain;
+package touch.baton.domain.member;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EmbeddedId;
@@ -6,12 +6,12 @@ import jakarta.persistence.Entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.member.domain.vo.Company;
-import touch.baton.member.domain.vo.Email;
-import touch.baton.member.domain.vo.GithubUrl;
-import touch.baton.member.domain.vo.MemberId;
-import touch.baton.member.domain.vo.Name;
-import touch.baton.member.domain.vo.OauthId;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.MemberId;
+import touch.baton.domain.member.vo.Name;
+import touch.baton.domain.member.vo.OauthId;
 
 import static lombok.AccessLevel.PROTECTED;
 
