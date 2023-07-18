@@ -18,7 +18,8 @@ public class RunnerPostService {
 
     private final RunnerPostRepository runnerPostRepository;
 
-    public void update(final Long runnerPostId, final RunnerPostCreateRequest request) {
+    @Transactional
+    public Long update(final Long runnerPostId, final RunnerPostCreateRequest request) {
         // TODO: 메소드 분리
         RunnerPost presentRunnerPost = runnerPostRepository.findById(runnerPostId).get();
 
@@ -35,6 +36,6 @@ public class RunnerPostService {
                 .supporter(presentRunnerPost.getSupporter())
                 .build();
 
-        runnerPostRepository.save(updatedRunnerPost);
+        return runnerPostRepository.save(updatedRunnerPost).getId();
     }
 }
