@@ -45,4 +45,8 @@ ${ResetStyle}
     display: flex;
     justify-content: center;
   }
+
+  button{
+    cursor: pointer;
+  }
 `;
