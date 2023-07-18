@@ -14,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class Contents {
 
-    @Column(name = "contents", nullable = false)
+    @Column(name = "contents", nullable = false, columnDefinition = "TEXT")
     private String value;
 
     public Contents(final String value) {
