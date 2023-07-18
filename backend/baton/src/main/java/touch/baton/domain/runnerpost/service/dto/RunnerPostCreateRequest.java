@@ -12,7 +12,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 public class RunnerPostCreateRequest {
-
+// TODO: 예외 처리, record로 적용
     private static final int CONTENTS_MAX_LENGTH = 1000;
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
