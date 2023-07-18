@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.member.exception.MemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
@@ -22,7 +23,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id

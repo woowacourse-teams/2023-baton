@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
@@ -26,7 +27,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class Runner {
+public class Runner extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id

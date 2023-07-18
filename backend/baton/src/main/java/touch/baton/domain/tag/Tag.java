@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.tag.exception.TagException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
@@ -19,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class Tag {
+public class Tag extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id

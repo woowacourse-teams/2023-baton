@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
@@ -20,6 +21,7 @@ import touch.baton.domain.supporter.vo.StarCount;
 
 import java.util.Objects;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -27,7 +29,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class Supporter {
+public class Supporter extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id
@@ -42,7 +44,7 @@ public class Supporter {
     @Embedded
     private TotalRating totalRating;
 
-    @Enumerated
+    @Enumerated(STRING)
     private Grade grade;
 
     @OneToOne(fetch = LAZY)

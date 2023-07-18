@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.ChattingRoomCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
@@ -31,7 +32,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class RunnerPost {
+public class RunnerPost extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id
