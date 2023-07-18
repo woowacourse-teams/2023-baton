@@ -27,5 +27,5 @@ jobs:
         distribution: 'corretto'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2.6.0
-      with:
-        arguments: build
+    - name: Execute Gradle build
+      run: ./backend/baton/gradlew build
