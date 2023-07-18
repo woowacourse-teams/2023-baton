@@ -32,4 +32,7 @@ jobs:
     - name: print directory
       run: ls -al
     - name: Execute Gradle build
-      run: ./gradlew build
+      run: |
+        cd backend/baton
+        ls -al
+        ./gradlew build
