@@ -1,9 +1,10 @@
-package touch.baton.domain.runner.vo;
+package touch.baton.domain.common.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -12,10 +13,13 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class TotalRating {
 
-    @Column(name = "total_rating")
-    private Integer value;
+    private static final String DEFAULT_VALUE = "0";
 
-    public TotalRating(final Integer value) {
+    @ColumnDefault(DEFAULT_VALUE)
+    @Column(name = "total_rating", nullable = false)
+    private int value;
+
+    public TotalRating(final int value) {
         this.value = value;
     }
 }
