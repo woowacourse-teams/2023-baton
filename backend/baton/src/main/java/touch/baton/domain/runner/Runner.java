@@ -1,0 +1,72 @@
+package touch.baton.domain.runner;
+
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
+import touch.baton.domain.common.vo.Grade;
+import touch.baton.domain.common.vo.TotalRating;
+import touch.baton.domain.member.Member;
+import touch.baton.domain.runner.exception.RunnerException;
+
+import java.util.Objects;
+
+import static jakarta.persistence.EnumType.STRING;
+import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
+import static lombok.AccessLevel.PROTECTED;
+
+@Getter
+@NoArgsConstructor(access = PROTECTED)
+@Entity
+public class Runner extends BaseEntity {
+
+    @GeneratedValue(strategy = IDENTITY)
+    @Id
+    private Long id;
+
+    @Embedded
+    private TotalRating totalRating;
+
+    @Enumerated(STRING)
+    private Grade grade;
+
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_runner_member"), nullable = false)
+    private Member member;
+
+    @Builder
+    private Runner(final TotalRating totalRating, final Grade grade, final Member member) {
+        this(null, totalRating, grade, member);
+    }
+
+    private Runner(final Long id, final TotalRating totalRating, final Grade grade, final Member member) {
+        validateNotNull(totalRating, grade, member);
+        this.id = id;
+        this.totalRating = totalRating;
+        this.grade = grade;
+        this.member = member;
+    }
+
+    private void validateNotNull(final TotalRating totalRating, final Grade grade, final Member member) {
+        if (Objects.isNull(totalRating)) {
+            throw new RunnerException.NotNull("totalRating 은 null 일 수 없습니다.");
+        }
+
+        if (Objects.isNull(grade)) {
+            throw new RunnerException.NotNull("grade 는 null 일 수 없습니다.");
+        }
+
+        if (Objects.isNull(member)) {
+            throw new RunnerException.NotNull("member 는 null 일 수 없습니다.");
+        }
+    }
+}
