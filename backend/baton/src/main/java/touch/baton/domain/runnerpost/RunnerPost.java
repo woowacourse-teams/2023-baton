@@ -20,6 +20,7 @@ import touch.baton.domain.runnerpost.exception.RunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.tag.RunnerPostTags;
 
 import java.util.Objects;
 
@@ -62,30 +63,35 @@ public class RunnerPost {
     @JoinColumn(name = "supporter_id", foreignKey = @ForeignKey(name = "fk_runner_post_supporter"), nullable = true)
     private Supporter supporter;
 
+    @Embedded
+    private RunnerPostTags runnerPostTags;
+
     @Builder
     private RunnerPost(final Title title,
-                      final Contents contents,
-                      final PullRequestUrl pullRequestUrl,
-                      final Deadline deadline,
-                      final WatchedCount watchedCount,
-                      final ChattingRoomCount chattingRoomCount,
-                      final Runner runner,
-                      final Supporter supporter
-    ) {
-        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, supporter);
-    }
-
-    private RunnerPost(final Long id,
-                       final Title title,
                        final Contents contents,
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
                        final ChattingRoomCount chattingRoomCount,
                        final Runner runner,
-                       final Supporter supporter
+                       final Supporter supporter,
+                       final RunnerPostTags runnerPostTags
     ) {
-        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner);
+        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, supporter, runnerPostTags);
+    }
+
+    private RunnerPost(final Long id,
+                      final Title title,
+                      final Contents contents,
+                      final PullRequestUrl pullRequestUrl,
+                      final Deadline deadline,
+                      final WatchedCount watchedCount,
+                      final ChattingRoomCount chattingRoomCount,
+                      final Runner runner,
+                      final Supporter supporter,
+                      final RunnerPostTags runnerPostTags
+    ) {
+        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, runnerPostTags);
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -95,6 +101,7 @@ public class RunnerPost {
         this.chattingRoomCount = chattingRoomCount;
         this.runner = runner;
         this.supporter = supporter;
+        this.runnerPostTags = runnerPostTags;
     }
 
     private void validateNotNull(final Title title,
@@ -103,7 +110,8 @@ public class RunnerPost {
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
                                  final ChattingRoomCount chattingRoomCount,
-                                 final Runner runner
+                                 final Runner runner,
+                                 final RunnerPostTags runnerPostTags
     ) {
         if (Objects.isNull(title)) {
             throw new RunnerPostException.NotNull("title 는 null 일 수 없습니다.");
@@ -131,6 +139,10 @@ public class RunnerPost {
 
         if (Objects.isNull(runner)) {
             throw new RunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
+        }
+
+        if (Objects.isNull(runnerPostTags)) {
+            throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
     }
 }

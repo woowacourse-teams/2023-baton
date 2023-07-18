@@ -22,8 +22,10 @@ import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
+import touch.baton.domain.tag.RunnerPostTags;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -76,6 +78,24 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build()
+            ).doesNotThrowAnyException();
+        }
+
+        @DisplayName("supporter 에 null 이 들어간 경우 아직 리뷰어 할당이 되지 않은 것이다.")
+        @Test
+        void success_if_supporter_is_null() {
+            assertThatCode(() -> RunnerPost.builder()
+                    .title(new Title("아이"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now()))
+                    .watchedCount(new WatchedCount(0))
+                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .runner(runner)
+                    .supporter(null)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).doesNotThrowAnyException();
         }
@@ -92,6 +112,7 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
@@ -108,6 +129,7 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
@@ -124,6 +146,7 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
@@ -140,6 +163,7 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
@@ -156,6 +180,7 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
@@ -172,6 +197,7 @@ class RunnerPostTest {
                     .chattingRoomCount(null)
                     .runner(runner)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
@@ -188,14 +214,15 @@ class RunnerPostTest {
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(null)
                     .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
 
-        @DisplayName("supporter 에 null 이 들어간 경우 아직 리뷰어 할당이 되지 않은 것이다.")
+        @DisplayName("runnerPostTags 에 null 이 들어갈 경우 예외가 발생한다.")
         @Test
-        void success_if_supporter_is_null() {
-            assertThatCode(() -> RunnerPost.builder()
+        void fail_if_runnerPostTags_is_null() {
+            assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("아이"))
                     .contents(new Contents("김영한 짱짱맨"))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
@@ -203,9 +230,10 @@ class RunnerPostTest {
                     .watchedCount(new WatchedCount(0))
                     .chattingRoomCount(new ChattingRoomCount(0))
                     .runner(runner)
-                    .supporter(null)
+                    .supporter(supporter)
+                    .runnerPostTags(null)
                     .build()
-            ).doesNotThrowAnyException();
+            ).isInstanceOf(RunnerPostException.NotNull.class);
         }
     }
 }
