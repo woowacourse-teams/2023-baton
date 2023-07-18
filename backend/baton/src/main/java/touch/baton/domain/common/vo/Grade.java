@@ -1,4 +1,4 @@
-package touch.baton.domain.runner.vo;
+package touch.baton.domain.common.vo;
 
 public enum Grade {
 
