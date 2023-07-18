@@ -15,6 +15,10 @@ module.exports = {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,
         type: 'asset/resource',
       },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   plugins: [
@@ -33,6 +37,7 @@ module.exports = {
       '@pages': path.resolve(__dirname, '../src/pages'),
       '@utils': path.resolve(__dirname, '../src/utils'),
       '@types': path.resolve(__dirname, '../src/types'),
+      '@assets': path.resolve(__dirname, '../src/assets'),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },
