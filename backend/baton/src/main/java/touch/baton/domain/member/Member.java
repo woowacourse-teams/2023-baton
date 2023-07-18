@@ -80,19 +80,19 @@ public class Member {
         }
 
         if (Objects.isNull(email)) {
-            throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
+            throw new MemberException.NotNull("email 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(oauthId)) {
-            throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
+            throw new MemberException.NotNull("oauthId 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(githubUrl)) {
-            throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
+            throw new MemberException.NotNull("githubUrl 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(company)) {
-            throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
+            throw new MemberException.NotNull("company 는 null 일 수 없습니다.");
         }
     }
 }
