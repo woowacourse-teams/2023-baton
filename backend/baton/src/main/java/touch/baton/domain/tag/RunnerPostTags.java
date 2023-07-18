@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.PERSIST;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
@@ -15,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class RunnerPostTags {
 
-    @OneToMany(mappedBy = "runnerPost")
+    @OneToMany(mappedBy = "runnerPost", cascade = PERSIST, orphanRemoval = true)
     private List<RunnerPostTag> runnerPostTags = new ArrayList<>();
 
     public RunnerPostTags(final List<RunnerPostTag> runnerPostTags) {
