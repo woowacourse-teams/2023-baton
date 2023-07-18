@@ -4,8 +4,8 @@ import styled, { css } from 'styled-components';
 interface Props extends React.HTMLProps<HTMLButtonElement> {
   children: React.ReactNode;
   colorTheme: 'RED' | 'WHITE' | 'GRAY';
-  fontSize: string | number;
-  fontWeight: number;
+  fontSize?: string | number;
+  fontWeight?: number;
   type?: 'button' | 'submit' | 'reset';
 }
 
@@ -36,13 +36,18 @@ const S = {
     $colorTheme: 'RED' | 'WHITE' | 'GRAY';
     $width?: string | number;
     $height?: string | number;
-    $fontSize: string | number;
-    $fontWeight: number;
+    $fontSize?: string | number;
+    $fontWeight?: number;
   }>`
     ${({ $colorTheme }) => themeStyles[$colorTheme]}
 
-    width: ${({ $width }) => $width || '100%'};
-    height: ${({ $height }) => $height || '100%'};
+    width: ${({ $width }) => $width || '180px'};
+    height: ${({ $height }) => $height || '40px'};
+
+    padding: 10px 10px;
+
+    font-size: ${({ $fontSize }) => $fontSize || '18px'};
+    font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
   `,
 };
 
