@@ -27,7 +27,5 @@ const S = {
   ChildrenWrapper: styled.div`
     width: 1200px;
     height: 800px;
-
-    background: var(--gray-200);
   `,
 };
