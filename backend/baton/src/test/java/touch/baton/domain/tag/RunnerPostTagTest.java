@@ -27,6 +27,7 @@ import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -76,6 +77,7 @@ class RunnerPostTagTest {
                 .chattingRoomCount(new ChattingRoomCount(0))
                 .runner(runner)
                 .supporter(supporter)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
 
         private Tag tag = Tag.builder()
