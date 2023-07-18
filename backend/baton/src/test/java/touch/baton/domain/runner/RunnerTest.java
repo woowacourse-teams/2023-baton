@@ -21,6 +21,7 @@ class RunnerTest {
     @DisplayName("생성 테스트")
     @Nested
     class Create {
+
         private final Member member = Member.builder()
                 .name(new Name("헤에디주"))
                 .email(new Email("test@test.co.kr"))
