@@ -46,7 +46,7 @@ public class Supporter {
     private Grade grade;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_member"))
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_member"), nullable = false)
     private Member member;
 
     @Builder
