@@ -13,7 +13,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.Name;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.exception.RunnerPostException;
@@ -35,7 +35,7 @@ class RunnerPostTest {
     class Create {
 
         private final Member runnerMember = Member.builder()
-                .name(new Name("러너 사용자"))
+                .memberName(new MemberName("러너 사용자"))
                 .email(new Email("test@test.co.kr"))
                 .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
@@ -43,7 +43,7 @@ class RunnerPostTest {
                 .build();
 
         private final Member supporterMember = Member.builder()
-                .name(new Name("서포터 사용자"))
+                .memberName(new MemberName("서포터 사용자"))
                 .email(new Email("test@test.co.kr"))
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/pobi"))

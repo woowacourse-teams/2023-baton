@@ -9,7 +9,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.Name;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.exception.RunnerException;
 
@@ -23,7 +23,7 @@ class RunnerTest {
     class Create {
 
         private final Member member = Member.builder()
-                .name(new Name("헤에디주"))
+                .memberName(new MemberName("헤에디주"))
                 .email(new Email("test@test.co.kr"))
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))

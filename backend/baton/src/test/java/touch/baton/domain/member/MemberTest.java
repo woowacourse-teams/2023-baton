@@ -7,7 +7,7 @@ import touch.baton.domain.member.exception.MemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.Name;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -23,7 +23,7 @@ class MemberTest {
         @Test
         void success() {
             assertThatCode(() -> Member.builder()
-                    .name(new Name("헤에디주"))
+                    .memberName(new MemberName("헤에디주"))
                     .email(new Email("test@test.co.kr"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
@@ -36,7 +36,7 @@ class MemberTest {
         @Test
         void fail_if_name_is_null() {
             assertThatThrownBy(() -> Member.builder()
-                    .name(null)
+                    .memberName(null)
                     .email(new Email("test@test.co.kr"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
@@ -49,7 +49,7 @@ class MemberTest {
         @Test
         void fail_if_email_is_null() {
             assertThatThrownBy(() -> Member.builder()
-                    .name(new Name("에단"))
+                    .memberName(new MemberName("에단"))
                     .email(null)
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
@@ -62,7 +62,7 @@ class MemberTest {
         @Test
         void fail_if_oauth_id_is_null() {
             assertThatThrownBy(() -> Member.builder()
-                    .name(new Name("에단"))
+                    .memberName(new MemberName("에단"))
                     .email(new Email("test@test.co.kr"))
                     .oauthId(null)
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
@@ -75,7 +75,7 @@ class MemberTest {
         @Test
         void fail_if_github_url_is_null() {
             assertThatThrownBy(() -> Member.builder()
-                    .name(new Name("에단"))
+                    .memberName(new MemberName("에단"))
                     .email(new Email("test@test.co.kr"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(null)
@@ -88,7 +88,7 @@ class MemberTest {
         @Test
         void fail_if_company_is_null() {
             assertThatThrownBy(() -> Member.builder()
-                    .name(new Name("에단"))
+                    .memberName(new MemberName("에단"))
                     .email(new Email("test@test.co.kr"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))

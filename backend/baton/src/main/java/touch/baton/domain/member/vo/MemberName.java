@@ -12,12 +12,12 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class Name {
+public class MemberName {
 
     @Column(name = "name", nullable = false)
     private String value;
 
-    public Name(final String value) {
+    public MemberName(final String value) {
         validateNotNull(value);
         this.value = value;
     }

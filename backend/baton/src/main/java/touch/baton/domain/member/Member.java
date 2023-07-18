@@ -11,7 +11,7 @@ import touch.baton.domain.member.exception.MemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.Name;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 
 import java.util.Objects;
@@ -29,7 +29,7 @@ public class Member {
     private Long id;
 
     @Embedded
-    private Name name;
+    private MemberName memberName;
 
     @Embedded
     private Email email;
@@ -44,38 +44,38 @@ public class Member {
     private Company company;
 
     @Builder
-    private Member(final Name name,
+    private Member(final MemberName memberName,
                   final Email email,
                   final OauthId oauthId,
                   final GithubUrl githubUrl,
                   final Company company
     ) {
-        this(null, name, email, oauthId, githubUrl, company);
+        this(null, memberName, email, oauthId, githubUrl, company);
     }
 
     private Member(final Long id,
-                   final Name name,
+                   final MemberName memberName,
                    final Email email,
                    final OauthId oauthId,
                    final GithubUrl githubUrl,
                    final Company company
     ) {
-        validateNotNull(name, email, oauthId, githubUrl, company);
+        validateNotNull(memberName, email, oauthId, githubUrl, company);
         this.id = id;
-        this.name = name;
+        this.memberName = memberName;
         this.email = email;
         this.oauthId = oauthId;
         this.githubUrl = githubUrl;
         this.company = company;
     }
 
-    private void validateNotNull(final Name name,
+    private void validateNotNull(final MemberName memberName,
                                  final Email email,
                                  final OauthId oauthId,
                                  final GithubUrl githubUrl,
                                  final Company company
     ) {
-        if (Objects.isNull(name)) {
+        if (Objects.isNull(memberName)) {
             throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
         }
 
