@@ -1,10 +1,11 @@
 package touch.baton.domain.runner;
 
 import jakarta.persistence.Embedded;
-import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import touch.baton.domain.runner.vo.TotalRating;
 
 import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
@@ -23,8 +25,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 public class Runner {
 
-    @EmbeddedId
-    private RunnerId runnerId;
+    @GeneratedValue(strategy = IDENTITY)
+    @Id
+    private Long id;
 
     @Embedded
     private TotalRating totalRating;
