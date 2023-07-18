@@ -27,9 +27,9 @@ jobs:
         distribution: 'corretto'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2.6.0
-    - name: print route
-      run: pwd
+    - name: move up
+      run: cd backend/baton
     - name: print directory
       run: ls -al
     - name: Execute Gradle build
-      run: ./backend/baton/gradlew build
+      run: ./gradlew build
