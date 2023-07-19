@@ -26,7 +26,7 @@ public class TagCount {
         this.value = value;
     }
 
-    public static TagCount zero() {
+    public static TagCount initial() {
         return INITIAL_TAG_COUNT;
     }
 
