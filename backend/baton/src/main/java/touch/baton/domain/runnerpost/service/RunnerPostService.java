@@ -7,7 +7,7 @@ import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -30,7 +30,7 @@ public class RunnerPostService {
     private final TagRepository tagRepository;
 
     @Transactional
-    public Long update(final Long runnerPostId, final RunnerPostCreateRequest request) {
+    public Long update(final Long runnerPostId, final RunnerPostUpdateRequest request) {
         // TODO: 메소드 분리
         RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId).get();
         runnerPost.updateTitle(new Title(request.getTitle()));

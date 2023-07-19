@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
-public class RunnerPostCreateRequest {
+public class RunnerPostUpdateRequest {
 // TODO: 예외 처리, record로 적용
     private static final int CONTENTS_MAX_LENGTH = 1000;
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
@@ -22,7 +22,7 @@ public class RunnerPostCreateRequest {
     private String deadline;
     private String contents;
 
-    public RunnerPostCreateRequest(final String title,
+    public RunnerPostUpdateRequest(final String title,
                                    final List<String> tags,
                                    final String pullRequestUrl,
                                    final String deadline,

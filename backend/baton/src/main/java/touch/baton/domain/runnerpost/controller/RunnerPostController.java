@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 
 import java.net.URI;
 
@@ -21,7 +21,7 @@ public class RunnerPostController {
 
     @PutMapping("/{runnerPostId}")
     public ResponseEntity<Void> update(@PathVariable(name = "runnerPostId") final Long id,
-                                       @RequestBody final RunnerPostCreateRequest request
+                                       @RequestBody final RunnerPostUpdateRequest request
     ) {
         Long updatedId = runnerPostService.update(id, request);
         return ResponseEntity.created(URI.create("/api/v1/posts/runner/" + updatedId)).build();

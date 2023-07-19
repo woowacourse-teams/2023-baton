@@ -10,7 +10,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 
 import java.util.List;
 
@@ -45,9 +45,9 @@ class RunnerPostControllerTest {
             // given
             Long runnerId = 1L;
             Long runnerPostId = 1L;
-            RunnerPostCreateRequest runnerPostCreateRequest =
-                    new RunnerPostCreateRequest("hello", List.of("java"), "naver.com", "2023-07-21T12:12", "내용내용");
-            final String requestBody = objectMapper.writeValueAsString(runnerPostCreateRequest);
+            RunnerPostUpdateRequest runnerPostUpdateRequest =
+                    new RunnerPostUpdateRequest("hello", List.of("java"), "naver.com", "2023-07-21T12:12", "내용내용");
+            final String requestBody = objectMapper.writeValueAsString(runnerPostUpdateRequest);
 
             // when
             when(runnerPostService.update(eq(runnerPostId), any())).thenReturn(runnerPostId);
