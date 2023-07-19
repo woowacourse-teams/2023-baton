@@ -27,8 +27,10 @@ import touch.baton.domain.tag.RunnerPostTags;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class RunnerPostTest {
 
@@ -234,6 +236,28 @@ class RunnerPostTest {
                     .runnerPostTags(null)
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
+        }
+
+        @DisplayName("태그, 조회수, 채팅수가 초기화된 RunnerPost 를 생성할 수 있다.")
+        @Test
+        void createDefaultRunnerPost() {
+            // given
+            final String title = "JPA 리뷰 부탁 드려요.";
+            final String contents = "넘나 어려워요.";
+            final String pullRequestUrl = "https://github.com/cookienc";
+            final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
+            final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
+
+            // when, then
+            assertAll(
+                    () -> assertThat(runnerPost.getTitle()).isEqualTo(new Title(title)),
+                    () -> assertThat(runnerPost.getContents()).isEqualTo(new Contents(contents)),
+                    () -> assertThat(runnerPost.getPullRequestUrl()).isEqualTo(new PullRequestUrl(pullRequestUrl)),
+                    () -> assertThat(runnerPost.getDeadline()).isEqualTo(new Deadline(deadline)),
+                    () -> assertThat(runnerPost.getRunnerPostTags()).isNotNull(),
+                    () -> assertThat(runnerPost.getChattingRoomCount()).isEqualTo(new ChattingRoomCount(0)),
+                    () -> assertThat(runnerPost.getWatchedCount()).isEqualTo(new WatchedCount(0))
+            );
         }
     }
 }

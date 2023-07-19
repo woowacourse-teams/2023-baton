@@ -21,8 +21,11 @@ import touch.baton.domain.runnerpost.exception.RunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -82,15 +85,15 @@ public class RunnerPost extends BaseEntity {
     }
 
     private RunnerPost(final Long id,
-                      final Title title,
-                      final Contents contents,
-                      final PullRequestUrl pullRequestUrl,
-                      final Deadline deadline,
-                      final WatchedCount watchedCount,
-                      final ChattingRoomCount chattingRoomCount,
-                      final Runner runner,
-                      final Supporter supporter,
-                      final RunnerPostTags runnerPostTags
+                       final Title title,
+                       final Contents contents,
+                       final PullRequestUrl pullRequestUrl,
+                       final Deadline deadline,
+                       final WatchedCount watchedCount,
+                       final ChattingRoomCount chattingRoomCount,
+                       final Runner runner,
+                       final Supporter supporter,
+                       final RunnerPostTags runnerPostTags
     ) {
         validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, runnerPostTags);
         this.id = id;
@@ -145,5 +148,27 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
+    }
+
+    public static RunnerPost newInstance(final String title,
+                                         final String contents,
+                                         final String pullRequestUrl,
+                                         final LocalDateTime deadline,
+                                         final Runner runner
+    ) {
+        return RunnerPost.builder()
+                .title(new Title(title))
+                .contents(new Contents(contents))
+                .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
+                .deadline(new Deadline(deadline))
+                .runner(runner)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .watchedCount(WatchedCount.zero())
+                .chattingRoomCount(ChattingRoomCount.zero())
+                .build();
+    }
+
+    public void addPostTag(final RunnerPostTag postTag) {
+        runnerPostTags.add(postTag);
     }
 }
