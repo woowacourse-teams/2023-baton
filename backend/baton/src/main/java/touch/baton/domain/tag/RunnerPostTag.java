@@ -55,8 +55,4 @@ public class RunnerPostTag {
             throw new TagException.NotNull("tag 은 null 일 수 없습니다.");
         }
     }
-
-    public boolean isSameTagName(final String tagName) {
-        return tag.isSameTagName(tagName);
-    }
 }

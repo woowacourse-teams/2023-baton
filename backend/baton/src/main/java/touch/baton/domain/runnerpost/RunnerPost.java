@@ -21,7 +21,6 @@ import touch.baton.domain.runnerpost.exception.RunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 
 import java.util.Objects;
@@ -146,25 +145,5 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
-    }
-
-    public void appendRunnerPostTag(RunnerPostTag runnerPostTag) {
-        runnerPostTags.add(runnerPostTag);
-    }
-
-    public void updateTitle(final Title title) {
-        this.title = title;
-    }
-
-    public void updateContents(final Contents contents) {
-        this.contents = contents;
-    }
-
-    public void updatePullRequestUrl(final PullRequestUrl pullRequestUrl) {
-        this.pullRequestUrl = pullRequestUrl;
-    }
-
-    public void updateDeadLine(final Deadline deadline) {
-        this.deadline = deadline;
     }
 }

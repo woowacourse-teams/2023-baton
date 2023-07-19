@@ -2,14 +2,12 @@ package touch.baton.domain.common.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import static lombok.AccessLevel.PROTECTED;
 
-@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
