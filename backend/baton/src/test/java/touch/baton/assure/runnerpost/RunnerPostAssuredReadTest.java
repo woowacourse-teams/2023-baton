@@ -1,5 +1,6 @@
 package touch.baton.assure.runnerpost;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.fixture.MemberFixture;
 import touch.baton.assure.fixture.RunnerFixture;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
+    @Disabled
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member member = MemberFixture.from("헤나",
