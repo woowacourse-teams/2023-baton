@@ -55,6 +55,7 @@
       "@types/*": ["src/types/*"],
       "@assets/*": ["src/assets/*"]
     },
+    "resolveJsonModule": true, // typescript에서 json 파일 import
     // "rootDirs": [],                        /* 런타임 시 프로젝트 구조를 나타내는 로트 디렉토리 목록 */
     // "typeRoots": [],                       /* 유형 정의를 포함할 디렉토리 목록 */
     // "types": [],                           /* 컴파일 시 포함될 유형 선언 파일 입력 */
