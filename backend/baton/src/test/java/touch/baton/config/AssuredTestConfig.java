@@ -7,7 +7,6 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
@@ -28,7 +27,6 @@ public abstract class AssuredTestConfig {
     @Autowired
     protected RunnerPostRepository runnerPostRepository;
 
-    @Transactional
     @BeforeEach
     void assuredTestSetUp() {
         RestAssured.port = port;

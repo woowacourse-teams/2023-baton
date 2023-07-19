@@ -1,6 +1,9 @@
 package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.fixture.MemberFixture;
+import touch.baton.assure.fixture.RunnerFixture;
+import touch.baton.assure.fixture.RunnerPostFixture;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.member.Member;
@@ -8,12 +11,9 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.tag.RunnerPostTags;
-import touch.baton.assure.fixture.MemberFixture;
-import touch.baton.assure.fixture.RunnerFixture;
-import touch.baton.assure.fixture.RunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
@@ -39,7 +39,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
                 LocalDateTime.now(),
                 0,
                 0,
-                new RunnerPostTags(Collections.emptyList())
+                new RunnerPostTags(new ArrayList<>())
         );
         runnerPostRepository.save(runnerPost);
 
