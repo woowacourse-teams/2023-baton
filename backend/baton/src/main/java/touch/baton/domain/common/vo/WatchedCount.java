@@ -16,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class WatchedCount {
 
     private static final String DEFAULT_VALUE = "0";
+    private static final WatchedCount ZERO = new WatchedCount(Integer.parseInt(DEFAULT_VALUE));
 
     @ColumnDefault(DEFAULT_VALUE)
     @Column(name = "watch_count", nullable = false)
@@ -23,5 +24,9 @@ public class WatchedCount {
 
     public WatchedCount(final int value) {
         this.value = value;
+    }
+
+    public static WatchedCount zero() {
+        return ZERO;
     }
 }
