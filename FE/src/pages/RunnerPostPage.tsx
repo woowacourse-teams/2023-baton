@@ -7,6 +7,7 @@ import eyeIcon from '@assets/eye-icon.svg';
 import chattingIcon from '@assets/chatting-icon.svg';
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_PATH } from '../router';
+import PostTagList from '@components/PostTagList';
 
 interface Profile {
   memberId: number;
@@ -51,7 +52,6 @@ const RunnerPostPage = () => {
       })
       .catch((error) => {
         setRunnerPost(null);
-        console.log(error);
       });
   }, [runnerPost]);
 
@@ -68,11 +68,7 @@ const RunnerPostPage = () => {
         {runnerPost && (
           <S.PostContainer>
             <S.PostHeaderContainer>
-              <S.HashTagList>
-                {runnerPost.tags.map((tag) => (
-                  <S.HashTag key={tag}>#{tag}</S.HashTag>
-                ))}
-              </S.HashTagList>
+              <PostTagList tags={runnerPost.tags} />
               <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
                 <S.EditLink>수정</S.EditLink> <S.EditLink>삭제</S.EditLink>
               </S.EditLinkContainer>
@@ -82,7 +78,7 @@ const RunnerPostPage = () => {
             <S.PostBodyContainer>
               <S.InformationContainer>
                 <S.ProfileContainer>
-                  <Avatar imageUrl={runnerPost.profile.imageUrl} width={'60px'} />
+                  <Avatar imageUrl={runnerPost.profile.imageUrl} />
                   <S.Profile>
                     <S.Name>{runnerPost.profile.name}</S.Name>
                     <S.Job>{runnerPost.profile.company}</S.Job>
@@ -148,21 +144,6 @@ const S = {
     row-gap: 10px;
 
     width: 100%;
-  `,
-
-  HashTagList: styled.ul`
-    list-style: none;
-
-    li:not(:last-child) {
-      margin-right: 10px;
-    }
-  `,
-
-  HashTag: styled.li`
-    float: left;
-
-    font-size: 18px;
-    color: var(--gray-500);
   `,
 
   EditLinkContainer: styled.div<{ $isOwner: boolean }>`
