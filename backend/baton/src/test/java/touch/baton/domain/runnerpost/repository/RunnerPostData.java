@@ -138,6 +138,6 @@ public class RunnerPostData {
         runnerPostTagSpring = runnerPostTagRepository.save(setRunnerPostTag(runnerPost, tagSpring));
         runnerPost.appendRunnerPostTag(runnerPostTagJava);
         runnerPost.appendRunnerPostTag(runnerPostTagSpring);
-        runnerPostRepository.save(runnerPost);
+        runnerPostRepository.saveAndFlush(runnerPost);
     }
 }
