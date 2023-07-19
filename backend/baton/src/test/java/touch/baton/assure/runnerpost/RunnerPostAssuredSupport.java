@@ -1,6 +1,5 @@
 package touch.baton.assure.runnerpost;
 
-import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
@@ -46,7 +45,7 @@ public class RunnerPostAssuredSupport {
         }
 
         public void 러너_게시글_단건_조회_성공을_검증한다(final RunnerPostResponse.SingleRunnerPost 러너_게시글_응답) {
-            final RunnerPostResponse.SingleRunnerPost actual = this.response.as(new TypeRef<>() {});
+            final RunnerPostResponse.SingleRunnerPost actual = this.response.as(RunnerPostResponse.SingleRunnerPost.class);
 
             assertThat(actual)
                     .usingRecursiveComparison()
