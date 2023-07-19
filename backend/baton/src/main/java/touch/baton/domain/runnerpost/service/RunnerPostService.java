@@ -51,9 +51,7 @@ public class RunnerPostService {
                         .build())
                 .toList();
 
-        for (final RunnerPostTag postTag : postTags) {
-            runnerPost.addPostTag(postTag);
-        }
+        runnerPost.addAllRunnerPostTags(postTags);
 
         return runnerPost.getId();
     }
