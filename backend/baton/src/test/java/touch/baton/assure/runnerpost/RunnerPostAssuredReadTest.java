@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
-    @Disabled
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member member = MemberFixture.from("헤나",

@@ -7,6 +7,7 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class RunnerPostAssuredSupport {
 
@@ -47,10 +48,20 @@ public class RunnerPostAssuredSupport {
         public void 러너_게시글_단건_조회_성공을_검증한다(final RunnerPostResponse.SingleRunnerPost 러너_게시글_응답) {
             final RunnerPostResponse.SingleRunnerPost actual = this.response.as(RunnerPostResponse.SingleRunnerPost.class);
 
-            assertThat(actual)
-                    .usingRecursiveComparison()
-                    .ignoringExpectedNullFields()
-                    .isEqualTo(러너_게시글_응답);
+            assertAll(
+                    () -> assertThat(actual.title()).isEqualTo(러너_게시글_응답.title()),
+                    () -> assertThat(actual.contents()).isEqualTo(러너_게시글_응답.contents()),
+                    () -> assertThat(actual.tags()).isEqualTo(러너_게시글_응답.tags()),
+                    () -> assertThat(actual.deadLine()).isEqualToIgnoringSeconds(러너_게시글_응답.deadLine()),
+                    () -> assertThat(actual.profile().name()).isEqualTo(러너_게시글_응답.profile().name()),
+                    () -> assertThat(actual.profile().company()).isEqualTo(러너_게시글_응답.profile().company()),
+                    () -> assertThat(actual.profile().imageUrl()).isEqualTo(러너_게시글_응답.profile().imageUrl()),
+                    () -> assertThat(actual.profile().isOwner()).isEqualTo(러너_게시글_응답.profile().isOwner()),
+                    () -> assertThat(actual.profile().memberId()).isEqualTo(러너_게시글_응답.profile().memberId()),
+                    () -> assertThat(actual.chattingCount()).isEqualTo(러너_게시글_응답.chattingCount()),
+                    () -> assertThat(actual.watchedCount()).isEqualTo(러너_게시글_응답.watchedCount()),
+                    () -> assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId())
+            );
         }
 
         public void 러너_게시글_삭제_성공을_검증한다(final HttpStatus HTTP_STATUS) {

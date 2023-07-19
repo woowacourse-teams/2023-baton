@@ -1,17 +1,20 @@
 package touch.baton.domain.runnerpost.controller.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.vo.TagName;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record RunnerPostResponse() {
 
     public record SingleRunnerPost(Long runnerPostId,
                                    String title,
-                                   String deadLine,
+                                   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+                                   LocalDateTime deadLine,
                                    List<String> tags,
                                    String contents,
                                    Integer chattingCount,
@@ -22,7 +25,7 @@ public record RunnerPostResponse() {
             return new SingleRunnerPost(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
-                    runnerPost.getDeadline().getValue().toString(),
+                    runnerPost.getDeadline().getValue(),
                     collectTagNameValues(runnerPost),
                     runnerPost.getContents().getValue(),
                     runnerPost.getChattingRoomCount().getValue(),
