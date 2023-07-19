@@ -99,4 +99,8 @@ public class RunnerPostCreateRequest {
             throw new IllegalArgumentException("RP006");
         }
     }
+
+    public LocalDateTime getFormattedDateTime() {
+        return formatDeadline(deadline);
+    }
 }
