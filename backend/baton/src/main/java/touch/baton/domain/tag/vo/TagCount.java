@@ -16,6 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class TagCount {
 
     private static final int ZERO_VALUE = 0;
+    private static final int INITIAL_VALUE = 1;
     private static final String DEFAULT_VALUE = "1";
 
     @ColumnDefault(DEFAULT_VALUE)
@@ -24,6 +25,10 @@ public class TagCount {
 
     public TagCount(final int value) {
         this.value = value;
+    }
+
+    public static TagCount init() {
+        return new TagCount(INITIAL_VALUE);
     }
 
     public TagCount increase() {
