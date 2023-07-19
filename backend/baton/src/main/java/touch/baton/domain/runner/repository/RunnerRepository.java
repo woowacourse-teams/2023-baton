@@ -12,7 +12,7 @@ public interface RunnerRepository extends JpaRepository<Runner, Long> {
     @Query("""
             select r
             from Runner r
-            join fetch Member m on m.id = r.id
+            join fetch Member m on m.id = r.member.id
             where r.id = :runnerId
             """)
     Optional<Runner> findByIdJoinMember(@Param("runnerId") Long runnerId);
