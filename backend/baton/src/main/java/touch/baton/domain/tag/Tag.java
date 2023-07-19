@@ -52,4 +52,16 @@ public class Tag {
             throw new TagException.NotNull("tagCount 은 null 일 수 없습니다.");
         }
     }
+
+    public void increaseCount() {
+        this.tagCount = tagCount.increase();
+    }
+
+    public void decreaseCount() {
+        this.tagCount = tagCount.decrease();
+    }
+
+    public boolean isCountZero() {
+        return tagCount.isZero();
+    }
 }
