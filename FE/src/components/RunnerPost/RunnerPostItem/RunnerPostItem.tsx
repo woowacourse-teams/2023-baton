@@ -1,16 +1,9 @@
 import Avatar from '@components/common/Avatar';
+import { RunnerPost } from '../../../types/RunnerPost';
 import React from 'react';
 import { styled } from 'styled-components';
 
-interface Props {
-  runnerPostId: number;
-  title: string;
-  deadline: string;
-  tags: string[];
-  profile: { name: string; imageUrl: string };
-}
-
-const RunnerPostItem = ({ postItem: { title, deadline, tags, profile } }: { postItem: Props }) => {
+const RunnerPostItem = ({ postItem: { title, deadline, tags, profile } }: { postItem: RunnerPost }) => {
   return (
     <S.RunnerPostItemContainer>
       <S.LeftSideContainer>
@@ -28,8 +21,8 @@ const RunnerPostItem = ({ postItem: { title, deadline, tags, profile } }: { post
           <S.ProfileName>{profile.name}</S.ProfileName>
         </S.ProfileContainer>
         <S.ChatViewContainer>
-          <div>조회수</div>
-          <div>채팅수</div>
+          <div>조회수: 23</div>
+          <div>채팅수: 2</div>
         </S.ChatViewContainer>
       </S.RightSideContainer>
     </S.RunnerPostItemContainer>
@@ -83,7 +76,12 @@ const S = {
   `,
 
   LeftSideContainer: styled.div``,
-  RightSideContainer: styled.div``,
+  RightSideContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    justify-content: space-between;
+  `,
 
   ProfileContainer: styled.div`
     display: flex;
@@ -100,5 +98,9 @@ const S = {
 
   ChatViewContainer: styled.div`
     display: flex;
+
+    gap: 10px;
+
+    font-size: 12px;
   `,
 };
