@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.tag.exception.TagException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
@@ -19,7 +20,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class Tag {
+public class Tag extends BaseEntity {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id
@@ -51,28 +52,5 @@ public class Tag {
         if (Objects.isNull(tagCount)) {
             throw new TagException.NotNull("tagCount 은 null 일 수 없습니다.");
         }
-    }
-
-    public static Tag newInstance(final String tagName) {
-        return Tag.builder()
-                .tagName(new TagName(tagName))
-                .tagCount(TagCount.init())
-                .build();
-    }
-
-    public void increaseCount() {
-        this.tagCount = tagCount.increase();
-    }
-
-    public void decreaseCount() {
-        this.tagCount = tagCount.decrease();
-    }
-
-    public boolean isCountZero() {
-        return tagCount.isZero();
-    }
-
-    public boolean isSameTagName(final String tagName) {
-        return this.tagName.equals(new TagName(tagName));
     }
 }
