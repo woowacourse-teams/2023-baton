@@ -26,6 +26,7 @@ import touch.baton.domain.tag.RunnerPostTags;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -168,7 +169,7 @@ public class RunnerPost extends BaseEntity {
                 .build();
     }
 
-    public void addPostTag(final RunnerPostTag postTag) {
-        runnerPostTags.add(postTag);
+    public void addAllRunnerPostTags(final List<RunnerPostTag> postTags) {
+        runnerPostTags.addAll(postTags);
     }
 }
