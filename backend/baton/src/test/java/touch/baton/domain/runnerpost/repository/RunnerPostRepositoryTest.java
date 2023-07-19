@@ -1,6 +1,5 @@
 package touch.baton.domain.runnerpost.repository;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class RunnerPostRepositoryTest extends RepositoryTestConfig {
 
@@ -71,7 +71,7 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
         final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(saveRunnerPostId);
 
         // then
-        Assertions.assertAll(
+        assertAll(
                 () -> assertThat(maybeRunnerPost).isPresent(),
                 () -> assertThat(maybeRunnerPost.get())
                 .usingRecursiveComparison()

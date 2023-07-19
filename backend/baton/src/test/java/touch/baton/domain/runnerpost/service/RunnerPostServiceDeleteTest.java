@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RunnerPostServiceDeleteTest extends ServiceTestConfig {
 
-    RunnerPostService runnerPostService;
+    private RunnerPostService runnerPostService;
 
     @BeforeEach
     void setUp() {
@@ -34,7 +34,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     }
 
     @Disabled
-    @DisplayName("러너 게시글 식별자값으로 러너 게시글을 삭제한다.")
+    @DisplayName("RunnerPost 식별자값으로 RunnerPost 을 삭제한다.")
     @Test
     void success_deleteByRunnerPostId() {
         // given
@@ -87,7 +87,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
                 .isInstanceOf(RunnerPostBusinessException.NotFound.class);
     }
 
-    @DisplayName("러너 게시글 식별자값으로 러너 게시글을 삭제를 시도할 때 존재하지 않으면 예외가 발생한다.")
+    @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 을 삭제 시도할 경우 예외가 발생한다.")
     @Test
     void fail_deleteByRunnerPostId_if_runnerPost_is_null() {
         assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(0L))

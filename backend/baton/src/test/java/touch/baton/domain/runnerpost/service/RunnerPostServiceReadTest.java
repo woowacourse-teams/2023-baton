@@ -9,6 +9,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.*;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class RunnerPostServiceReadTest extends ServiceTestConfig {
 
@@ -32,7 +34,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository);
     }
 
-    @DisplayName("러너 게시글 식별자값으로 러너 게시글을 조회한다.")
+    @DisplayName("RunnerPost 식별자값으로 RunnerPost 를 조회한다.")
     @Test
     void success_findByRunnerPostId() {
         // given
@@ -86,5 +88,12 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .usingRecursiveComparison()
                 .ignoringExpectedNullFields()
                 .isEqualTo(runnerPost);
+    }
+
+    @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 을 조회할 경우 예외가 발생한다.")
+    @Test
+    void fail_findByRunnerPostId_if_runner_post_is_null() {
+        assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(0L))
+                .isInstanceOf(RunnerPostBusinessException.NotFound.class);
     }
 }

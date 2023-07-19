@@ -19,7 +19,7 @@ class TagRepositoryUpdateTest extends RepositoryTestConfig {
     @Autowired
     private TagRepository tagRepository;
 
-    @DisplayName("태그 식별자값 목록으로 TagCount 수를 -1 씩 줄인다.")
+    @DisplayName("Tag 식별자값 목록으로 TagCount 수를 -1 씩 줄인다.")
     @Test
     void decreaseTagCountByTagIds() {
         // given
@@ -46,5 +46,4 @@ class TagRepositoryUpdateTest extends RepositoryTestConfig {
                                 .build())
         );
     }
-
 }
