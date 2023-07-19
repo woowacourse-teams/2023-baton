@@ -124,11 +124,11 @@ const RunnerPostCreatePage = () => {
         <S.Form>
           <S.InputContainer>
             <S.InputName>제목</S.InputName>
-            <InputBox inputText={title} onChange={onChangeTitle} maxLength={10} placeholder="제목을 입력하세요" />
+            <InputBox onChange={onChangeTitle} maxLength={15} placeholder="제목을 입력하세요" />
           </S.InputContainer>
           <S.InputContainer>
             <S.InputName>PR주소</S.InputName>
-            <InputBox inputText={pullRequestUrl} onChange={onChangepullRequestUrl} placeholder="PR 주소를 입력하세요" />
+            <InputBox onChange={onChangepullRequestUrl} placeholder="PR 주소를 입력하세요" />
           </S.InputContainer>
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
