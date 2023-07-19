@@ -52,7 +52,6 @@ public class RunnerPostService {
                 .toList();
 
         runnerPost.addAllRunnerPostTags(postTags);
-
         return runnerPost.getId();
     }
 
