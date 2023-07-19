@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    @Modifying(clearAutomatically = true)
+    @Modifying
     @Query("""
         update Tag t
         set t.tagCount.value = t.tagCount.value - 1
