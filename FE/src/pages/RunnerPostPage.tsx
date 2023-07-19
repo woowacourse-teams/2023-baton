@@ -1,10 +1,12 @@
 import Avatar from '@components/common/Avatar';
 import Button from '@components/common/Button';
 import Layout from '@layout/Layout';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import eyeIcon from '@assets/eye-icon.svg';
 import chattingIcon from '@assets/chatting-icon.svg';
+import { useNavigate } from 'react-router-dom';
+import { ROUTER_PATH } from '../router';
 
 interface Profile {
   memberId: number;
@@ -25,76 +27,91 @@ interface RunnerPost {
   profile: Profile;
 }
 
-const information: RunnerPost = {
-  runnerPostId: 1,
-  title: '리액트 리뷰 부탁드립니다.',
-  deadline: '2023-07-15T13:56',
-  tags: ['개인프로젝트', '리액트', 'React'],
-  chattingCount: 2,
-  watchedCount: 123,
-  contents:
-    '자바를 배운지 3년 정도 되었는데요 제가 짠 코드가 어떤지 궁금해서 리뷰 요청 올려봅니다.\n현업에 계신 분들.. 좀 도와주세요 ㅠㅠ\nPR 메시지는 PR 링크에 작성해놨습니다 !',
-  isOwner: true,
-  profile: {
-    memberId: 1,
-    name: '감자도리',
-    company: '대학교 2학년',
-    imageUrl: 'https://avatars.githubusercontent.com/u/103256030?v=4',
-  },
+const getRunnerPost = async (): Promise<RunnerPost> => {
+  const response = await fetch(`msw/posts/runner/1`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
+
+  const data = await response.json().catch(() => {
+    throw new Error('게시글을 불러오지 못했습니다.');
+  });
+
+  return data;
 };
 
 const RunnerPostPage = () => {
-  const { title, deadline, tags, chattingCount, watchedCount, contents, isOwner, profile } = information;
+  const [runnerPost, setRunnerPost] = useState<RunnerPost | null>(null);
+
+  useEffect(() => {
+    getRunnerPost()
+      .then((data) => {
+        setRunnerPost(data);
+      })
+      .catch((error) => {
+        setRunnerPost(null);
+        console.log(error);
+      });
+  }, [runnerPost]);
+
+  const navigate = useNavigate();
+
+  const goToMainPage = () => {
+    navigate(ROUTER_PATH.MAIN);
+  };
 
   return (
     <Layout>
       <S.RunnerPostContainer>
         <S.Title> 서포터를 찾고 있어요 👀</S.Title>
-        <S.PostContainer>
-          <S.PostHeaderContainer>
-            <S.HashTagList>
-              {tags.map((tag) => (
-                <S.HashTag key={tag}>#{tag}</S.HashTag>
-              ))}
-            </S.HashTagList>
-            <S.EditLinkContainer $isOwner={isOwner}>
-              <S.EditLink>수정</S.EditLink> <S.EditLink>삭제</S.EditLink>
-            </S.EditLinkContainer>
-            <S.PostTitle>{title}.</S.PostTitle>
-            <S.PostDeadline>{deadline.replace('T', ' ')} 까지</S.PostDeadline>
-          </S.PostHeaderContainer>
-          <S.PostBodyContainer>
-            <S.InformationContainer>
-              <S.ProfileContainer>
-                <Avatar imageUrl={profile.imageUrl} width={'60px'} />
-                <S.Profile>
-                  <S.Name>{profile.name}</S.Name>
-                  <S.Job>{profile.company}</S.Job>
-                </S.Profile>
-              </S.ProfileContainer>
-              <S.statisticsContainer>
-                <S.statisticsImage src={eyeIcon} />
-                <S.statisticsText>{watchedCount}</S.statisticsText>
-                <S.statisticsImage src={chattingIcon} />
-                <S.statisticsText>{chattingCount}</S.statisticsText>
-              </S.statisticsContainer>
-            </S.InformationContainer>
-            <S.Contents>{contents}</S.Contents>
-          </S.PostBodyContainer>
-          <S.PostFooterContainer>
-            <Button colorTheme="GRAY" fontWeight={700}>
-              목록
-            </Button>
-            <S.PrimaryButtonContainer>
-              <Button colorTheme="WHITE" fontWeight={700}>
-                코드 보러가기
+        {runnerPost && (
+          <S.PostContainer>
+            <S.PostHeaderContainer>
+              <S.HashTagList>
+                {runnerPost.tags.map((tag) => (
+                  <S.HashTag key={tag}>#{tag}</S.HashTag>
+                ))}
+              </S.HashTagList>
+              <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
+                <S.EditLink>수정</S.EditLink> <S.EditLink>삭제</S.EditLink>
+              </S.EditLinkContainer>
+              <S.PostTitle>{runnerPost.title}.</S.PostTitle>
+              <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
+            </S.PostHeaderContainer>
+            <S.PostBodyContainer>
+              <S.InformationContainer>
+                <S.ProfileContainer>
+                  <Avatar imageUrl={runnerPost.profile.imageUrl} width={'60px'} />
+                  <S.Profile>
+                    <S.Name>{runnerPost.profile.name}</S.Name>
+                    <S.Job>{runnerPost.profile.company}</S.Job>
+                  </S.Profile>
+                </S.ProfileContainer>
+                <S.statisticsContainer>
+                  <S.statisticsImage src={eyeIcon} />
+                  <S.statisticsText>{runnerPost.watchedCount}</S.statisticsText>
+                  <S.statisticsImage src={chattingIcon} />
+                  <S.statisticsText>{runnerPost.chattingCount}</S.statisticsText>
+                </S.statisticsContainer>
+              </S.InformationContainer>
+              <S.Contents>{runnerPost.contents}</S.Contents>
+            </S.PostBodyContainer>
+            <S.PostFooterContainer>
+              <Button colorTheme="GRAY" fontWeight={700} onClick={goToMainPage}>
+                목록
               </Button>
-              <Button colorTheme="WHITE" fontWeight={700}>
-                1:1 대화하기
-              </Button>
-            </S.PrimaryButtonContainer>
-          </S.PostFooterContainer>
-        </S.PostContainer>
+              <S.PrimaryButtonContainer>
+                <Button colorTheme="WHITE" fontWeight={700}>
+                  코드 보러가기
+                </Button>
+                <Button colorTheme="WHITE" fontWeight={700}>
+                  1:1 대화하기
+                </Button>
+              </S.PrimaryButtonContainer>
+            </S.PostFooterContainer>
+          </S.PostContainer>
+        )}
       </S.RunnerPostContainer>
     </Layout>
   );
@@ -111,7 +128,7 @@ const S = {
   Title: styled.div`
     padding: 40px 30px 40px 10px;
 
-    font-size: 35px;
+    font-size: 36px;
     font-weight: bold;
   `,
 
