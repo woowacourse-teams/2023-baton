@@ -23,7 +23,7 @@ public record RunnerPostResponse() {
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getDeadline().getValue().toString(),
-                    collectTagNameVal현ues(runnerPost),
+                    collectTagNameValues(runnerPost),
                     runnerPost.getContents().getValue(),
                     runnerPost.getChattingRoomCount().getValue(),
                     runnerPost.getWatchedCount().getValue(),
