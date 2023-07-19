@@ -82,15 +82,15 @@ public class RunnerPost extends BaseEntity {
     }
 
     private RunnerPost(final Long id,
-                      final Title title,
-                      final Contents contents,
-                      final PullRequestUrl pullRequestUrl,
-                      final Deadline deadline,
-                      final WatchedCount watchedCount,
-                      final ChattingRoomCount chattingRoomCount,
-                      final Runner runner,
-                      final Supporter supporter,
-                      final RunnerPostTags runnerPostTags
+                       final Title title,
+                       final Contents contents,
+                       final PullRequestUrl pullRequestUrl,
+                       final Deadline deadline,
+                       final WatchedCount watchedCount,
+                       final ChattingRoomCount chattingRoomCount,
+                       final Runner runner,
+                       final Supporter supporter,
+                       final RunnerPostTags runnerPostTags
     ) {
         validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, runnerPostTags);
         this.id = id;
@@ -142,8 +142,22 @@ public class RunnerPost extends BaseEntity {
             throw new RunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
         }
 
+
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RunnerPost that = (RunnerPost) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }
