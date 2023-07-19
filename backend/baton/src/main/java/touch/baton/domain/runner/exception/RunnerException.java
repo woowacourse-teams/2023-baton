@@ -14,4 +14,11 @@ public class RunnerException extends DomainException {
             super(message);
         }
     }
+
+    public static class NotFound extends RunnerException {
+
+        public NotFound(final String message) {
+            super(message);
+        }
+    }
 }
