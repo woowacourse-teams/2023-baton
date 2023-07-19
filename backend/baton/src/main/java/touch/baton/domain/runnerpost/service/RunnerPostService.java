@@ -39,13 +39,11 @@ public class RunnerPostService {
             throw new RunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
-        final List<Long> findTagsIds = runnerPostTagRepository.joinTagsByRunnerPostId(runnerPostId)
+        runnerPostTagRepository.joinTagsByRunnerPostId(runnerPostId)
                 .stream()
                 .map(RunnerPostTag::getTag)
-                .map(Tag::getId)
-                .toList();
+                .forEach(Tag::decreaseCount);
 
         runnerPostRepository.deleteById(runnerPostId);
-        tagRepository.decreaseTagCountByTagIds(findTagsIds);
     }
 }

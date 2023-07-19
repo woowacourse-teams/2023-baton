@@ -52,4 +52,8 @@ public class Tag {
             throw new TagException.NotNull("tagCount 은 null 일 수 없습니다.");
         }
     }
+
+    public void decreaseCount() {
+        tagCount = tagCount.decrease();
+    }
 }

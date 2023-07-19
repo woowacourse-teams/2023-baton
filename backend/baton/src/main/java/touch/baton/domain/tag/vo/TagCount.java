@@ -22,4 +22,8 @@ public class TagCount {
     public TagCount(final int value) {
         this.value = value;
     }
+
+    public TagCount decrease() {
+        return new TagCount(value - 1);
+    }
 }
