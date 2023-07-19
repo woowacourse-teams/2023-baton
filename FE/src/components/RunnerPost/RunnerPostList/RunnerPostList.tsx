@@ -1,14 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
-import mockData from '../../../mocks/data/RunnerPostMock.json';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
+import { RunnerPost } from '../../../types/RunnerPost';
 
 const RunnerPostList = () => {
-  const runnerPostMock = mockData;
+  const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
+
+  const getRunnerPost = async () => {
+    try {
+      const response = await fetch('msw/posts/runner', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) throw new Error(`네트워크 에러 코드: ${response.status}`);
+
+      const runnerPostList = await response.json();
+
+      return runnerPostList;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchRunnerPost = async () => {
+      const result = await getRunnerPost();
+      setRunnerPostList(result);
+    };
+
+    fetchRunnerPost();
+  }, []);
 
   return (
     <S.RunnerPostWrapper>
-      {runnerPostMock?.map((item) => (
+      {runnerPostList?.map((item) => (
         <RunnerPostItem key={item.runnerPostId} postItem={item} />
       ))}
     </S.RunnerPostWrapper>
