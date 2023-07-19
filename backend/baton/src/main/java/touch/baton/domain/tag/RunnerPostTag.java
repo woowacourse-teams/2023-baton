@@ -55,11 +55,4 @@ public class RunnerPostTag {
             throw new TagException.NotNull("tag 은 null 일 수 없습니다.");
         }
     }
-
-    public static RunnerPostTag create(final RunnerPost runnerPost, final Tag tag) {
-        return RunnerPostTag.builder()
-                .runnerPost(runnerPost)
-                .tag(tag)
-                .build();
-    }
 }
