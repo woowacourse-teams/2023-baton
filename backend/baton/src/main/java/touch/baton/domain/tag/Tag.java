@@ -57,7 +57,7 @@ public class Tag extends BaseEntity {
     public static Tag newInstance(final String tagName) {
         return Tag.builder()
                 .tagName(new TagName(tagName))
-                .tagCount(TagCount.zero())
+                .tagCount(TagCount.initial())
                 .build();
     }
 
