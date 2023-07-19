@@ -1,13 +1,6 @@
 package touch.baton.domain.runnerpost;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +14,10 @@ import touch.baton.domain.runnerpost.exception.RunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -145,5 +140,9 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
+    }
+
+    public void addRunnerPostTags(final List<RunnerPostTag> otherRunnerPostTags) {
+        this.runnerPostTags.addAll(otherRunnerPostTags);
     }
 }
