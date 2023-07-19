@@ -52,4 +52,15 @@ public class Tag {
             throw new TagException.NotNull("tagCount 은 null 일 수 없습니다.");
         }
     }
+
+    public static Tag newInstance(final String tagName) {
+        return Tag.builder()
+                .tagName(new TagName(tagName))
+                .tagCount(TagCount.zero())
+                .build();
+    }
+
+    public void increaseCount() {
+        this.tagCount = tagCount.increase();
+    }
 }
