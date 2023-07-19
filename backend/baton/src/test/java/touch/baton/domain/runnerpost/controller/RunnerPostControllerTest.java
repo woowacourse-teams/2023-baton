@@ -39,7 +39,7 @@ class RunnerPostControllerTest {
     @Nested
     class Update {
 
-        @DisplayName("정상 응답한다.")
+        @DisplayName("성공")
         @Test
         void success() throws Exception {
             // given
