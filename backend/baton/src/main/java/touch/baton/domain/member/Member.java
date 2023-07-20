@@ -12,6 +12,7 @@ import touch.baton.domain.member.exception.MemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 
@@ -44,14 +45,18 @@ public class Member extends BaseEntity {
     @Embedded
     private Company company;
 
+    @Embedded
+    private ImageUrl imageUrl;
+
     @Builder
     private Member(final MemberName memberName,
-                  final Email email,
-                  final OauthId oauthId,
-                  final GithubUrl githubUrl,
-                  final Company company
+                   final Email email,
+                   final OauthId oauthId,
+                   final GithubUrl githubUrl,
+                   final Company company,
+                   final ImageUrl imageUrl
     ) {
-        this(null, memberName, email, oauthId, githubUrl, company);
+        this(null, memberName, email, oauthId, githubUrl, company, imageUrl);
     }
 
     private Member(final Long id,
@@ -59,7 +64,8 @@ public class Member extends BaseEntity {
                    final Email email,
                    final OauthId oauthId,
                    final GithubUrl githubUrl,
-                   final Company company
+                   final Company company,
+                   final ImageUrl imageUrl
     ) {
         validateNotNull(memberName, email, oauthId, githubUrl, company);
         this.id = id;
@@ -68,6 +74,7 @@ public class Member extends BaseEntity {
         this.oauthId = oauthId;
         this.githubUrl = githubUrl;
         this.company = company;
+        this.imageUrl = imageUrl;
     }
 
     private void validateNotNull(final MemberName memberName,

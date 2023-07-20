@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SupporterTest {
 
-
     @DisplayName("생성 테스트")
     @Nested
     class Create {
