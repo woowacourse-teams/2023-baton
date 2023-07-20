@@ -1,31 +1,30 @@
 package touch.baton.domain.runnerpost.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
 public class RunnerPostUpdateRequest {
-// TODO: 예외 처리, record로 적용
+// TODO: 예외 처리, record 로 적용
     private static final int CONTENTS_MAX_LENGTH = 1000;
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
 
     private String title;
     private List<String> tags;
     private String pullRequestUrl;
-    private String deadline;
+    private LocalDateTime deadline;
     private String contents;
 
     public RunnerPostUpdateRequest(final String title,
                                    final List<String> tags,
                                    final String pullRequestUrl,
-                                   final String deadline,
+                                   @JsonFormat(pattern = DATE_TIME_FORMAT) final LocalDateTime deadline,
                                    final String contents
     ) {
         validate(title, tags, pullRequestUrl, deadline, contents);
@@ -39,7 +38,7 @@ public class RunnerPostUpdateRequest {
     private static void validate(final String title,
                           final List<String> tags,
                           final String pullRequestUrl,
-                          final String deadline,
+                          final LocalDateTime deadline,
                           final String contents
     ) {
         validateNotNull(title, tags, pullRequestUrl, deadline, contents);
@@ -50,7 +49,7 @@ public class RunnerPostUpdateRequest {
     private static void validateNotNull(final String title,
                                  final List<String> tags,
                                  final String pullRequestUrl,
-                                 final String deadline,
+                                 final LocalDateTime deadline,
                                  final String contents
     ) {
         if (Objects.isNull(title)) {
@@ -80,27 +79,13 @@ public class RunnerPostUpdateRequest {
         }
     }
 
-    private static void validateDeadLine(final String deadline) {
-        LocalDateTime formattedDeadline = formatDeadline(deadline);
-        validateDeadlineNotPassed(formattedDeadline);
-    }
-
-    private static LocalDateTime formatDeadline(final String deadline) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
-        try {
-            return LocalDateTime.parse(deadline, formatter);
-        } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("RP00????");
-        }
+    private static void validateDeadLine(final LocalDateTime deadline) {
+        validateDeadlineNotPassed(deadline);
     }
 
     private static void validateDeadlineNotPassed(final LocalDateTime deadline) {
         if (deadline.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("RP006");
         }
-    }
-
-    public LocalDateTime getFormattedDateTime() {
-        return formatDeadline(deadline);
     }
 }

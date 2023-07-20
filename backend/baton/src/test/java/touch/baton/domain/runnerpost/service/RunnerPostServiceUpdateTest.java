@@ -16,6 +16,7 @@ import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,7 +28,7 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
     private static final String TAG = "java";
     private static final String OTHER_TAG = "spring";
     private static final String PULL_REQUEST_URL = "https://github.com/shb03323";
-    private static final String DEADLINE = "2023-08-30T12:10";
+    private static final LocalDateTime DEADLINE = LocalDateTime.of(2023, 8, 30, 12, 10);
     private static final String CONTENTS = "싸게 부탁드려요.";
 
     private RunnerPostService runnerPostService;
@@ -64,7 +65,7 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
                 () -> assertThat(actual.getTitle()).isEqualTo(new Title(TITLE)),
                 () -> assertThat(actual.getContents()).isEqualTo(new Contents(CONTENTS)),
                 () -> assertThat(actual.getPullRequestUrl()).isEqualTo(new PullRequestUrl(PULL_REQUEST_URL)),
-                () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(request.getFormattedDateTime()))
+                () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(request.getDeadline()))
         );
 
         List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagsByRunnerPostId(savedId);

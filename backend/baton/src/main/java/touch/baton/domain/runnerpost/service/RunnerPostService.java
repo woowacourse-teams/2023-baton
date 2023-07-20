@@ -36,7 +36,7 @@ public class RunnerPostService {
         runnerPost.updateTitle(new Title(request.getTitle()));
         runnerPost.updateContents(new Contents(request.getContents()));
         runnerPost.updatePullRequestUrl(new PullRequestUrl(request.getPullRequestUrl()));
-        runnerPost.updateDeadLine(new Deadline(request.getFormattedDateTime()));
+        runnerPost.updateDeadLine(new Deadline(request.getDeadline()));
 
         List<RunnerPostTag> presentRunnerPostTags = runnerPostTagRepository.joinTagsByRunnerPostId(runnerPost.getId());
         // TODO: tag 개수 차감 메소드 분리
