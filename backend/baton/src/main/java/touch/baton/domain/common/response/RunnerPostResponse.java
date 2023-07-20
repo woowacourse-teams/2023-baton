@@ -53,7 +53,7 @@ public class RunnerPostResponse {
                 runnerPost.getRunnerPostTags()
                         .getRunnerPostTags()
                         .stream()
-                        .map(runnerPostTag -> runnerPostTag.getTag().toString())
+                        .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                         .toList(),
                 runnerPost.getRunner().getMember().getMemberName().getValue(),
                 runnerPost.getWatchedCount().getValue(),

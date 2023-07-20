@@ -70,7 +70,7 @@ public class RunnerPostController {
         return ResponseEntity.created(redirectUri).build();
     }
 
-    @GetMapping("/posts")
+    @GetMapping
     public ResponseEntity<RunnerPostReadResponse> readAllRunnerPosts() {
         final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
                 .fromRunnerPostResponses(touch.baton.domain.common.response.RunnerPostResponse
