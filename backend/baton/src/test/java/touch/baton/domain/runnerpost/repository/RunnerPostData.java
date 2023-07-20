@@ -109,7 +109,7 @@ public class RunnerPostData {
                 .title(new Title("JPA 정복"))
                 .contents(new Contents("김영한 짱짱맨"))
                 .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
-                .deadline(new Deadline(LocalDateTime.now()))
+                .deadline(new Deadline(LocalDateTime.of(2023, 9, 1, 10, 10)))
                 .watchedCount(new WatchedCount(0))
                 .chattingRoomCount(new ChattingRoomCount(0))
                 .runner(runner)

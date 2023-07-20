@@ -52,11 +52,11 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
     @Test
     void success() {
         // given
-        RunnerPostUpdateRequest request = new RunnerPostUpdateRequest(
+        final RunnerPostUpdateRequest request = new RunnerPostUpdateRequest(
                 TITLE, List.of(TAG, OTHER_TAG), PULL_REQUEST_URL, DEADLINE, CONTENTS);
 
         // when
-        Long savedId = runnerPostService.update(runnerPost.getId(), request);
+        final Long savedId = runnerPostService.update(runnerPost.getId(), request);
 
         // then
         assertThat(savedId).isNotNull();
@@ -68,7 +68,7 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
                 () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(request.getDeadline()))
         );
 
-        List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagsByRunnerPostId(savedId);
+        final List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagsByRunnerPostId(savedId);
         assertThat(
                 runnerPostTags.stream()
                         .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())

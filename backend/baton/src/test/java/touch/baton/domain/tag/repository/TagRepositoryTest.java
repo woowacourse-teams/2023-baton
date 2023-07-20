@@ -24,12 +24,12 @@ class TagRepositoryTest {
     @Test
     void findByTagName_exist() {
         // given
-        String tagName = "java";
-        Tag expected = Tag.newInstance(tagName);
+        final String tagName = "java";
+        final Tag expected = Tag.newInstance(tagName);
         tagRepository.saveAndFlush(expected);
 
         // when
-        Optional<Tag> actual = tagRepository.findByTagName(new TagName(tagName));
+        final Optional<Tag> actual = tagRepository.findByTagName(new TagName(tagName));
 
         // then
         assertThat(actual).isPresent();

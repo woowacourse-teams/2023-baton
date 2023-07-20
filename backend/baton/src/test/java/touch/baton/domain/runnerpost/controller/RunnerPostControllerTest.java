@@ -44,9 +44,9 @@ class RunnerPostControllerTest {
         @Test
         void success() throws Exception {
             // given
-            Long runnerId = 1L;
-            Long runnerPostId = 1L;
-            RunnerPostUpdateRequest runnerPostUpdateRequest = new RunnerPostUpdateRequest(
+            final Long runnerId = 1L;
+            final Long runnerPostId = 1L;
+            final RunnerPostUpdateRequest runnerPostUpdateRequest = new RunnerPostUpdateRequest(
                     "hello", List.of("java"), "naver.com", LocalDateTime.of(2023, 7, 21, 12, 12), "내용내용");
             final String requestBody = objectMapper.writeValueAsString(runnerPostUpdateRequest);
 
