@@ -11,7 +11,7 @@ interface Props {
 
 const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isfocus, setIsFocus] = useState(false);
+  const [isFocus, setIsFocus] = useState(false);
 
   const onkeyDownInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.nativeEvent.isComposing) return;
@@ -61,7 +61,7 @@ const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
             onFocus={onFocus}
             onBlur={outFocus}
           />
-          {isfocus && <S.InputDescription>엔터를 입력하여 태그를 등록할 수 있습니다.</S.InputDescription>}
+          {isFocus && <S.InputDescription>엔터를 입력하여 태그를 등록할 수 있습니다.</S.InputDescription>}
         </S.InputBoxContainer>
       </S.TagList>
     </S.TagInputContainer>

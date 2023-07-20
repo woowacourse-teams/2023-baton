@@ -2,13 +2,20 @@ import Avatar from '@components/common/Avatar';
 import { RunnerPost } from '../../../types/RunnerPost';
 import React from 'react';
 import { styled } from 'styled-components';
+import { usePageRouter } from '@hooks/usePageRouter';
 
-const RunnerPostItem = ({ postItem: { title, deadline, tags, profile } }: { postItem: RunnerPost }) => {
+const RunnerPostItem = ({ postItem: { runnerPostId, title, deadline, tags, profile } }: { postItem: RunnerPost }) => {
+  const { goToRunnerPostPage } = usePageRouter();
+
+  const handlePostClick = () => {
+    goToRunnerPostPage(runnerPostId);
+  };
+
   return (
-    <S.RunnerPostItemContainer>
+    <S.RunnerPostItemContainer onClick={handlePostClick}>
       <S.LeftSideContainer>
         <S.PostTitle>{title}</S.PostTitle>
-        <S.DeadLile>{deadline} 까지</S.DeadLile>
+        <S.DeadLine>{deadline} 까지</S.DeadLine>
         <S.TagContainer>
           {tags.map((tag, index) => (
             <span key={index}>#{tag}</span>
@@ -60,7 +67,7 @@ const S = {
     font-weight: 700;
   `,
 
-  DeadLile: styled.p`
+  DeadLine: styled.p`
     margin-bottom: 60px;
 
     color: var(--gray-600);
