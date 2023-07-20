@@ -32,7 +32,8 @@ public class RunnerPostService {
     @Transactional
     public Long update(final Long runnerPostId, final RunnerPostUpdateRequest request) {
         // TODO: 메소드 분리
-        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId).get();
+        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new IllegalArgumentException("잘못된 runnerPostId 입니다."));
         runnerPost.updateTitle(new Title(request.getTitle()));
         runnerPost.updateContents(new Contents(request.getContents()));
         runnerPost.updatePullRequestUrl(new PullRequestUrl(request.getPullRequestUrl()));
