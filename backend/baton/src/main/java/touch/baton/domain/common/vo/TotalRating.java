@@ -9,8 +9,8 @@ import org.hibernate.annotations.ColumnDefault;
 
 import static lombok.AccessLevel.PROTECTED;
 
-@EqualsAndHashCode
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class TotalRating {

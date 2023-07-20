@@ -10,8 +10,8 @@ import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
 
-@EqualsAndHashCode
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class Contents {
