@@ -31,7 +31,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository);
+        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository);
     }
 
     @DisplayName("RunnerPost 식별자값으로 RunnerPost 를 조회한다.")
