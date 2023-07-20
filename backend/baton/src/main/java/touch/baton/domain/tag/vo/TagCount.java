@@ -23,4 +23,16 @@ public class TagCount {
     public TagCount(final int value) {
         this.value = value;
     }
+
+    public static TagCount init() {
+        return new TagCount(INITIAL_VALUE);
+    }
+
+    public TagCount increase() {
+        return new TagCount(value + 1);
+    }
+
+    public TagCount decrease() {
+        return new TagCount(value - 1);
+    }
 }
