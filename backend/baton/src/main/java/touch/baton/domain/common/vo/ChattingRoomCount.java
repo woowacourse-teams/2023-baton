@@ -24,4 +24,8 @@ public class ChattingRoomCount {
     public ChattingRoomCount(final int value) {
         this.value = value;
     }
+
+    public static ChattingRoomCount zero() {
+        return new ChattingRoomCount(Integer.parseInt(DEFAULT_VALUE));
+    }
 }

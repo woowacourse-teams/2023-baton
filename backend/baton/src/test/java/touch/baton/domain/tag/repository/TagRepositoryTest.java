@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import touch.baton.config.JpaConfig;
 import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
 
 import java.util.Optional;
@@ -20,19 +21,21 @@ class TagRepositoryTest {
     @Autowired
     private TagRepository tagRepository;
 
-    @DisplayName("이름으로 Tag 를 조회할 때 Tag 가 있으면 조회된다.")
+    @DisplayName("이름으로 단건 검색한다.")
     @Test
-    void findByTagName_exist() {
+    void findByName() {
         // given
-        final String tagName = "java";
-        final Tag expected = Tag.newInstance(tagName);
-        tagRepository.saveAndFlush(expected);
+        final String newTagName = "Java";
+        final Tag newTag = Tag.builder()
+                .tagName(new TagName(newTagName))
+                .tagCount(new TagCount(0))
+                .build();
+        final Tag expected = tagRepository.save(newTag);
 
         // when
-        final Optional<Tag> actual = tagRepository.findByTagName(new TagName(tagName));
+        final Optional<Tag> actual = tagRepository.findByTagName(new TagName(newTagName));
 
         // then
-        assertThat(actual).isPresent();
-        assertThat(expected).isEqualTo(actual.get());
+        assertThat(actual).contains(expected);
     }
 }

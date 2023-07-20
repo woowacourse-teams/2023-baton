@@ -26,4 +26,8 @@ public class RunnerPostTags {
     public void add(final RunnerPostTag runnerPostTag) {
         runnerPostTags.add(runnerPostTag);
     }
+
+    public void addAll(final List<RunnerPostTag> runnerPostTags) {
+        this.runnerPostTags.addAll(runnerPostTags);
+    }
 }
