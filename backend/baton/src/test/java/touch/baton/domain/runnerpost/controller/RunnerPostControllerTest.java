@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 
@@ -36,13 +37,16 @@ class RunnerPostControllerTest {
     @MockBean
     private RunnerPostService runnerPostService;
 
+    @MockBean
+    private RunnerService runnerService;
+
     @DisplayName("러너 게시글 수정 - PUT /posts/runner/{runnerPostId}")
     @Nested
     class Update {
 
         @DisplayName("성공")
         @Test
-        void success() throws Exception {
+        void  success() throws Exception {
             // given
             final Long runnerId = 1L;
             final Long runnerPostId = 1L;
@@ -51,7 +55,7 @@ class RunnerPostControllerTest {
             final String requestBody = objectMapper.writeValueAsString(runnerPostUpdateRequest);
 
             // when
-            when(runnerPostService.update(eq(runnerPostId), any())).thenReturn(runnerPostId);
+            when(runnerPostService.updateRunnerPost(eq(runnerPostId), any())).thenReturn(runnerPostId);
 
             // then
             mockMvc.perform(put(API_URL_PREFIX + "/{runnerPostId}", runnerPostId)

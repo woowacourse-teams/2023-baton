@@ -25,7 +25,7 @@ class RunnerPostRepositoryTest extends RunnerPostData {
     @Test
     void findRunnerPostTagsById_exist() {
         // when
-        final List<RunnerPostTag> expected = runnerPostTagRepository.joinTagsByRunnerPostId(runnerPost.getId());
+        final List<RunnerPostTag> expected = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
 
         // then
         assertThat(expected).containsExactly(runnerPostTagJava, runnerPostTagSpring);

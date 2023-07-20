@@ -97,8 +97,9 @@ public class RunnerPostService {
                 request.deadline(),
                 runner);
     }
+
     @Transactional
-    public Long update(final Long runnerPostId, final RunnerPostUpdateRequest request) {
+    public Long updateRunnerPost(final Long runnerPostId, final RunnerPostUpdateRequest request) {
         // TODO: 메소드 분리
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 runnerPostId 입니다."));
@@ -108,7 +109,7 @@ public class RunnerPostService {
         runnerPost.updateDeadLine(new Deadline(request.getDeadline()));
 
         final List<RunnerPostTag> presentRunnerPostTags =
-                runnerPostTagRepository.joinTagsByRunnerPostId(runnerPost.getId());
+                runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
         // TODO: tag 개수 차감 메소드 분리
         final List<touch.baton.domain.tag.Tag> presentTags = presentRunnerPostTags.stream()
                 .map(RunnerPostTag::getTag)

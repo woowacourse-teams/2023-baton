@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +61,7 @@ public class RunnerPostController {
     public ResponseEntity<Void> update(@PathVariable final Long runnerPostId,
                                        @RequestBody final RunnerPostUpdateRequest request
     ) {
-        final Long updatedId = runnerPostService.update(runnerPostId, request);
+        final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, request);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{runnerPostId}")
                 .buildAndExpand(updatedId)
