@@ -21,7 +21,7 @@ class RunnerPostRepositoryTest extends RunnerPostData {
         super.setData();
     }
 
-    @DisplayName("id로 RunnerPostTag 목록을 조회할 때 Tag 가 있으면 조회된다.")
+    @DisplayName("RunnerPost 식별자로 RunnerPostTag 목록을 조회할 때 Tag 가 있으면 조회된다.")
     @Test
     void findRunnerPostTagsById_exist() {
         // when
