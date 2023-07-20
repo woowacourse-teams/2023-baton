@@ -16,7 +16,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class ChattingRoomCount {
 
     private static final String DEFAULT_VALUE = "0";
-    private static final ChattingRoomCount ZERO = new ChattingRoomCount(Integer.parseInt(DEFAULT_VALUE));
 
     @ColumnDefault(DEFAULT_VALUE)
     @Column(name = "chatting_room_count", nullable = false)
@@ -27,6 +26,6 @@ public class ChattingRoomCount {
     }
 
     public static ChattingRoomCount zero() {
-        return ZERO;
+        return new ChattingRoomCount(Integer.parseInt(DEFAULT_VALUE));
     }
 }
