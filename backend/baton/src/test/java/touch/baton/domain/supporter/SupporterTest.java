@@ -9,6 +9,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.supporter.exception.SupporterException;
@@ -31,6 +32,7 @@ class SupporterTest {
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한형제들"))
+                .imageUrl(new ImageUrl("imageUrl"))
                 .build();
 
         @DisplayName("성공한다.")

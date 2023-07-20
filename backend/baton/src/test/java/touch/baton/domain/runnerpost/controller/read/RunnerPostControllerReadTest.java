@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.controller;
+package touch.baton.domain.runnerpost.controller.read;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -26,11 +26,13 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -51,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Import(JpaConfig.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class RunnerPostControllerTest {
+class RunnerPostControllerReadTest {
 
     @Autowired
     ObjectMapper mapper;
@@ -80,6 +82,7 @@ class RunnerPostControllerTest {
             .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
             .githubUrl(new GithubUrl("github.com/hyena0608"))
             .company(new Company("우아한테크코스"))
+            .imageUrl(new ImageUrl("imageUrl"))
             .build();
 
     private final Member supporterMember = Member.builder()
@@ -88,6 +91,7 @@ class RunnerPostControllerTest {
             .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
             .githubUrl(new GithubUrl("github.com/pobi"))
             .company(new Company("우아한형제들"))
+            .imageUrl(new ImageUrl("imageUrl"))
             .build();
 
     private final Runner runner = Runner.builder()
@@ -104,18 +108,6 @@ class RunnerPostControllerTest {
             .member(supporterMember)
             .build();
 
-    RunnerPost runnerPost = RunnerPost.builder()
-            .title(new Title("제목"))
-            .contents(new Contents("내용"))
-            .pullRequestUrl(new PullRequestUrl("url"))
-            .deadline(new Deadline(LocalDateTime.now()))
-            .watchedCount(new WatchedCount(2))
-            .chattingRoomCount(new ChattingRoomCount(3))
-            .runner(runner)
-            .supporter(supporter)
-            .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-            .build();
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -130,9 +122,7 @@ class RunnerPostControllerTest {
     @DisplayName("response 가 json 형식인지 테스트 한다.")
     @Test
     void read() throws Exception {
-        // given
-
-        // when
+        // given, when
         MvcResult mvcResult = mockMvc.perform(get("/api/v1/posts/runner/posts"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

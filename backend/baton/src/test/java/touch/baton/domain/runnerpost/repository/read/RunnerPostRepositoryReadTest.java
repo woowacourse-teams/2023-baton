@@ -1,6 +1,5 @@
-package touch.baton.domain.runnerpost.service;
+package touch.baton.domain.runnerpost.repository.read;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +18,7 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -41,7 +41,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Import(JpaConfig.class)
 @DataJpaTest
-class RunnerPostServiceTest {
+class RunnerPostRepositoryReadTest {
 
     @Autowired
     private RunnerPostRepository runnerPostRepository;
@@ -58,6 +58,7 @@ class RunnerPostServiceTest {
             .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
             .githubUrl(new GithubUrl("github.com/hyena0608"))
             .company(new Company("우아한테크코스"))
+            .imageUrl(new ImageUrl("imageUrl"))
             .build();
 
     private final Member supporterMember = Member.builder()
@@ -66,6 +67,7 @@ class RunnerPostServiceTest {
             .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
             .githubUrl(new GithubUrl("github.com/pobi"))
             .company(new Company("우아한형제들"))
+            .imageUrl(new ImageUrl("imageUrl"))
             .build();
 
     private final Runner runner = Runner.builder()
@@ -90,82 +92,80 @@ class RunnerPostServiceTest {
         supporterRepository.save(supporter);
     }
 
-    @DisplayName("runner 가 작성한 모든 RunnerPost 를 조회한다.")
+    @DisplayName("Runner 의 식별자로 RunnerPost 를 조회할 수 있다.")
     @Test
     void findByRunnerId() {
         // given
-        RunnerPostService runnerPostService = new RunnerPostService(runnerPostRepository);
         RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("title"))
                 .contents(new Contents("contents"))
                 .pullRequestUrl(new PullRequestUrl("url"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(2))
-                .chattingRoomCount(new ChattingRoomCount(3))
+                .chattingCount(new ChattingRoomCount(3))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
 
-        Long expected = runnerPost.getRunner().getId();
-        runnerPostRepository.save(runnerPost);
+        Long expected = runnerPostRepository.save(runnerPost).getRunner().getId();
 
         // when
-        List<RunnerPost> runnerPosts = runnerPostService.findByRunnerId(expected);
-        Long actual = runnerPosts.get(0).getRunner().getId();
-
-        // then
-        Assertions.assertEquals(actual, expected);
-    }
-
-    @DisplayName("supporter 가 리뷰한 모든 RunnerPost 를 조회한다.")
-    @Test
-    void findBySupporterId() {
-        RunnerPostService runnerPostService = new RunnerPostService(runnerPostRepository);
-        RunnerPost expected = RunnerPost.builder()
-                .title(new Title("title"))
-                .contents(new Contents("contents"))
-                .pullRequestUrl(new PullRequestUrl("url"))
-                .deadline(new Deadline(LocalDateTime.now()))
-                .watchedCount(new WatchedCount(2))
-                .chattingRoomCount(new ChattingRoomCount(3))
-                .runner(runner)
-                .supporter(supporter)
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .build();
-
-        Long runnerId = expected.getSupporter().getId();
-        runnerPostRepository.save(expected);
-
-        // when
-        RunnerPost actual = runnerPostService.findBySupporterId(runnerId).get(0);
+        List<RunnerPost> foundRunnerPosts = runnerPostRepository.readBySupporterId(expected);
+        Long actual = foundRunnerPosts.get(0).getRunner().getId();
 
         // then
         assertThat(expected).isEqualTo(actual);
     }
 
-    @DisplayName("title 을 제목으로 가진 RunnerPost 를 조회한다.")
+    @DisplayName("Supporter 의 식별자로 RunnerPost 를 조회할 수 있다.")
     @Test
-    void testFindByTitle() {
+    void findBySupporterId() {
         // given
-        String title = "title";
-        RunnerPostService runnerPostService = new RunnerPostService(runnerPostRepository);
-        RunnerPost expected = RunnerPost.builder()
-                .title(new Title(title))
+        RunnerPost runnerPost = RunnerPost.builder()
+                .title(new Title("title"))
                 .contents(new Contents("contents"))
                 .pullRequestUrl(new PullRequestUrl("url"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(2))
-                .chattingRoomCount(new ChattingRoomCount(3))
+                .chattingCount(new ChattingRoomCount(3))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
 
-        runnerPostRepository.save(expected);
+
+        Long expected = runnerPostRepository.save(runnerPost).getSupporter().getId();
 
         // when
-        RunnerPost actual = runnerPostService.findByTitle(title);
+        List<RunnerPost> foundRunnerPosts = runnerPostRepository.readBySupporterId(expected);
+        Long actual = foundRunnerPosts.get(0).getSupporter().getId();
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("제목으로 RunnerPost 를 조회할 수 있다.")
+    @Test
+    void findByTitle() {
+        // given
+        RunnerPost runnerPost = RunnerPost.builder()
+                .title(new Title("title"))
+                .contents(new Contents("contents"))
+                .pullRequestUrl(new PullRequestUrl("url"))
+                .deadline(new Deadline(LocalDateTime.now()))
+                .watchedCount(new WatchedCount(2))
+                .chattingCount(new ChattingRoomCount(3))
+                .runner(runner)
+                .supporter(supporter)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+
+
+        String expected = runnerPostRepository.save(runnerPost).getTitle().getValue();
+
+        // when
+        String actual = runnerPostRepository.readByTitle(new Title("title")).get().getTitle().getValue();
 
         // then
         assertThat(expected).isEqualTo(actual);

@@ -13,6 +13,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -42,6 +43,7 @@ class RunnerPostTest {
                 .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한테크코스"))
+                .imageUrl(new ImageUrl("imageUrl"))
                 .build();
 
         private final Member supporterMember = Member.builder()
@@ -50,6 +52,7 @@ class RunnerPostTest {
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/pobi"))
                 .company(new Company("우아한형제들"))
+                .imageUrl(new ImageUrl("imageUrl"))
                 .build();
 
         private final Runner runner = Runner.builder()
@@ -75,7 +78,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -92,7 +95,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(null)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -109,7 +112,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -126,7 +129,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -143,7 +146,7 @@ class RunnerPostTest {
                     .pullRequestUrl(null)
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -160,7 +163,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(null)
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -177,7 +180,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(null)
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -194,7 +197,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(null)
+                    .chattingCount(null)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -211,7 +214,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(null)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -228,7 +231,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingRoomCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingRoomCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(null)
