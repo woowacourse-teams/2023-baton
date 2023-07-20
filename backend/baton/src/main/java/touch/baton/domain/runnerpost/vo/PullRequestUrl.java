@@ -10,6 +10,7 @@ import java.util.Objects;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class PullRequestUrl {

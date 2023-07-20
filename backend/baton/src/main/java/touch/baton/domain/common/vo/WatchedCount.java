@@ -9,6 +9,7 @@ import org.hibernate.annotations.ColumnDefault;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
+@EqualsAndHashCode
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class WatchedCount {
