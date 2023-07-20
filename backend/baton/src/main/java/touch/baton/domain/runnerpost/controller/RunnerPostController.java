@@ -27,7 +27,7 @@ public class RunnerPostController {
         // TODO 07/19 로그인 기능 개발시 1L 변경 요망
         Runner runner = runnerService.readRunnerWithMember(1L);
 
-        final Long savedId = runnerPostService.create(runner, request);
+        final Long savedId = runnerPostService.createRunnerPost(runner, request);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{id}")

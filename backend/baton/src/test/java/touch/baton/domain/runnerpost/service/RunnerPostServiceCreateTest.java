@@ -54,7 +54,7 @@ class RunnerPostServiceCreateTest extends RunnerFixture {
                 CONTENTS);
 
         // when
-        final Long savedId = runnerPostService.create(runner, request);
+        final Long savedId = runnerPostService.createRunnerPost(runner, request);
 
         // then
         assertThat(savedId).isNotNull();

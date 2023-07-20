@@ -23,7 +23,7 @@ public class RunnerPostService {
     private final TagRepository tagRepository;
 
     @Transactional
-    public Long create(final Runner runner, final RunnerPostCreateRequest request) {
+    public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
         RunnerPost runnerPost = toDomain(runner, request);
 
         final List<Tag> tags = request.tags().stream()
@@ -31,14 +31,14 @@ public class RunnerPostService {
                 .toList();
 
         for (final Tag tag : tags) {
-            final Optional<Tag> findTag = tagRepository.findByTagName(tag.getTagName());
+            final Optional<Tag> maybeTag = tagRepository.findByTagName(tag.getTagName());
 
-            if (findTag.isEmpty()) {
+            if (maybeTag.isEmpty()) {
                 tagRepository.save(tag);
                 continue;
             }
 
-            final Tag presentTag = findTag.get();
+            final Tag presentTag = maybeTag.get();
             presentTag.increaseCount();
         }
 
