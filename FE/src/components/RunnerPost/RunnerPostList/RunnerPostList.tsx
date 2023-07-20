@@ -4,7 +4,7 @@ import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
 import { RunnerPost } from '../../../types/RunnerPost';
 
 const RunnerPostList = () => {
-  const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
+  const [runnerPostList, setRunnerPostList] = useState<RunnerPost | null>(null);
 
   const getRunnerPost = async () => {
     try {
@@ -36,8 +36,8 @@ const RunnerPostList = () => {
 
   return (
     <S.RunnerPostWrapper>
-      {runnerPostList?.map((item) => (
-        <RunnerPostItem key={item.runnerPostId} postItem={item} />
+      {runnerPostList?.data.map((runnerPostData) => (
+        <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
       ))}
     </S.RunnerPostWrapper>
   );
