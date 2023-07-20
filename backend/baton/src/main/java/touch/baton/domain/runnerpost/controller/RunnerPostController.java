@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 
 import java.net.URI;
 
@@ -53,5 +55,17 @@ public class RunnerPostController {
         runnerPostService.deleteByRunnerPostId(runnerPostId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{runnerPostId}")
+    public ResponseEntity<Void> update(@PathVariable final Long runnerPostId,
+                                       @RequestBody final RunnerPostUpdateRequest request
+    ) {
+        final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, request);
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{runnerPostId}")
+                .buildAndExpand(updatedId)
+                .toUri();
+        return ResponseEntity.created(redirectUri).build();
     }
 }

@@ -56,7 +56,7 @@ public class Tag {
     public static Tag newInstance(final String tagName) {
         return Tag.builder()
                 .tagName(new TagName(tagName))
-                .tagCount(TagCount.initial())
+                .tagCount(TagCount.init())
                 .build();
     }
 
@@ -65,6 +65,10 @@ public class Tag {
     }
 
     public void decreaseCount() {
-        tagCount = tagCount.decrease();
+        this.tagCount = tagCount.decrease();
+    }
+
+    public boolean isSameTagName(final String tagName) {
+        return this.tagName.equals(new TagName(tagName));
     }
 }

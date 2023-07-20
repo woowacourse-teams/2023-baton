@@ -172,4 +172,24 @@ public class RunnerPost extends BaseEntity {
     public void addAllRunnerPostTags(final List<RunnerPostTag> postTags) {
         runnerPostTags.addAll(postTags);
     }
+
+    public void appendRunnerPostTag(RunnerPostTag postTag) {
+        runnerPostTags.add(postTag);
+    }
+
+    public void updateTitle(final Title title) {
+        this.title = title;
+    }
+
+    public void updateContents(final Contents contents) {
+        this.contents = contents;
+    }
+
+    public void updatePullRequestUrl(final PullRequestUrl pullRequestUrl) {
+        this.pullRequestUrl = pullRequestUrl;
+    }
+
+    public void updateDeadLine(final Deadline deadline) {
+        this.deadline = deadline;
+    }
 }

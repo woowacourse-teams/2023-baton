@@ -25,7 +25,7 @@ public class TagCount {
         this.value = value;
     }
 
-    public static TagCount initial() {
+    public static TagCount init() {
         return new TagCount(Integer.parseInt(DEFAULT_VALUE));
     }
 
