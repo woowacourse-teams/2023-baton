@@ -45,8 +45,8 @@ public class RunnerPostAssuredSupport {
             this.response = response;
         }
 
-        public void 러너_게시글_단건_조회_성공을_검증한다(final RunnerPostResponse.SingleRunnerPost 러너_게시글_응답) {
-            final RunnerPostResponse.SingleRunnerPost actual = this.response.as(RunnerPostResponse.SingleRunnerPost.class);
+        public void 러너_게시글_단건_조회_성공을_검증한다(final RunnerPostResponse.Single 러너_게시글_응답) {
+            final RunnerPostResponse.Single actual = this.response.as(RunnerPostResponse.Single.class);
 
             assertAll(
                     () -> assertThat(actual.title()).isEqualTo(러너_게시글_응답.title()),

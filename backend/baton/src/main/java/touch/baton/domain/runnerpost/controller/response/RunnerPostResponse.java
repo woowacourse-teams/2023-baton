@@ -11,18 +11,18 @@ import java.util.List;
 
 public record RunnerPostResponse() {
 
-    public record SingleRunnerPost(Long runnerPostId,
-                                   String title,
-                                   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+    public record Single(Long runnerPostId,
+                         String title,
+                         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
                                    LocalDateTime deadLine,
-                                   List<String> tags,
-                                   String contents,
-                                   Integer chattingCount,
-                                   Integer watchedCount,
-                                   ProfileResponse profile
+                         List<String> tags,
+                         String contents,
+                         Integer chattingCount,
+                         Integer watchedCount,
+                         ProfileResponse profile
     ) {
-        public static SingleRunnerPost from(final RunnerPost runnerPost) {
-            return new SingleRunnerPost(
+        public static Single from(final RunnerPost runnerPost) {
+            return new Single(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getDeadline().getValue(),
