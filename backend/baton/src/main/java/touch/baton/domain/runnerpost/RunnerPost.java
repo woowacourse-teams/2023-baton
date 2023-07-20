@@ -21,8 +21,12 @@ import touch.baton.domain.runnerpost.exception.RunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -110,7 +114,7 @@ public class RunnerPost extends BaseEntity {
                                  final PullRequestUrl pullRequestUrl,
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
-                                 final ChattingRoomCount chattingRoomCount,
+                                 final ChattingRoomCount chattingCount,
                                  final Runner runner,
                                  final RunnerPostTags runnerPostTags
     ) {
@@ -134,8 +138,8 @@ public class RunnerPost extends BaseEntity {
             throw new RunnerPostException.NotNull("watchedCount 는 null 일 수 없습니다.");
         }
 
-        if (Objects.isNull(chattingRoomCount)) {
-            throw new RunnerPostException.NotNull("chattingRoomCount 는 null 일 수 없습니다.");
+        if (Objects.isNull(chattingCount)) {
+            throw new RunnerPostException.NotNull("chattingCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(runner)) {

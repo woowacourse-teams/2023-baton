@@ -7,8 +7,10 @@ import touch.baton.domain.tag.exception.TagException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class TagTest {
 
@@ -45,5 +47,36 @@ class TagTest {
                     .build()
             ).isInstanceOf(TagException.NotNull.class);
         }
+    }
+
+    @DisplayName("기본 count 를 가진 tag 를 생성할 수 있다.")
+    @Test
+    void createDefaultTag() {
+        // given
+        final String tagName = "Java";
+        final Tag tag = Tag.newInstance(tagName);
+
+        // when, then
+        assertAll(
+                () -> assertThat(tag.getTagName()).isEqualTo(new TagName(tagName)),
+                () -> assertThat(tag.getTagCount()).isEqualTo(new TagCount(1))
+        );
+    }
+
+    @DisplayName("Tag 의 count는 1개씩 증가한다.")
+    @Test
+    void increaseCount() {
+        // given
+        final Tag tag = Tag.newInstance("Java");
+
+        // when
+        tag.increaseCount();
+
+        // then
+        assertAll(
+                () -> assertThat(tag.getTagName()).isEqualTo(new TagName("Java")),
+                () -> assertThat(tag.getTagCount()).isEqualTo(new TagCount(2))
+        );
+
     }
 }

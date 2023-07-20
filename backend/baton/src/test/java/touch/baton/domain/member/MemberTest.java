@@ -29,7 +29,7 @@ class MemberTest {
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
-                    .imageUrl(new ImageUrl("imageUrl"))
+                    .imageUrl(new ImageUrl("https://"))
                     .build()
             ).doesNotThrowAnyException();
         }

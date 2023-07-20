@@ -50,10 +50,10 @@ public class Member extends BaseEntity {
 
     @Builder
     private Member(final MemberName memberName,
-                  final Email email,
-                  final OauthId oauthId,
-                  final GithubUrl githubUrl,
-                  final Company company,
+                   final Email email,
+                   final OauthId oauthId,
+                   final GithubUrl githubUrl,
+                   final Company company,
                    final ImageUrl imageUrl
     ) {
         this(null, memberName, email, oauthId, githubUrl, company, imageUrl);
