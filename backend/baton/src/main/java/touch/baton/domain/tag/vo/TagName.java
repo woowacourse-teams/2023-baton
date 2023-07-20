@@ -2,6 +2,7 @@ package touch.baton.domain.tag.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,12 +10,13 @@ import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
 
+@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class TagName {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String  value;
 
     public TagName(final String value) {
