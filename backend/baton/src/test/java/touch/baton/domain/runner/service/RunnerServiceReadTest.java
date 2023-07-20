@@ -14,6 +14,7 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -39,6 +40,7 @@ class RunnerServiceReadTest {
     private static final OauthId oauthId = new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j");
     private static final GithubUrl githubUrl = new GithubUrl("github.com/hyena0608");
     private static final Company company = new Company("우아한형제들");
+    private static final ImageUrl imageUrl = new ImageUrl("홍혁준");
     private static final TotalRating totalRating = new TotalRating(100);
     private static final Grade grade = Grade.BARE_FOOT;
 
@@ -54,6 +56,7 @@ class RunnerServiceReadTest {
                 .oauthId(oauthId)
                 .githubUrl(githubUrl)
                 .company(company)
+                .imageUrl(imageUrl)
                 .build();
         memberRepository.save(member);
 

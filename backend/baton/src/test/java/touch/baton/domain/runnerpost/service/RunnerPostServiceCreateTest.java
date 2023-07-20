@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -69,7 +69,7 @@ class RunnerPostServiceCreateTest extends RunnerFixture {
                 () -> assertThat(actual.getPullRequestUrl()).isEqualTo(new PullRequestUrl(PULL_REQUEST_URL)),
                 () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(DEADLINE)),
                 () -> assertThat(actual.getWatchedCount()).isEqualTo(new WatchedCount(0)),
-                () -> assertThat(actual.getChattingRoomCount()).isEqualTo(new ChattingRoomCount(0)),
+                () -> assertThat(actual.getChattingCount()).isEqualTo(new ChattingCount(0)),
                 () -> assertThat(actual.getRunner()).isEqualTo(runner)
         );
     }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import touch.baton.domain.common.response.RunnerPostReadResponse;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
@@ -67,5 +68,14 @@ public class RunnerPostController {
                 .buildAndExpand(updatedId)
                 .toUri();
         return ResponseEntity.created(redirectUri).build();
+    }
+
+    @GetMapping("/posts")
+    public ResponseEntity<RunnerPostReadResponse> readAllRunnerPosts() {
+        final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
+                .fromRunnerPostResponses(touch.baton.domain.common.response.RunnerPostResponse
+                        .fromRunnerPosts(runnerPostService.readAllRunnerPosts()));
+
+        return ResponseEntity.ok(foundRunnerPosts);
     }
 }

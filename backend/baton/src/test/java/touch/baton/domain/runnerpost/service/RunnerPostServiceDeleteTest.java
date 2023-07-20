@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
@@ -69,7 +69,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
                 .deadline(new Deadline(LocalDateTime.now()))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(0))
-                .chattingRoomCount(new ChattingRoomCount(0))
+                .chattingCount(new ChattingCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .runner(runner)
                 .supporter(null)
