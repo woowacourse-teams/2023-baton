@@ -38,8 +38,4 @@ public class TagCount {
     public TagCount decrease() {
         return new TagCount(value - 1);
     }
-
-    public boolean isZero() {
-        return value == ZERO_VALUE;
-    }
 }
