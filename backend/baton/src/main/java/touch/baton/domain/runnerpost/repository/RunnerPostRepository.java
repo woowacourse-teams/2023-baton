@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.tag.RunnerPostTags;
 
 import java.util.List;
 import java.util.Optional;
