@@ -68,10 +68,6 @@ public class Tag {
         this.tagCount = tagCount.decrease();
     }
 
-    public boolean isCountZero() {
-        return tagCount.isZero();
-    }
-
     public boolean isSameTagName(final String tagName) {
         return this.tagName.equals(new TagName(tagName));
     }

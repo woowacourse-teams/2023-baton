@@ -50,7 +50,7 @@ public class RunnerPostService {
         final List<RunnerPostTag> removedRunnerPostTags = new ArrayList<>(presentRunnerPostTags);
         for (String tagName : request.getTags()) {
             final Optional<RunnerPostTag> existRunnerPostTag = presentRunnerPostTags.stream()
-                    .filter(presentRunnerPostTag -> presentRunnerPostTag.isSameTagName(tagName))
+                    .filter(presentRunnerPostTag -> presentRunnerPostTag.isTagNameSame(tagName))
                     .findFirst();
             if (existRunnerPostTag.isPresent()) {
                 removedRunnerPostTags.remove(existRunnerPostTag.get());

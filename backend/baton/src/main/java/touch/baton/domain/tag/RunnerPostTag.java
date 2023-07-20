@@ -56,7 +56,7 @@ public class RunnerPostTag {
         }
     }
 
-    public boolean isSameTagName(final String tagName) {
+    public boolean isTagNameSame(final String tagName) {
         return tag.isSameTagName(tagName);
     }
 }
