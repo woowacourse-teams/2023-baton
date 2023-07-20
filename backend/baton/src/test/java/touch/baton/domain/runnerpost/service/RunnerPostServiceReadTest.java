@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
@@ -14,6 +14,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -53,6 +54,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한형제들"))
+                .imageUrl(new ImageUrl("홍혁준"))
                 .build();
         memberRepository.save(member);
 
@@ -70,7 +72,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .deadline(new Deadline(deadline))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(0))
-                .chattingRoomCount(new ChattingRoomCount(0))
+                .chattingCount(new ChattingCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .runner(runner)
                 .supporter(null)

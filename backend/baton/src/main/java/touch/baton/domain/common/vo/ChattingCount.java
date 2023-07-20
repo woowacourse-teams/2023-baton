@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class ChattingRoomCount {
+public class ChattingCount {
 
     private static final String DEFAULT_VALUE = "0";
 
@@ -21,11 +21,11 @@ public class ChattingRoomCount {
     @Column(name = "chatting_room_count", nullable = false)
     private int value;
 
-    public ChattingRoomCount(final int value) {
+    public ChattingCount(final int value) {
         this.value = value;
     }
 
-    public static ChattingRoomCount zero() {
-        return new ChattingRoomCount(Integer.parseInt(DEFAULT_VALUE));
+    public static ChattingCount zero() {
+        return new ChattingCount(Integer.parseInt(DEFAULT_VALUE));
     }
 }

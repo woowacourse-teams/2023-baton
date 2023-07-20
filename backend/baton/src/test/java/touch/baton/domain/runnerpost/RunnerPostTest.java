@@ -3,7 +3,7 @@ package touch.baton.domain.runnerpost;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
@@ -83,7 +83,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -100,7 +100,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(null)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -117,7 +117,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -134,7 +134,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -151,7 +151,7 @@ class RunnerPostTest {
                     .pullRequestUrl(null)
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -168,7 +168,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(null)
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -185,7 +185,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(null)
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -219,7 +219,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(null)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -236,7 +236,7 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingRoomCount(0))
+                    .chattingCount(new ChattingCount(0))
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(null)
@@ -261,7 +261,7 @@ class RunnerPostTest {
                     () -> assertThat(runnerPost.getPullRequestUrl()).isEqualTo(new PullRequestUrl(pullRequestUrl)),
                     () -> assertThat(runnerPost.getDeadline()).isEqualTo(new Deadline(deadline)),
                     () -> assertThat(runnerPost.getRunnerPostTags()).isNotNull(),
-                    () -> assertThat(runnerPost.getChattingRoomCount()).isEqualTo(new ChattingRoomCount(0)),
+                    () -> assertThat(runnerPost.getChattingCount()).isEqualTo(new ChattingCount(0)),
                     () -> assertThat(runnerPost.getWatchedCount()).isEqualTo(new WatchedCount(0))
             );
         }

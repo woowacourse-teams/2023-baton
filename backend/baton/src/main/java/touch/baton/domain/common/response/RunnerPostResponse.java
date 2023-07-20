@@ -65,7 +65,7 @@ public class RunnerPostResponse {
 
     public static List<RunnerPostResponse> fromRunnerPosts(List<RunnerPost> runnerPosts) {
         return runnerPosts.stream()
-                .map(runnerPostResponse -> fromRunnerPost(runnerPostResponse))
+                .map(RunnerPostResponse::fromRunnerPost)
                 .toList();
     }
 }

@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import touch.baton.domain.common.response.RunnerPostReadResponse;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.common.response.RunnerPostReadResponse;
-import touch.baton.domain.common.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
@@ -74,7 +73,7 @@ public class RunnerPostController {
     @GetMapping("/posts")
     public ResponseEntity<RunnerPostReadResponse> readAllRunnerPosts() {
         final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
-                .fromRunnerPostResponses(RunnerPostResponse
+                .fromRunnerPostResponses(touch.baton.domain.common.response.RunnerPostResponse
                         .fromRunnerPosts(runnerPostService.readAllRunnerPosts()));
 
         return ResponseEntity.ok(foundRunnerPosts);

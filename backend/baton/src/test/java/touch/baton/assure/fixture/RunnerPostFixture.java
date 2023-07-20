@@ -1,6 +1,6 @@
 package touch.baton.assure.fixture;
 
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -34,7 +34,7 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
                 .deadline(new Deadline(deadline))
                 .watchedCount(new WatchedCount(watchedCount))
-                .chattingRoomCount(new ChattingRoomCount(chattingRoomCount))
+                .chattingCount(new ChattingCount(chattingRoomCount))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(runnerPostTags)

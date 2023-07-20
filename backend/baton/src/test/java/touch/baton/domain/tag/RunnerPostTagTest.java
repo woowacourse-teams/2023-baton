@@ -3,7 +3,7 @@ package touch.baton.domain.tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
@@ -77,7 +77,7 @@ class RunnerPostTagTest {
                 .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingRoomCount(0))
+                .chattingCount(new ChattingCount(0))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))

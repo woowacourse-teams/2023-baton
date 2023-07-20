@@ -12,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -58,7 +58,7 @@ public class RunnerPost extends BaseEntity {
     private WatchedCount watchedCount;
 
     @Embedded
-    private ChattingRoomCount chattingCount;
+    private ChattingCount chattingCount;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_runner"), nullable = false)
@@ -77,7 +77,7 @@ public class RunnerPost extends BaseEntity {
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
-                       final ChattingRoomCount chattingCount,
+                       final ChattingCount chattingCount,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
@@ -91,7 +91,7 @@ public class RunnerPost extends BaseEntity {
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
-                       final ChattingRoomCount chattingCount,
+                       final ChattingCount chattingCount,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
@@ -114,7 +114,7 @@ public class RunnerPost extends BaseEntity {
                                  final PullRequestUrl pullRequestUrl,
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
-                                 final ChattingRoomCount chattingCount,
+                                 final ChattingCount chattingCount,
                                  final Runner runner,
                                  final RunnerPostTags runnerPostTags
     ) {
@@ -150,6 +150,48 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
+    }
+
+    public static RunnerPost newInstance(final String title,
+                                         final String contents,
+                                         final String pullRequestUrl,
+                                         final LocalDateTime deadline,
+                                         final Runner runner
+    ) {
+        return RunnerPost.builder()
+                .title(new Title(title))
+                .contents(new Contents(contents))
+                .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
+                .deadline(new Deadline(deadline))
+                .runner(runner)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .watchedCount(WatchedCount.zero())
+                .chattingCount(ChattingCount.zero())
+                .build();
+    }
+
+    public void addAllRunnerPostTags(final List<RunnerPostTag> postTags) {
+        runnerPostTags.addAll(postTags);
+    }
+
+    public void appendRunnerPostTag(RunnerPostTag postTag) {
+        runnerPostTags.add(postTag);
+    }
+
+    public void updateTitle(final Title title) {
+        this.title = title;
+    }
+
+    public void updateContents(final Contents contents) {
+        this.contents = contents;
+    }
+
+    public void updatePullRequestUrl(final PullRequestUrl pullRequestUrl) {
+        this.pullRequestUrl = pullRequestUrl;
+    }
+
+    public void updateDeadLine(final Deadline deadline) {
+        this.deadline = deadline;
     }
 
     @Override
