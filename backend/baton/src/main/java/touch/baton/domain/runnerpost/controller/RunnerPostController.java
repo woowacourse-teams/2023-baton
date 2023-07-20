@@ -25,31 +25,4 @@ public class RunnerPostController {
 
         return ResponseEntity.ok(foundRunnerPosts);
     }
-
-    @GetMapping("/{runnerId}/posts")
-    public ResponseEntity<RunnerPostReadResponse> findRunnerPostsByRunnerId(@PathVariable Long runnerId) {
-        final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
-                .fromRunnerPostResponses(RunnerPostResponse
-                        .fromRunnerPosts(runnerPostService.readRunnerPostsByRunnerId(runnerId)));
-
-        return ResponseEntity.ok(foundRunnerPosts);
-    }
-
-    @GetMapping("/posts/{supporterId}")
-    public ResponseEntity<RunnerPostReadResponse> findRunnerPostsBySupporterId(@PathVariable Long supporterId) {
-        final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
-                .fromRunnerPostResponses(RunnerPostResponse
-                        .fromRunnerPosts(runnerPostService.readRunnerPostsBySupporterId(supporterId)));
-
-        return ResponseEntity.ok(foundRunnerPosts);
-    }
-
-    @GetMapping("/posts/{title}")
-    public ResponseEntity<RunnerPostReadResponse> findRunnerPostByTitle(@PathVariable String title) {
-        final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
-                .fromRunnerPostResponse(RunnerPostResponse
-                        .fromRunnerPost(runnerPostService.readRunnerPostByTitle(title)));
-
-        return ResponseEntity.ok(foundRunnerPosts);
-    }
 }

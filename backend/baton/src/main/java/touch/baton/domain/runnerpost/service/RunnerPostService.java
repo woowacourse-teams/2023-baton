@@ -19,18 +19,4 @@ public class RunnerPostService {
     public List<RunnerPost> readAllRunnerPosts() {
         return runnerPostRepository.findAll();
     }
-
-    public List<RunnerPost> readRunnerPostsByRunnerId(Long runnerId) {
-        return runnerPostRepository.readByRunnerId(runnerId);
-    }
-
-    public List<RunnerPost> readRunnerPostsBySupporterId(Long supporterId) {
-        return runnerPostRepository.readBySupporterId(supporterId);
-    }
-
-    //문맥이 조금 어색하지만 메세지 가장 앞에 title임을 보여주기 위함
-    public RunnerPost readRunnerPostByTitle(String title) {
-        return runnerPostRepository.readByTitle(new Title(title))
-                .orElseThrow(() -> new IllegalArgumentException("title이 제목인 post가 존재하지 않습니다."));
-    }
 }

@@ -68,5 +68,4 @@ public class RunnerPostResponse {
                 .map(runnerPostResponse -> fromRunnerPost(runnerPostResponse))
                 .toList();
     }
-
 }
