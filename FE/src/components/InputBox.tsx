@@ -1,17 +1,18 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
 
-interface Props extends React.HTMLProps<HTMLInputElement> {}
+interface Props extends React.HTMLProps<HTMLInputElement> {
+  inputTextState: string;
+  handleInputTextState: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-const InputBox = ({ maxLength, placeholder, width, height, onChange }: Props) => {
-  const inputRef = useRef<HTMLInputElement>(null);
-
+const InputBox = ({ inputTextState, maxLength, placeholder, width, height, handleInputTextState }: Props) => {
   return (
     <S.InputContainer $width={width} $height={height}>
-      <S.InputBox ref={inputRef} onChange={onChange} maxLength={maxLength} placeholder={placeholder} />
+      <S.InputBox onChange={handleInputTextState} maxLength={maxLength} placeholder={placeholder} />
       {maxLength && (
         <S.InputTextLength>
-          {inputRef.current?.value?.length ?? 0} / {maxLength}
+          {inputTextState.length ?? 0} / {maxLength}
         </S.InputTextLength>
       )}
     </S.InputContainer>

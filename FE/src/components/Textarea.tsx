@@ -2,17 +2,17 @@ import React, { TextareaHTMLAttributes } from 'react';
 import styled from 'styled-components';
 
 interface Props extends React.HTMLProps<HTMLTextAreaElement> {
-  inputText: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  inputTextState: string;
+  handleInputTextState: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
-const TextArea = ({ inputText, maxLength, placeholder, width, height, onChange }: Props) => {
+const TextArea = ({ inputTextState, maxLength, placeholder, width, height, handleInputTextState }: Props) => {
   return (
     <S.InputContainer $width={width} $height={height}>
-      <S.InputBox onChange={onChange} maxLength={maxLength} placeholder={placeholder} />
+      <S.InputBox onChange={handleInputTextState} maxLength={maxLength} placeholder={placeholder} />
       {maxLength && (
         <S.InputTextLength>
-          {inputText?.length ?? 0} / {maxLength}
+          {inputTextState?.length ?? 0} / {maxLength}
         </S.InputTextLength>
       )}
     </S.InputContainer>
