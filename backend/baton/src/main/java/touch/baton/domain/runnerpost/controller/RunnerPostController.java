@@ -26,11 +26,12 @@ public class RunnerPostController {
     public ResponseEntity<Void> createRunnerPost(@RequestBody RunnerPostCreateRequest request) {
         // TODO 07/19 로그인 기능 개발시 1L 변경 요망
         Runner runner = runnerService.readRunnerWithMember(1L);
-        final Long saveId = runnerPostService.create(runner, request);
+
+        final Long savedId = runnerPostService.create(runner, request);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{id}")
-                .buildAndExpand(saveId)
+                .buildAndExpand(savedId)
                 .toUri();
         return ResponseEntity.created(redirectUri).build();
     }
