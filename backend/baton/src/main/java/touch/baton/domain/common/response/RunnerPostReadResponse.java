@@ -17,8 +17,4 @@ public class RunnerPostReadResponse {
     public static RunnerPostReadResponse fromRunnerPostResponses(List<RunnerPostResponse> runnerPostsResponses){
         return new RunnerPostReadResponse(runnerPostsResponses);
     }
-
-    public static RunnerPostReadResponse fromRunnerPostResponse(RunnerPostResponse runnerPostsResponse){
-        return new RunnerPostReadResponse(List.of(runnerPostsResponse));
-    }
 }
