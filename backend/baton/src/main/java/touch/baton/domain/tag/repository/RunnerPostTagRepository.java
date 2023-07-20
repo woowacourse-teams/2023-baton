@@ -15,5 +15,5 @@ public interface RunnerPostTagRepository extends JpaRepository<RunnerPostTag, Lo
             join fetch Tag tag on rpt.tag.id = tag.id
             where rpt.runnerPost.id = :runnerPostId
             """)
-    List<RunnerPostTag> joinTagsByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
+    List<RunnerPostTag> joinTagByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 }

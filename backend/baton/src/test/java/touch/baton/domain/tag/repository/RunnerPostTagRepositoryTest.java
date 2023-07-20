@@ -91,7 +91,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
 
         // when
         final List<RunnerPostTag> joinRunnerPostTags
-                = runnerPostTagRepository.joinTagsByRunnerPostId(runnerPost.getId());
+                = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
 
         // then
         assertThat(joinRunnerPostTags).containsExactly(runnerPostTag);
@@ -133,7 +133,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
 
         // when
         final List<RunnerPostTag> joinRunnerPostTags
-                = runnerPostTagRepository.joinTagsByRunnerPostId(runnerPost.getId());
+                = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
 
         // then
         assertThat(joinRunnerPostTags).isEmpty();

@@ -9,7 +9,6 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
-import touch.baton.domain.tag.repository.TagRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +20,9 @@ public class RunnerPostService {
 
     private final RunnerPostRepository runnerPostRepository;
     private final RunnerPostTagRepository runnerPostTagRepository;
-    private final TagRepository tagRepository;
 
     public RunnerPost readByRunnerPostId(final Long runnerPostId) {
-        final List<RunnerPostTag> findRunnerPostTags = runnerPostTagRepository.joinTagsByRunnerPostId(runnerPostId);
+        final List<RunnerPostTag> findRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId);
         final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
@@ -39,7 +37,7 @@ public class RunnerPostService {
             throw new RunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
-        runnerPostTagRepository.joinTagsByRunnerPostId(runnerPostId)
+        runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId)
                 .stream()
                 .map(RunnerPostTag::getTag)
                 .forEach(Tag::decreaseCount);
