@@ -7,7 +7,6 @@ import Layout from '@layout/Layout';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
-import { validate } from 'webpack';
 
 interface RunnerPostCreateType {
   tags: string[];
@@ -46,29 +45,29 @@ const RunnerPostCreatePage = () => {
     setTags(newTags);
   };
 
-  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
 
-  const onChangepullRequestUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changepullRequestUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPullRequestUrl(e.target.value);
   };
 
-  const onChangeDeadlineDate = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeDeadlineDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newDate = e.target.value;
     const time = deadline.split('T')[1] ?? '';
     const newDeadline = `${newDate}T${time}`;
     setDeadline(newDeadline);
   };
 
-  const onChangeDeadlineTime = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const changeDeadlineTime = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTime = e.target.value;
     const date = deadline.split('T')[0] ?? '';
     const newDeadline = `${date}T${newTime}`;
     setDeadline(newDeadline);
   };
 
-  const onChangeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const changeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContents(e.target.value);
   };
 
@@ -124,25 +123,34 @@ const RunnerPostCreatePage = () => {
         <S.Form>
           <S.InputContainer>
             <S.InputName>제목</S.InputName>
-            <InputBox onChange={onChangeTitle} maxLength={15} placeholder="제목을 입력하세요" />
+            <InputBox
+              inputTextState={title}
+              handleInputTextState={changeTitle}
+              maxLength={15}
+              placeholder="제목을 입력하세요"
+            />
           </S.InputContainer>
           <S.InputContainer>
             <S.InputName>PR주소</S.InputName>
-            <InputBox onChange={onChangepullRequestUrl} placeholder="PR 주소를 입력하세요" />
+            <InputBox
+              inputTextState={pullRequestUrl}
+              handleInputTextState={changepullRequestUrl}
+              placeholder="PR 주소를 입력하세요"
+            />
           </S.InputContainer>
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
             <S.DeadlineContainer>
-              <S.DeadlineDate type="date" onChange={onChangeDeadlineDate} />
-              <S.DeadlineTime type="time" onChange={onChangeDeadlineTime} />
+              <S.DeadlineDate type="date" onChange={changeDeadlineDate} />
+              <S.DeadlineTime type="time" onChange={changeDeadlineTime} />
             </S.DeadlineContainer>
           </S.InputContainer>
           <TextArea
-            inputText={contents}
+            inputTextState={contents}
             width="1200px"
             height="500px"
             maxLength={500}
-            onChange={onChangeContents}
+            handleInputTextState={changeContents}
             placeholder="> 리뷰어가 작성된 코드의 의미를 파악할 수 있도록 내용을 작성해주시면 더 나은 리뷰가 될 수 있어요 :)"
           />
           <S.ButtonContainer>
@@ -189,9 +197,6 @@ const S = {
   FormContainer: styled.div`
     display: flex;
     flex-direction: column;
-
-    //임시
-    padding-bottom: 50px;
 
     gap: 20px;
   `,
