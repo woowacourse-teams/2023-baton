@@ -1,10 +1,14 @@
 import Avatar from '@components/common/Avatar';
-import { RunnerPost } from '../../../types/RunnerPost';
+import { RunnerPostData } from '../../../types/RunnerPost';
 import React from 'react';
 import { styled } from 'styled-components';
 import { usePageRouter } from '@hooks/usePageRouter';
 
-const RunnerPostItem = ({ postItem: { runnerPostId, title, deadline, tags, profile } }: { postItem: RunnerPost }) => {
+const RunnerPostItem = ({
+  runnerPostData: { runnerPostId, title, deadline, tags, profile, watchedCount, chattingCount },
+}: {
+  runnerPostData: RunnerPostData;
+}) => {
   const { goToRunnerPostPage } = usePageRouter();
 
   const handlePostClick = () => {
@@ -28,8 +32,8 @@ const RunnerPostItem = ({ postItem: { runnerPostId, title, deadline, tags, profi
           <S.ProfileName>{profile.name}</S.ProfileName>
         </S.ProfileContainer>
         <S.ChatViewContainer>
-          <div>조회수: 23</div>
-          <div>채팅수: 2</div>
+          <div>조회수: {watchedCount}</div>
+          <div>채팅수: {chattingCount}</div>
         </S.ChatViewContainer>
       </S.RightSideContainer>
     </S.RunnerPostItemContainer>
