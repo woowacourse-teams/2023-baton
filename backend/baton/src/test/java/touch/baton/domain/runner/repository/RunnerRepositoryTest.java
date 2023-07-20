@@ -69,7 +69,7 @@ class RunnerRepositoryTest {
         final Runner expected = runnerRepository.save(runner);
 
         // when
-        final Optional<Runner> actual = runnerRepository.findByIdJoinMember(expected.getId());
+        final Optional<Runner> actual = runnerRepository.joinMemberByRunnerId(expected.getId());
 
         // then
         assertThat(actual).isPresent();
@@ -88,7 +88,7 @@ class RunnerRepositoryTest {
     @Test
     void findByIdJoinMember_if_id_is_not_exists() {
         // when
-        final Optional<Runner> actual = runnerRepository.findByIdJoinMember(999L);
+        final Optional<Runner> actual = runnerRepository.joinMemberByRunnerId(999L);
 
         // then
         assertThat(actual).isEmpty();

@@ -15,7 +15,7 @@ public class RunnerService {
     private final RunnerRepository runnerRepository;
 
     public Runner readRunnerWithMember(final Long runnerId) {
-        return runnerRepository.findByIdJoinMember(runnerId)
+        return runnerRepository.joinMemberByRunnerId(runnerId)
                 .orElseThrow(() -> new RunnerException.NotFound("해당하는 식별자의 Runner 를 찾을 수 없습니다."));
     }
 }
