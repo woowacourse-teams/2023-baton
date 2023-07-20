@@ -20,10 +20,10 @@ public class RunnerPostController {
     private final RunnerPostService runnerPostService;
 
     @PutMapping("/{runnerPostId}")
-    public ResponseEntity<Void> update(@PathVariable(name = "runnerPostId") final Long id,
+    public ResponseEntity<Void> update(@PathVariable final Long runnerPostId,
                                        @RequestBody final RunnerPostUpdateRequest request
     ) {
-        Long updatedId = runnerPostService.update(id, request);
+        Long updatedId = runnerPostService.update(runnerPostId, request);
         return ResponseEntity.created(URI.create("/api/v1/posts/runner/" + updatedId)).build();
     }
 }
