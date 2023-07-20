@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.service;
+package touch.baton.domain.runnerpost.service.read;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,12 +19,14 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
@@ -58,6 +60,7 @@ class RunnerPostServiceTest {
             .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
             .githubUrl(new GithubUrl("github.com/hyena0608"))
             .company(new Company("우아한테크코스"))
+            .imageUrl(new ImageUrl("imageUrl"))
             .build();
 
     private final Member supporterMember = Member.builder()
@@ -66,6 +69,7 @@ class RunnerPostServiceTest {
             .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
             .githubUrl(new GithubUrl("github.com/pobi"))
             .company(new Company("우아한형제들"))
+            .imageUrl(new ImageUrl("imageUrl"))
             .build();
 
     private final Runner runner = Runner.builder()
@@ -101,7 +105,7 @@ class RunnerPostServiceTest {
                 .pullRequestUrl(new PullRequestUrl("url"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(2))
-                .chattingRoomCount(new ChattingRoomCount(3))
+                .chattingCount(new ChattingRoomCount(3))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -111,7 +115,7 @@ class RunnerPostServiceTest {
         runnerPostRepository.save(runnerPost);
 
         // when
-        List<RunnerPost> runnerPosts = runnerPostService.findByRunnerId(expected);
+        List<RunnerPost> runnerPosts = runnerPostService.readRunnerPostsByRunnerId(expected);
         Long actual = runnerPosts.get(0).getRunner().getId();
 
         // then
@@ -128,7 +132,7 @@ class RunnerPostServiceTest {
                 .pullRequestUrl(new PullRequestUrl("url"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(2))
-                .chattingRoomCount(new ChattingRoomCount(3))
+                .chattingCount(new ChattingRoomCount(3))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -138,7 +142,7 @@ class RunnerPostServiceTest {
         runnerPostRepository.save(expected);
 
         // when
-        RunnerPost actual = runnerPostService.findBySupporterId(runnerId).get(0);
+        RunnerPost actual = runnerPostService.readRunnerPostsBySupporterId(runnerId).get(0);
 
         // then
         assertThat(expected).isEqualTo(actual);
@@ -156,7 +160,7 @@ class RunnerPostServiceTest {
                 .pullRequestUrl(new PullRequestUrl("url"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(2))
-                .chattingRoomCount(new ChattingRoomCount(3))
+                .chattingCount(new ChattingRoomCount(3))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -165,7 +169,7 @@ class RunnerPostServiceTest {
         runnerPostRepository.save(expected);
 
         // when
-        RunnerPost actual = runnerPostService.findByTitle(title);
+        RunnerPost actual = runnerPostService.readRunnerPostByTitle(title);
 
         // then
         assertThat(expected).isEqualTo(actual);
