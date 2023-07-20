@@ -5,9 +5,18 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.*;
+import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.Contents;
+import touch.baton.domain.common.vo.Grade;
+import touch.baton.domain.common.vo.Title;
+import touch.baton.domain.common.vo.TotalRating;
+import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.*;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.MemberName;
+import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
@@ -30,7 +39,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository);
+        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository);
     }
 
     @Disabled

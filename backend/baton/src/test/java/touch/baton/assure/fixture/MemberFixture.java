@@ -1,7 +1,12 @@
 package touch.baton.assure.fixture;
 
 import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.*;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
+import touch.baton.domain.member.vo.MemberName;
+import touch.baton.domain.member.vo.OauthId;
 
 public abstract class MemberFixture {
 

@@ -2,12 +2,14 @@ package touch.baton.domain.common.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import static lombok.AccessLevel.PROTECTED;
 
+@EqualsAndHashCode
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
@@ -21,5 +23,9 @@ public class ChattingRoomCount {
 
     public ChattingRoomCount(final int value) {
         this.value = value;
+    }
+
+    public static ChattingRoomCount zero() {
+        return new ChattingRoomCount(Integer.parseInt(DEFAULT_VALUE));
     }
 }

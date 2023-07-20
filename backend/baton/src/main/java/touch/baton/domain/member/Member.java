@@ -9,7 +9,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.member.exception.MemberException;
-import touch.baton.domain.member.vo.*;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
+import touch.baton.domain.member.vo.MemberName;
+import touch.baton.domain.member.vo.OauthId;
 
 import java.util.Objects;
 

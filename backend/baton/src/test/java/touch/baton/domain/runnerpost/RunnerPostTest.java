@@ -22,49 +22,55 @@ import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
+import touch.baton.domain.tag.Tag;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class RunnerPostTest {
+
+    private final Member runnerMember = Member.builder()
+            .memberName(new MemberName("러너 사용자"))
+            .email(new Email("test@test.co.kr"))
+            .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
+            .githubUrl(new GithubUrl("github.com/hyena0608"))
+            .company(new Company("우아한테크코스"))
+            .build();
+
+    private final Member supporterMember = Member.builder()
+            .memberName(new MemberName("서포터 사용자"))
+            .email(new Email("test@test.co.kr"))
+            .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
+            .githubUrl(new GithubUrl("github.com/pobi"))
+            .company(new Company("우아한형제들"))
+            .build();
+
+    private final Runner runner = Runner.builder()
+            .totalRating(new TotalRating(100))
+            .grade(Grade.BARE_FOOT)
+            .member(runnerMember)
+            .build();
+
+    private final Supporter supporter = Supporter.builder()
+            .reviewCount(new ReviewCount(10))
+            .starCount(new StarCount(10))
+            .totalRating(new TotalRating(100))
+            .grade(Grade.BARE_FOOT)
+            .member(supporterMember)
+            .build();
 
     @DisplayName("생성 테스트")
     @Nested
     class Create {
 
-        private final Member runnerMember = Member.builder()
-                .memberName(new MemberName("러너 사용자"))
-                .email(new Email("test@test.co.kr"))
-                .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
-                .githubUrl(new GithubUrl("github.com/hyena0608"))
-                .company(new Company("우아한테크코스"))
-                .build();
-
-        private final Member supporterMember = Member.builder()
-                .memberName(new MemberName("서포터 사용자"))
-                .email(new Email("test@test.co.kr"))
-                .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
-                .githubUrl(new GithubUrl("github.com/pobi"))
-                .company(new Company("우아한형제들"))
-                .build();
-
-        private final Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
-                .member(runnerMember)
-                .build();
-
-        private final Supporter supporter = Supporter.builder()
-                .reviewCount(new ReviewCount(10))
-                .starCount(new StarCount(10))
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
-                .member(supporterMember)
-                .build();
 
         @DisplayName("성공한다.")
         @Test
@@ -235,5 +241,52 @@ class RunnerPostTest {
                     .build()
             ).isInstanceOf(RunnerPostException.NotNull.class);
         }
+
+        @DisplayName("태그, 조회수, 채팅수가 초기화된 RunnerPost 를 생성할 수 있다.")
+        @Test
+        void createDefaultRunnerPost() {
+            // given
+            final String title = "JPA 리뷰 부탁 드려요.";
+            final String contents = "넘나 어려워요.";
+            final String pullRequestUrl = "https://github.com/cookienc";
+            final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
+            final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
+
+            // when, then
+            assertAll(
+                    () -> assertThat(runnerPost.getTitle()).isEqualTo(new Title(title)),
+                    () -> assertThat(runnerPost.getContents()).isEqualTo(new Contents(contents)),
+                    () -> assertThat(runnerPost.getPullRequestUrl()).isEqualTo(new PullRequestUrl(pullRequestUrl)),
+                    () -> assertThat(runnerPost.getDeadline()).isEqualTo(new Deadline(deadline)),
+                    () -> assertThat(runnerPost.getRunnerPostTags()).isNotNull(),
+                    () -> assertThat(runnerPost.getChattingRoomCount()).isEqualTo(new ChattingRoomCount(0)),
+                    () -> assertThat(runnerPost.getWatchedCount()).isEqualTo(new WatchedCount(0))
+            );
+        }
+    }
+    
+    @DisplayName("runnerPostTags 전체를 추가할 수 있다.")
+    @Test
+    void addAllRunnerPostTags() {
+        // given
+        final String title = "JPA 리뷰 부탁 드려요.";
+        final String contents = "넘나 어려워요.";
+        final String pullRequestUrl = "https://github.com/cookienc";
+        final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
+        final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
+        final RunnerPostTag java = RunnerPostTag.builder()
+                .tag(Tag.newInstance("Java"))
+                .runnerPost(runnerPost)
+                .build();
+        final RunnerPostTag spring = RunnerPostTag.builder()
+                .tag(Tag.newInstance("Spring"))
+                .runnerPost(runnerPost)
+                .build();
+
+        // when
+        runnerPost.addAllRunnerPostTags(List.of(java, spring));
+
+        // then
+        assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
     }
 }

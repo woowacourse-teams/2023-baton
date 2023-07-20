@@ -3,12 +3,15 @@ package touch.baton.domain.runnerpost.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
+import touch.baton.domain.tag.repository.TagRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,13 +23,48 @@ public class RunnerPostService {
 
     private final RunnerPostRepository runnerPostRepository;
     private final RunnerPostTagRepository runnerPostTagRepository;
+    private final TagRepository tagRepository;
+
+    @Transactional
+    public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
+        RunnerPost runnerPost = toDomain(runner, request);
+
+        final List<Tag> tags = request.tags().stream()
+                .map(Tag::newInstance)
+                .toList();
+
+        for (final Tag tag : tags) {
+            final Optional<Tag> maybeTag = tagRepository.findByTagName(tag.getTagName());
+
+            if (maybeTag.isEmpty()) {
+                tagRepository.save(tag);
+                continue;
+            }
+
+            final Tag presentTag = maybeTag.get();
+            presentTag.increaseCount();
+        }
+
+        runnerPostRepository.save(runnerPost);
+
+        final List<RunnerPostTag> postTags = tags.stream()
+                .map(tag -> RunnerPostTag.builder()
+                        .tag(tag)
+                        .runnerPost(runnerPost)
+                        .build())
+                .toList();
+
+        runnerPost.addAllRunnerPostTags(postTags);
+        return runnerPost.getId();
+    }
 
     public RunnerPost readByRunnerPostId(final Long runnerPostId) {
         final List<RunnerPostTag> findRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId);
         final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
-        findRunnerPost.addRunnerPostTags(findRunnerPostTags);
+        findRunnerPost.addAllRunnerPostTags(findRunnerPostTags);
+
         return findRunnerPost;
     }
 
@@ -43,5 +81,13 @@ public class RunnerPostService {
                 .forEach(Tag::decreaseCount);
 
         runnerPostRepository.deleteById(runnerPostId);
+    }
+
+    private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
+        return RunnerPost.newInstance(request.title(),
+                request.contents(),
+                request.pullRequestUrl(),
+                request.deadline(),
+                runner);
     }
 }
