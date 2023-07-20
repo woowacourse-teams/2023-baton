@@ -148,8 +148,8 @@ public class RunnerPost extends BaseEntity {
         }
     }
 
-    public void appendRunnerPostTag(RunnerPostTag runnerPostTag) {
-        runnerPostTags.add(runnerPostTag);
+    public void appendRunnerPostTag(RunnerPostTag postTag) {
+        runnerPostTags.add(postTag);
     }
 
     public void updateTitle(final Title title) {
