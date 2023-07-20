@@ -112,7 +112,7 @@ class RunnerPostControllerReadTest {
     @Test
     void read() throws Exception {
         // given, when
-        MvcResult mvcResult = mockMvc.perform(get("/api/v1/posts/runner/posts"))
+        MvcResult mvcResult = mockMvc.perform(get("/api/v1/posts/runner"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
