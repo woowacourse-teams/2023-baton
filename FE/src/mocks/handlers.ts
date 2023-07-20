@@ -1,4 +1,5 @@
 import { rest } from 'msw';
+import runnerPostList from './data/runnerPostList.json';
 import runnerPostDetails from './data/runnerPostDetails.json';
 
 export const handlers = [
@@ -8,24 +9,8 @@ export const handlers = [
     return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
   }),
 
-  rest.get('msw/posts/runner', async (req, res, ctx) => {
-    return res(
-      ctx.delay(300),
-      ctx.status(200),
-      ctx.set('Content-Type', 'application/json'),
-      ctx.json([
-        {
-          runnerPostId: 1,
-          title: '제목',
-          deadline: '마감기한',
-          tags: ['java', 'JAVA'],
-          profile: {
-            name: '이름',
-            imageUrl: '사실 프로필 사진',
-          },
-        },
-      ]),
-    );
+  rest.get('msw/posts/runner', async (_, res, ctx) => {
+    return res(ctx.delay(300), ctx.status(200), ctx.json(runnerPostList));
   }),
 
   rest.put('msw/posts/runner/:runnerPostId', async (req, res, ctx) => {
