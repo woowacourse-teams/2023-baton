@@ -12,6 +12,7 @@ import touch.baton.domain.member.exception.MemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 
@@ -44,14 +45,18 @@ public class Member extends BaseEntity {
     @Embedded
     private Company company;
 
+    @Embedded
+    private ImageUrl imageUrl;
+
     @Builder
     private Member(final MemberName memberName,
                   final Email email,
                   final OauthId oauthId,
                   final GithubUrl githubUrl,
-                  final Company company
+                  final Company company,
+                   final ImageUrl imageUrl
     ) {
-        this(null, memberName, email, oauthId, githubUrl, company);
+        this(null, memberName, email, oauthId, githubUrl, company, imageUrl);
     }
 
     private Member(final Long id,
@@ -59,22 +64,25 @@ public class Member extends BaseEntity {
                    final Email email,
                    final OauthId oauthId,
                    final GithubUrl githubUrl,
-                   final Company company
+                   final Company company,
+                   final ImageUrl imageUrl
     ) {
-        validateNotNull(memberName, email, oauthId, githubUrl, company);
+        validateNotNull(memberName, email, oauthId, githubUrl, company, imageUrl);
         this.id = id;
         this.memberName = memberName;
         this.email = email;
         this.oauthId = oauthId;
         this.githubUrl = githubUrl;
         this.company = company;
+        this.imageUrl = imageUrl;
     }
 
     private void validateNotNull(final MemberName memberName,
                                  final Email email,
                                  final OauthId oauthId,
                                  final GithubUrl githubUrl,
-                                 final Company company
+                                 final Company company,
+                                 final ImageUrl imageUrl
     ) {
         if (Objects.isNull(memberName)) {
             throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
@@ -94,6 +102,10 @@ public class Member extends BaseEntity {
 
         if (Objects.isNull(company)) {
             throw new MemberException.NotNull("company 는 null 일 수 없습니다.");
+        }
+
+        if (Objects.isNull(imageUrl)) {
+            throw new MemberException.NotNull("imageUrl 는 null 일 수 없습니다.");
         }
     }
 }

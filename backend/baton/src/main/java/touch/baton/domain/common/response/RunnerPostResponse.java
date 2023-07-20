@@ -1,10 +1,11 @@
 package touch.baton.domain.common.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import touch.baton.domain.runnerpost.RunnerPost;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class RunnerPostResponse {
@@ -13,39 +14,59 @@ public class RunnerPostResponse {
 
     private String title;
 
-    private String deadline;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+    private LocalDateTime deadline;
 
-    private String[] tags;
+    private List<String> tags;
 
-    //private Object[] profile;
     private String name;
-    //private String imageUrl;
 
-    public RunnerPostResponse() {
-    }
+    private int watchedCount;
 
-    public RunnerPostResponse(Long runnerPostId, String title, String deadline, String[] tags, String name) {
+    private int chattingCount;
+
+    private String imageUrl;
+
+    public RunnerPostResponse(Long runnerPostId,
+                              String title,
+                              LocalDateTime deadline,
+                              List<String> tags,
+                              String name,
+                              int watchedCount,
+                              int chattingCount,
+                              String imageUrl) {
         this.runnerPostId = runnerPostId;
         this.title = title;
         this.deadline = deadline;
         this.tags = tags;
         this.name = name;
+        this.watchedCount = watchedCount;
+        this.chattingCount = chattingCount;
+        this.imageUrl = imageUrl;
     }
 
     public static RunnerPostResponse fromRunnerPost(RunnerPost runnerPost) {
         return new RunnerPostResponse(
                 runnerPost.getId(),
                 runnerPost.getTitle().getValue(),
-                runnerPost.getDeadline().getValue().toString(),
-                (String[]) runnerPost.getRunnerPostTags().getRunnerPostTags().toArray(),
-                runnerPost.getRunner().getMember().getMemberName().getValue()
+                runnerPost.getDeadline().getValue(),
+                runnerPost.getRunnerPostTags()
+                        .getRunnerPostTags()
+                        .stream()
+                        .map(runnerPostTag -> runnerPostTag.getTag().toString())
+                        .toList(),
+                runnerPost.getRunner().getMember().getMemberName().getValue(),
+                runnerPost.getWatchedCount().getValue(),
+                runnerPost.getChattingCount().getValue(),
+                runnerPost.getRunner().getMember().getImageUrl().getValue()
         );
     }
+    //runnerPost들을 만들어줘야함
 
-    public static List<RunnerPostResponse> convert(List<RunnerPost> runnerPosts) {
-        List<RunnerPostResponse> response = runnerPosts.stream()
-                .map(RunnerPostResponse::fromRunnerPost)
-                .collect(Collectors.toList());
-        return response;
+    public static List<RunnerPostResponse> fromRunnerPosts(List<RunnerPost> runnerPosts) {
+        return runnerPosts.stream()
+                .map(runnerPostResponse -> fromRunnerPost(runnerPostResponse))
+                .toList();
     }
+
 }

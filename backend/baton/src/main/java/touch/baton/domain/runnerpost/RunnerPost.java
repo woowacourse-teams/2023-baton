@@ -54,7 +54,7 @@ public class RunnerPost extends BaseEntity {
     private WatchedCount watchedCount;
 
     @Embedded
-    private ChattingRoomCount chattingRoomCount;
+    private ChattingRoomCount chattingCount;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_runner"), nullable = false)
@@ -73,12 +73,12 @@ public class RunnerPost extends BaseEntity {
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
-                       final ChattingRoomCount chattingRoomCount,
+                       final ChattingRoomCount chattingCount,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, supporter, runnerPostTags);
+        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, runner, supporter, runnerPostTags);
     }
 
     private RunnerPost(final Long id,
@@ -87,19 +87,19 @@ public class RunnerPost extends BaseEntity {
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
-                       final ChattingRoomCount chattingRoomCount,
+                       final ChattingRoomCount chattingCount,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingRoomCount, runner, runnerPostTags);
+        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, runner, runnerPostTags);
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.pullRequestUrl = pullRequestUrl;
         this.deadline = deadline;
         this.watchedCount = watchedCount;
-        this.chattingRoomCount = chattingRoomCount;
+        this.chattingCount = chattingCount;
         this.runner = runner;
         this.supporter = supporter;
         this.runnerPostTags = runnerPostTags;
