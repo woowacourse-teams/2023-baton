@@ -8,6 +8,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -31,6 +32,7 @@ class RunnerPostTagsTest {
                 .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한테크코스"))
+                .imageUrl(new ImageUrl("김석호"))
                 .build();
         Runner runner = Runner.builder()
                 .totalRating(new TotalRating(100))

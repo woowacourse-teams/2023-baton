@@ -43,6 +43,7 @@ class MemberTest {
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
+                    .imageUrl(new ImageUrl("imageUrl"))
                     .build()
             ).isInstanceOf(MemberException.NotNull.class);
         }
@@ -56,6 +57,7 @@ class MemberTest {
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
+                    .imageUrl(new ImageUrl("imageUrl"))
                     .build()
             ).isInstanceOf(MemberException.NotNull.class);
         }
@@ -69,6 +71,7 @@ class MemberTest {
                     .oauthId(null)
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
+                    .imageUrl(new ImageUrl("imageUrl"))
                     .build()
             ).isInstanceOf(MemberException.NotNull.class);
         }
@@ -82,6 +85,7 @@ class MemberTest {
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(null)
                     .company(new Company("우아한형제들"))
+                    .imageUrl(new ImageUrl("imageUrl"))
                     .build()
             ).isInstanceOf(MemberException.NotNull.class);
         }
@@ -95,6 +99,21 @@ class MemberTest {
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(null)
+                    .imageUrl(new ImageUrl("imageUrl"))
+                    .build()
+            ).isInstanceOf(MemberException.NotNull.class);
+        }
+
+        @DisplayName("imageUrl 에 null 이 들어갈 경우 예외가 발생한다.")
+        @Test
+        void fail_if_imageUrl_is_null() {
+            assertThatThrownBy(() -> Member.builder()
+                    .memberName(new MemberName("에단"))
+                    .email(new Email("test@test.co.kr"))
+                    .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
+                    .githubUrl(new GithubUrl("github.com/hyena0608"))
+                    .company(new Company("우아한형제들"))
+                    .imageUrl(null)
                     .build()
             ).isInstanceOf(MemberException.NotNull.class);
         }

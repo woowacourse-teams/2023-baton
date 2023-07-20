@@ -12,6 +12,7 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -37,7 +38,9 @@ public abstract class RunnerFixture {
                 .email(new Email("test@test.co.kr"))
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
-                .company(new Company("우아한형제들")).build();
+                .company(new Company("우아한형제들"))
+                .imageUrl(new ImageUrl("김석호"))
+                .build();
         runner = Runner.builder()
                 .totalRating(new TotalRating(100))
                 .grade(Grade.BARE_FOOT)

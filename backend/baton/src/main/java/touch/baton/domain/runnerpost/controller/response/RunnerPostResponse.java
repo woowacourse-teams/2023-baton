@@ -14,7 +14,7 @@ public record RunnerPostResponse() {
     public record Single(Long runnerPostId,
                          String title,
                          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
-                                   LocalDateTime deadLine,
+                         LocalDateTime deadLine,
                          List<String> tags,
                          String contents,
                          Integer chattingCount,
@@ -28,7 +28,7 @@ public record RunnerPostResponse() {
                     runnerPost.getDeadline().getValue(),
                     collectTagNameValues(runnerPost),
                     runnerPost.getContents().getValue(),
-                    runnerPost.getChattingRoomCount().getValue(),
+                    runnerPost.getChattingCount().getValue(),
                     runnerPost.getWatchedCount().getValue(),
                     ProfileResponse.from(runnerPost.getRunner().getMember())
             );

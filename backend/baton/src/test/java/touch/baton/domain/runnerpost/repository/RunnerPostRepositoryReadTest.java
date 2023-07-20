@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
@@ -15,6 +15,7 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -51,6 +52,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한형제들"))
+                .imageUrl(new ImageUrl("홍혁준"))
                 .build();
         final Member saveMember = memberRepository.saveAndFlush(member);
 
@@ -67,7 +69,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 .deadline(new Deadline(LocalDateTime.now()))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(1))
-                .chattingRoomCount(new ChattingRoomCount(1))
+                .chattingCount(new ChattingCount(1))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .runner(saveRunner)
                 .supporter(null)

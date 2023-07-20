@@ -3,7 +3,7 @@ package touch.baton.domain.tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.ChattingRoomCount;
+import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
@@ -13,6 +13,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
@@ -44,6 +45,7 @@ class RunnerPostTagTest {
                 .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한테크코스"))
+                .imageUrl(new ImageUrl("imageUrl"))
                 .build();
 
         private final Member supporterMember = Member.builder()
@@ -52,6 +54,7 @@ class RunnerPostTagTest {
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/pobi"))
                 .company(new Company("우아한형제들"))
+                .imageUrl(new ImageUrl("imageUrl"))
                 .build();
 
         private final Runner runner = Runner.builder()
@@ -74,7 +77,7 @@ class RunnerPostTagTest {
                 .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(0))
-                .chattingRoomCount(new ChattingRoomCount(0))
+                .chattingCount(new ChattingCount(0))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))

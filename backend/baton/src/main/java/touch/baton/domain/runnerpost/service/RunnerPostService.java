@@ -151,4 +151,8 @@ public class RunnerPostService {
 
         return runnerPost.getId();
     }
+    
+    public List<RunnerPost> readAllRunnerPosts() {
+        return runnerPostRepository.findAll();
+    }
 }

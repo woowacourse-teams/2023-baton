@@ -67,7 +67,7 @@ public class Member extends BaseEntity {
                    final Company company,
                    final ImageUrl imageUrl
     ) {
-        validateNotNull(memberName, email, oauthId, githubUrl, company);
+        validateNotNull(memberName, email, oauthId, githubUrl, company, imageUrl);
         this.id = id;
         this.memberName = memberName;
         this.email = email;
@@ -81,7 +81,8 @@ public class Member extends BaseEntity {
                                  final Email email,
                                  final OauthId oauthId,
                                  final GithubUrl githubUrl,
-                                 final Company company
+                                 final Company company,
+                                 final ImageUrl imageUrl
     ) {
         if (Objects.isNull(memberName)) {
             throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
@@ -101,6 +102,10 @@ public class Member extends BaseEntity {
 
         if (Objects.isNull(company)) {
             throw new MemberException.NotNull("company 는 null 일 수 없습니다.");
+        }
+
+        if (Objects.isNull(imageUrl)) {
+            throw new MemberException.NotNull("imageUrl 는 null 일 수 없습니다.");
         }
     }
 }
