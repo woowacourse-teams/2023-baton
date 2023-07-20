@@ -5,9 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import eyeIcon from '@assets/eye-icon.svg';
 import chattingIcon from '@assets/chatting-icon.svg';
-import { useNavigate } from 'react-router-dom';
-import { ROUTER_PATH } from '../router';
 import PostTagList from '@components/PostTagList';
+import { usePageRouter } from '@hooks/usePageRouter';
 
 interface Profile {
   memberId: number;
@@ -44,6 +43,7 @@ const getRunnerPost = async (): Promise<RunnerPost> => {
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<RunnerPost | null>(null);
+  const { goToMainPage } = usePageRouter();
 
   useEffect(() => {
     getRunnerPost()
@@ -53,13 +53,7 @@ const RunnerPostPage = () => {
       .catch((error) => {
         setRunnerPost(null);
       });
-  }, [runnerPost]);
-
-  const navigate = useNavigate();
-
-  const goToMainPage = () => {
-    navigate(ROUTER_PATH.MAIN);
-  };
+  }, []);
 
   return (
     <Layout>

@@ -1,11 +1,15 @@
+import { usePageRouter } from '@hooks/usePageRouter';
 import React from 'react';
 import styled from 'styled-components';
+import LogoImage from '@assets/logo-image.svg';
 
 const Header = () => {
+  const { goToMainPage } = usePageRouter();
+
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
-        <S.Logo />
+        <S.Logo src={LogoImage} onClick={goToMainPage} />
         <S.MenuContainer>
           <S.LoginButton>로그인</S.LoginButton>
           <S.ProfileAvatar />
@@ -41,7 +45,7 @@ const S = {
     width: 140px;
     height: 40px;
 
-    background-color: #222222;
+    cursor: pointer;
   `,
 
   MenuContainer: styled.div`
