@@ -56,7 +56,6 @@ public class RunnerPostService {
                 removedRunnerPostTags.remove(existRunnerPostTag.get());
                 existRunnerPostTag.get().getTag().increaseCount();
             }
-            existRunnerPostTag.ifPresent(removedRunnerPostTags::remove);
             if (existRunnerPostTag.isEmpty()) {
                 // TODO: tag 찾기 메소드 분리
                 final Optional<Tag> tag = tagRepository.findByTagName(new TagName(tagName));

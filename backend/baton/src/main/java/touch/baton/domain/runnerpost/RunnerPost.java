@@ -21,6 +21,7 @@ import touch.baton.domain.runnerpost.exception.RunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 
 import java.util.Objects;
