@@ -1,6 +1,5 @@
 package touch.baton.assure.runnerpost;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.fixture.MemberFixture;
 import touch.baton.assure.fixture.RunnerFixture;
@@ -16,6 +15,7 @@ import touch.baton.domain.tag.RunnerPostTags;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+@SuppressWarnings("NonAsciiCharacters")
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
     @Test
@@ -46,6 +46,6 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청().러너_게시글_식별자값으로_러너_게시글을_조회한다(runnerPost.getId())
-                .서버_응답().러너_게시글_단건_조회_성공을_검증한다(RunnerPostResponse.SingleRunnerPost.from(runnerPost));
+                .서버_응답().러너_게시글_단건_조회_성공을_검증한다(RunnerPostResponse.Single.from(runnerPost));
     }
 }
