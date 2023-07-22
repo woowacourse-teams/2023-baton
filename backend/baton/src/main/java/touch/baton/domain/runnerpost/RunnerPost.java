@@ -194,10 +194,6 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
     }
 
-    public void increaseWatchedCount() {
-        this.watchedCount = watchedCount.increase();
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
