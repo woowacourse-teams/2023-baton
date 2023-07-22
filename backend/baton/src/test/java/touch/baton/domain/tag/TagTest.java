@@ -3,7 +3,7 @@ package touch.baton.domain.tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.tag.exception.TagException;
+import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
 
@@ -35,7 +35,7 @@ class TagTest {
                     .tagName(null)
                     .tagCount(new TagCount(0))
                     .build()
-            ).isInstanceOf(TagException.NotNull.class);
+            ).isInstanceOf(OldTagException.NotNull.class);
         }
 
         @DisplayName("tag count 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -45,7 +45,7 @@ class TagTest {
                     .tagName(new TagName("자바"))
                     .tagCount(null)
                     .build()
-            ).isInstanceOf(TagException.NotNull.class);
+            ).isInstanceOf(OldTagException.NotNull.class);
         }
     }
 

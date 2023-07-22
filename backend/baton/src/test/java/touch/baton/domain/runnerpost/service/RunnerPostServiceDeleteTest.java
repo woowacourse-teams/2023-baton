@@ -19,7 +19,7 @@ import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
+import touch.baton.domain.runnerpost.exception.OldRunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -93,13 +93,13 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
 
         // then
         assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(saveRunnerPostId))
-                .isInstanceOf(RunnerPostBusinessException.NotFound.class);
+                .isInstanceOf(OldRunnerPostBusinessException.NotFound.class);
     }
 
     @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 을 삭제 시도할 경우 예외가 발생한다.")
     @Test
     void fail_deleteByRunnerPostId_if_runnerPost_is_null() {
         assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(0L))
-                .isInstanceOf(RunnerPostBusinessException.NotFound.class);
+                .isInstanceOf(OldRunnerPostBusinessException.NotFound.class);
     }
 }

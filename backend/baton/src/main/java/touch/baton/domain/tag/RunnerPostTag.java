@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.tag.exception.TagException;
+import touch.baton.domain.tag.exception.OldTagException;
 
 import java.util.Objects;
 
@@ -48,11 +48,11 @@ public class RunnerPostTag {
 
     private void validateNotNull(final RunnerPost runnerPost, final Tag tag) {
         if (Objects.isNull(runnerPost)) {
-            throw new TagException.NotNull("runnerPost 은 null 일 수 없습니다.");
+            throw new OldTagException.NotNull("runnerPost 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(tag)) {
-            throw new TagException.NotNull("tag 은 null 일 수 없습니다.");
+            throw new OldTagException.NotNull("tag 은 null 일 수 없습니다.");
         }
     }
 

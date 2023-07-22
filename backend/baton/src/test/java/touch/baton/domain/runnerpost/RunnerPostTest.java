@@ -17,7 +17,7 @@ import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.exception.RunnerPostException;
+import touch.baton.domain.runnerpost.exception.OldRunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
@@ -122,7 +122,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("contents 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -139,7 +139,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("pull request url 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -156,7 +156,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("deadline 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -173,7 +173,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("watched count 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -190,7 +190,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("chatting room count 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -207,7 +207,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("runner 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -224,7 +224,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("runnerPostTags 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -241,7 +241,7 @@ class RunnerPostTest {
                     .supporter(supporter)
                     .runnerPostTags(null)
                     .build()
-            ).isInstanceOf(RunnerPostException.NotNull.class);
+            ).isInstanceOf(OldRunnerPostException.NotNull.class);
         }
 
         @DisplayName("태그, 조회수, 채팅수가 초기화된 RunnerPost 를 생성할 수 있다.")

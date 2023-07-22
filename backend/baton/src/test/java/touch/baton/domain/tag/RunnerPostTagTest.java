@@ -23,7 +23,7 @@ import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
-import touch.baton.domain.tag.exception.TagException;
+import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
 
@@ -105,7 +105,7 @@ class RunnerPostTagTest {
                     .runnerPost(null)
                     .tag(tag)
                     .build()
-            ).isInstanceOf(TagException.NotNull.class);
+            ).isInstanceOf(OldTagException.NotNull.class);
         }
 
         @DisplayName("tag 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -115,7 +115,7 @@ class RunnerPostTagTest {
                     .runnerPost(runnerPost)
                     .tag(null)
                     .build()
-            ).isInstanceOf(TagException.NotNull.class);
+            ).isInstanceOf(OldTagException.NotNull.class);
         }
     }
 }

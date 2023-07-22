@@ -7,7 +7,7 @@ import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
+import touch.baton.domain.runnerpost.exception.OldRunnerPostBusinessException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
@@ -66,7 +66,7 @@ public class RunnerPostService {
     public RunnerPost readByRunnerPostId(final Long runnerPostId) {
         final List<RunnerPostTag> findRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId);
         final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
-                .orElseThrow(() -> new RunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+                .orElseThrow(() -> new OldRunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
         return findRunnerPost;
     }
@@ -75,7 +75,7 @@ public class RunnerPostService {
     public void deleteByRunnerPostId(final Long runnerPostId) {
         final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.findById(runnerPostId);
         if (maybeRunnerPost.isEmpty()) {
-            throw new RunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
+            throw new OldRunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
         runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId)

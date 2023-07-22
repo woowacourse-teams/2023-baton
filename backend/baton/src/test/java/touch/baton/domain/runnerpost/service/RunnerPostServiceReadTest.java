@@ -19,7 +19,7 @@ import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
+import touch.baton.domain.runnerpost.exception.OldRunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -105,6 +105,6 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void fail_findByRunnerPostId_if_runner_post_is_null() {
         assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(0L))
-                .isInstanceOf(RunnerPostBusinessException.NotFound.class);
+                .isInstanceOf(OldRunnerPostBusinessException.NotFound.class);
     }
 }

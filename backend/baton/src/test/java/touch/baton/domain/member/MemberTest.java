@@ -3,7 +3,7 @@ package touch.baton.domain.member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.member.exception.MemberException;
+import touch.baton.domain.member.exception.OldMemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
@@ -45,7 +45,7 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(MemberException.NotNull.class);
+            ).isInstanceOf(OldMemberException.NotNull.class);
         }
 
         @DisplayName("이메일에 null 이 들어갈 경우 예외가 발생한다.")
@@ -59,7 +59,7 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(MemberException.NotNull.class);
+            ).isInstanceOf(OldMemberException.NotNull.class);
         }
 
         @DisplayName("oauth id 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -73,7 +73,7 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(MemberException.NotNull.class);
+            ).isInstanceOf(OldMemberException.NotNull.class);
         }
 
         @DisplayName("github url 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -87,7 +87,7 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(MemberException.NotNull.class);
+            ).isInstanceOf(OldMemberException.NotNull.class);
         }
 
         @DisplayName("company 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -101,7 +101,7 @@ class MemberTest {
                     .company(null)
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(MemberException.NotNull.class);
+            ).isInstanceOf(OldMemberException.NotNull.class);
         }
 
         @DisplayName("imageUrl 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -115,7 +115,7 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(null)
                     .build()
-            ).isInstanceOf(MemberException.NotNull.class);
+            ).isInstanceOf(OldMemberException.NotNull.class);
         }
     }
 }

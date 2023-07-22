@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.domain.tag.exception.TagException;
+import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.tag.vo.TagName;
 
@@ -45,11 +45,11 @@ public class Tag {
 
     private void validateNotNull(final TagName tagName, final TagCount tagCount) {
         if (Objects.isNull(tagName)) {
-            throw new TagException.NotNull("tagName 은 null 일 수 없습니다.");
+            throw new OldTagException.NotNull("tagName 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(tagCount)) {
-            throw new TagException.NotNull("tagCount 은 null 일 수 없습니다.");
+            throw new OldTagException.NotNull("tagCount 은 null 일 수 없습니다.");
         }
     }
 

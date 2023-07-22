@@ -17,7 +17,7 @@ import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.exception.RunnerPostException;
+import touch.baton.domain.runnerpost.exception.OldRunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
@@ -119,36 +119,36 @@ public class RunnerPost extends BaseEntity {
                                  final RunnerPostTags runnerPostTags
     ) {
         if (Objects.isNull(title)) {
-            throw new RunnerPostException.NotNull("title 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("title 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(contents)) {
-            throw new RunnerPostException.NotNull("contents 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("contents 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(pullRequestUrl)) {
-            throw new RunnerPostException.NotNull("pullRequestUrl 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("pullRequestUrl 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(deadline)) {
-            throw new RunnerPostException.NotNull("deadline 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("deadline 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(watchedCount)) {
-            throw new RunnerPostException.NotNull("watchedCount 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("watchedCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(chattingCount)) {
-            throw new RunnerPostException.NotNull("chattingCount 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("chattingCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(runner)) {
-            throw new RunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
         }
 
 
         if (Objects.isNull(runnerPostTags)) {
-            throw new RunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
+            throw new OldRunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
     }
 
@@ -192,6 +192,10 @@ public class RunnerPost extends BaseEntity {
 
     public void updateDeadLine(final Deadline deadline) {
         this.deadline = deadline;
+    }
+
+    public void increaseWatchedCount() {
+        this.watchedCount = watchedCount.increase();
     }
 
     @Override

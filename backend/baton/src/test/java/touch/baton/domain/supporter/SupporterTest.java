@@ -12,7 +12,7 @@ import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.supporter.exception.SupporterException;
+import touch.baton.domain.supporter.exception.OldSupporterException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
 
@@ -57,7 +57,7 @@ class SupporterTest {
                     .grade(Grade.BARE_FOOT)
                     .member(member)
                     .build()
-            ).isInstanceOf(SupporterException.NotNull.class);
+            ).isInstanceOf(OldSupporterException.NotNull.class);
         }
 
         @DisplayName("totalRating 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -70,7 +70,7 @@ class SupporterTest {
                     .grade(Grade.BARE_FOOT)
                     .member(member)
                     .build()
-            ).isInstanceOf(SupporterException.NotNull.class);
+            ).isInstanceOf(OldSupporterException.NotNull.class);
         }
 
         @DisplayName("grade 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -83,7 +83,7 @@ class SupporterTest {
                     .grade(null)
                     .member(member)
                     .build()
-            ).isInstanceOf(SupporterException.NotNull.class);
+            ).isInstanceOf(OldSupporterException.NotNull.class);
         }
 
         @DisplayName("member 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -96,7 +96,7 @@ class SupporterTest {
                     .grade(Grade.BARE_FOOT)
                     .member(null)
                     .build()
-            ).isInstanceOf(SupporterException.NotNull.class);
+            ).isInstanceOf(OldSupporterException.NotNull.class);
         }
     }
 }
