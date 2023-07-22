@@ -1,18 +1,16 @@
-package touch.baton.domain.runnerpost.exception;
+package touch.baton.domain.common.exception;
 
 import org.springframework.http.HttpStatus;
-import touch.baton.domain.common.exception.ErrorCode;
 
-public enum RunnerPostErrorCode implements ErrorCode {
+public enum ClientErrorCode implements ErrorCode {
     ;
-
     private final HttpStatus httpStatus;
     private final String errorCode;
     private final String message;
 
-    RunnerPostErrorCode(final HttpStatus httpStatus, final String errorCode, final String message) {
+    ClientErrorCode(final HttpStatus httpStatus, final String code, final String message) {
         this.httpStatus = httpStatus;
-        this.errorCode = errorCode;
+        this.errorCode = code;
         this.message = message;
     }
 

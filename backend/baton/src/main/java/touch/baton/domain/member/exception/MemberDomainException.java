@@ -1,11 +1,11 @@
 package touch.baton.domain.member.exception;
 
 import touch.baton.domain.common.exception.DomainException;
-import touch.baton.domain.common.exception.ErrorCode;
+import touch.baton.domain.common.exception.ServerErrorCode;
 
 public class MemberDomainException extends DomainException {
 
-    public MemberDomainException(final ErrorCode errorCode) {
+    public MemberDomainException(final ServerErrorCode errorCode) {
         super(errorCode);
     }
 }
