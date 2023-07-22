@@ -1,5 +1,7 @@
 package touch.baton.domain.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public abstract class BaseException extends RuntimeException {
 
     private final ErrorCode errorCode;
@@ -15,5 +17,9 @@ public abstract class BaseException extends RuntimeException {
 
     public String getErrorCode() {
         return errorCode.getErrorCode();
+    }
+
+    public HttpStatus getHttpStatus() {
+        return errorCode.getHttpStatus();
     }
 }
