@@ -28,7 +28,7 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
     private static final String TAG = "java";
     private static final String OTHER_TAG = "spring";
     private static final String PULL_REQUEST_URL = "https://github.com/shb03323";
-    private static final LocalDateTime DEADLINE = LocalDateTime.of(2023, 8, 30, 12, 10);
+    private static final LocalDateTime DEADLINE = LocalDateTime.now().plusHours(100);
     private static final String CONTENTS = "싸게 부탁드려요.";
 
     private RunnerPostService runnerPostService;
