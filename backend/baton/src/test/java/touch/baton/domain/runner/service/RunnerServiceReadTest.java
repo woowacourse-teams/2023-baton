@@ -18,7 +18,7 @@ import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.exception.RunnerException;
+import touch.baton.domain.runner.exception.OldRunnerException;
 import touch.baton.domain.runner.repository.RunnerRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -83,6 +83,6 @@ class RunnerServiceReadTest {
     void fail_readRunnerWithMember_if_id_is_invalid() {
         // when, then
         assertThatThrownBy(() -> runnerService.readRunnerWithMember(999L))
-                .isInstanceOf(RunnerException.NotFound.class);
+                .isInstanceOf(OldRunnerException.NotFound.class);
     }
 }

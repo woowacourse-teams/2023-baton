@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.member.exception.MemberException;
+import touch.baton.domain.member.exception.OldMemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
@@ -85,27 +85,27 @@ public class Member extends BaseEntity {
                                  final ImageUrl imageUrl
     ) {
         if (Objects.isNull(memberName)) {
-            throw new MemberException.NotNull("name 는 null 일 수 없습니다.");
+            throw new OldMemberException.NotNull("name 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(email)) {
-            throw new MemberException.NotNull("email 는 null 일 수 없습니다.");
+            throw new OldMemberException.NotNull("email 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(oauthId)) {
-            throw new MemberException.NotNull("oauthId 는 null 일 수 없습니다.");
+            throw new OldMemberException.NotNull("oauthId 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(githubUrl)) {
-            throw new MemberException.NotNull("githubUrl 는 null 일 수 없습니다.");
+            throw new OldMemberException.NotNull("githubUrl 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(company)) {
-            throw new MemberException.NotNull("company 는 null 일 수 없습니다.");
+            throw new OldMemberException.NotNull("company 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(imageUrl)) {
-            throw new MemberException.NotNull("imageUrl 는 null 일 수 없습니다.");
+            throw new OldMemberException.NotNull("imageUrl 는 null 일 수 없습니다.");
         }
     }
 }

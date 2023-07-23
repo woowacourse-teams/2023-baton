@@ -15,7 +15,7 @@ import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.supporter.exception.SupporterException;
+import touch.baton.domain.supporter.exception.OldSupporterException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
 
@@ -84,23 +84,23 @@ public class Supporter extends BaseEntity {
                                  final Member member
     ) {
         if (Objects.isNull(reviewCount)) {
-            throw new SupporterException.NotNull("reviewCount 는 null 일 수 없습니다.");
+            throw new OldSupporterException.NotNull("reviewCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(starCount)) {
-            throw new SupporterException.NotNull("starCount 는 null 일 수 없습니다.");
+            throw new OldSupporterException.NotNull("starCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(totalRating)) {
-            throw new SupporterException.NotNull("totalRating 은 null 일 수 없습니다.");
+            throw new OldSupporterException.NotNull("totalRating 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(grade)) {
-            throw new SupporterException.NotNull("grade 는 null 일 수 없습니다.");
+            throw new OldSupporterException.NotNull("grade 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(member)) {
-            throw new SupporterException.NotNull("member 는 null 일 수 없습니다.");
+            throw new OldSupporterException.NotNull("member 는 null 일 수 없습니다.");
         }
     }
 }
