@@ -28,9 +28,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       React: 'react',
     }),
-    new webpack.EnvironmentPlugin({
-      NODE_ENV: 'development',
-    }),
   ],
   resolve: {
     alias: {
