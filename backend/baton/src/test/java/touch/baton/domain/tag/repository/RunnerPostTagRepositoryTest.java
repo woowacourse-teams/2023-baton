@@ -24,6 +24,7 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
@@ -83,6 +84,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
                 .watchedCount(new WatchedCount(1))
                 .chattingCount(new ChattingCount(1))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(saveRunner)
                 .supporter(null)
                 .build();
@@ -138,6 +140,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
                 .watchedCount(new WatchedCount(1))
                 .chattingCount(new ChattingCount(1))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(saveRunner)
                 .supporter(null)
                 .build();

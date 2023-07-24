@@ -23,6 +23,7 @@ import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.supporter.vo.ReviewCount;
@@ -115,6 +116,7 @@ public class RunnerPostData {
                 .deadline(new Deadline(LocalDateTime.of(2023, 9, 1, 10, 10)))
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))

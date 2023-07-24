@@ -1,7 +1,9 @@
 package touch.baton.domain.runnerpost;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -20,6 +22,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.exception.OldRunnerPostException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -60,6 +64,10 @@ public class RunnerPost extends BaseEntity {
     @Embedded
     private ChattingCount chattingCount;
 
+    @Enumerated(STRING)
+    @Column(nullable = false)
+    private ReviewStatus reviewStatus = ReviewStatus.NOT_STARTED;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_runner"), nullable = false)
     private Runner runner;
@@ -78,11 +86,12 @@ public class RunnerPost extends BaseEntity {
                        final Deadline deadline,
                        final WatchedCount watchedCount,
                        final ChattingCount chattingCount,
+                       final ReviewStatus reviewStatus,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, runner, supporter, runnerPostTags);
+        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, reviewStatus, runner, supporter, runnerPostTags);
     }
 
     private RunnerPost(final Long id,
@@ -92,11 +101,12 @@ public class RunnerPost extends BaseEntity {
                        final Deadline deadline,
                        final WatchedCount watchedCount,
                        final ChattingCount chattingCount,
+                       final ReviewStatus reviewStatus,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, runner, runnerPostTags);
+        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, reviewStatus, runner, runnerPostTags);
         this.id = id;
         this.title = title;
         this.contents = contents;
@@ -104,6 +114,7 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
         this.watchedCount = watchedCount;
         this.chattingCount = chattingCount;
+        this.reviewStatus = reviewStatus;
         this.runner = runner;
         this.supporter = supporter;
         this.runnerPostTags = runnerPostTags;
@@ -115,6 +126,7 @@ public class RunnerPost extends BaseEntity {
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
                                  final ChattingCount chattingCount,
+                                 final ReviewStatus reviewStatus,
                                  final Runner runner,
                                  final RunnerPostTags runnerPostTags
     ) {
@@ -142,6 +154,10 @@ public class RunnerPost extends BaseEntity {
             throw new OldRunnerPostException.NotNull("chattingCount 는 null 일 수 없습니다.");
         }
 
+        if (Objects.isNull(reviewStatus)) {
+            throw new OldRunnerPostException.NotNull("reviewStatus 는 null 일 수 없습니다.");
+        }
+
         if (Objects.isNull(runner)) {
             throw new OldRunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
         }
@@ -165,6 +181,7 @@ public class RunnerPost extends BaseEntity {
                 .runner(runner)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .watchedCount(WatchedCount.zero())
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .chattingCount(ChattingCount.zero())
                 .build();
     }

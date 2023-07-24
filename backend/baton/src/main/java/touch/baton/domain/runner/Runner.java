@@ -1,5 +1,6 @@
 package touch.baton.domain.runner;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -37,6 +38,7 @@ public class Runner extends BaseEntity {
     private TotalRating totalRating;
 
     @Enumerated(STRING)
+    @Column(nullable = false)
     private Grade grade;
 
     @OneToOne(fetch = LAZY)

@@ -20,6 +20,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
@@ -78,6 +79,7 @@ class RunnerPostTagTest {
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))

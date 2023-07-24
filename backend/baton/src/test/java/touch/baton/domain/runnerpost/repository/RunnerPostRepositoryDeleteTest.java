@@ -23,6 +23,7 @@ import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTags;
 
 import java.time.LocalDateTime;
@@ -71,6 +72,7 @@ class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
                 .watchedCount(new WatchedCount(1))
                 .chattingCount(new ChattingCount(1))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(saveRunner)
                 .supporter(null)
                 .build();

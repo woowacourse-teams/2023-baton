@@ -22,6 +22,7 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.OldRunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
@@ -74,6 +75,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
                 .supporter(null)
                 .build();
