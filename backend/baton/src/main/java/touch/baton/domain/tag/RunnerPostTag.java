@@ -28,11 +28,13 @@ public class RunnerPostTag {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "runner_post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_runner_post_tag_runner_post"))
+    @JoinColumn(name = "runner_post_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "fk_runner_post_tag_to_runner_post"))
     private RunnerPost runnerPost;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "tag_id", nullable = false, foreignKey = @ForeignKey(name = "fk_runner_post_tag_tag"))
+    @JoinColumn(name = "tag_id", nullable = false, foreignKey = @ForeignKey(name = "fk_runner_post_tag_to_tag"))
     private Tag tag;
 
     @Builder
