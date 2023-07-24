@@ -1,11 +1,11 @@
-import InputBox from '@components/InputBox';
-import TagInput from '@components/TagInput';
-import TextArea from '@components/Textarea';
-import Button from '@components/common/Button';
-import Modal from '@components/common/Modal';
-import { BATON_BASE_URL } from '@constants/index';
-import { usePageRouter } from '@hooks/usePageRouter';
-import Layout from '@layout/Layout';
+import InputBox from '@/components/InputBox';
+import TagInput from '@/components/TagInput';
+import TextArea from '@/components/Textarea';
+import Button from '@/components/common/Button';
+import Modal from '@/components/common/Modal';
+import { BATON_BASE_URL } from '@/constants/index';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import Layout from '@/layout/Layout';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 

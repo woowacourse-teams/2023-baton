@@ -1,8 +1,8 @@
-import RunnerPostList from '@components/RunnerPost/RunnerPostList/RunnerPostList';
-import Button from '@components/common/Button';
-import Tag from '@components/common/Tag';
-import { usePageRouter } from '@hooks/usePageRouter';
-import Layout from '@layout/Layout';
+import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
+import Button from '@/components/common/Button';
+import Tag from '@/components/common/Tag';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import Layout from '@/layout/Layout';
 import React from 'react';
 import { styled } from 'styled-components';
 

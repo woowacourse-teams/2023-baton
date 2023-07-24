@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import closeIcon from '@assets/close-icon-red.svg';
+import closeIcon from '@/assets/close-icon-red.svg';
 
 interface Props extends React.HTMLProps<HTMLButtonElement> {
   children: React.ReactNode;

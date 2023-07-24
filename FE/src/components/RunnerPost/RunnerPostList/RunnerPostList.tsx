@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
-import { BATON_BASE_URL } from '@constants/index';
-import { RunnerPost } from '../../../types/runnerPost';
+import { BATON_BASE_URL } from '@/constants/index';
+import { RunnerPost } from '@/types/runnerPost';
 
 const RunnerPostList = () => {
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost | null>(null);

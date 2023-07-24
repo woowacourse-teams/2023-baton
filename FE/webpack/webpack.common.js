@@ -34,14 +34,7 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      '@components': path.resolve(__dirname, '../src/components'),
-      '@type': path.resolve(__dirname, '../src/types'),
-      '@hooks': path.resolve(__dirname, '../src/hooks'),
-      '@pages': path.resolve(__dirname, '../src/pages'),
-      '@styles': path.resolve(__dirname, '../src/styles'),
-      '@constants': path.resolve(__dirname, '../src/constants'),
-      '@assets': path.resolve(__dirname, '../src/assets'),
-      '@layout': path.resolve(__dirname, '../src/layout'),
+      '@': path.resolve(__dirname, '../src'),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },
