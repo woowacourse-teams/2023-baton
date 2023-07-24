@@ -34,13 +34,14 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      '@hooks': path.resolve(__dirname, '../src/hooks'),
       '@components': path.resolve(__dirname, '../src/components'),
-      '@layout': path.resolve(__dirname, '../src/layout'),
+      '@type': path.resolve(__dirname, '../src/types'),
+      '@hooks': path.resolve(__dirname, '../src/hooks'),
       '@pages': path.resolve(__dirname, '../src/pages'),
-      '@utils': path.resolve(__dirname, '../src/utils'),
-      '@types': path.resolve(__dirname, '../src/types'),
+      '@styles': path.resolve(__dirname, '../src/styles'),
+      '@constants': path.resolve(__dirname, '../src/constants'),
       '@assets': path.resolve(__dirname, '../src/assets'),
+      '@layout': path.resolve(__dirname, '../src/layout'),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },

@@ -1,12 +1,14 @@
-import Avatar from '@components/common/Avatar';
-import Button from '@components/common/Button';
-import Layout from '@layout/Layout';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { usePageRouter } from '@hooks/usePageRouter';
+import Layout from '@layout/Layout';
+import PostTagList from '@components/PostTagList';
+import Avatar from '@components/common/Avatar';
 import eyeIcon from '@assets/eye-icon.svg';
 import chattingIcon from '@assets/chatting-icon.svg';
-import PostTagList from '@components/PostTagList';
-import { usePageRouter } from '@hooks/usePageRouter';
+import Button from '@components/common/Button';
+import { BATON_BASE_URL } from '@constants/index';
 
 interface Profile {
   memberId: number;
@@ -18,7 +20,7 @@ interface Profile {
 interface RunnerPost {
   runnerPostId: number;
   title: string;
-  deadline: string;
+  deadLine: string;
   tags: string[];
   chattingCount: number;
   watchedCount: number;
@@ -27,8 +29,8 @@ interface RunnerPost {
   profile: Profile;
 }
 
-const getRunnerPost = async (): Promise<RunnerPost> => {
-  const response = await fetch(`msw/posts/runner/1`, {
+const getRunnerPost = async (runnerPostId: number): Promise<RunnerPost> => {
+  const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
     method: 'GET',
   });
 
@@ -43,10 +45,14 @@ const getRunnerPost = async (): Promise<RunnerPost> => {
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<RunnerPost | null>(null);
+
+  console.log(runnerPost);
+
   const { goToMainPage } = usePageRouter();
+  const { runnerPostId } = useParams();
 
   useEffect(() => {
-    getRunnerPost()
+    getRunnerPost(Number(runnerPostId))
       .then((data) => {
         setRunnerPost(data);
       })
@@ -67,7 +73,7 @@ const RunnerPostPage = () => {
                 <S.EditLink>수정</S.EditLink> <S.EditLink>삭제</S.EditLink>
               </S.EditLinkContainer>
               <S.PostTitle>{runnerPost.title}.</S.PostTitle>
-              <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
+              <S.PostDeadline>{runnerPost.deadLine.replace('T', ' ')} 까지</S.PostDeadline>
             </S.PostHeaderContainer>
             <S.PostBodyContainer>
               <S.InformationContainer>

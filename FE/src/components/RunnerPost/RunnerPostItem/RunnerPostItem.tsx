@@ -1,11 +1,11 @@
-import Avatar from '@components/common/Avatar';
-import { RunnerPostData } from '../../../types/RunnerPost';
 import React from 'react';
 import { styled } from 'styled-components';
 import { usePageRouter } from '@hooks/usePageRouter';
+import Avatar from '@components/common/Avatar';
+import { RunnerPostData } from '../../../types/runnerPost';
 
 const RunnerPostItem = ({
-  runnerPostData: { runnerPostId, title, deadline, tags, profile, watchedCount, chattingCount },
+  runnerPostData: { runnerPostId, title, deadline, tags, imageUrl, name, watchedCount, chattingCount },
 }: {
   runnerPostData: RunnerPostData;
 }) => {
@@ -28,8 +28,8 @@ const RunnerPostItem = ({
       </S.LeftSideContainer>
       <S.RightSideContainer>
         <S.ProfileContainer>
-          <Avatar width="60px" height="60px" imageUrl={profile.imageUrl} />
-          <S.ProfileName>{profile.name}</S.ProfileName>
+          <Avatar width="60px" height="60px" imageUrl={imageUrl} />
+          <S.ProfileName>{name}</S.ProfileName>
         </S.ProfileContainer>
         <S.ChatViewContainer>
           <div>조회수: {watchedCount}</div>
