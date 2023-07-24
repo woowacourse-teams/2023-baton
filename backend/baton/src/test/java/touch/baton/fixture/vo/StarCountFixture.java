@@ -2,7 +2,7 @@ package touch.baton.fixture.vo;
 
 import touch.baton.domain.supporter.vo.StarCount;
 
-public class StarCountFixture {
+public abstract class StarCountFixture {
 
     private StarCountFixture() {
     }
