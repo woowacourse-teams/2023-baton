@@ -266,7 +266,7 @@ class RunnerPostTest {
             );
         }
     }
-    
+
     @DisplayName("runnerPostTags 전체를 추가할 수 있다.")
     @Test
     void addAllRunnerPostTags() {

@@ -146,7 +146,6 @@ public class RunnerPost extends BaseEntity {
             throw new OldRunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
         }
 
-
         if (Objects.isNull(runnerPostTags)) {
             throw new OldRunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
         }
