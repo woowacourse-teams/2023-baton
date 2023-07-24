@@ -7,7 +7,7 @@ public abstract class TotalRatingFixture {
     private TotalRatingFixture() {
     }
 
-    public static TotalRating totalRating(final int totalRating) {
-        return new TotalRating(totalRating);
+    public static TotalRating totalRating(final int value) {
+        return new TotalRating(value);
     }
 }
