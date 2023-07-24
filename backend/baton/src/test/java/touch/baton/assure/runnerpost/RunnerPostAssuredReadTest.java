@@ -3,17 +3,15 @@ package touch.baton.assure.runnerpost;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.fixture.MemberFixture;
 import touch.baton.assure.fixture.RunnerFixture;
-import touch.baton.assure.fixture.RunnerPostFixture;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.tag.RunnerPostTags;
+import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
@@ -32,16 +30,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
         final Runner runner = RunnerFixture.from(member, 0, Grade.BARE_FOOT);
         runnerRepository.save(runner);
 
-        final RunnerPost runnerPost = RunnerPostFixture.from(runner,
-                null,
-                "제 코드를 리뷰해주세요",
-                "제 코드의 내용은 이렇습니다.",
-                "https://",
-                LocalDateTime.now(),
-                0,
-                0,
-                new RunnerPostTags(new ArrayList<>())
-        );
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, LocalDateTime.now().plusHours(100));
         runnerPostRepository.save(runnerPost);
 
         RunnerPostAssuredSupport

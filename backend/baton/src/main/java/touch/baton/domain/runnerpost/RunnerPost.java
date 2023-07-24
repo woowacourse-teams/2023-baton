@@ -66,7 +66,7 @@ public class RunnerPost extends BaseEntity {
 
     @Enumerated(STRING)
     @Column(nullable = false)
-    private ReviewStatus reviewStatus;
+    private ReviewStatus reviewStatus = ReviewStatus.NOT_STARTED;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_runner"), nullable = false)

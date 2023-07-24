@@ -8,6 +8,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTags;
 
@@ -35,6 +36,7 @@ public abstract class RunnerPostFixture {
                 .deadline(new Deadline(deadline))
                 .watchedCount(new WatchedCount(watchedCount))
                 .chattingCount(new ChattingCount(chattingRoomCount))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(runnerPostTags)
