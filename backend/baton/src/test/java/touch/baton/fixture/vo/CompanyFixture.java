@@ -7,7 +7,7 @@ public abstract class CompanyFixture {
     private CompanyFixture() {
     }
 
-    public static Company company(final String company) {
-        return new Company(company);
+    public static Company company(final String value) {
+        return new Company(value);
     }
 }

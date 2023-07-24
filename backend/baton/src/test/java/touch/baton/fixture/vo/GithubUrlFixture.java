@@ -7,7 +7,7 @@ public abstract class GithubUrlFixture {
     private GithubUrlFixture() {
     }
 
-    public static GithubUrl githubUrl(final String githubUrl) {
-        return new GithubUrl(githubUrl);
+    public static GithubUrl githubUrl(final String value) {
+        return new GithubUrl(value);
     }
 }

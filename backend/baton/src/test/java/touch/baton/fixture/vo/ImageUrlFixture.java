@@ -7,7 +7,7 @@ public abstract class ImageUrlFixture {
     private ImageUrlFixture() {
     }
 
-    public static ImageUrl imageUrl(final String imageUrl) {
-        return new ImageUrl(imageUrl);
+    public static ImageUrl imageUrl(final String value) {
+        return new ImageUrl(value);
     }
 }
