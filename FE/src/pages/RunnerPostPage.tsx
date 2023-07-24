@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
-import { usePageRouter } from '@hooks/usePageRouter';
-import Layout from '@layout/Layout';
-import PostTagList from '@components/PostTagList';
-import Avatar from '@components/common/Avatar';
-import eyeIcon from '@assets/eye-icon.svg';
-import chattingIcon from '@assets/chatting-icon.svg';
-import Button from '@components/common/Button';
-import { BATON_BASE_URL } from '@constants/index';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import Layout from '@/layout/Layout';
+import PostTagList from '@/components/PostTagList';
+import Avatar from '@/components/common/Avatar';
+import eyeIcon from '@/assets/eye-icon.svg';
+import chattingIcon from '@/assets/chatting-icon.svg';
+import Button from '@/components/common/Button';
+import { BATON_BASE_URL } from '@/constants/index';
 
 interface Profile {
   memberId: number;

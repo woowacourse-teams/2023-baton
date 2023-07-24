@@ -1,10 +1,10 @@
 import React from 'react';
 import App from './App';
 import { createBrowserRouter } from 'react-router-dom';
-import MainPage from '@pages/MainPage';
-import RunnerPostPage from '@pages/RunnerPostPage';
-import RunnerPostCreatePage from '@pages/RunnerPostCreatePage';
-import LoginPage from '@pages/LoginPage';
+import MainPage from './pages/MainPage';
+import RunnerPostPage from './pages/RunnerPostPage';
+import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
+import LoginPage from './pages/LoginPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',

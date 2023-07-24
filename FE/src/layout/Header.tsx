@@ -1,7 +1,7 @@
-import { usePageRouter } from '@hooks/usePageRouter';
+import { usePageRouter } from '@/hooks/usePageRouter';
 import React from 'react';
 import styled from 'styled-components';
-import LogoImage from '@assets/logo-image.svg';
+import LogoImage from '@/assets/logo-image.svg';
 
 const Header = () => {
   const { goToMainPage } = usePageRouter();

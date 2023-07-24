@@ -1,8 +1,8 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import { usePageRouter } from '@hooks/usePageRouter';
-import Avatar from '@components/common/Avatar';
-import { RunnerPostData } from '../../../types/runnerPost';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import Avatar from '@/components/common/Avatar';
+import { RunnerPostData } from '@/types/runnerPost';
 
 const RunnerPostItem = ({
   runnerPostData: { runnerPostId, title, deadline, tags, imageUrl, name, watchedCount, chattingCount },
