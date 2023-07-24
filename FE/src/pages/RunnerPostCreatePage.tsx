@@ -3,6 +3,7 @@ import TagInput from '@components/TagInput';
 import TextArea from '@components/Textarea';
 import Button from '@components/common/Button';
 import Modal from '@components/common/Modal';
+import { BATON_BASE_URL } from '@constants/index';
 import { usePageRouter } from '@hooks/usePageRouter';
 import Layout from '@layout/Layout';
 import React, { useState } from 'react';
@@ -91,14 +92,14 @@ const RunnerPostCreatePage = () => {
 
   const postRunnerForm = async (data: RunnerPostCreateType) => {
     const body = JSON.stringify(data);
-    const response = await fetch('msw/posts/runner', {
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner`, {
       method: 'POST',
       body,
       headers: {
         'Content-Type': 'application/json',
       },
     });
-    
+
     if (response.status !== 201) throw new Error(`${response.status} ERROR`);
   };
 
@@ -155,7 +156,9 @@ const RunnerPostCreatePage = () => {
             placeholder="> 리뷰어가 작성된 코드의 의미를 파악할 수 있도록 내용을 작성해주시면 더 나은 리뷰가 될 수 있어요 :)"
           />
           <S.ButtonContainer>
-            <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>취소</Button>
+            <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
+              취소
+            </Button>
             <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={toggleModal}>
               리뷰요청 글 생성
             </Button>

@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
-import { RunnerPost } from '../../../types/RunnerPost';
+import { BATON_BASE_URL } from '@constants/index';
+import { RunnerPost } from '../../../types/runnerPost';
 
 const RunnerPostList = () => {
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost | null>(null);
 
   const getRunnerPost = async () => {
     try {
-      const response = await fetch('msw/posts/runner', {
+      const response = await fetch(`${BATON_BASE_URL}/posts/runner`, {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
       });
 
-      if (!response.ok) throw new Error(`네트워크 에러 코드: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`네트워크 에러 코드: ${response.status}`);
+      }
 
       const runnerPostList = await response.json();
 
@@ -36,7 +36,7 @@ const RunnerPostList = () => {
 
   return (
     <S.RunnerPostWrapper>
-      {runnerPostList?.data.map((runnerPostData) => (
+      {runnerPostList?.runnerPosts.map((runnerPostData) => (
         <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
       ))}
     </S.RunnerPostWrapper>

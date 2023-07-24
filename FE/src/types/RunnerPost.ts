@@ -3,11 +3,12 @@ export interface RunnerPostData {
   title: string;
   deadline: string;
   tags: string[];
-  profile: { name: string; imageUrl: string };
+  name: string;
+  imageUrl: string;
   watchedCount: number;
   chattingCount: number;
 }
 
 export interface RunnerPost {
-  data: RunnerPostData[];
+  runnerPosts: RunnerPostData[];
 }
