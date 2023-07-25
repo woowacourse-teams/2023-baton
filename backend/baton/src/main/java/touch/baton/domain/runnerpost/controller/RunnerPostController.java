@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import touch.baton.domain.common.response.RunnerPostReadResponse;
+import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
@@ -20,6 +20,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts/runner")
@@ -44,9 +45,9 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}")
-    public ResponseEntity<RunnerPostResponse.Single> readByRunnerPostId(@PathVariable final Long runnerPostId) {
-        final RunnerPostResponse.Single response
-                = RunnerPostResponse.Single.from(runnerPostService.readByRunnerPostId(runnerPostId));
+    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@PathVariable final Long runnerPostId) {
+        final RunnerPostResponse.Detail response
+                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId));
 
         return ResponseEntity.ok(response);
     }
@@ -71,11 +72,11 @@ public class RunnerPostController {
     }
 
     @GetMapping
-    public ResponseEntity<RunnerPostReadResponse> readAllRunnerPosts() {
-        final RunnerPostReadResponse foundRunnerPosts = RunnerPostReadResponse
-                .fromRunnerPostResponses(touch.baton.domain.common.response.RunnerPostResponse
-                        .fromRunnerPosts(runnerPostService.readAllRunnerPosts()));
+    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPosts() {
+        final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
+                .map(RunnerPostResponse.Simple::from)
+                .toList();
 
-        return ResponseEntity.ok(foundRunnerPosts);
+        return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
     }
 }
