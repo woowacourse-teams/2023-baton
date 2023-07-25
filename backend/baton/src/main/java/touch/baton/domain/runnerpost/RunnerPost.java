@@ -69,11 +69,11 @@ public class RunnerPost extends BaseEntity {
     private ReviewStatus reviewStatus = ReviewStatus.NOT_STARTED;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_runner"), nullable = false)
+    @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_to_runner"), nullable = false)
     private Runner runner;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "supporter_id", foreignKey = @ForeignKey(name = "fk_runner_post_supporter"), nullable = true)
+    @JoinColumn(name = "supporter_id", foreignKey = @ForeignKey(name = "fk_runner_post_to_supporter"), nullable = true)
     private Supporter supporter;
 
     @Embedded

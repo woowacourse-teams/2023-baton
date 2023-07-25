@@ -50,7 +50,7 @@ public class Supporter extends BaseEntity {
     private Grade grade;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_member"), nullable = false)
+    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_to_member"), nullable = false)
     private Member member;
 
     @Builder
