@@ -52,14 +52,6 @@ public class RunnerPostController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/{runnerPostId}/test")
-//    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostIdVersionTest(@PathVariable final Long runnerPostId) {
-//        final RunnerPostResponse.Detail response
-//                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId));
-//
-//        return ResponseEntity.ok(response);
-//    }
-
     @DeleteMapping("/{runnerPostId}")
     public ResponseEntity<Void> deleteByRunnerPostId(@PathVariable final Long runnerPostId) {
         runnerPostService.deleteByRunnerPostId(runnerPostId);
