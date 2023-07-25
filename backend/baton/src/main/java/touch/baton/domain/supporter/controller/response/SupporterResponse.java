@@ -8,7 +8,6 @@ public record SupporterResponse() {
                          String name,
                          String company,
                          int reviewCount,
-                         int totalRating,
                          String githubUrl,
                          String introduction
     ) {
@@ -19,7 +18,6 @@ public record SupporterResponse() {
                     supporter.getMember().getMemberName().getValue(),
                     supporter.getMember().getCompany().getValue(),
                     supporter.getReviewCount().getValue(),
-                    supporter.getTotalRating().getValue(),
                     supporter.getMember().getGithubUrl().getValue(),
                     supporter.getIntroduction().getValue()
             );
