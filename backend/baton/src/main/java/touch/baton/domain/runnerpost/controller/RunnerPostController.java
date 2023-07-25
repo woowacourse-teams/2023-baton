@@ -67,6 +67,14 @@ public class RunnerPostController {
         return ResponseEntity.ok(response);
     }
 
+//    @GetMapping("/{runnerPostId}/test")
+//    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostIdVersionTest(@PathVariable final Long runnerPostId) {
+//        final RunnerPostResponse.Detail response
+//                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId));
+//
+//        return ResponseEntity.ok(response);
+//    }
+
     @DeleteMapping("/{runnerPostId}")
     public ResponseEntity<Void> deleteByRunnerPostId(@PathVariable final Long runnerPostId) {
         runnerPostService.deleteByRunnerPostId(runnerPostId);
@@ -88,6 +96,15 @@ public class RunnerPostController {
 
     @GetMapping
     public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPosts() {
+        final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
+                .map(RunnerPostResponse.Simple::from)
+                .toList();
+
+        return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPostsForTest() {
         final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
                 .map(RunnerPostResponse.Simple::from)
                 .toList();

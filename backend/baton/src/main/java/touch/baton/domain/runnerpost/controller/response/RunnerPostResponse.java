@@ -40,7 +40,8 @@ public record RunnerPostResponse() {
                          List<String> tags,
                          ProfileResponse.Simple profile,
                          int watchedCount,
-                         int chattingCount
+                         int chattingCount,
+                         String reviewStatus
     ) {
 
         public static Simple from(final RunnerPost runnerPost) {
@@ -51,7 +52,8 @@ public record RunnerPostResponse() {
                     convertToTags(runnerPost),
                     ProfileResponse.Simple.from(runnerPost.getRunner().getMember()),
                     runnerPost.getWatchedCount().getValue(),
-                    runnerPost.getChattingCount().getValue()
+                    runnerPost.getChattingCount().getValue(),
+                    runnerPost.getReviewStatus().name()
             );
         }
     }
