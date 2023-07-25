@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.service.RunnerService;
+import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 
 import java.net.URI;
@@ -36,6 +37,20 @@ public class RunnerPostController {
         Runner runner = runnerService.readRunnerWithMember(1L);
 
         final Long savedId = runnerPostService.createRunnerPost(runner, request);
+
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{id}")
+                .buildAndExpand(savedId)
+                .toUri();
+        return ResponseEntity.created(redirectUri).build();
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<Void> createRunnerPostVersionTest(@RequestBody RunnerPostCreateTestRequest request) {
+        // TODO 07/19 로그인 기능 개발시 1L 변경 요망
+        Runner runner = runnerService.readRunnerWithMember(1L);
+
+        final Long savedId = runnerPostService.createRunnerPostTest(runner, request);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{id}")
