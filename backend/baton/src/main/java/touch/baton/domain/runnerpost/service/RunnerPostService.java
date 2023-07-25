@@ -40,7 +40,7 @@ public class RunnerPostService {
 
     @Transactional
     public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
-        RunnerPost runnerPost = toDomain(runner, request);
+        final RunnerPost runnerPost = toDomain(runner, request);
         runnerPostRepository.save(runnerPost);
 
         List<Tag> toSaveTags = new ArrayList<>();
