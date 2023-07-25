@@ -3,9 +3,11 @@ import { styled } from 'styled-components';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Avatar from '@/components/common/Avatar';
 import { RunnerPostData } from '@/types/runnerPost';
+import Label from '@/components/common/Label';
+import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 
 const RunnerPostItem = ({
-  runnerPostData: { runnerPostId, title, deadline, tags, imageUrl, name, watchedCount, chattingCount },
+  runnerPostData: { runnerPostId, title, deadline, tags, imageUrl, name, watchedCount, chattingCount, reviewStatus },
 }: {
   runnerPostData: RunnerPostData;
 }) => {
@@ -19,7 +21,10 @@ const RunnerPostItem = ({
     <S.RunnerPostItemContainer onClick={handlePostClick}>
       <S.LeftSideContainer>
         <S.PostTitle>{title}</S.PostTitle>
-        <S.DeadLine>{deadline} 까지</S.DeadLine>
+        <S.DeadLineContainer>
+          <S.DeadLine>{deadline} 까지</S.DeadLine>
+          <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : 'RED'}>{REVIEW_STATUS_LABEL_TEXT[reviewStatus]}</Label>
+        </S.DeadLineContainer>
         <S.TagContainer>
           {tags.map((tag, index) => (
             <span key={index}>#{tag}</span>
@@ -69,6 +74,12 @@ const S = {
 
     font-size: 28px;
     font-weight: 700;
+  `,
+
+  DeadLineContainer: styled.div`
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
   `,
 
   DeadLine: styled.p`
