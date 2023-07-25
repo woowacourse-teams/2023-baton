@@ -1,3 +1,5 @@
+export type ReviewStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'DONE';
+
 export interface RunnerPostData {
   runnerPostId: number;
   title: string;
@@ -7,6 +9,7 @@ export interface RunnerPostData {
   imageUrl: string;
   watchedCount: number;
   chattingCount: number;
+  reviewStatus: ReviewStatus;
 }
 
 export interface RunnerPost {
