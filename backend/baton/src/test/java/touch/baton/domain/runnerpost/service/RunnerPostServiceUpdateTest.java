@@ -12,6 +12,7 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
@@ -42,10 +43,13 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private SupporterRepository supporterRepository;
+
     @BeforeEach
     void setUp() {
         super.setData();
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository);
+        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
     }
 
     @DisplayName("Runner Post 수정에 성공한다.")

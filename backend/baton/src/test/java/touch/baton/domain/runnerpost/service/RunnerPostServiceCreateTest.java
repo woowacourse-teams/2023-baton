@@ -13,6 +13,7 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
 
@@ -42,9 +43,12 @@ class RunnerPostServiceCreateTest extends RunnerFixture {
     @Autowired
     private TagRepository tagRepository;
 
+    @Autowired
+    private SupporterRepository supporterRepository;
+
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository);
+        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
     }
 
     @DisplayName("Runner post 저장에 성공한다.")
