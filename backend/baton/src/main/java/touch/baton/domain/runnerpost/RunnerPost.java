@@ -210,6 +210,10 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
     }
 
+    public void assignSupporter(final Supporter supporter) {
+        this.supporter = supporter;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

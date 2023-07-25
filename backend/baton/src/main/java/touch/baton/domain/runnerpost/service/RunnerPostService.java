@@ -10,9 +10,13 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.OldRunnerPostBusinessException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.supporter.exception.OldSupporterException;
+import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
@@ -21,6 +25,7 @@ import touch.baton.domain.tag.vo.TagName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -31,10 +36,61 @@ public class RunnerPostService {
     private final RunnerPostRepository runnerPostRepository;
     private final RunnerPostTagRepository runnerPostTagRepository;
     private final TagRepository tagRepository;
+    private final SupporterRepository supporterRepository;
 
     @Transactional
     public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
         RunnerPost runnerPost = toDomain(runner, request);
+        runnerPostRepository.save(runnerPost);
+
+        List<Tag> toSaveTags = new ArrayList<>();
+        for (final String tagName : request.tags()) {
+            final Optional<Tag> maybeTag = tagRepository.findByTagName(new TagName(tagName));
+
+            if (maybeTag.isEmpty()) {
+                final Tag savedTag = tagRepository.save(Tag.newInstance(tagName));
+                toSaveTags.add(savedTag);
+                continue;
+            }
+
+            final Tag presentTag = maybeTag.get();
+            presentTag.increaseCount();
+            toSaveTags.add(presentTag);
+        }
+
+        final List<RunnerPostTag> postTags = toSaveTags.stream()
+                .map(tag -> RunnerPostTag.builder()
+                        .tag(tag)
+                        .runnerPost(runnerPost)
+                        .build())
+                .toList();
+
+        runnerPost.addAllRunnerPostTags(postTags);
+        return runnerPost.getId();
+    }
+
+    private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
+        return RunnerPost.newInstance(request.title(),
+                request.contents(),
+                request.pullRequestUrl(),
+                request.deadline(),
+                runner);
+    }
+
+    @Transactional
+    public Long createRunnerPostTest(final Runner runner, final RunnerPostCreateTestRequest request) {
+        final RunnerPost runnerPost = RunnerPost.newInstance(request.title(),
+                request.contents(),
+                request.pullRequestUrl(),
+                request.deadline(),
+                runner);
+
+        if (Objects.nonNull(request.supporterId())) {
+            final Supporter supporter = supporterRepository.findById(request.supporterId())
+                    .orElseThrow(() -> new OldSupporterException.NotNull("서포터가 존재하지 않습니다."));
+            runnerPost.assignSupporter(supporter);
+        }
+
         runnerPostRepository.save(runnerPost);
 
         List<Tag> toSaveTags = new ArrayList<>();
@@ -84,14 +140,6 @@ public class RunnerPostService {
                 .forEach(Tag::decreaseCount);
 
         runnerPostRepository.deleteById(runnerPostId);
-    }
-
-    private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
-        return RunnerPost.newInstance(request.title(),
-                request.contents(),
-                request.pullRequestUrl(),
-                request.deadline(),
-                runner);
     }
 
     @Transactional
