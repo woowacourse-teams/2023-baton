@@ -8,7 +8,9 @@ import Avatar from '@/components/common/Avatar';
 import eyeIcon from '@/assets/eye-icon.svg';
 import chattingIcon from '@/assets/chatting-icon.svg';
 import Button from '@/components/common/Button';
-import { BATON_BASE_URL } from '@/constants/index';
+import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
+import { ReviewStatus } from '@/types/runnerPost';
+import Label from '@/components/common/Label';
 
 interface Profile {
   memberId: number;
@@ -20,13 +22,14 @@ interface Profile {
 interface RunnerPost {
   runnerPostId: number;
   title: string;
-  deadLine: string;
+  deadline: string;
   tags: string[];
   chattingCount: number;
   watchedCount: number;
   contents: string;
   isOwner: boolean;
   profile: Profile;
+  reviewStatus: ReviewStatus;
 }
 
 const getRunnerPost = async (runnerPostId: number): Promise<RunnerPost> => {
@@ -45,8 +48,6 @@ const getRunnerPost = async (runnerPostId: number): Promise<RunnerPost> => {
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<RunnerPost | null>(null);
-
-  console.log(runnerPost);
 
   const { goToMainPage } = usePageRouter();
   const { runnerPostId } = useParams();
@@ -72,8 +73,13 @@ const RunnerPostPage = () => {
               <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
                 <S.EditLink>수정</S.EditLink> <S.EditLink>삭제</S.EditLink>
               </S.EditLinkContainer>
-              <S.PostTitle>{runnerPost.title}.</S.PostTitle>
-              <S.PostDeadline>{runnerPost.deadLine.replace('T', ' ')} 까지</S.PostDeadline>
+              <S.PostTitleContainer>
+                <S.PostTitle>{runnerPost.title}.</S.PostTitle>
+                <Label colorTheme={runnerPost.reviewStatus === 'DONE' ? 'GRAY' : 'RED'}>
+                  {REVIEW_STATUS_LABEL_TEXT[runnerPost.reviewStatus]}
+                </Label>
+              </S.PostTitleContainer>
+              <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
             </S.PostHeaderContainer>
             <S.PostBodyContainer>
               <S.InformationContainer>
@@ -139,7 +145,7 @@ const S = {
 
   PostHeaderContainer: styled.div`
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 8fr 2fr;
     grid-template-rows: 1fr 1fr;
     row-gap: 10px;
 
@@ -162,6 +168,12 @@ const S = {
 
   EditLink: styled.a`
     background-color: white;
+  `,
+
+  PostTitleContainer: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
   `,
 
   PostTitle: styled.div`
