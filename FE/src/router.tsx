@@ -5,6 +5,7 @@ import MainPage from './pages/MainPage';
 import RunnerPostPage from './pages/RunnerPostPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
+import CreationResultPage from './pages/CreationResultPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -12,6 +13,7 @@ export const ROUTER_PATH = {
   RUNNER_POST_CREATE: '/runner-post-create/',
   LOGIN: '/login',
   NOT_FOUND: '/*',
+  RESULT: '/result',
 };
 
 export const router = createBrowserRouter(
@@ -34,6 +36,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.LOGIN,
           element: <LoginPage />,
+        },
+        {
+          path: ROUTER_PATH.RESULT,
+          element: <CreationResultPage />,
         },
       ],
     },
