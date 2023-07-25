@@ -2,46 +2,65 @@ package touch.baton.domain.runnerpost.controller.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagName;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public record RunnerPostResponse() {
 
-    public record Single(Long runnerPostId,
+    public record Detail(Long runnerPostId,
                          String title,
                          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
-                         LocalDateTime deadLine,
+                         LocalDateTime deadline,
                          List<String> tags,
                          String contents,
                          Integer chattingCount,
                          Integer watchedCount,
-                         ProfileResponse profile
+                         ProfileResponse.Detail profile
     ) {
-        public static Single from(final RunnerPost runnerPost) {
-            return new Single(
+
+        public static Detail from(final RunnerPost runnerPost) {
+            return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getDeadline().getValue(),
-                    collectTagNameValues(runnerPost),
+                    convertToTags(runnerPost),
                     runnerPost.getContents().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getWatchedCount().getValue(),
-                    ProfileResponse.from(runnerPost.getRunner().getMember())
+                    ProfileResponse.Detail.from(runnerPost.getRunner().getMember())
             );
         }
+    }
 
-        private static List<String> collectTagNameValues(final RunnerPost runnerPost) {
-            return runnerPost.getRunnerPostTags()
-                    .getRunnerPostTags()
-                    .stream()
-                    .map(RunnerPostTag::getTag)
-                    .map(Tag::getTagName)
-                    .map(TagName::getValue)
-                    .toList();
+    public record Simple(Long runnerPostId,
+                         String title,
+                         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+                         LocalDateTime deadline,
+                         List<String> tags,
+                         ProfileResponse.Simple profile,
+                         int watchedCount,
+                         int chattingCount
+    ) {
+
+        public static Simple from(final RunnerPost runnerPost) {
+            return new Simple(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    ProfileResponse.Simple.from(runnerPost.getRunner().getMember()),
+                    runnerPost.getWatchedCount().getValue(),
+                    runnerPost.getChattingCount().getValue()
+            );
         }
+    }
+
+    private static List<String> convertToTags(final RunnerPost runnerPost) {
+        return runnerPost.getRunnerPostTags()
+                .getRunnerPostTags()
+                .stream()
+                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
+                .toList();
     }
 }
