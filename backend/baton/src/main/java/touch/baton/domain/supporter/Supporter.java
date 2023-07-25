@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Grade;
+import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.supporter.exception.OldSupporterException;
@@ -49,6 +50,9 @@ public class Supporter extends BaseEntity {
     @Column(nullable = false)
     private Grade grade;
 
+    @Embedded
+    private Introduction introduction;
+
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_to_member"), nullable = false)
     private Member member;
@@ -58,9 +62,10 @@ public class Supporter extends BaseEntity {
                       final StarCount starCount,
                       final TotalRating totalRating,
                       final Grade grade,
+                      final Introduction introduction,
                       final Member member
     ) {
-        this(null, reviewCount, starCount, totalRating, grade, member);
+        this(null, reviewCount, starCount, totalRating, grade, introduction, member);
     }
 
     private Supporter(final Long id,
@@ -68,6 +73,7 @@ public class Supporter extends BaseEntity {
                       final StarCount starCount,
                       final TotalRating totalRating,
                       final Grade grade,
+                      final Introduction introduction,
                       final Member member
     ) {
         validateNotNull(reviewCount, starCount, totalRating, grade, member);
@@ -76,6 +82,7 @@ public class Supporter extends BaseEntity {
         this.starCount = starCount;
         this.totalRating = totalRating;
         this.grade = grade;
+        this.introduction = introduction;
         this.member = member;
     }
 
