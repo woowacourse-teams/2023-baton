@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Grade;
+import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.exception.OldRunnerException;
@@ -41,20 +42,33 @@ public class Runner extends BaseEntity {
     @Column(nullable = false)
     private Grade grade;
 
+    @Embedded
+    private Introduction introduction;
+
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_runner_to_member"), nullable = false)
     private Member member;
 
     @Builder
-    private Runner(final TotalRating totalRating, final Grade grade, final Member member) {
-        this(null, totalRating, grade, member);
+    private Runner(final TotalRating totalRating,
+                   final Grade grade,
+                   final Introduction introduction,
+                   final Member member
+    ) {
+        this(null, totalRating, grade, introduction, member);
     }
 
-    private Runner(final Long id, final TotalRating totalRating, final Grade grade, final Member member) {
+    private Runner(final Long id,
+                   final TotalRating totalRating,
+                   final Grade grade,
+                   final Introduction introduction,
+                   final Member member
+    ) {
         validateNotNull(totalRating, grade, member);
         this.id = id;
         this.totalRating = totalRating;
         this.grade = grade;
+        this.introduction = introduction;
         this.member = member;
     }
 
