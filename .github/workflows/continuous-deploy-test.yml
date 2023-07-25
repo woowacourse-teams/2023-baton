@@ -1,0 +1,43 @@
+name: Docker Hub Build And Push
+
+on:
+  push:
+    branches: [ "dev/test" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2.9.1
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4.1.1
+        with:
+          push: true
+          tags: 2023baton/2023baton:latest
+
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull Latest Docker Image
+        run: |
+          docker login --username ${DOCKERHUB_USERNAME} --password ${DOCKERHUB_TOKEN}
+          docker pull 2023baton/2023baton:latest
+
+      - name: Docker Compose
+        run: |
+          docker run --name spring-baton -p 8080:8080 2023baton/2023baton
