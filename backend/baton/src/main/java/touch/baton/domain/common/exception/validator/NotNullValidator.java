@@ -5,12 +5,12 @@ import jakarta.validation.ConstraintValidatorContext;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
 
-public class NotNullValidator implements ConstraintValidator<NotNullValid, Object> {
+public class NotNullValidator implements ConstraintValidator<ValidNotNull, Object> {
 
     private ClientErrorCode errorCode;
 
     @Override
-    public void initialize(final NotNullValid constraintAnnotation) {
+    public void initialize(final ValidNotNull constraintAnnotation) {
         errorCode = constraintAnnotation.clientErrorCode();
     }
 

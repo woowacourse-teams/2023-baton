@@ -14,16 +14,17 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-@Repeatable(NotNullValid.List.class)
+@Repeatable(ValidNotNull.List.class)
 @Documented
 @Constraint(validatedBy = NotNullValidator.class)
-public @interface NotNullValid {
+public @interface ValidNotNull {
 
     String message() default "null 값이 존재합니다.";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
     ClientErrorCode clientErrorCode();
 
     @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
@@ -31,6 +32,6 @@ public @interface NotNullValid {
     @Documented
     @interface List {
 
-        NotNullValid[] value();
+        ValidNotNull[] value();
     }
 }
