@@ -6,11 +6,13 @@ import RunnerPostPage from './pages/RunnerPostPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
 import CreationResultPage from './pages/CreationResultPage';
+import SupporterSelectPage from './pages/SupporterSelectPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
   RUNNER_POST: '/runner-post/:runnerPostId',
   RUNNER_POST_CREATE: '/runner-post-create/',
+  SUPPORTER_SELECT: '/supporter-select',
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RESULT: '/result',
@@ -40,6 +42,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.RESULT,
           element: <CreationResultPage />,
+        },
+        {
+          path: ROUTER_PATH.SUPPORTER_SELECT,
+          element: <SupporterSelectPage />,
         },
       ],
     },

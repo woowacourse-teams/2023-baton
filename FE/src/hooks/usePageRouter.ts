@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { ROUTER_PATH } from '../router';
+import { RunnerPostCreate } from '@/types/SupporterSelect';
 
 export const usePageRouter = () => {
   const navigate = useNavigate();
@@ -20,9 +21,25 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.LOGIN);
   };
 
+  const goToSupporterSelectPage = (data: Omit<RunnerPostCreate, 'supporterId'>) => {
+    navigate(ROUTER_PATH.SUPPORTER_SELECT, { state: data });
+  };
+
+  const goToCreationResultPage = () => {
+    navigate(ROUTER_PATH.RESULT);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
 
-  return { goToMainPage, goToRunnerPostPage, goToRunnerPostCreatePage, goToLoginPage, goBack };
+  return {
+    goToMainPage,
+    goToRunnerPostPage,
+    goToRunnerPostCreatePage,
+    goToLoginPage,
+    goToSupporterSelectPage,
+    goToCreationResultPage,
+    goBack,
+  };
 };
