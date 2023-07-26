@@ -1,5 +1,5 @@
 export interface SupporterCard {
-  supporterId: 1;
+  supporterId: number;
   name: string;
   company: string;
   reviewCount: number;
