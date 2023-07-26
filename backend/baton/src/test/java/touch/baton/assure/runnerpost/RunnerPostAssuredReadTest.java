@@ -35,6 +35,6 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청().러너_게시글_식별자값으로_러너_게시글을_조회한다(runnerPost.getId())
-                .서버_응답().러너_게시글_단건_조회_성공을_검증한다(RunnerPostResponse.Detail.from(runnerPost));
+                .서버_응답().러너_게시글_단건_조회_성공을_검증한다(RunnerPostResponse.Detail.from(runnerPost, runner.getId()));
     }
 }
