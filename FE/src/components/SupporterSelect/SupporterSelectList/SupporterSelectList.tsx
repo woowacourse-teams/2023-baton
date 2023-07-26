@@ -4,11 +4,7 @@ import styled from 'styled-components';
 import SupporterSelectItem from '../SupporterSelectItem/SupporterSelectItem';
 import { SupporterCardList } from '@/types/SupporterSelect';
 
-interface Props {
-  handleClickReviewButton: () => void;
-}
-
-const SupporterSelectList = ({ handleClickReviewButton }: Props) => {
+const SupporterSelectList = () => {
   const [supporterCardList, setSupporterCardList] = useState<SupporterCardList | null>(null);
 
   const getSupporterCardList = async () => {
@@ -41,7 +37,7 @@ const SupporterSelectList = ({ handleClickReviewButton }: Props) => {
   return (
     <S.SupporterSelectListContainer>
       {supporterCardList?.data.map((card) => (
-        <SupporterSelectItem key={card.supporterId} handleClickReviewButton={handleClickReviewButton} {...card} />
+        <SupporterSelectItem key={card.supporterId} {...card} />
       ))}
     </S.SupporterSelectListContainer>
   );
