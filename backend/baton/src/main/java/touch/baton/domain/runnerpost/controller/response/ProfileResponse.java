@@ -7,8 +7,7 @@ public record ProfileResponse() {
     public record Detail(Long memberId,
                          String name,
                          String company,
-                         String imageUrl,
-                         Boolean isOwner
+                         String imageUrl
     ) {
 
         public static Detail from(final Member member) {
@@ -16,8 +15,7 @@ public record ProfileResponse() {
                     member.getId(),
                     member.getMemberName().getValue(),
                     member.getCompany().getValue(),
-                    member.getImageUrl().getValue(),
-                    true
+                    member.getImageUrl().getValue()
             );
         }
     }
