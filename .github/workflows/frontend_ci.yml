@@ -11,10 +11,11 @@ on:
     paths: 'frontend/**'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./frontend
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
