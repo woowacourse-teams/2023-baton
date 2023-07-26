@@ -47,10 +47,8 @@ public class RunnerPostController {
     @GetMapping("/{runnerPostId}")
     public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@PathVariable final Long runnerPostId) {
         // TODO 07/19 로그인 기능 개발시 1L 변경 요망
-        Runner runner = runnerService.readRunnerWithMember(1L);
-
         final RunnerPostResponse.Detail response
-                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId), runner.getId());
+                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId));
 
         return ResponseEntity.ok(response);
     }

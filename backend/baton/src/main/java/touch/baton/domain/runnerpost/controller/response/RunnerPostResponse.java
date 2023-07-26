@@ -6,8 +6,6 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static touch.baton.domain.runnerpost.vo.IsOwner.checkIsOwner;
-
 public record RunnerPostResponse() {
 
     public record Detail(Long runnerPostId,
@@ -22,7 +20,7 @@ public record RunnerPostResponse() {
                          ProfileResponse.Detail profile
     ) {
 
-        public static Detail from(final RunnerPost runnerPost, final Long runnerId) {
+        public static Detail from(final RunnerPost runnerPost) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -31,7 +29,7 @@ public record RunnerPostResponse() {
                     runnerPost.getContents().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getWatchedCount().getValue(),
-                    checkIsOwner(runnerPost.getRunner().getId(), runnerId),
+                    true,
                     ProfileResponse.Detail.from(runnerPost.getRunner().getMember())
             );
         }
