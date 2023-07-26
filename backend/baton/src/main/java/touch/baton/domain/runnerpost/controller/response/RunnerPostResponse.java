@@ -16,10 +16,11 @@ public record RunnerPostResponse() {
                          String contents,
                          Integer chattingCount,
                          Integer watchedCount,
+                         boolean isOwner,
                          ProfileResponse.Detail profile
     ) {
 
-        public static Detail from(final RunnerPost runnerPost) {
+        public static Detail from(final RunnerPost runnerPost, final Long runnerId) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -28,8 +29,16 @@ public record RunnerPostResponse() {
                     runnerPost.getContents().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getWatchedCount().getValue(),
+                    checkIsOwner(runnerPost.getRunner().getId(), runnerId),
                     ProfileResponse.Detail.from(runnerPost.getRunner().getMember())
             );
+        }
+
+        private static boolean checkIsOwner(final Long runnerPostRunnerId, final Long runnerId) {
+            if(runnerPostRunnerId == runnerId){
+                return true;
+            }
+            return false;
         }
     }
 
