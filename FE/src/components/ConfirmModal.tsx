@@ -5,18 +5,27 @@ import { styled } from 'styled-components';
 
 interface Props {
   name: string;
+  closeModal: () => void;
+  handleClickConfirmButton: () => void;
 }
 
-const ConfirmModal = ({ name }: Props) => {
+const ConfirmModal = ({ name, closeModal, handleClickConfirmButton }: Props) => {
   return (
-    <Modal width="495px" height="211px" closeModal={() => {}}>
+    <Modal width="495px" height="211px" closeModal={closeModal}>
       <S.ConfirmModalContainer>
         <S.ConfirmMessage>{name}님에게 리뷰를 요청하시겠습니까?</S.ConfirmMessage>
         <S.ButtonContainer>
-          <Button colorTheme="GRAY" width="134px" height="35px" fontSize="16px" fontWeight={700}>
+          <Button colorTheme="GRAY" width="134px" height="35px" fontSize="16px" fontWeight={700} onClick={closeModal}>
             취소
           </Button>
-          <Button colorTheme="WHITE" width="134px" height="35px" fontSize="16px" fontWeight={700}>
+          <Button
+            colorTheme="WHITE"
+            width="134px"
+            height="35px"
+            fontSize="16px"
+            fontWeight={700}
+            onClick={handleClickConfirmButton}
+          >
             리뷰 요청하기
           </Button>
         </S.ButtonContainer>
