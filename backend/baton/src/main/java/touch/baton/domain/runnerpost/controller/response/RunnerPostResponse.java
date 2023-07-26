@@ -6,6 +6,8 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static touch.baton.domain.runnerpost.vo.IsOwner.checkIsOwner;
+
 public record RunnerPostResponse() {
 
     public record Detail(Long runnerPostId,
@@ -32,13 +34,6 @@ public record RunnerPostResponse() {
                     checkIsOwner(runnerPost.getRunner().getId(), runnerId),
                     ProfileResponse.Detail.from(runnerPost.getRunner().getMember())
             );
-        }
-
-        private static boolean checkIsOwner(final Long runnerPostRunnerId, final Long runnerId) {
-            if(runnerPostRunnerId == runnerId){
-                return true;
-            }
-            return false;
         }
     }
 

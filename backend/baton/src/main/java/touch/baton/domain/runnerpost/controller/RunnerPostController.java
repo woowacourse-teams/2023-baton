@@ -50,7 +50,7 @@ public class RunnerPostController {
         Runner runner = runnerService.readRunnerWithMember(1L);
 
         final RunnerPostResponse.Detail response
-                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId),runner.getId());
+                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId), runner.getId());
 
         return ResponseEntity.ok(response);
     }
