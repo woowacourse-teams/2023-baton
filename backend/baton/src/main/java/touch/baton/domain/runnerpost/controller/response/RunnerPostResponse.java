@@ -16,6 +16,7 @@ public record RunnerPostResponse() {
                          String contents,
                          Integer chattingCount,
                          Integer watchedCount,
+                         boolean isOwner,
                          ProfileResponse.Detail profile
     ) {
 
@@ -28,6 +29,7 @@ public record RunnerPostResponse() {
                     runnerPost.getContents().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getWatchedCount().getValue(),
+                    true,
                     ProfileResponse.Detail.from(runnerPost.getRunner().getMember())
             );
         }
