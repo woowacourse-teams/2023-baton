@@ -35,6 +35,35 @@ public record RunnerPostResponse() {
         }
     }
 
+
+    public record DetailVersionTest(Long runnerPostId,
+                                    String title,
+                                    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+                                    LocalDateTime deadline,
+                                    List<String> tags,
+                                    String contents,
+                                    boolean isOwner,
+                                    Integer chattingCount,
+                                    Integer watchedCount,
+                                    ProfileResponse.Detail profile,
+                                    SupporterResponseTestVersion.Simple supporter
+    ) {
+        public static DetailVersionTest fromVersionTest(final RunnerPost runnerPost) {
+            return new DetailVersionTest(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getContents().getValue(),
+                    true,
+                    runnerPost.getChattingCount().getValue(),
+                    runnerPost.getWatchedCount().getValue(),
+                    ProfileResponse.Detail.from(runnerPost.getRunner().getMember()),
+                    SupporterResponseTestVersion.Simple.fromTestVersion(runnerPost.getSupporter())
+            );
+        }
+    }
+
     public record Simple(Long runnerPostId,
                          String title,
                          @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
