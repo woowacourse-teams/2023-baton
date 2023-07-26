@@ -1,6 +1,7 @@
 import { rest } from 'msw';
 import runnerPostList from './data/runnerPostList.json';
 import runnerPostDetails from './data/runnerPostDetails.json';
+import supporterCardList from './data/supporterCardList.json';
 
 export const handlers = [
   rest.post('*/posts/runner', async (req, res, ctx) => {
@@ -30,5 +31,15 @@ export const handlers = [
       ctx.set('Content-Type', 'application/json'),
       ctx.json(runnerPostDetails),
     );
+  }),
+
+  rest.get('*/supporters/test', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCardList));
+  }),
+
+  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+    const { title, tags, pullRequestUrl, deadline, contents, supporterId } = await req.json();
+
+    return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
   }),
 ];

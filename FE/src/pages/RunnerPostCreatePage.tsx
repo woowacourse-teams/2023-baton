@@ -2,31 +2,19 @@ import InputBox from '@/components/InputBox';
 import TagInput from '@/components/TagInput';
 import TextArea from '@/components/Textarea';
 import Button from '@/components/common/Button';
-import Modal from '@/components/common/Modal';
-import { BATON_BASE_URL } from '@/constants/index';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
 
-interface RunnerPostCreateType {
-  tags: string[];
-  title: string;
-  pullRequestUrl: string;
-  deadline: string;
-  contents: string;
-}
-
 const RunnerPostCreatePage = () => {
-  const { goBack, goToMainPage } = usePageRouter();
+  const { goBack, goToSupporterSelectPage } = usePageRouter();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
   const [deadline, setDeadline] = useState<string>('');
   const [contents, setContents] = useState<string>('');
-
-  const [isOpenModal, setIsOpenModal] = useState(false);
 
   const pushTag = (newTag: string) => {
     if (newTag.length > 15) return alert('태그명은 15자 이내로 입력해주세요.');
@@ -72,14 +60,20 @@ const RunnerPostCreatePage = () => {
     setContents(e.target.value);
   };
 
-  const toggleModal = () => {
-    setIsOpenModal((current) => !current);
-  };
-
   const cancelPostWrite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     goBack();
+  };
+
+  const goToNextForm = () => {
+    try {
+      validateInputs();
+    } catch (error) {
+      return alert(error);
+    }
+
+    goToSupporterSelectPage({ tags, title, pullRequestUrl, deadline, contents });
   };
 
   const validateInputs = () => {
@@ -88,30 +82,6 @@ const RunnerPostCreatePage = () => {
 
     const isDeadlineValidate = deadline.split('T').every((item) => item && item.length > 1);
     if (!isDeadlineValidate) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
-  };
-
-  const postRunnerForm = async (data: RunnerPostCreateType) => {
-    const body = JSON.stringify(data);
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner`, {
-      method: 'POST',
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status !== 201) throw new Error(`${response.status} ERROR`);
-  };
-
-  const submitForm = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    try {
-      validateInputs();
-      await postRunnerForm({ tags, title, pullRequestUrl, deadline, contents });
-    } catch (error) {
-      return alert(error);
-    }
-
-    goToMainPage();
   };
 
   return (
@@ -159,28 +129,12 @@ const RunnerPostCreatePage = () => {
             <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
               취소
             </Button>
-            <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={toggleModal}>
+            <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={goToNextForm}>
               리뷰요청 글 생성
             </Button>
           </S.ButtonContainer>
         </S.Form>
       </S.FormContainer>
-      {isOpenModal && (
-        <Modal closeModal={toggleModal}>
-          <S.ModalChildrenContainer>
-            <S.ModalTitle>알림</S.ModalTitle>
-            <S.DisClaimMessage>
-              운영자는 회원 상호 간 또는 회원과 제 3자 상호 간에 서비스를 매개로 하여 물품거래등을 한 경우에 그로부터
-              발생하는 일체의 손해에 대하여 책임지지 아니합니다.
-            </S.DisClaimMessage>
-            <S.ButtonContainer>
-              <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={submitForm}>
-                글 작성하기
-              </Button>
-            </S.ButtonContainer>
-          </S.ModalChildrenContainer>
-        </Modal>
-      )}
     </Layout>
   );
 };
@@ -248,8 +202,9 @@ const S = {
   ButtonContainer: styled.div`
     display: flex;
     justify-content: center;
-
     gap: 20px;
+
+    margin-bottom: 100px;
   `,
 
   ModalChildrenContainer: styled.div`

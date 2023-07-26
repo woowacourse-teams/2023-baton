@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "supporterId": 1,
+      "name": "박정훈",
+      "company": "두나무",
+      "reviewCount": 1,
+      "totalRating": 1,
+      "githubUrl": "https://github.com/shb03323",
+      "introduction": "우테코 5기 BE디투 입니다."
+    },
+    {
+      "supporterId": 2,
+      "name": "김석호",
+      "company": "배달의민족",
+      "reviewCount": 1,
+      "totalRating": 1,
+      "githubUrl": "https://github.com/cookienc",
+      "introduction": "우테코 5기 BE에단 입니다."
+    }
+  ]
+}
