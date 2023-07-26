@@ -1,7 +1,9 @@
 package touch.baton.domain.common.response;
 
+import lombok.Getter;
 import touch.baton.domain.common.exception.BaseException;
 
+@Getter
 public class ErrorResponse {
 
     private final String errorCode;
