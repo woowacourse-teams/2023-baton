@@ -1,68 +1,24 @@
 package touch.baton.domain.runnerpost.service.dto;
 
+import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.common.exception.validator.ValidNotNull;
+import touch.baton.domain.runnerpost.exception.validator.ValidFuture;
+import touch.baton.domain.runnerpost.exception.validator.ValidMaxLength;
+
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
-public record RunnerPostUpdateRequest(
-        String title,
-        List<String> tags,
-        String pullRequestUrl,
-        LocalDateTime deadline,
-        String contents
+public record RunnerPostUpdateRequest(@ValidNotNull(clientErrorCode = ClientErrorCode.TITLE_IS_NULL)
+                                      String title,
+                                      @ValidNotNull(clientErrorCode = ClientErrorCode.TAGS_ARE_NULL)
+                                      List<String> tags,
+                                      @ValidNotNull(clientErrorCode = ClientErrorCode.PULL_REQUEST_URL_IS_NULL)
+                                      String pullRequestUrl,
+                                      @ValidNotNull(clientErrorCode = ClientErrorCode.DEADLINE_IS_NULL)
+                                      @ValidFuture(clientErrorCode = ClientErrorCode.PAST_DEADLINE)
+                                      LocalDateTime deadline,
+                                      @ValidNotNull(clientErrorCode = ClientErrorCode.CONTENTS_ARE_NULL)
+                                      @ValidMaxLength(clientErrorCode = ClientErrorCode.CONTENTS_OVERFLOW, max = 1000)
+                                      String contents
 ) {
-
-    private static void validate(final String title,
-                          final List<String> tags,
-                          final String pullRequestUrl,
-                          final LocalDateTime deadline,
-                          final String contents
-    ) {
-        validateNotNull(title, tags, pullRequestUrl, deadline, contents);
-        validateContentsLength(contents);
-        validateDeadLine(deadline);
-    }
-
-    private static void validateNotNull(final String title,
-                                 final List<String> tags,
-                                 final String pullRequestUrl,
-                                 final LocalDateTime deadline,
-                                 final String contents
-    ) {
-        if (Objects.isNull(title)) {
-            throw new IllegalArgumentException("RP001");
-        }
-
-        if (Objects.isNull(tags)) {
-            throw new IllegalArgumentException("RP00???");
-        }
-
-        if (Objects.isNull(pullRequestUrl)) {
-            throw new IllegalArgumentException("RP002");
-        }
-
-        if (Objects.isNull(deadline)) {
-            throw new IllegalArgumentException("RP003");
-        }
-
-        if (Objects.isNull(contents)) {
-            throw new IllegalArgumentException("RP004");
-        }
-    }
-
-    private static void validateContentsLength(final String contents) {
-        if (contents.length() > 1000) {
-            throw new IllegalArgumentException("RP005");
-        }
-    }
-
-    private static void validateDeadLine(final LocalDateTime deadline) {
-        validateDeadlineNotPassed(deadline);
-    }
-
-    private static void validateDeadlineNotPassed(final LocalDateTime deadline) {
-        if (deadline.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("RP006");
-        }
-    }
 }
