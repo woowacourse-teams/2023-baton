@@ -1,39 +1,16 @@
 package touch.baton.domain.runnerpost.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Getter
-@NoArgsConstructor
-public class RunnerPostUpdateRequest {
-// TODO: 예외 처리, record 로 적용
-    private static final int CONTENTS_MAX_LENGTH = 1000;
-    private static final String DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
-
-    private String title;
-    private List<String> tags;
-    private String pullRequestUrl;
-    private LocalDateTime deadline;
-    private String contents;
-
-    public RunnerPostUpdateRequest(final String title,
-                                   final List<String> tags,
-                                   final String pullRequestUrl,
-                                   @JsonFormat(pattern = DATE_TIME_FORMAT) final LocalDateTime deadline,
-                                   final String contents
-    ) {
-        validate(title, tags, pullRequestUrl, deadline, contents);
-        this.title = title;
-        this.tags = tags;
-        this.pullRequestUrl = pullRequestUrl;
-        this.deadline = deadline;
-        this.contents = contents;
-    }
+public record RunnerPostUpdateRequest(
+        String title,
+        List<String> tags,
+        String pullRequestUrl,
+        LocalDateTime deadline,
+        String contents
+) {
 
     private static void validate(final String title,
                           final List<String> tags,
@@ -74,7 +51,7 @@ public class RunnerPostUpdateRequest {
     }
 
     private static void validateContentsLength(final String contents) {
-        if (contents.length() > CONTENTS_MAX_LENGTH) {
+        if (contents.length() > 1000) {
             throw new IllegalArgumentException("RP005");
         }
     }
