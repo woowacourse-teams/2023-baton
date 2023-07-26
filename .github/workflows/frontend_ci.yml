@@ -11,13 +11,14 @@ on:
     paths: 'frontend/**'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./frontend
+    defaults:
+      run:
+        working-directory: ./frontend
     steps:
       - name: Checkout code
-      - uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
       - name: 의존성을 설치한다
         run: npm install
