@@ -2,7 +2,7 @@ name: Docker Hub Build And Push
 
 on:
   push:
-    branches: [ "dev/deploy" ]
+    branches: [ "dev/BE" ]
 
 jobs:
   build:
