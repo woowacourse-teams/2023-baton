@@ -8,7 +8,7 @@ import java.util.List;
 public record RunnerPostCreateRequest(String title,
                                       List<String> tags,
                                       String pullRequestUrl,
-                                      @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+                                      @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
                                       LocalDateTime deadline,
                                       String contents
 ) {

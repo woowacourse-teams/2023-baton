@@ -9,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -72,7 +71,7 @@ public class RunnerPost extends BaseEntity {
     @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_to_runner"), nullable = false)
     private Runner runner;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "supporter_id", foreignKey = @ForeignKey(name = "fk_runner_post_to_supporter"), nullable = true)
     private Supporter supporter;
 
@@ -208,6 +207,10 @@ public class RunnerPost extends BaseEntity {
 
     public void updateDeadLine(final Deadline deadline) {
         this.deadline = deadline;
+    }
+
+    public void assignSupporter(final Supporter supporter) {
+        this.supporter = supporter;
     }
 
     @Override
