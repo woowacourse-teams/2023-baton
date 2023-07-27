@@ -1,3 +1,7 @@
+export interface GetSupporterCardResponse {
+  data: SupporterCard[];
+}
+
 export interface SupporterCard {
   supporterId: number;
   name: string;
@@ -6,8 +10,4 @@ export interface SupporterCard {
   totalRating: number;
   githubUrl: string;
   introduction: string;
-}
-
-export interface SupporterCardList {
-  data: SupporterCard[];
 }
