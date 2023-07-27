@@ -1,6 +1,6 @@
 import Avatar from '@/components/common/Avatar';
 import Button from '@/components/common/Button';
-import { RunnerPostCreate, SupporterCard } from '@/types/SupporterSelect';
+import { SupporterCard } from '@/types/supporterCard';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
@@ -8,6 +8,7 @@ import ConfirmModal from '@/components/ConfirmModal';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useLocation } from 'react-router-dom';
 import { BATON_BASE_URL } from '@/constants';
+import { CreateRunnerPostRequest } from '@/types/runnerPost';
 
 interface Props extends SupporterCard {}
 
@@ -26,7 +27,7 @@ const SupporterSelectItem = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const postRunnerForm = async (data: RunnerPostCreate) => {
+  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
     const body = JSON.stringify(data);
     const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
       method: 'POST',
