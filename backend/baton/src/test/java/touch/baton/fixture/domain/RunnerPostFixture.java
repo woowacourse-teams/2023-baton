@@ -12,51 +12,44 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTags;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import static touch.baton.fixture.vo.ChattingCountFixture.*;
-import static touch.baton.fixture.vo.ContentsFixture.*;
-import static touch.baton.fixture.vo.DeadlineFixture.*;
-import static touch.baton.fixture.vo.PullRequestUrlFixture.*;
-import static touch.baton.fixture.vo.TitleFixture.*;
-import static touch.baton.fixture.vo.WatchedCountFixture.*;
 
 public abstract class RunnerPostFixture {
 
     private RunnerPostFixture() {
     }
 
-    public static RunnerPost create(final String title,
-                                    final String contents,
-                                    final String pullRequestUrl,
-                                    final LocalDateTime deadline,
-                                    final int watchedCount,
-                                    final int chattingCount,
+    public static RunnerPost create(final Title title,
+                                    final Contents contents,
+                                    final PullRequestUrl pullRequestUrl,
+                                    final Deadline deadline,
+                                    final WatchedCount watchedCount,
+                                    final ChattingCount chattingCount,
                                     final ReviewStatus reviewStatus,
                                     final Runner runner,
                                     final Supporter supporter,
                                     final RunnerPostTags runnerPostTags
     ) {
         return RunnerPost.builder()
-                .title(title("테스트 제목"))
-                .contents(contents("테스트 내용"))
-                .pullRequestUrl(pullRequestUrl("https://테스트"))
-                .deadline(deadline(deadline))
-                .watchedCount(watchedCount(0))
-                .chattingCount(chattingCount(0))
+                .title(title)
+                .contents(contents)
+                .pullRequestUrl(pullRequestUrl)
+                .deadline(deadline)
+                .watchedCount(watchedCount)
+                .chattingCount(chattingCount)
+                .reviewStatus(reviewStatus)
                 .runner(runner)
-                .supporter(null)
-                .runnerPostTags(RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()))
+                .supporter(supporter)
+                .runnerPostTags(runnerPostTags)
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final LocalDateTime deadline) {
+    public static RunnerPost create(final Runner runner, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .contents(new Contents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
-                .deadline(new Deadline(deadline))
+                .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
@@ -66,12 +59,12 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final RunnerPostTags runnerPostTags, final LocalDateTime deadline) {
+    public static RunnerPost create(final Runner runner, final RunnerPostTags runnerPostTags, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .contents(new Contents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
-                .deadline(new Deadline(deadline))
+                .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
                 .runner(runner)
@@ -80,12 +73,12 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final Supporter supporter, final LocalDateTime deadline) {
+    public static RunnerPost create(final Runner runner, final Supporter supporter, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .contents(new Contents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
-                .deadline(new Deadline(deadline))
+                .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
                 .runner(runner)
@@ -94,12 +87,12 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final Supporter supporter, final RunnerPostTags runnerPostTags, final LocalDateTime deadline) {
+    public static RunnerPost create(final Runner runner, final Supporter supporter, final RunnerPostTags runnerPostTags, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .contents(new Contents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
-                .deadline(new Deadline(deadline))
+                .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
                 .chattingCount(new ChattingCount(0))
                 .runner(runner)

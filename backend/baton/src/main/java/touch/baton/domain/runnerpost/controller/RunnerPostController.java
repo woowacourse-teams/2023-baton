@@ -62,9 +62,16 @@ public class RunnerPostController {
 
     @GetMapping("/{runnerPostId}")
     public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@PathVariable final Long runnerPostId) {
-        // TODO 07/19 로그인 기능 개발시 1L 변경 요망
         final RunnerPostResponse.Detail response
                 = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId));
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{runnerPostId}/test")
+    public ResponseEntity<RunnerPostResponse.DetailVersionTest> readByRunnerPostIdVersionTest(@PathVariable final Long runnerPostId) {
+        final RunnerPostResponse.DetailVersionTest response
+                = RunnerPostResponse.DetailVersionTest.fromVersionTest(runnerPostService.readByRunnerPostId(runnerPostId));
 
         return ResponseEntity.ok(response);
     }
@@ -98,7 +105,7 @@ public class RunnerPostController {
     }
 
     @GetMapping("/test")
-    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPostsForTest() {
+    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPostsVersionTest() {
         final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
                 .map(RunnerPostResponse.Simple::from)
                 .toList();

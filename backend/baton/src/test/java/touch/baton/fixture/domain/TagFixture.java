@@ -1,31 +1,33 @@
 package touch.baton.fixture.domain;
 
 import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagCount;
+import touch.baton.domain.tag.vo.TagName;
+import touch.baton.fixture.vo.TagNameFixture;
 
 import static touch.baton.fixture.vo.TagCountFixture.tagCount;
-import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 public abstract class TagFixture {
 
     private TagFixture() {
     }
 
-    public static Tag create(final String tagName, final int tagCount) {
+    public static Tag create(final TagName tagName, final TagCount tagCount) {
         return Tag.builder()
-                .tagName(tagName(tagName))
-                .tagCount(tagCount(tagCount))
+                .tagName(tagName)
+                .tagCount(tagCount)
                 .build();
     }
 
     public static Tag createJava() {
-        return create("Java", 1);
+        return create(TagNameFixture.tagName("Java"), tagCount(1));
     }
 
     public static Tag createSpring() {
-        return create("Spring", 1);
+        return create(TagNameFixture.tagName("Spring"), tagCount(1));
     }
 
     public static Tag createReact() {
-        return create("React", 1);
+        return create(TagNameFixture.tagName("React"), tagCount(1));
     }
 }

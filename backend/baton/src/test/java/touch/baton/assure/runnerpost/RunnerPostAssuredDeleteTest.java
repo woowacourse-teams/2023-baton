@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
 
 class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
 
@@ -29,7 +30,7 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         );
         memberRepository.save(member);
 
-        final Runner runner = RunnerFixture.from(member, 0, Grade.BARE_FOOT);
+        final Runner runner = RunnerFixture.from(member, totalRating(0), Grade.BARE_FOOT);
         runnerRepository.save(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.from(runner,

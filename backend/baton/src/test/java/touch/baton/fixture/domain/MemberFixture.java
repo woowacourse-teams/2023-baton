@@ -1,6 +1,12 @@
 package touch.baton.fixture.domain;
 
 import touch.baton.domain.member.Member;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
+import touch.baton.domain.member.vo.MemberName;
+import touch.baton.domain.member.vo.OauthId;
 
 import static touch.baton.fixture.vo.CompanyFixture.company;
 import static touch.baton.fixture.vo.EmailFixture.email;
@@ -14,59 +20,60 @@ public abstract class MemberFixture {
     private MemberFixture() {
     }
 
-    public static Member create(final String memberName,
-                                final String email,
-                                final String oauthId,
-                                final String githubUrl,
-                                final String company,
-                                final String imageUrl
+    public static Member create(final MemberName memberName,
+                                final Email email,
+                                final OauthId oauthId,
+                                final GithubUrl githubUrl,
+                                final Company company,
+                                final ImageUrl imageUrl
     ) {
         return Member.builder()
-                .memberName(memberName(memberName))
-                .email(email(email))
-                .oauthId(oauthId(oauthId))
-                .githubUrl(githubUrl(githubUrl))
-                .company(company(company))
-                .imageUrl(imageUrl(imageUrl))
+                .memberName(memberName)
+                .email(email)
+                .oauthId(oauthId)
+                .githubUrl(githubUrl)
+                .company(company)
+                .imageUrl(imageUrl)
                 .build();
     }
 
     public static Member createHyena() {
-        return create("헤나",
-                "email_hyena@test.com",
-                "oauth_hyena",
-                "https://github.com/",
-                "우아한테크코스 5기 백엔드",
-                "https://");
+        return create(
+                memberName("헤나"),
+                email("email_hyena@test.com"),
+                oauthId("oauth_hyena"),
+                githubUrl("https://github.com/"),
+                company("우아한테크코스 5기 백엔드"),
+                imageUrl("https://"));
     }
 
     public static Member createEthan() {
         return create(
-                "에단",
-                "email_ethan@test.com",
-                "oauth_ethan",
-                "https://github.com/",
-                "우아한테크코스 5기 백엔드",
-                "https://");
+                memberName("에단"),
+                email("email_ethan@test.com"),
+                oauthId("oauth_ethan"),
+                githubUrl("https://github.com/"),
+                company("우아한테크코스 5기 백엔드"),
+                imageUrl("https://"));
     }
 
     public static Member createDitoo() {
         return create(
-                "디투",
-                "email_ditoo@test.com",
-                "oauth_ditoo",
-                "https://github.com/",
-                "우아한테크코스 5기 백엔드",
-                "https://");
+                memberName("디투"),
+                email("email_ditoo@test.com"),
+                oauthId("oauth_ditoo"),
+                githubUrl("https://github.com/"),
+                company("우아한테크코스 5기 백엔드"),
+                imageUrl("https://"));
     }
 
     public static Member createJudy() {
         return create(
-                "주디",
-                "email_judy@test.com",
-                "oauth_judy",
-                "https://github.com/",
-                "우아한테크코스 5기 백엔드",
-                "https://");
+                memberName("주디"),
+                email("email_judy@test.com"),
+                oauthId("oauth_judy"),
+                githubUrl("https://github.com/"),
+                company("우아한테크코스 5기 백엔드"),
+                imageUrl("https://"));
     }
 }
