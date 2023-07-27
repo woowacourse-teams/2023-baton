@@ -11,12 +11,3 @@ export interface SupporterCard {
 export interface SupporterCardList {
   data: SupporterCard[];
 }
-
-export interface RunnerPostCreate {
-  title: string;
-  tags: string[];
-  pullRequestUrl: string;
-  deadline: string;
-  contents: string;
-  supporterId: number;
-}
