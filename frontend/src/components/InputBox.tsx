@@ -4,11 +4,22 @@ import styled from 'styled-components';
 interface Props extends React.HTMLProps<HTMLInputElement> {
   inputTextState: string;
   handleInputTextState: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  fontSize?: string | number;
+  fontWeight?: string | number;
 }
 
-const InputBox = ({ inputTextState, maxLength, placeholder, width, height, handleInputTextState }: Props) => {
+const InputBox = ({
+  inputTextState,
+  maxLength,
+  placeholder,
+  width,
+  height,
+  fontSize,
+  fontWeight,
+  handleInputTextState,
+}: Props) => {
   return (
-    <S.InputContainer $width={width} $height={height}>
+    <S.InputContainer $fontSize={fontSize} $fontWeight={fontWeight} $width={width} $height={height}>
       <S.InputBox onChange={handleInputTextState} maxLength={maxLength} placeholder={placeholder} />
       {maxLength && (
         <S.InputTextLength>
@@ -22,21 +33,28 @@ const InputBox = ({ inputTextState, maxLength, placeholder, width, height, handl
 export default InputBox;
 
 const S = {
-  InputContainer: styled.div<{ $width?: string | number; $height?: string | number }>`
+  InputContainer: styled.div<{
+    $width?: string | number;
+    $height?: string | number;
+    $fontSize?: string | number;
+    $fontWeight?: string | number;
+  }>`
     display: flex;
     justify-content: space-between;
 
     width: ${({ $width }) => $width || '400px'};
     height: ${({ $height }) => $height || '36px'};
     gap: 20px;
+
+    font-size: ${({ $fontSize }) => $fontSize || '18px'};
+    font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
   `,
 
   InputTextLength: styled.div`
     display: flex;
     align-items: center;
-    flex-basis: 40px;
 
-    font-size: 12px;
+    font-size: 18px;
     color: var(--gray-400);
   `,
 
