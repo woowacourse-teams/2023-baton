@@ -1,8 +1,8 @@
 import Layout from '@/layout/Layout';
 import React from 'react';
 import { styled } from 'styled-components';
-import LogoImage from '../assets/logo-image.svg';
-import GithubIcon from '../assets/github-icon.svg';
+import LogoImage from '@/assets/logo-image.svg';
+import GithubIcon from '@/assets/github-icon.svg';
 
 const LoginPage = () => {
   return (
