@@ -43,7 +43,6 @@ public record RunnerPostResponse() {
                                     String title,
                                     String contents,
                                     String pullRequestUrl,
-                                    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
                                     LocalDateTime deadline,
                                     Integer watchedCount,
                                     Integer chattingCount,
