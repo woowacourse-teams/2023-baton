@@ -17,6 +17,51 @@
       "totalRating": 1,
       "githubUrl": "https://github.com/cookienc",
       "introduction": "우테코 5기 BE에단 입니다."
+    },
+    {
+      "supporterId": 3,
+      "name": "김민수",
+      "company": "카카오",
+      "reviewCount": 5,
+      "totalRating": 4.5,
+      "githubUrl": "https://github.com/minsoo",
+      "introduction": "카카오에서 개발하고 있는 백엔드 개발자입니다."
+    },
+    {
+      "supporterId": 4,
+      "name": "이현주",
+      "company": "네이버",
+      "reviewCount": 2,
+      "totalRating": 4,
+      "githubUrl": "https://github.com/hyunjulee",
+      "introduction": "네이버 클라우드 플랫폼에서 일하는 소프트웨어 엔지니어입니다."
+    },
+    {
+      "supporterId": 5,
+      "name": "조성현",
+      "company": "라인",
+      "reviewCount": 7,
+      "totalRating": 4.7,
+      "githubUrl": "https://github.com/sunghyun",
+      "introduction": "라인에서 서버 개발을 담당하고 있습니다."
+    },
+    {
+      "supporterId": 6,
+      "name": "정지원",
+      "company": "쿠팡",
+      "reviewCount": 3,
+      "totalRating": 5,
+      "githubUrl": "https://github.com/jiwon",
+      "introduction": "쿠팡에서 웹 서비스 개발에 참여하고 있습니다."
+    },
+    {
+      "supporterId": 7,
+      "name": "박지수",
+      "company": "넷플릭스",
+      "reviewCount": 8,
+      "totalRating": 4.8,
+      "githubUrl": "https://github.com/jisupark",
+      "introduction": "넷플릭스에서 데이터 엔지니어로 일하고 있습니다."
     }
   ]
 }
