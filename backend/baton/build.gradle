@@ -51,6 +51,14 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+processResources.dependsOn('copySecret')
+
+tasks.register('copySecret', Copy) {
+	from './secret'
+	include 'application*.yml'
+	into 'src/main/resources'
+}
+
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test

@@ -4,4 +4,4 @@ WORKDIR /app
 
 COPY ./build/libs/baton-0.0.1-SNAPSHOT.jar /app/baton.jar
 
-CMD ["java", "-jar", "baton.jar"]
+CMD ["java", "-jar", "-Dspring.profiles.active=dev", "baton.jar"]
