@@ -25,6 +25,7 @@ const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
     if (!inputRef.current.value) return;
 
     if (e.key === 'Enter') {
+      e.preventDefault();
       const newTag = inputRef.current.value;
       pushTag(newTag);
       inputRef.current.value = '';
@@ -57,7 +58,7 @@ const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
           <S.InputBox
             onKeyDown={onkeyDownInput}
             ref={inputRef}
-            placeholder="태그를 입력하세요"
+            placeholder="태그를 입력해주세요"
             onFocus={onFocus}
             onBlur={outFocus}
           />
@@ -77,6 +78,8 @@ const S = {
 
     gap: 15px;
     width: ${({ $width }) => $width || '500px'};
+
+    font-size: 18px;
   `,
 
   InputBox: styled.input`
