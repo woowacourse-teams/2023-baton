@@ -147,10 +147,10 @@ public class RunnerPostService {
         // TODO: 메소드 분리
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
                 .orElseThrow(() -> new IllegalArgumentException("잘못된 runnerPostId 입니다."));
-        runnerPost.updateTitle(new Title(request.getTitle()));
-        runnerPost.updateContents(new Contents(request.getContents()));
-        runnerPost.updatePullRequestUrl(new PullRequestUrl(request.getPullRequestUrl()));
-        runnerPost.updateDeadLine(new Deadline(request.getDeadline()));
+        runnerPost.updateTitle(new Title(request.title()));
+        runnerPost.updateContents(new Contents(request.contents()));
+        runnerPost.updatePullRequestUrl(new PullRequestUrl(request.pullRequestUrl()));
+        runnerPost.updateDeadLine(new Deadline(request.deadline()));
 
         final List<RunnerPostTag> presentRunnerPostTags =
                 runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
@@ -162,7 +162,7 @@ public class RunnerPostService {
 
         // TODO: 새로운 tag 로 교체 메소드 분리
         final List<RunnerPostTag> removedRunnerPostTags = new ArrayList<>(presentRunnerPostTags);
-        for (String tagName : request.getTags()) {
+        for (String tagName : request.tags()) {
             final Optional<RunnerPostTag> existRunnerPostTag = presentRunnerPostTags.stream()
                     .filter(presentRunnerPostTag -> presentRunnerPostTag.isSameTagName(tagName))
                     .findFirst();

@@ -69,7 +69,7 @@ class RunnerPostServiceUpdateTest extends RunnerPostData {
                 () -> assertThat(actual.getTitle()).isEqualTo(new Title(TITLE)),
                 () -> assertThat(actual.getContents()).isEqualTo(new Contents(CONTENTS)),
                 () -> assertThat(actual.getPullRequestUrl()).isEqualTo(new PullRequestUrl(PULL_REQUEST_URL)),
-                () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(request.getDeadline()))
+                () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(request.deadline()))
         );
 
         final List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(savedId);

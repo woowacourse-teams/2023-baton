@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,7 +33,7 @@ public class RunnerPostController {
     private final RunnerService runnerService;
 
     @PostMapping
-    public ResponseEntity<Void> createRunnerPost(@RequestBody RunnerPostCreateRequest request) {
+    public ResponseEntity<Void> createRunnerPost(@Valid @RequestBody RunnerPostCreateRequest request) {
         // TODO 07/19 로그인 기능 개발시 1L 변경 요망
         Runner runner = runnerService.readRunnerWithMember(1L);
 
@@ -46,7 +47,7 @@ public class RunnerPostController {
     }
 
     @PostMapping("/test")
-    public ResponseEntity<Void> createRunnerPostVersionTest(@RequestBody RunnerPostCreateTestRequest request) {
+    public ResponseEntity<Void> createRunnerPostVersionTest(@Valid @RequestBody RunnerPostCreateTestRequest request) {
         // TODO 07/19 로그인 기능 개발시 1L 변경 요망
         Runner runner = runnerService.readRunnerWithMember(1L);
 
@@ -84,7 +85,7 @@ public class RunnerPostController {
 
     @PutMapping("/{runnerPostId}")
     public ResponseEntity<Void> update(@PathVariable final Long runnerPostId,
-                                       @RequestBody final RunnerPostUpdateRequest request
+                                       @Valid @RequestBody final RunnerPostUpdateRequest request
     ) {
         final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, request);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
