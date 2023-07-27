@@ -8,14 +8,18 @@ import java.util.TimeZone;
 
 public class StringDateToLocalDateTimeConverter implements Converter<String, LocalDateTime> {
 
-    private static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm";
-    private static final String SEOUL = "Asia/Seoul";
+    private final TimeZone timeZone;
+    private final String dateTimeFormat;
+
+    public StringDateToLocalDateTimeConverter(final String dateTimeFormat, final TimeZone timeZone) {
+        this.timeZone = timeZone;
+        this.dateTimeFormat = dateTimeFormat;
+    }
 
     @Override
     public LocalDateTime convert(final String source) {
-        final TimeZone koreaTimeZone = TimeZone.getTimeZone(SEOUL);
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)
-                .withZone(koreaTimeZone.toZoneId());
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeFormat)
+                .withZone(timeZone.toZoneId());
 
         return LocalDateTime.parse(source, formatter);
     }
