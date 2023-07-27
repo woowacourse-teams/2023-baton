@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
 import { BATON_BASE_URL } from '@/constants/index';
-import { RunnerPost } from '@/types/runnerPost';
+import { GetRunnerPostResponse } from '@/types/runnerPost';
 
 const RunnerPostList = () => {
-  const [runnerPostList, setRunnerPostList] = useState<RunnerPost | null>(null);
+  const [runnerPostList, setRunnerPostList] = useState<GetRunnerPostResponse | null>(null);
 
   const getRunnerPost = async () => {
     try {
@@ -36,7 +36,7 @@ const RunnerPostList = () => {
 
   return (
     <S.RunnerPostWrapper>
-      {runnerPostList?.runnerPosts.map((runnerPostData) => (
+      {runnerPostList?.data.map((runnerPostData) => (
         <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
       ))}
     </S.RunnerPostWrapper>

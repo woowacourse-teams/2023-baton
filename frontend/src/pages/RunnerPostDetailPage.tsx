@@ -9,51 +9,17 @@ import eyeIcon from '@/assets/eye-icon.svg';
 import chattingIcon from '@/assets/chatting-icon.svg';
 import Button from '@/components/common/Button';
 import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
-import { ReviewStatus } from '@/types/runnerPost';
 import Label from '@/components/common/Label';
-
-interface Profile {
-  memberId: number;
-  name: string;
-  company: string;
-  imageUrl: string;
-}
-
-interface RunnerPost {
-  runnerPostId: number;
-  title: string;
-  deadline: string;
-  tags: string[];
-  chattingCount: number;
-  watchedCount: number;
-  contents: string;
-  isOwner: boolean;
-  profile: Profile;
-  reviewStatus: ReviewStatus;
-}
-
-const getRunnerPost = async (runnerPostId: number): Promise<RunnerPost> => {
-  const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
-
-  const data = await response.json().catch(() => {
-    throw new Error('게시글을 불러오지 못했습니다.');
-  });
-
-  return data;
-};
+import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 
 const RunnerPostPage = () => {
-  const [runnerPost, setRunnerPost] = useState<RunnerPost | null>(null);
+  const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
 
   const { goToMainPage } = usePageRouter();
   const { runnerPostId } = useParams();
 
   useEffect(() => {
-    getRunnerPost(Number(runnerPostId))
+    getRunnerPost()
       .then((data) => {
         setRunnerPost(data);
       })
@@ -61,6 +27,31 @@ const RunnerPostPage = () => {
         setRunnerPost(null);
       });
   }, []);
+
+  const getRunnerPost = async (): Promise<GetDetailedRunnerPostResponse> => {
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
+
+    const data = await response.json().catch(() => {
+      throw new Error('게시글을 불러오지 못했습니다.');
+    });
+
+    return data;
+  };
+
+  const deleteRunnerPost = async () => {
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) throw new Error('게시글을 삭제하지 못했습니다.');
+  };
 
   return (
     <Layout>
@@ -71,7 +62,7 @@ const RunnerPostPage = () => {
             <S.PostHeaderContainer>
               <PostTagList tags={runnerPost.tags} />
               <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
-                <S.EditLink>수정</S.EditLink> <S.EditLink>삭제</S.EditLink>
+                <S.EditLink>수정</S.EditLink> <S.EditLink onClick={deleteRunnerPost}>삭제</S.EditLink>
               </S.EditLinkContainer>
               <S.PostTitleContainer>
                 <S.PostTitle>{runnerPost.title}.</S.PostTitle>
@@ -84,10 +75,10 @@ const RunnerPostPage = () => {
             <S.PostBodyContainer>
               <S.InformationContainer>
                 <S.ProfileContainer>
-                  <Avatar imageUrl={runnerPost.profile.imageUrl} />
+                  <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
                   <S.Profile>
-                    <S.Name>{runnerPost.profile.name}</S.Name>
-                    <S.Job>{runnerPost.profile.company}</S.Job>
+                    <S.Name>{runnerPost.runnerProfile.name}</S.Name>
+                    <S.Job>{runnerPost.runnerProfile.company}</S.Job>
                   </S.Profile>
                 </S.ProfileContainer>
                 <S.statisticsContainer>
@@ -105,7 +96,9 @@ const RunnerPostPage = () => {
               </Button>
               <S.PrimaryButtonContainer>
                 <Button colorTheme="WHITE" fontWeight={700}>
-                  코드 보러가기
+                  <S.Anchor href={runnerPost.pullRequestUrl} target="_blank">
+                    코드 보러가기
+                  </S.Anchor>
                 </Button>
                 <Button colorTheme="WHITE" fontWeight={700}>
                   1:1 대화하기
@@ -266,6 +259,8 @@ const S = {
     display: flex;
     gap: 20px;
   `,
+
+  Anchor: styled.a``,
 };
 
 export default RunnerPostPage;

@@ -2,10 +2,10 @@ import { BATON_BASE_URL } from '@/constants';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SupporterSelectItem from '../SupporterSelectItem/SupporterSelectItem';
-import { SupporterCardList } from '@/types/SupporterSelect';
+import { GetSupporterCardResponse } from '@/types/supporterCard';
 
 const SupporterSelectList = () => {
-  const [supporterCardList, setSupporterCardList] = useState<SupporterCardList | null>(null);
+  const [supporterCardList, setSupporterCardList] = useState<GetSupporterCardResponse | null>(null);
 
   const getSupporterCardList = async () => {
     try {
