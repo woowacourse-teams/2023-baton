@@ -48,7 +48,8 @@ export default SupporterSelectList;
 const S = {
   SupporterSelectListContainer: styled.ul`
     display: grid;
-    grid-template-columns: repeat(2, 1fr 1fr);
-    column-gap: 30px;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 27px;
+    row-gap: 20px;
   `,
 };
