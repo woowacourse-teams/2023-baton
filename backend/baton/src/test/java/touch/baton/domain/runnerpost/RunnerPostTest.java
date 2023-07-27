@@ -93,7 +93,7 @@ class RunnerPostTest {
             ).doesNotThrowAnyException();
         }
 
-        @DisplayName("supporter 에 null 이 들어간 경우 아직 리뷰어 할당이 되지 않은 것이다.")
+        @DisplayName("supporterProfile 에 null 이 들어간 경우 아직 리뷰어 할당이 되지 않은 것이다.")
         @Test
         void success_if_supporter_is_null() {
             assertThatCode(() -> RunnerPost.builder()
