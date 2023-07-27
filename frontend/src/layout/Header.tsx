@@ -4,14 +4,14 @@ import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 
 const Header = () => {
-  const { goToMainPage } = usePageRouter();
+  const { goToMainPage, goToLoginPage } = usePageRouter();
 
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
         <S.Logo src={LogoImage} onClick={goToMainPage} />
         <S.MenuContainer>
-          <S.LoginButton>로그인</S.LoginButton>
+          <S.LoginButton onClick={goToLoginPage}>로그인</S.LoginButton>
           <S.ProfileAvatar />
         </S.MenuContainer>
       </S.HeaderContainer>
