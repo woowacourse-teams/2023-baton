@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public enum ServerErrorCode implements ErrorCode {
     ;
+
     private final HttpStatus httpStatus;
     private final String errorCode;
     private final String message;
