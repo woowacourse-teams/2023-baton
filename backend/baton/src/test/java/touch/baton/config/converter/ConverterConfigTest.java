@@ -25,11 +25,11 @@ class ConverterConfigTest {
 
     }
 
-    @DisplayName("직렬화 할 때 LocalDateTime yyyy-MM-dd'T'HH:mm 형식으로 변경되는지 확인한다.")
+    @DisplayName("직렬화 할 때 LocalDateTime yyyy-MM-dd'T'HH:mm 형식으로 변경된다.")
     @Test
     void serializeStringDateToLocalDateTime() throws JsonProcessingException {
         // given
-        final LocalDateTime expected = LocalDateTime.of(2023, 8, 15, 12, 13);
+        final LocalDateTime expected = LocalDateTime.of(2023, 8, 15, 12, 13, 12);
 
         // when
         final String actual = objectMapper.writeValueAsString(expected);
