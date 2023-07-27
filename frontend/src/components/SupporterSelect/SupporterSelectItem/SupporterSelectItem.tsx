@@ -1,21 +1,9 @@
 import Avatar from '@/components/common/Avatar';
 import Button from '@/components/common/Button';
-<<<<<<< HEAD
 import { SupporterCard } from '@/types/supporterCard';
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import githubIcon from '@/assets/github-icon.svg';
-import ConfirmModal from '@/components/ConfirmModal';
-import { usePageRouter } from '@/hooks/usePageRouter';
-import { useLocation } from 'react-router-dom';
-import { BATON_BASE_URL } from '@/constants';
-import { CreateRunnerPostRequest } from '@/types/runnerPost';
-=======
-import { SupporterCard } from '@/types/SupporterSelect';
 import React from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
->>>>>>> 1454089 (feat: 서포터 선택 목록 모달 기능 구현)
 
 interface Props extends SupporterCard {
   selectedSupporter: (selectedSupporter: SupporterCard) => void;
@@ -34,20 +22,6 @@ const SupporterSelectItem = ({
   const handleSelectedSupporter = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-<<<<<<< HEAD
-  const { tags, title, pullRequestUrl, deadline, contents } = useLocation().state;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
-    const body = JSON.stringify(data);
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
-      method: 'POST',
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-=======
     selectedSupporter({
       supporterId,
       name,
@@ -56,7 +30,6 @@ const SupporterSelectItem = ({
       totalRating,
       githubUrl,
       introduction,
->>>>>>> 1454089 (feat: 서포터 선택 목록 모달 기능 구현)
     });
   };
 
