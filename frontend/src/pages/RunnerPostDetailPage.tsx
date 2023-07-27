@@ -10,10 +10,10 @@ import chattingIcon from '@/assets/chatting-icon.svg';
 import Button from '@/components/common/Button';
 import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
 import Label from '@/components/common/Label';
-import { GetDetailedRunnerPost } from '@/types/runnerPost';
+import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 
 const RunnerPostPage = () => {
-  const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPost | null>(null);
+  const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
 
   const { goToMainPage } = usePageRouter();
   const { runnerPostId } = useParams();
@@ -28,7 +28,7 @@ const RunnerPostPage = () => {
       });
   }, []);
 
-  const getRunnerPost = async (): Promise<GetDetailedRunnerPost> => {
+  const getRunnerPost = async (): Promise<GetDetailedRunnerPostResponse> => {
     const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
       method: 'GET',
     });

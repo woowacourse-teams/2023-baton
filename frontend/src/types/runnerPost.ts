@@ -19,7 +19,7 @@ export interface RunnerProfile {
   imageUrl: string;
 }
 
-export interface GetDetailedRunnerPost extends RunnerPost {
+export interface GetDetailedRunnerPostResponse extends RunnerPost {
   contents: string;
   isOwner: boolean;
   pullRequestUrl: string;
