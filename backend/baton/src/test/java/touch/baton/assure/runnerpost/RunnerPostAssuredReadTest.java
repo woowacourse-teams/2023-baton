@@ -13,6 +13,9 @@ import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.time.LocalDateTime;
 
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
+
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
@@ -27,10 +30,10 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
         );
         memberRepository.save(member);
 
-        final Runner runner = RunnerFixture.from(member, 0, Grade.BARE_FOOT);
+        final Runner runner = RunnerFixture.from(member, totalRating(0), Grade.BARE_FOOT);
         runnerRepository.save(runner);
 
-        final RunnerPost runnerPost = RunnerPostFixture.create(runner, LocalDateTime.now().plusHours(100));
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(100)));
         runnerPostRepository.save(runnerPost);
 
         RunnerPostAssuredSupport

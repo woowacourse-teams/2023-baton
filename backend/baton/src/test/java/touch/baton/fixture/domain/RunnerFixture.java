@@ -1,6 +1,7 @@
 package touch.baton.fixture.domain;
 
 import touch.baton.domain.common.vo.Grade;
+import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 
@@ -11,15 +12,15 @@ public abstract class RunnerFixture {
     private RunnerFixture() {
     }
 
-    public static Runner create(final int totalRating, final Grade grade, final Member member) {
+    public static Runner create(final TotalRating totalRating, final Grade grade, final Member member) {
         return Runner.builder()
-                .totalRating(totalRating(totalRating))
+                .totalRating(totalRating)
                 .grade(grade)
                 .member(member)
                 .build();
     }
 
     public static Runner createRunner(final Member member) {
-        return create(5000, Grade.BARE_FOOT, member);
+        return create(totalRating(5000), Grade.BARE_FOOT, member);
     }
 }

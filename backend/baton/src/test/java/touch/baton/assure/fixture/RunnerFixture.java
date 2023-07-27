@@ -11,11 +11,11 @@ public abstract class RunnerFixture {
     }
 
     public static Runner from(final Member member,
-                              final Integer totalRating,
+                              final TotalRating totalRating,
                               final Grade grade
     ) {
         return Runner.builder()
-                .totalRating(new TotalRating(totalRating))
+                .totalRating(totalRating)
                 .grade(grade)
                 .member(member)
                 .build();
