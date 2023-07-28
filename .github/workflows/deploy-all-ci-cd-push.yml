@@ -1,11 +1,11 @@
-name: Docker Hub Build And Push
+name: All deploy CI + CD on push
 
 on:
   push:
-    branches: [ "dev/BE" ]
+    branches: [ "deploy" ]
 
 jobs:
-  build:
+  deploy-ci-be:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,32 +34,47 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2.2.0
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ secrets.DOCKERHUB_DEPLOY_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_DEPLOY_TOKEN }}
 
       - name: Docker Image Build
         run: |
           cd backend/baton
-          docker build --platform linux/arm64/v8 -t 2023baton/2023baton -f Dockerfile-dev .
+          docker build --platform linux/arm64/v8 -t 2023batondeploy/2023-baton-deploy -f Dockerfile-deploy .
 
       - name: Docker Hub Push
-        run: docker push 2023baton/2023baton
+        run: docker push 2023batondeploy/2023-baton-deploy
 
-  deploy:
-    runs-on: self-hosted
-    needs: build
+    deploy-ci-fe:
+      runs-on: ubuntu-latest
+      defaults:
+        run:
+          working-directory: ./frontend
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: 의존성을 설치한다
+          run: npm install
+
+        - name: 테스트를 수행한다
+          run: npm run test
+
+  deploy-cd-be:
+    needs: deploy-ci-be
+    runs-on: [self-hosted, Linux, ARM64, deploy]
 
     steps:
       - name: Pull Latest Docker Image
         run: |
-          sudo docker login --username ${{ secrets.DOCKERHUB_USERNAME }} --password ${{ secrets.DOCKERHUB_TOKEN }}
+          sudo docker login --username ${{ secrets.DOCKERHUB_DEPLOY_USERNAME }} --password ${{ secrets.DOCKERHUB_DEPLOY_TOKEN }}
           if sudo docker inspect spring-baton &>/dev/null; then
             sudo docker stop spring-baton
             sudo docker rm -f spring-baton
             sudo docker image prune -af
           fi
-          sudo docker pull 2023baton/2023baton:latest
+          sudo docker pull 2023batondeploy/2023-baton-deploy:latest
 
       - name: Docker Compose
         run: |
-          sudo docker run --name spring-baton -p 8080:8080 2023baton/2023baton:latest 1>> build.log 2>> error.log &
+          sudo docker run --name spring-baton -p 8080:8080 2023batondeploy/2023-baton-deploy:latest 1>> build.log 2>> error.log &
