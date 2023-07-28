@@ -11,7 +11,7 @@ export interface RunnerPost {
   runnerProfile: RunnerProfile;
   watchedCount: number;
   chattingCount: number;
-  reviewStatus: string;
+  reviewStatus: ReviewStatus;
 }
 
 export interface RunnerProfile {

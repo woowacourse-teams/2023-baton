@@ -7,9 +7,10 @@ import Layout from '@/layout/Layout';
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import SelectSupportModal from '@/components/SelectSupportModal';
-import { RunnerPostCreate, SupporterCard } from '@/types/SupporterSelect';
 import SelectedSupporter from '@/components/SelectedSupporter';
 import { BATON_BASE_URL } from '@/constants';
+import { SupporterCard } from '@/types/supporterCard';
+import { CreateRunnerPostRequest } from '@/types/runnerPost';
 
 const RunnerPostCreatePage = () => {
   const { goBack, goToCreationResultPage } = usePageRouter();
@@ -116,7 +117,7 @@ const RunnerPostCreatePage = () => {
     if (!isDeadlineValidate) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
   };
 
-  const postRunnerForm = async (data: RunnerPostCreate) => {
+  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
     const body = JSON.stringify(data);
     const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
       method: 'POST',
@@ -130,7 +131,7 @@ const RunnerPostCreatePage = () => {
   };
 
   const submitForm = async () => {
-    const postData: RunnerPostCreate = {
+    const postData: CreateRunnerPostRequest = {
       tags,
       title,
       pullRequestUrl,
