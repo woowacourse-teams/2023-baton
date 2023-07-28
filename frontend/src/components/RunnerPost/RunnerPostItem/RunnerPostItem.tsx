@@ -23,7 +23,9 @@ const RunnerPostItem = ({
         <S.PostTitle>{title}</S.PostTitle>
         <S.DeadLineContainer>
           <S.DeadLine>{deadline} 까지</S.DeadLine>
-          <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : 'RED'}>{REVIEW_STATUS_LABEL_TEXT[reviewStatus]}</Label>
+          <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'WHITE'}>
+            {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
+          </Label>
         </S.DeadLineContainer>
         <S.TagContainer>
           {tags.map((tag, index) => (

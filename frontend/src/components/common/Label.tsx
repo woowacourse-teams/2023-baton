@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 interface Props extends React.HTMLProps<HTMLDivElement> {
   children: React.ReactNode;
-  colorTheme: 'RED' | 'GRAY';
+  colorTheme: 'RED' | 'WHITE' | 'GRAY';
   fontSize?: string | number;
   fontWeight?: number;
 }
@@ -24,7 +24,7 @@ const S = {
   LabelWrapper: styled.div``,
 
   Label: styled.div<{
-    $colorTheme: 'RED' | 'GRAY';
+    $colorTheme: 'RED' | 'WHITE' | 'GRAY';
     $width?: string | number;
     $height?: string | number;
     $fontSize?: string | number;
@@ -48,6 +48,14 @@ const S = {
 
 const themeStyles = {
   RED: css`
+    border: 1px solid var(--white-color);
+
+    background: var(--baton-red);
+
+    color: var(--white-color);
+  `,
+
+  WHITE: css`
     border: 1px solid var(--baton-red);
 
     color: var(--baton-red);

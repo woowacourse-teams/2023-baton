@@ -12,11 +12,11 @@ const MainPage = () => {
   return (
     <Layout>
       <S.TitleWrapper>
-        <S.Title>서포터를 찾고있어요 👀</S.Title>
+        <S.Title>서포터를 찾고 있어요 👀</S.Title>
       </S.TitleWrapper>
       <S.ControlPanelContainer>
         <S.LeftSideContainer>
-          <S.FormContainer>
+          {/* <S.FormContainer>
             <S.SearchLabel htmlFor="search-tag">#tags</S.SearchLabel>
             <S.SearchInput id="search-tag" type="text" placeholder="태그명 검색 (최대 5개 설정 가능)" />
           </S.FormContainer>
@@ -24,7 +24,7 @@ const MainPage = () => {
             <Tag>자바</Tag>
             <Tag>javascript</Tag>
             <Tag>react</Tag>
-          </S.TagContainer>
+          </S.TagContainer> */}
         </S.LeftSideContainer>
 
         <Button onClick={goToRunnerPostCreatePage} colorTheme="WHITE" fontSize="18px">
