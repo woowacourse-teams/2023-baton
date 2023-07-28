@@ -9,7 +9,7 @@ const RunnerPostList = () => {
 
   const getRunnerPost = async () => {
     try {
-      const response = await fetch(`${BATON_BASE_URL}/posts/runner`, {
+      const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
         method: 'GET',
       });
 

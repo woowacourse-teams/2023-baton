@@ -2,14 +2,14 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Avatar from '@/components/common/Avatar';
-import { RunnerPostData } from '@/types/runnerPost';
+import { RunnerPost } from '@/types/runnerPost';
 import Label from '@/components/common/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 
 const RunnerPostItem = ({
-  runnerPostData: { runnerPostId, title, deadline, tags, imageUrl, name, watchedCount, chattingCount, reviewStatus },
+  runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, chattingCount, reviewStatus },
 }: {
-  runnerPostData: RunnerPostData;
+  runnerPostData: RunnerPost;
 }) => {
   const { goToRunnerPostPage } = usePageRouter();
 
@@ -33,8 +33,8 @@ const RunnerPostItem = ({
       </S.LeftSideContainer>
       <S.RightSideContainer>
         <S.ProfileContainer>
-          <Avatar width="60px" height="60px" imageUrl={imageUrl} />
-          <S.ProfileName>{name}</S.ProfileName>
+          <Avatar width="60px" height="60px" imageUrl={runnerProfile.imageUrl} />
+          <S.ProfileName>{runnerProfile.name}</S.ProfileName>
         </S.ProfileContainer>
         <S.ChatViewContainer>
           <div>조회수: {watchedCount}</div>
