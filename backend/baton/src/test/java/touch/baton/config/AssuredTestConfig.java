@@ -15,9 +15,6 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AssuredTestConfig {
 
-    @LocalServerPort
-    private int port;
-
     @Autowired
     protected MemberRepository memberRepository;
 
@@ -28,7 +25,7 @@ public abstract class AssuredTestConfig {
     protected RunnerPostRepository runnerPostRepository;
 
     @BeforeEach
-    void assuredTestSetUp() {
+    void assuredTestSetUp(@LocalServerPort int port) {
         RestAssured.port = port;
     }
 }
