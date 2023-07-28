@@ -83,7 +83,15 @@ const RunnerPostPage = () => {
               </S.EditLinkContainer>
               <S.PostTitleContainer>
                 <S.PostTitle>{runnerPost.title}.</S.PostTitle>
-                <Label colorTheme={runnerPost.reviewStatus === 'DONE' ? 'GRAY' : 'RED'}>
+                <Label
+                  colorTheme={
+                    runnerPost.reviewStatus === 'DONE'
+                      ? 'GRAY'
+                      : runnerPost.reviewStatus === 'IN_PROGRESS'
+                      ? 'RED'
+                      : 'WHITE'
+                  }
+                >
                   {REVIEW_STATUS_LABEL_TEXT[runnerPost.reviewStatus]}
                 </Label>
               </S.PostTitleContainer>
@@ -117,9 +125,9 @@ const RunnerPostPage = () => {
                     코드 보러가기
                   </S.Anchor>
                 </Button>
-                <Button colorTheme="WHITE" fontWeight={700}>
+                {/* <Button colorTheme="WHITE" fontWeight={700}>
                   1:1 대화하기
-                </Button>
+                </Button> */}
               </S.PrimaryButtonContainer>
             </S.PostFooterContainer>
           </S.PostContainer>
@@ -145,7 +153,7 @@ const S = {
   `,
 
   Title: styled.div`
-    padding: 40px 30px 40px 10px;
+    margin: 72px 0 53px 0;
 
     font-size: 36px;
     font-weight: bold;
