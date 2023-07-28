@@ -10,9 +10,13 @@ import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.tag.RunnerPostTag;
+import touch.baton.domain.tag.RunnerPostTagFixture;
 import touch.baton.domain.tag.RunnerPostTags;
+import touch.baton.domain.tag.Tag;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class RunnerPostFixture {
 
@@ -58,6 +62,30 @@ public abstract class RunnerPostFixture {
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
     }
+
+    public static RunnerPost create(final Runner runner, final Deadline deadline, List<Tag> tags) {
+        final RunnerPost runnerPost = RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .contents(new Contents("테스트 내용"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(deadline)
+                .watchedCount(new WatchedCount(0))
+                .chattingCount(new ChattingCount(0))
+                .reviewStatus(ReviewStatus.NOT_STARTED)
+                .runner(runner)
+                .supporter(null)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+
+        final List<RunnerPostTag> runnerPostTags = tags.stream()
+                .map(tag -> RunnerPostTagFixture.create(runnerPost, tag))
+                .toList();
+
+        runnerPost.addAllRunnerPostTags(runnerPostTags);
+
+        return runnerPost;
+    }
+
 
     public static RunnerPost create(final Runner runner, final RunnerPostTags runnerPostTags, final Deadline deadline) {
         return RunnerPost.builder()
