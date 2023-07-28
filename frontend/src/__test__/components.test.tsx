@@ -15,16 +15,20 @@ describe('컴포넌트를 렌더링 한다.', () => {
   });
 
   test('ConfirmModal: 확인 모달창 렌더링 ', () => {
-    const supporterName = '도리';
+    const confirmMessage = '정말 삭제하시겠습니까?';
     const closeModal = jest.fn();
     const handleClickConfirmButton = jest.fn();
 
     render(<div id="modal-root"></div>);
 
     const modal = render(
-      <ConfirmModal name={supporterName} closeModal={closeModal} handleClickConfirmButton={handleClickConfirmButton} />,
+      <ConfirmModal
+        contents={confirmMessage}
+        closeModal={closeModal}
+        handleClickConfirmButton={handleClickConfirmButton}
+      />,
     );
 
-    modal.getByText(`${supporterName}님에게 리뷰를 요청하시겠습니까?`);
+    modal.getByText(`${confirmMessage}`);
   });
 });
