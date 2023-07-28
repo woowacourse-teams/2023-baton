@@ -4,16 +4,16 @@ import Button from './common/Button';
 import { styled } from 'styled-components';
 
 interface Props {
-  name: string;
+  contents: string;
   closeModal: () => void;
   handleClickConfirmButton: () => void;
 }
 
-const ConfirmModal = ({ name, closeModal, handleClickConfirmButton }: Props) => {
+const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton }: Props) => {
   return (
     <Modal width="495px" height="211px" closeModal={closeModal}>
       <S.ConfirmModalContainer>
-        <S.ConfirmMessage>{name}님에게 리뷰를 요청하시겠습니까?</S.ConfirmMessage>
+        <S.ConfirmMessage>{contents}</S.ConfirmMessage>
         <S.ButtonContainer>
           <Button colorTheme="GRAY" width="134px" height="35px" fontSize="16px" fontWeight={700} onClick={closeModal}>
             취소
@@ -26,7 +26,7 @@ const ConfirmModal = ({ name, closeModal, handleClickConfirmButton }: Props) => 
             fontWeight={700}
             onClick={handleClickConfirmButton}
           >
-            리뷰 요청하기
+            삭제
           </Button>
         </S.ButtonContainer>
       </S.ConfirmModalContainer>
