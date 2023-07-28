@@ -40,7 +40,7 @@ jobs:
       - name: Docker Image Build
         run: |
           cd backend/baton
-          docker build --platform linux/arm64/v8 -t 2023baton/2023baton -f Dockerfile-dev .
+          docker build --platform linux/arm64/v8 -t 2023baton/2023baton -f Dockerfile-deploy .
 
       - name: Docker Hub Push
         run: docker push 2023baton/2023baton
