@@ -54,7 +54,7 @@ class ConverterConfigTest {
     }
 
     @DisplayName("역직렬화 할 때, 맞지 않는 형식의 날짜 String 이 들어오면 LocalDateTime 으로 변환이 실패한다.")
-    @ValueSource(strings = {"\"2023-08-15T12:13:45\"", "\"2023-08-15T12:13\"", "\"2023-08-15 12:13\"", "\"2023/08/15 12:13\""})
+    @ValueSource(strings = {"\"2023-08-15T12:13:45\"", "\"2023-08-15 12:13\"", "\"2023/08/15T12:13\"", "\"2023/08/15 12:13\""})
     @ParameterizedTest
     void fail_deserializeLocalDateTimeToStringDate(final String expected) {
         // when, then
