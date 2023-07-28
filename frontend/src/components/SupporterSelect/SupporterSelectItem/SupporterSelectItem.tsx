@@ -1,16 +1,13 @@
 import Avatar from '@/components/common/Avatar';
 import Button from '@/components/common/Button';
 import { SupporterCard } from '@/types/supporterCard';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import ConfirmModal from '@/components/ConfirmModal';
-import { usePageRouter } from '@/hooks/usePageRouter';
-import { useLocation } from 'react-router-dom';
-import { BATON_BASE_URL } from '@/constants';
-import { CreateRunnerPostRequest } from '@/types/runnerPost';
 
-interface Props extends SupporterCard {}
+interface Props extends SupporterCard {
+  selectedSupporter: (selectedSupporter: SupporterCard) => void;
+}
 
 const SupporterSelectItem = ({
   supporterId,
@@ -20,42 +17,20 @@ const SupporterSelectItem = ({
   totalRating,
   githubUrl,
   introduction,
+  selectedSupporter,
 }: Props) => {
-  const { goToCreationResultPage } = usePageRouter();
+  const handleSelectedSupporter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
 
-  const { tags, title, pullRequestUrl, deadline, contents } = useLocation().state;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
-    const body = JSON.stringify(data);
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
-      method: 'POST',
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    selectedSupporter({
+      supporterId,
+      name,
+      company,
+      reviewCount,
+      totalRating,
+      githubUrl,
+      introduction,
     });
-
-    if (response.status !== 201) throw new Error(`${response.status} ERROR`);
-  };
-
-  const submitForm = async () => {
-    try {
-      await postRunnerForm({ tags, title, pullRequestUrl, deadline, contents, supporterId });
-    } catch (error) {
-      return alert(error);
-    }
-
-    goToCreationResultPage();
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const openModal = () => {
-    setIsModalOpen(true);
   };
 
   return (
@@ -76,16 +51,15 @@ const SupporterSelectItem = ({
           height={'35px'}
           fontSize={'12px'}
           fontWeight={700}
-          onClick={openModal}
+          onClick={handleSelectedSupporter}
         >
-          리뷰 요청하기
+          선택하기
         </Button>
         <S.GithubButton href={githubUrl} target="_blank">
           <S.GithubIcon src={githubIcon} />
           <S.GithubButtonText>github</S.GithubButtonText>
         </S.GithubButton>
       </S.ButtonContainer>
-      {isModalOpen && <ConfirmModal name={name} closeModal={closeModal} handleClickConfirmButton={submitForm} />}
     </S.SupporterSelectItemContainer>
   );
 };
@@ -98,7 +72,7 @@ const S = {
     align-items: center;
     gap: 20px;
 
-    width: 580px;
+    width: 520px;
     height: 175px;
     padding: 35px 40px;
 

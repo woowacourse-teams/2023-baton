@@ -4,17 +4,37 @@ import TextArea from '@/components/Textarea';
 import Button from '@/components/common/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
+import SelectSupportModal from '@/components/SelectSupportModal';
+import SelectedSupporter from '@/components/SelectedSupporter';
+import { BATON_BASE_URL } from '@/constants';
+import { SupporterCard } from '@/types/supporterCard';
+import { CreateRunnerPostRequest } from '@/types/runnerPost';
 
 const RunnerPostCreatePage = () => {
-  const { goBack, goToSupporterSelectPage } = usePageRouter();
+  const { goBack, goToCreationResultPage } = usePageRouter();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
   const [deadline, setDeadline] = useState<string>('');
   const [contents, setContents] = useState<string>('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedSupporter, setSelectedSupporter] = useState<SupporterCard | null>(null);
+
+  useEffect(() => {
+    const handleEsc = (event: any) => {
+      if (event.keyCode === 27) {
+        setIsModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
 
   const pushTag = (newTag: string) => {
     if (newTag.length > 15) return alert('태그명은 15자 이내로 입력해주세요.');
@@ -66,6 +86,19 @@ const RunnerPostCreatePage = () => {
     goBack();
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleSelectButton = (selectedSupporter: SupporterCard) => {
+    setSelectedSupporter(selectedSupporter);
+    setIsModalOpen(false);
+  };
+
   const goToNextForm = () => {
     try {
       validateInputs();
@@ -73,7 +106,7 @@ const RunnerPostCreatePage = () => {
       return alert(error);
     }
 
-    goToSupporterSelectPage({ tags, title, pullRequestUrl, deadline, contents });
+    submitForm();
   };
 
   const validateInputs = () => {
@@ -84,32 +117,66 @@ const RunnerPostCreatePage = () => {
     if (!isDeadlineValidate) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
   };
 
+  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
+    const body = JSON.stringify(data);
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
+      method: 'POST',
+      body,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 201) throw new Error(`${response.status} ERROR`);
+  };
+
+  const submitForm = async () => {
+    const postData: CreateRunnerPostRequest = {
+      tags,
+      title,
+      pullRequestUrl,
+      deadline,
+      contents,
+      supporterId: selectedSupporter ? selectedSupporter?.supporterId : 0,
+    };
+
+    try {
+      await postRunnerForm(postData);
+    } catch (error) {
+      return alert(error);
+    }
+
+    goToCreationResultPage();
+  };
+
   return (
     <Layout>
-      <S.Title>서포터를 찾고 있어요</S.Title>
       <S.FormContainer>
-        <S.InputContainer>
-          <S.InputName>태그</S.InputName>
-          <TagInput tags={tags} pushTag={pushTag} popTag={removeTag} width={'800px'} />
-        </S.InputContainer>
         <S.Form>
           <S.InputContainer>
-            <S.InputName>제목</S.InputName>
             <InputBox
               inputTextState={title}
               handleInputTextState={changeTitle}
-              maxLength={15}
-              placeholder="제목을 입력하세요"
+              maxLength={30}
+              width="800px"
+              fontSize="38px"
+              fontWeight="700"
+              placeholder="제목을 입력해주세요"
             />
           </S.InputContainer>
           <S.InputContainer>
-            <S.InputName>PR주소</S.InputName>
+            <TagInput tags={tags} pushTag={pushTag} popTag={removeTag} width="100%" />
+          </S.InputContainer>
+
+          <S.InputContainer>
             <InputBox
               inputTextState={pullRequestUrl}
               handleInputTextState={changePullRequestUrl}
-              placeholder="PR 주소를 입력하세요"
+              width="500px"
+              placeholder="코드 리뷰받을 PR 주소를 입력해주세요"
             />
           </S.InputContainer>
+
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
             <S.DeadlineContainer>
@@ -117,14 +184,44 @@ const RunnerPostCreatePage = () => {
               <S.DeadlineTime type="time" onChange={changeDeadlineTime} />
             </S.DeadlineContainer>
           </S.InputContainer>
+          {selectedSupporter ? (
+            <S.SelectedSupporter>
+              <SelectedSupporter {...selectedSupporter} />
+              <Button
+                type="button"
+                width="120px"
+                height="45px"
+                colorTheme="GRAY"
+                fontSize="14px"
+                fontWeight={700}
+                onClick={openModal}
+              >
+                다른 서포터 선택
+              </Button>
+            </S.SelectedSupporter>
+          ) : (
+            <Button
+              type="button"
+              width="300px"
+              height="105px"
+              colorTheme="WHITE"
+              fontSize="14px"
+              fontWeight={700}
+              onClick={openModal}
+            >
+              서포터 선택
+            </Button>
+          )}
+
           <TextArea
             inputTextState={contents}
             width="1200px"
-            height="500px"
+            height="340px"
             maxLength={500}
             handleInputTextState={changeContents}
             placeholder="> 리뷰어가 작성된 코드의 의미를 파악할 수 있도록 내용을 작성해주시면 더 나은 리뷰가 될 수 있어요 :)"
           />
+
           <S.ButtonContainer>
             <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
               취소
@@ -135,6 +232,8 @@ const RunnerPostCreatePage = () => {
           </S.ButtonContainer>
         </S.Form>
       </S.FormContainer>
+
+      {isModalOpen && <SelectSupportModal closeModal={closeModal} handleSelectButton={handleSelectButton} />}
     </Layout>
   );
 };
@@ -143,7 +242,7 @@ export default RunnerPostCreatePage;
 
 const S = {
   Title: styled.div`
-    margin: 50px 0;
+    margin: 40px 0 50px 0;
 
     color: var(--gray-800);
     font-size: 32px;
@@ -153,8 +252,9 @@ const S = {
   FormContainer: styled.div`
     display: flex;
     flex-direction: column;
-
     gap: 20px;
+
+    padding: 0 20px;
   `,
 
   InputContainer: styled.div`
@@ -165,19 +265,22 @@ const S = {
   Form: styled.form`
     display: flex;
     flex-direction: column;
+    gap: 30px;
 
-    gap: 20px;
+    &:first-child {
+      margin-top: 60px;
+    }
   `,
 
   InputName: styled.div`
     display: flex;
     align-items: center;
 
-    width: 100px;
     height: 36px;
+    margin-right: 20px;
 
     color: var(--gray-800);
-    font-size: 15px;
+    font-size: 18px;
     font-weight: 500px;
   `,
 
@@ -194,6 +297,8 @@ const S = {
   `,
 
   DeadlineTime: styled.input`
+    margin-right: 40px;
+
     &:focus {
       outline: 0;
     }
@@ -204,27 +309,12 @@ const S = {
     justify-content: center;
     gap: 20px;
 
-    margin-bottom: 100px;
+    margin: 50px 0;
   `,
 
-  ModalChildrenContainer: styled.div`
+  SelectedSupporter: styled.div`
     display: flex;
-    flex-direction: column;
-
-    height: 100%;
-    padding: 10px;
-    gap: 20px;
-  `,
-
-  ModalTitle: styled.div`
-    display: flex;
-    justify-content: center;
-  `,
-
-  DisClaimMessage: styled.div`
-    line-height: 1.5;
-    color: var(--gray-500);
-
-    margin-bottom: 20px;
+    align-items: end;
+    gap: 30px;
   `,
 };

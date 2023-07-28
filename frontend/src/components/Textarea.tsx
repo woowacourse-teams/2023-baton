@@ -47,15 +47,15 @@ const S = {
   InputBox: styled.textarea`
     flex: 1;
 
-    border-bottom: 1 solid var(--gray-400);
-    background-color: white;
+    padding: 20px 10px;
+
     border: transparent;
 
     font-size: 16px;
     line-height: 2;
 
     &::placeholder {
-      font-size: 16px;
+      font-size: 18px;
     }
 
     &:focus {

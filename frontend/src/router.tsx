@@ -6,7 +6,6 @@ import RunnerPostPage from './pages/RunnerPostDetailPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
 import CreationResultPage from './pages/CreationResultPage';
-import SupporterSelectPage from './pages/SupporterSelectPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -42,10 +41,6 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.RESULT,
           element: <CreationResultPage />,
-        },
-        {
-          path: ROUTER_PATH.SUPPORTER_SELECT,
-          element: <SupporterSelectPage />,
         },
       ],
     },

@@ -2,9 +2,13 @@ import { BATON_BASE_URL } from '@/constants';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SupporterSelectItem from '../SupporterSelectItem/SupporterSelectItem';
-import { GetSupporterCardResponse } from '@/types/supporterCard';
+import { GetSupporterCardResponse, SupporterCard } from '@/types/supporterCard';
 
-const SupporterSelectList = () => {
+interface Props {
+  handleSelectButton: (selectedSupporter: SupporterCard) => void;
+}
+
+const SupporterSelectList = ({ handleSelectButton }: Props) => {
   const [supporterCardList, setSupporterCardList] = useState<GetSupporterCardResponse | null>(null);
 
   const getSupporterCardList = async () => {
@@ -34,10 +38,14 @@ const SupporterSelectList = () => {
     fetchRunnerPost();
   }, []);
 
+  const selectedSupporter = (selectedSupporter: SupporterCard) => {
+    handleSelectButton(selectedSupporter);
+  };
+
   return (
     <S.SupporterSelectListContainer>
       {supporterCardList?.data.map((card) => (
-        <SupporterSelectItem key={card.supporterId} {...card} />
+        <SupporterSelectItem key={card.supporterId} {...card} selectedSupporter={selectedSupporter} />
       ))}
     </S.SupporterSelectListContainer>
   );
@@ -48,7 +56,10 @@ export default SupporterSelectList;
 const S = {
   SupporterSelectListContainer: styled.ul`
     display: grid;
-    grid-template-columns: repeat(2, 1fr 1fr);
-    column-gap: 30px;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 27px;
+    row-gap: 20px;
+
+    padding: 0 0 20px 0;
   `,
 };
