@@ -5,7 +5,6 @@ import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -19,7 +18,6 @@ import static lombok.AccessLevel.PROTECTED;
 public class Deadline {
 
     @Column(name = "deadline", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private LocalDateTime value;
 
     public Deadline(final LocalDateTime value) {
