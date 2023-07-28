@@ -4,15 +4,21 @@ import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 
 const Header = () => {
-  const { goToMainPage, goToLoginPage } = usePageRouter();
+  const { goToMainPage } = usePageRouter();
 
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
         <S.Logo src={LogoImage} onClick={goToMainPage} />
         <S.MenuContainer>
-          <S.LoginButton onClick={goToLoginPage}>로그인</S.LoginButton>
-          <S.ProfileAvatar />
+          <S.LoginButton
+            onClick={() => {
+              alert('준비중인 기능입니다.🥺');
+            }}
+          >
+            로그인
+          </S.LoginButton>
+          {/* <S.ProfileAvatar /> */}
         </S.MenuContainer>
       </S.HeaderContainer>
     </S.HeaderWrapper>
