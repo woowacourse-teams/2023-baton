@@ -11,9 +11,11 @@ import Button from '@/components/common/Button';
 import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
 import Label from '@/components/common/Label';
 import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
+import ConfirmModal from '@/components/ConfirmModal';
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { goToMainPage } = usePageRouter();
   const { runnerPostId } = useParams();
@@ -29,7 +31,7 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = async (): Promise<GetDetailedRunnerPostResponse> => {
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
       method: 'GET',
     });
 
@@ -43,7 +45,7 @@ const RunnerPostPage = () => {
   };
 
   const deleteRunnerPost = async () => {
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -51,6 +53,21 @@ const RunnerPostPage = () => {
     });
 
     if (!response.ok) throw new Error('게시글을 삭제하지 못했습니다.');
+  };
+
+  const handleClickDeleteButton = () => {
+    setIsModalOpen(false);
+
+    deleteRunnerPost();
+    goToMainPage();
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -62,7 +79,7 @@ const RunnerPostPage = () => {
             <S.PostHeaderContainer>
               <PostTagList tags={runnerPost.tags} />
               <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
-                <S.EditLink>수정</S.EditLink> <S.EditLink onClick={deleteRunnerPost}>삭제</S.EditLink>
+                <S.EditLink>{/*수정 기능 구현 필요*/}</S.EditLink> <S.EditLink onClick={openModal}>삭제</S.EditLink>
               </S.EditLinkContainer>
               <S.PostTitleContainer>
                 <S.PostTitle>{runnerPost.title}.</S.PostTitle>
@@ -108,6 +125,13 @@ const RunnerPostPage = () => {
           </S.PostContainer>
         )}
       </S.RunnerPostContainer>
+      {isModalOpen && (
+        <ConfirmModal
+          contents="정말 삭제하시겠습니까?"
+          closeModal={closeModal}
+          handleClickConfirmButton={handleClickDeleteButton}
+        />
+      )}
     </Layout>
   );
 };
