@@ -7,7 +7,7 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 public class RunnerPostAssuredSupport {
 
@@ -48,18 +48,19 @@ public class RunnerPostAssuredSupport {
         public void 러너_게시글_단건_조회_성공을_검증한다(final RunnerPostResponse.Detail 러너_게시글_응답) {
             final RunnerPostResponse.Detail actual = this.response.as(RunnerPostResponse.Detail.class);
 
-            assertAll(
-                    () -> assertThat(actual.title()).isEqualTo(러너_게시글_응답.title()),
-                    () -> assertThat(actual.contents()).isEqualTo(러너_게시글_응답.contents()),
-                    () -> assertThat(actual.tags()).isEqualTo(러너_게시글_응답.tags()),
-                    () -> assertThat(actual.deadline()).isEqualToIgnoringSeconds(러너_게시글_응답.deadline()),
-                    () -> assertThat(actual.runnerProfile().name()).isEqualTo(러너_게시글_응답.runnerProfile().name()),
-                    () -> assertThat(actual.runnerProfile().company()).isEqualTo(러너_게시글_응답.runnerProfile().company()),
-                    () -> assertThat(actual.runnerProfile().imageUrl()).isEqualTo(러너_게시글_응답.runnerProfile().imageUrl()),
-                    () -> assertThat(actual.runnerProfile().runnerId()).isEqualTo(러너_게시글_응답.runnerProfile().runnerId()),
-                    () -> assertThat(actual.chattingCount()).isEqualTo(러너_게시글_응답.chattingCount()),
-                    () -> assertThat(actual.watchedCount()).isEqualTo(러너_게시글_응답.watchedCount()),
-                    () -> assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId())
+            assertSoftly(softly -> {
+                        softly.assertThat(actual.title()).isEqualTo(러너_게시글_응답.title());
+                        softly.assertThat(actual.contents()).isEqualTo(러너_게시글_응답.contents());
+                        softly.assertThat(actual.tags()).isEqualTo(러너_게시글_응답.tags());
+                        softly.assertThat(actual.deadline()).isEqualToIgnoringSeconds(러너_게시글_응답.deadline());
+                        softly.assertThat(actual.runnerProfile().name()).isEqualTo(러너_게시글_응답.runnerProfile().name());
+                        softly.assertThat(actual.runnerProfile().company()).isEqualTo(러너_게시글_응답.runnerProfile().company());
+                        softly.assertThat(actual.runnerProfile().imageUrl()).isEqualTo(러너_게시글_응답.runnerProfile().imageUrl());
+                        softly.assertThat(actual.runnerProfile().runnerId()).isEqualTo(러너_게시글_응답.runnerProfile().runnerId());
+                        softly.assertThat(actual.chattingCount()).isEqualTo(러너_게시글_응답.chattingCount());
+                        softly.assertThat(actual.watchedCount()).isEqualTo(러너_게시글_응답.watchedCount());
+                        softly.assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId());
+                    }
             );
         }
 

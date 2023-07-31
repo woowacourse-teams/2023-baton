@@ -28,4 +28,8 @@ public class WatchedCount {
     public static WatchedCount zero() {
         return new WatchedCount(Integer.parseInt(DEFAULT_VALUE));
     }
+
+    public WatchedCount increase() {
+        return new WatchedCount(value + 1);
+    }
 }
