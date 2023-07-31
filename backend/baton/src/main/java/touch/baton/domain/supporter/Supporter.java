@@ -20,7 +20,10 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.supporter.exception.OldSupporterException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
+import touch.baton.domain.technicaltag.SupporterTechnicalTag;
+import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.EnumType.STRING;
@@ -57,15 +60,19 @@ public class Supporter extends BaseEntity {
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_to_member"), nullable = false)
     private Member member;
 
+    @Embedded
+    private SupporterTechnicalTags supporterTechnicalTags;
+
     @Builder
     private Supporter(final ReviewCount reviewCount,
                       final StarCount starCount,
                       final TotalRating totalRating,
                       final Grade grade,
                       final Introduction introduction,
-                      final Member member
+                      final Member member,
+                      final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        this(null, reviewCount, starCount, totalRating, grade, introduction, member);
+        this(null, reviewCount, starCount, totalRating, grade, introduction, member, supporterTechnicalTags);
     }
 
     private Supporter(final Long id,
@@ -74,9 +81,10 @@ public class Supporter extends BaseEntity {
                       final TotalRating totalRating,
                       final Grade grade,
                       final Introduction introduction,
-                      final Member member
+                      final Member member,
+                      final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        validateNotNull(reviewCount, starCount, totalRating, grade, member);
+        validateNotNull(reviewCount, starCount, totalRating, grade, member, supporterTechnicalTags);
         this.id = id;
         this.reviewCount = reviewCount;
         this.starCount = starCount;
@@ -84,13 +92,15 @@ public class Supporter extends BaseEntity {
         this.grade = grade;
         this.introduction = introduction;
         this.member = member;
+        this.supporterTechnicalTags = supporterTechnicalTags;
     }
 
     private void validateNotNull(final ReviewCount reviewCount,
                                  final StarCount starCount,
                                  final TotalRating totalRating,
                                  final Grade grade,
-                                 final Member member
+                                 final Member member,
+                                 final SupporterTechnicalTags supporterTechnicalTags
     ) {
         if (Objects.isNull(reviewCount)) {
             throw new OldSupporterException.NotNull("reviewCount 는 null 일 수 없습니다.");
@@ -111,5 +121,13 @@ public class Supporter extends BaseEntity {
         if (Objects.isNull(member)) {
             throw new OldSupporterException.NotNull("member 는 null 일 수 없습니다.");
         }
+
+        if (Objects.isNull(supporterTechnicalTags)) {
+            throw new OldSupporterException.NotNull("supporterTechnicalTags 는 null 일 수 없습니다.");
+        }
+    }
+
+    public void addAllSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {
+        this.supporterTechnicalTags.addAll(supporterTechnicalTags);
     }
 }
