@@ -16,4 +16,17 @@ class WatchedCountTest {
         // when, then
         assertThat(expected.getValue()).isEqualTo(0);
     }
+
+    @DisplayName("조회수를 증가시킨다.")
+    @Test
+    void increase() {
+        // given
+        final WatchedCount watchedCount = WatchedCount.zero();
+
+        // when
+        final WatchedCount increasedWatchedCount = watchedCount.increase();
+
+        // then
+        assertThat(increasedWatchedCount).isEqualTo(new WatchedCount(1));
+    }
 }
