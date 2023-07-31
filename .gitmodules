@@ -1,0 +1,3 @@
+[submodule "backend/baton/secret"]
+	path = backend/baton/secret
+	url = https://github.com/2023-baton/sub-be.git
