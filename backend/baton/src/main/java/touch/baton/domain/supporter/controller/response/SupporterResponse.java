@@ -9,7 +9,8 @@ public record SupporterResponse() {
                          String company,
                          int reviewCount,
                          String githubUrl,
-                         String introduction
+                         String introduction,
+                         String supporterTechnicalTags
     ) {
 
         public static Detail from(final Supporter supporter) {
@@ -19,7 +20,8 @@ public record SupporterResponse() {
                     supporter.getMember().getCompany().getValue(),
                     supporter.getReviewCount().getValue(),
                     supporter.getMember().getGithubUrl().getValue(),
-                    supporter.getIntroduction().getValue()
+                    supporter.getIntroduction().getValue(),
+                    supporter.getSupporterTechnicalTags().getSupporterTechnicalTags().toString()
             );
         }
     }
