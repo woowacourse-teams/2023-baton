@@ -45,20 +45,20 @@ jobs:
       - name: Docker Hub Push
         run: docker push 2023batondeploy/2023-baton-deploy
 
-    deploy-ci-fe:
-      runs-on: ubuntu-latest
-      defaults:
-        run:
-          working-directory: ./frontend
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
+  deploy-ci-fe:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-        - name: 의존성을 설치한다
-          run: npm install
+      - name: 의존성을 설치한다
+        run: npm install
 
-        - name: 테스트를 수행한다
-          run: npm run test
+      - name: 테스트를 수행한다
+        run: npm run test
 
   deploy-cd-be:
     needs: deploy-ci-be
