@@ -157,13 +157,12 @@ class SupporterTest {
         final List<SupporterTechnicalTag> expected = List.of(javaTechnicalTag, springTechnicalTag);
         supporter.addAllSupporterTechnicalTags(expected);
 
-        //when, then
+        // when
         final List<SupporterTechnicalTag> actualTags = supporter.getSupporterTechnicalTags().getSupporterTechnicalTags();
-        Assertions.assertEquals(actualTags.size(), 2);
-        final String actualFirstTag = actualTags.get(0).getTechnicalTag().getTagName().getValue();
-        Assertions.assertEquals(actualFirstTag, expectedFirstTag);
-        final String actualSecondTag = actualTags.get(1).getTechnicalTag().getTagName().getValue();
 
-        Assertions.assertEquals(actualSecondTag, expectedSecondTag);
+        // then
+        Assertions.assertEquals(actualTags.size(), 2);
+        Assertions.assertEquals(expectedFirstTag, actualTags.get(0).getTechnicalTag().getTagName().getValue());
+        Assertions.assertEquals(expectedSecondTag, actualTags.get(1).getTechnicalTag().getTagName().getValue());
     }
 }
