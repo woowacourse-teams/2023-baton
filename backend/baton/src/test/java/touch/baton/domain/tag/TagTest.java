@@ -3,13 +3,11 @@ package touch.baton.domain.tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
-import touch.baton.domain.tag.vo.TagName;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class TagTest {

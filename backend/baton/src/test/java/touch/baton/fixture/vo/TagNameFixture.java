@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.tag.vo.TagName;
+import touch.baton.domain.common.vo.TagName;
 
 public abstract class TagNameFixture {
 

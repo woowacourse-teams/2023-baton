@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.Contents;
+import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -21,7 +22,6 @@ import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
-import touch.baton.domain.tag.vo.TagName;
 
 import java.util.ArrayList;
 import java.util.List;

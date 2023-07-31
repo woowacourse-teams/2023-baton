@@ -7,9 +7,9 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
-import touch.baton.domain.tag.vo.TagName;
 
 import java.util.Objects;
 

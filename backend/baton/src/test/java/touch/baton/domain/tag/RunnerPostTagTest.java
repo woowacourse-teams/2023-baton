@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Grade;
+import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -26,7 +27,6 @@ import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
-import touch.baton.domain.tag.vo.TagName;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

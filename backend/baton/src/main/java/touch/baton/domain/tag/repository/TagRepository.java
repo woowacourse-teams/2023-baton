@@ -1,8 +1,8 @@
 package touch.baton.domain.tag.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagName;
 
 import java.util.Optional;
 
