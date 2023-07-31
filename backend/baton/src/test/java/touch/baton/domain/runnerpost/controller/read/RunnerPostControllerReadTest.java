@@ -34,6 +34,9 @@ import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
+import touch.baton.domain.technicaltag.SupporterTechnicalTags;
+
+import java.util.ArrayList;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -95,6 +98,7 @@ class RunnerPostControllerReadTest {
             .totalRating(new TotalRating(100))
             .grade(Grade.BARE_FOOT)
             .member(supporterMember)
+            .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
             .build();
 
     @BeforeEach

@@ -1,4 +1,4 @@
-package touch.baton.domain.tag.vo;
+package touch.baton.domain.common.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

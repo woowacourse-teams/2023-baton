@@ -1,6 +1,8 @@
-package touch.baton.domain.tag;
+package touch.baton.fixture.domain;
 
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.tag.RunnerPostTag;
+import touch.baton.domain.tag.Tag;
 
 public abstract class RunnerPostTagFixture {
 

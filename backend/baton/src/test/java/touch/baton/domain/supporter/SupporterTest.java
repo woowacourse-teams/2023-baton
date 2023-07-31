@@ -15,6 +15,9 @@ import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.supporter.exception.OldSupporterException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
+import touch.baton.domain.technicaltag.SupporterTechnicalTags;
+
+import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -43,6 +46,7 @@ class SupporterTest {
                     .totalRating(new TotalRating(100))
                     .grade(Grade.BARE_FOOT)
                     .member(member)
+                    .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
             ).doesNotThrowAnyException();
         }

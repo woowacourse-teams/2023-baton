@@ -2,6 +2,7 @@ package touch.baton.domain.tag.vo;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import touch.baton.domain.common.vo.TagName;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
