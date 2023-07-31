@@ -27,6 +27,7 @@ import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.tag.exception.OldTagException;
 import touch.baton.domain.tag.vo.TagCount;
+import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ class RunnerPostTagTest {
                 .totalRating(new TotalRating(100))
                 .grade(Grade.BARE_FOOT)
                 .member(supporterMember)
+                .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();
 
         private final RunnerPost runnerPost = RunnerPost.builder()

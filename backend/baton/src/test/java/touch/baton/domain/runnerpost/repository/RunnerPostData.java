@@ -33,6 +33,7 @@ import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
+import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -101,6 +102,7 @@ public class RunnerPostData {
                 .totalRating(new TotalRating(100))
                 .grade(Grade.BARE_FOOT)
                 .member(supporterMember)
+                .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();
     }
 
