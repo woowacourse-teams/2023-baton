@@ -1,6 +1,5 @@
 package touch.baton.domain.supporter;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,6 +26,8 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SupporterTest {
 
@@ -161,8 +162,10 @@ class SupporterTest {
         final List<SupporterTechnicalTag> actualTags = supporter.getSupporterTechnicalTags().getSupporterTechnicalTags();
 
         // then
-        Assertions.assertEquals(actualTags.size(), 2);
-        Assertions.assertEquals(expectedFirstTag, actualTags.get(0).getTechnicalTag().getTagName().getValue());
-        Assertions.assertEquals(expectedSecondTag, actualTags.get(1).getTechnicalTag().getTagName().getValue());
+        assertAll(
+                () -> assertEquals(actualTags.size(), 2),
+                () -> assertEquals(expectedFirstTag, actualTags.get(0).getTechnicalTag().getTagName().getValue()),
+                () -> assertEquals(expectedSecondTag, actualTags.get(1).getTechnicalTag().getTagName().getValue())
+        );
     }
 }
