@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import touch.baton.domain.oauth.controller.OauthTypeConverter;
 
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;
@@ -20,6 +21,7 @@ public class ConverterConfig implements WebMvcConfigurer {
     @Override
     public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new StringDateToLocalDateTimeConverter(DEFAULT_DATE_TIME_FORMAT, KOREA_TIME_ZONE));
+        registry.addConverter(new OauthTypeConverter());
     }
 
     @Bean
