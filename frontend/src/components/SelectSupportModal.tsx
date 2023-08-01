@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from './common/Modal';
 import { styled } from 'styled-components';
 import SupporterSelectList from './SupporterSelect/SupporterSelectList/SupporterSelectList';
-import { SupporterCard } from '@/types/SupporterSelect';
+import { SupporterCard } from '@/types/supporterCard';
 
 interface Props {
   closeModal: () => void;
