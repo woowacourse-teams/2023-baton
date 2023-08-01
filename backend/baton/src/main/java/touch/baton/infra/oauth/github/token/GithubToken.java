@@ -6,7 +6,6 @@ import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseS
 
 @JsonNaming(SnakeCaseStrategy.class)
 public record GithubToken(String tokenType,
-                          String accessToken,
-                          String token
+                          String accessToken
 ) {
 }

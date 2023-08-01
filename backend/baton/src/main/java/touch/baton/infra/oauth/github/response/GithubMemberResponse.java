@@ -1,12 +1,12 @@
 package touch.baton.infra.oauth.github.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.oauth.AccessToken;
 import touch.baton.domain.oauth.OauthInformation;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
@@ -16,18 +16,17 @@ public record GithubMemberResponse(String id,
                                    String name,
                                    String email,
                                    String htmlUrl,
-                                   String avatarUrl,
-                                   String company
+                                   String avatarUrl
 ) {
 
-    public OauthInformation toOauthInformation() {
+    public OauthInformation toOauthInformation(final String accessToken) {
         return OauthInformation.builder()
+                .accessToken(new AccessToken(accessToken))
                 .oauthId(new OauthId(id))
                 .memberName(new MemberName(name))
                 .email(new Email(email))
                 .githubUrl(new GithubUrl(htmlUrl))
                 .imageUrl(new ImageUrl(avatarUrl))
-                .company(new Company(company))
                 .build();
     }
 }

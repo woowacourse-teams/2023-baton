@@ -36,7 +36,7 @@ public class OauthService {
                 .email(oauthInformation.getEmail())
                 .oauthId(oauthInformation.getOauthId())
                 .githubUrl(oauthInformation.getGithubUrl())
-                .company(oauthInformation.getCompany())
+                .company(new Company(""))
                 .imageUrl(oauthInformation.getImageUrl())
                 .build();
 

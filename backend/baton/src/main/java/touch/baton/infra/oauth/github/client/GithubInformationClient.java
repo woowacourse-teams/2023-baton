@@ -28,7 +28,7 @@ public class GithubInformationClient implements OauthInformationClient {
         final GithubToken githubToken = githubHttpInterface.fetchToken(tokenRequestBody(authCode));
         final GithubMemberResponse githubMemberResponse = githubHttpInterface.fetchMember("Bearer " + githubToken.accessToken());
 
-        return githubMemberResponse.toOauthInformation();
+        return githubMemberResponse.toOauthInformation(githubToken.accessToken());
     }
 
     private GithubTokenRequest tokenRequestBody(final String authCode) {
