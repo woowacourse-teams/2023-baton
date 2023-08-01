@@ -2,9 +2,9 @@ package touch.baton.document.runnerpost.read;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.config.MockMvcTest;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -35,7 +35,7 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagCountFixture.tagCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
+@MockMvcTest(value = RunnerPostController.class)
 class RunnerPostReadApiTest extends RestdocsConfig {
 
     @MockBean
