@@ -17,4 +17,5 @@ public interface GithubHttpInterface {
     GithubToken fetchToken(@RequestBody GithubTokenRequest request);
 
     @GetExchange("https://api.github.com/user")
-    GithubMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String bearerToken);}
+    GithubMemberResponse fetchMember(@RequestHeader(name = AUTHORIZATION) String bearerToken);
+}
