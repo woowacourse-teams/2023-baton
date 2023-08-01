@@ -11,3 +11,13 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+
+oauth:
+  github:
+    client_id: ${GITHUB_CLIENT_ID}
+    redirect_uri: ${GITHUB_REDIRECT_URI}
+    client_secret: ${GITHUB_CLIENT_SECRET}
+    scope: ${GITHUB_SCOPE}
+
+cors:
+  allowed-origin: http://localhost:8080
