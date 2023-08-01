@@ -35,30 +35,39 @@ const SupporterSelectItem = ({
 
   return (
     <S.SupporterSelectItemContainer>
-      <Avatar width="60px" height="60px" imageUrl={'https://via.placeholder.com/150'} />
-      <S.DescriptionContainer>
-        <S.Name>{name}</S.Name>
-        <S.Company>{company}</S.Company>
-        <S.CompletedReviewContainer>
-          <S.CompletedReview>완료한 리뷰</S.CompletedReview>
-          <S.CompletedReviewCount>{reviewCount}</S.CompletedReviewCount>
-        </S.CompletedReviewContainer>
-      </S.DescriptionContainer>
+      <S.LeftSideContainer>
+        <Avatar width="60px" height="60px" imageUrl={'https://via.placeholder.com/150'} />
+        <S.DescriptionContainer>
+          <S.Name>{name}</S.Name>
+          <S.Company>{company}</S.Company>
+          <S.TechStack>
+            <img src="https://img.shields.io/badge/React-61DAFB?style=round-square&logo=React&logoColor=black" />
+            <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=round-square&logo=Javascript&logoColor=white" />
+            <img src="https://img.shields.io/badge/Typescript-3178C6?style=round-square&logo=Typescript&logoColor=white" />
+            <img src="https://img.shields.io/badge/Java-FF7800.svg?style=round-square&logo=Java&logoColor=white" />
+            <img src="https://img.shields.io/badge/Spring-6DB33F?style=round-square&logo=Spring&logoColor=white" />
+          </S.TechStack>
+          <S.CompletedReviewContainer>
+            <S.CompletedReview>완료한 리뷰</S.CompletedReview>
+            <S.CompletedReviewCount>{reviewCount}</S.CompletedReviewCount>
+          </S.CompletedReviewContainer>
+        </S.DescriptionContainer>
+      </S.LeftSideContainer>
       <S.ButtonContainer>
+        <S.GithubButton href={githubUrl} target="_blank">
+          <S.GithubIcon src={githubIcon} />
+          <S.GithubButtonText>github</S.GithubButtonText>
+        </S.GithubButton>
         <Button
           colorTheme="WHITE"
-          width={'94px'}
-          height={'35px'}
-          fontSize={'12px'}
+          width="94px"
+          height="35px"
+          fontSize="12px"
           fontWeight={700}
           onClick={handleSelectedSupporter}
         >
           선택하기
         </Button>
-        <S.GithubButton href={githubUrl} target="_blank">
-          <S.GithubIcon src={githubIcon} />
-          <S.GithubButtonText>github</S.GithubButtonText>
-        </S.GithubButton>
       </S.ButtonContainer>
     </S.SupporterSelectItemContainer>
   );
@@ -70,9 +79,10 @@ const S = {
   SupporterSelectItemContainer: styled.li`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 20px;
 
-    width: 520px;
+    width: 696px;
     height: 175px;
     padding: 35px 40px;
 
@@ -80,13 +90,18 @@ const S = {
     border-radius: 12px;
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
   `,
+  LeftSideContainer: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  `,
 
   DescriptionContainer: styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
 
-    width: 300px;
+    width: 400px;
   `,
 
   Name: styled.div`
@@ -94,17 +109,25 @@ const S = {
   `,
 
   Company: styled.div`
+    margin-bottom: 4px;
+
     font-size: 14px;
 
     white-space: no-wrap;
     overflow: hidden;
     text-overflow: ellipsis;
   `,
-
+  TechStack: styled.div`
+    & > img {
+      margin-right: 6px;
+    }
+  `,
   CompletedReviewContainer: styled.div`
     display: flex;
     align-items: center;
     gap: 7px;
+
+    margin-top: 14px;
 
     &:nth-child(3) {
       margin-top: 10px;
@@ -116,7 +139,7 @@ const S = {
   `,
 
   CompletedReviewCount: styled.p`
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 700;
   `,
 
