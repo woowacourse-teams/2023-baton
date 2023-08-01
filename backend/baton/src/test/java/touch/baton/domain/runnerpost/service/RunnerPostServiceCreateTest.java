@@ -3,27 +3,28 @@ package touch.baton.domain.runnerpost.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
+import touch.baton.domain.member.Member;
+import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.tag.repository.RunnerPostTagRepository;
-import touch.baton.domain.tag.repository.TagRepository;
+import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class RunnerPostServiceCreateTest extends RunnerFixture {
+class RunnerPostServiceCreateTest extends ServiceTestConfig {
 
     private static final String TITLE = "코드 리뷰 해주세요.";
     private static final String TAG = "Java";
@@ -33,18 +34,6 @@ class RunnerPostServiceCreateTest extends RunnerFixture {
     private static final String CONTENTS = "싸게 부탁드려요.";
 
     private RunnerPostService runnerPostService;
-
-    @Autowired
-    private RunnerPostRepository runnerPostRepository;
-
-    @Autowired
-    private RunnerPostTagRepository runnerPostTagRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
-
-    @Autowired
-    private SupporterRepository supporterRepository;
 
     @BeforeEach
     void setUp() {
@@ -60,13 +49,19 @@ class RunnerPostServiceCreateTest extends RunnerFixture {
                 PULL_REQUEST_URL,
                 DEADLINE,
                 CONTENTS);
+        final Member ethan = MemberFixture.createEthan();
+        memberRepository.save(ethan);
+        final Runner runner = RunnerFixture.createRunner(ethan);
+        runnerRepository.save(runner);
 
         // when
         final Long savedId = runnerPostService.createRunnerPost(runner, request);
 
         // then
         assertThat(savedId).isNotNull();
-        RunnerPost actual = runnerPostRepository.findById(savedId).get();
+        final Optional<RunnerPost> maybeActual = runnerPostRepository.findById(savedId);
+        assertThat(maybeActual).isPresent();
+        final RunnerPost actual = maybeActual.get();
         assertAll(
                 () -> assertThat(actual.getTitle()).isEqualTo(new Title(TITLE)),
                 () -> assertThat(actual.getContents()).isEqualTo(new Contents(CONTENTS)),

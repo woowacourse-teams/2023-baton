@@ -3,9 +3,7 @@ package touch.baton.domain.tag.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import touch.baton.config.JpaConfig;
+import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.vo.TagCount;
@@ -14,9 +12,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import(JpaConfig.class)
-@DataJpaTest
-class TagRepositoryTest {
+class TagRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
     private TagRepository tagRepository;

@@ -4,9 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import touch.baton.config.JpaConfig;
+import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
@@ -24,9 +22,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(JpaConfig.class)
-@DataJpaTest
-class RunnerRepositoryTest {
+class RunnerRepositoryTest extends RepositoryTestConfig {
 
     private static final MemberName memberName = new MemberName("헤에디주");
     private static final Email email = new Email("test@test.co.kr");
@@ -43,12 +39,11 @@ class RunnerRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Member member;
     private Runner runner;
 
     @BeforeEach
     void setUp() {
-        member = Member.builder()
+        final Member member = Member.builder()
                 .memberName(memberName)
                 .email(email)
                 .oauthId(oauthId)
