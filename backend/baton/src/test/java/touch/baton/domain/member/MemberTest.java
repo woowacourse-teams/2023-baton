@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.member.exception.MemberDomainException;
-import touch.baton.domain.member.exception.MemberException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
