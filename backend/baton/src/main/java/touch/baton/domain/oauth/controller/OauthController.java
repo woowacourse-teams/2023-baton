@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.service.OauthService;
 
 import java.io.IOException;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpStatus.MOVED_TEMPORARILY;
 
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
@@ -29,21 +31,18 @@ public class OauthController {
         final String redirectUrl = oauthService.readAuthCodeRedirect(oauthType);
         response.sendRedirect(redirectUrl);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(MOVED_TEMPORARILY).build();
     }
 
-    /**
-     * 이 부분에서 oauthId가 노출되지 않게 JWT으로 만들어서 넘겨주면 되는가!
-     */
     @GetMapping("/login/{oauthType}")
-    public ResponseEntity<String> login(
+    public ResponseEntity<Void> login(
             @PathVariable OauthType oauthType,
             @RequestParam("code") String code
     ) {
-        final OauthId oauthId = oauthService.login(oauthType, code);
+        final String jwtToken = oauthService.login(oauthType, code);
 
         return ResponseEntity.ok()
-                .header("accessToken", oauthId.getValue())
+                .header(AUTHORIZATION, jwtToken)
                 .build();
     }
 }
