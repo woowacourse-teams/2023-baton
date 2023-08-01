@@ -1,7 +1,6 @@
 package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
-import touch.baton.assure.fixture.RunnerFixture;
 import touch.baton.assure.fixture.RunnerPostFixture;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
@@ -10,6 +9,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -24,7 +24,7 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         final Member member = MemberFixture.createHyena();
         memberRepository.save(member);
 
-        final Runner runner = RunnerFixture.from(member, totalRating(0), Grade.BARE_FOOT);
+        final Runner runner = RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, member);
         runnerRepository.save(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.from(runner,
