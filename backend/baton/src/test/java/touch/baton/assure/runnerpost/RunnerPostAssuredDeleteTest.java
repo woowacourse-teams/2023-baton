@@ -1,21 +1,28 @@
 package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
-import touch.baton.assure.fixture.RunnerPostFixture;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.RunnerPostTagsFixture;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
+import static touch.baton.fixture.vo.ContentsFixture.contents;
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
+import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
+import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
 
@@ -27,16 +34,16 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         final Runner runner = RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, member);
         runnerRepository.save(runner);
 
-        final RunnerPost runnerPost = RunnerPostFixture.from(runner,
+        final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
+                contents("제 코드의 내용은 이렇습니다."),
+                pullRequestUrl("https://"),
+                deadline(LocalDateTime.now().plusHours(10)),
+                watchedCount(0),
+                chattingCount(0),
+                NOT_STARTED,
+                runner,
                 null,
-                "제 코드를 리뷰해주세요",
-                "제 코드의 내용은 이렇습니다.",
-                "https://",
-                LocalDateTime.now(),
-                0,
-                0,
-                new RunnerPostTags(Collections.emptyList())
-        );
+                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
         runnerPostRepository.save(runnerPost);
 
         RunnerPostAssuredSupport
