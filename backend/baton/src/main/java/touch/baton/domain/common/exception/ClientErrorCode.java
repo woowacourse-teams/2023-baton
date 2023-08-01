@@ -2,7 +2,7 @@ package touch.baton.domain.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-public enum ClientErrorCode implements ErrorCode {
+public enum ClientErrorCode {
 
     TITLE_IS_NULL(HttpStatus.BAD_REQUEST, "RP001", "제목을 입력해주세요."),
     PULL_REQUEST_URL_IS_NULL(HttpStatus.BAD_REQUEST, "RP002", "PR 주소를 입력해주세요."),
@@ -23,17 +23,14 @@ public enum ClientErrorCode implements ErrorCode {
         this.message = message;
     }
 
-    @Override
     public HttpStatus getHttpStatus() {
         return httpStatus;
     }
 
-    @Override
     public String getErrorCode() {
         return errorCode;
     }
 
-    @Override
     public String getMessage() {
         return message;
     }

@@ -26,7 +26,7 @@ public class Company {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("company 는 null 일 수 없습니다.");
+            throw new IllegalArgumentException("Company 객체 내부에 company 는 null 일 수 없습니다.");
         }
     }
 }

@@ -26,7 +26,7 @@ public class TagName {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("tagName 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("TagName 객체 내부에 tagName 은 null 일 수 없습니다.");
         }
     }
 }
