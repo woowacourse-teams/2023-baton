@@ -11,16 +11,14 @@ interface Props {
 
 const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
   return (
-    <Modal width="1200px" height="95%" closeModal={closeModal}>
-      <S.SelectSupportModalWrapper>
-        <S.SelectSupportModalContainer>
-          <S.TitleContainer>
-            <S.Title>서포터를 선택해 주세요 ✅</S.Title>
-            <S.TitleDescription>선택한 서포터가 확인 후 리뷰를 진행합니다.</S.TitleDescription>
-          </S.TitleContainer>
-          <SupporterSelectList handleSelectButton={handleSelectButton} />
-        </S.SelectSupportModalContainer>
-      </S.SelectSupportModalWrapper>
+    <Modal width="800px" height="95%" closeModal={closeModal}>
+      <S.TitleContainer>
+        <S.Title>서포터를 선택해 주세요 ✅</S.Title>
+        <S.TitleDescription>선택한 서포터가 확인 후 리뷰를 진행합니다.</S.TitleDescription>
+      </S.TitleContainer>
+      <S.SelectSupportContainer>
+        <SupporterSelectList handleSelectButton={handleSelectButton} />
+      </S.SelectSupportContainer>
     </Modal>
   );
 };
@@ -28,20 +26,11 @@ const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
 export default SelectSupportModal;
 
 const S = {
-  SelectSupportModalWrapper: styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  `,
-
-  SelectSupportModalContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-
-    width: 1200px;
-    max-height: 800px;
-    padding: 0 40px;
+  ModalContainer: styled.div``,
+  SelectSupportContainer: styled.div`
+    width: 696px;
+    max-height: 75%;
+    margin: 0 auto;
 
     overflow-y: scroll;
   `,
@@ -54,9 +43,9 @@ const S = {
   TitleContainer: styled.div`
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 15px;
 
-    margin: 20px 0 53px 0;
+    margin: 20px 0 53px 20px;
   `,
 
   Title: styled.p`
@@ -65,7 +54,10 @@ const S = {
   `,
 
   TitleDescription: styled.div`
+    margin-left: 5px;
+
     font-size: 18px;
     font-weight: 500;
+    color: var(--gray-500);
   `,
 };
