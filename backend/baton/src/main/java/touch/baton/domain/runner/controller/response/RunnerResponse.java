@@ -29,4 +29,20 @@ public record RunnerResponse() {
             );
         }
     }
+
+    public record Mine(String name,
+                       String imageUrl,
+                       String githubUrl,
+                       String introduction
+    ) {
+
+        public static Mine from(final Runner runner) {
+            return new Mine(
+                    runner.getMember().getMemberName().getValue(),
+                    runner.getMember().getImageUrl().getValue(),
+                    runner.getMember().getGithubUrl().getValue(),
+                    runner.getIntroduction().getValue()
+            );
+        }
+    }
 }
