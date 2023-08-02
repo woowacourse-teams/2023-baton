@@ -17,7 +17,7 @@ import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.supporter.exception.OldSupporterException;
+import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
@@ -103,27 +103,27 @@ public class Supporter extends BaseEntity {
                                  final SupporterTechnicalTags supporterTechnicalTags
     ) {
         if (Objects.isNull(reviewCount)) {
-            throw new OldSupporterException.NotNull("reviewCount 는 null 일 수 없습니다.");
+            throw new SupporterDomainException("Supporter 의 reviewCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(starCount)) {
-            throw new OldSupporterException.NotNull("starCount 는 null 일 수 없습니다.");
+            throw new SupporterDomainException("Supporter 의 starCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(totalRating)) {
-            throw new OldSupporterException.NotNull("totalRating 은 null 일 수 없습니다.");
+            throw new SupporterDomainException("Supporter 의 totalRating 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(grade)) {
-            throw new OldSupporterException.NotNull("grade 는 null 일 수 없습니다.");
+            throw new SupporterDomainException("Supporter 의 grade 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(member)) {
-            throw new OldSupporterException.NotNull("member 는 null 일 수 없습니다.");
+            throw new SupporterDomainException("Supporter 의 member 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(supporterTechnicalTags)) {
-            throw new OldSupporterException.NotNull("supporterTechnicalTags 는 null 일 수 없습니다.");
+            throw new SupporterDomainException("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
         }
     }
 

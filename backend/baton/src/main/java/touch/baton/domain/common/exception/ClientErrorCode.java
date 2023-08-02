@@ -2,7 +2,7 @@ package touch.baton.domain.common.exception;
 
 import org.springframework.http.HttpStatus;
 
-public enum ClientErrorCode {
+public enum  ClientErrorCode {
 
     TITLE_IS_NULL(HttpStatus.BAD_REQUEST, "RP001", "제목을 입력해주세요."),
     PULL_REQUEST_URL_IS_NULL(HttpStatus.BAD_REQUEST, "RP002", "PR 주소를 입력해주세요."),

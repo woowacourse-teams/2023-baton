@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.exception.OldTagException;
+import touch.baton.domain.tag.exception.TagDomainException;
 
 import java.util.Objects;
 
@@ -53,11 +53,11 @@ public class SupporterTechnicalTag {
 
     private void validateNotNull(final Supporter supporter, final TechnicalTag technicalTag) {
         if (Objects.isNull(supporter)) {
-            throw new OldTagException.NotNull("supporter 는 null 일 수 없습니다.");
+            throw new TagDomainException("SupporterTechnicalTag 의 supporter 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(technicalTag)) {
-            throw new OldTagException.NotNull("technicalTag 는 null 일 수 없습니다.");
+            throw new TagDomainException("SupporterTechnicalTag 의 technicalTag 는 null 일 수 없습니다.");
         }
     }
 }

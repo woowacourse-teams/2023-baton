@@ -3,7 +3,7 @@ package touch.baton.domain.technicaltag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.exception.OldTagException;
+import touch.baton.domain.tag.exception.TagDomainException;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,6 +25,7 @@ class TechnicalTagTest {
         assertThatThrownBy(() -> TechnicalTag.builder()
                 .tagName(null)
                 .build()
-        ).isInstanceOf(OldTagException.NotNull.class);
+        ).isInstanceOf(TagDomainException.class)
+                .hasMessage("tagName 은 null 일 수 없습니다.");
     }
 }

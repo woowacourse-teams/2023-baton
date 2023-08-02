@@ -25,7 +25,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
-import touch.baton.domain.tag.exception.OldTagException;
+import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
@@ -109,7 +109,8 @@ class RunnerPostTagTest {
                     .runnerPost(null)
                     .tag(tag)
                     .build()
-            ).isInstanceOf(OldTagException.NotNull.class);
+            ).isInstanceOf(TagDomainException.class)
+                    .hasMessage("runnerPost 는 null 일 수 없습니다.");
         }
 
         @DisplayName("tag 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -119,7 +120,8 @@ class RunnerPostTagTest {
                     .runnerPost(runnerPost)
                     .tag(null)
                     .build()
-            ).isInstanceOf(OldTagException.NotNull.class);
+            ).isInstanceOf(TagDomainException.class)
+                    .hasMessage("tag 는 null 일 수 없습니다.");
         }
     }
 }

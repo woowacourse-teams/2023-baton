@@ -4,7 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.exception.OldTagException;
+import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.domain.tag.vo.TagCount;
 
 import static org.assertj.core.api.Assertions.*;
@@ -33,7 +33,8 @@ class TagTest {
                     .tagName(null)
                     .tagCount(new TagCount(0))
                     .build()
-            ).isInstanceOf(OldTagException.NotNull.class);
+            ).isInstanceOf(TagDomainException.class)
+                    .hasMessage("Tag 의 tagName 은 null 일 수 없습니다.");
         }
 
         @DisplayName("tag count 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -43,7 +44,8 @@ class TagTest {
                     .tagName(new TagName("자바"))
                     .tagCount(null)
                     .build()
-            ).isInstanceOf(OldTagException.NotNull.class);
+            ).isInstanceOf(TagDomainException.class)
+                    .hasMessage("Tag 의 tagCount 은 null 일 수 없습니다.");
         }
     }
 
@@ -75,6 +77,5 @@ class TagTest {
                 () -> assertThat(tag.getTagName()).isEqualTo(new TagName("Java")),
                 () -> assertThat(tag.getTagCount()).isEqualTo(new TagCount(2))
         );
-
     }
 }
