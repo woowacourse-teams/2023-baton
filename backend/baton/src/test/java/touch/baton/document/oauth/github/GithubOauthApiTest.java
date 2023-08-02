@@ -10,7 +10,7 @@ import touch.baton.config.MockMvcTest;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.oauth.controller.OauthController;
 import touch.baton.domain.oauth.service.OauthService;
-import touch.baton.infra.oauth.github.GithubOauthConfig;
+import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.BDDMockito.when;

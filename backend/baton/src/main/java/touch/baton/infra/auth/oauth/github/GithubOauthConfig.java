@@ -1,4 +1,4 @@
-package touch.baton.infra.oauth.github;
+package touch.baton.infra.auth.oauth.github;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

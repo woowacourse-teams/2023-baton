@@ -1,4 +1,4 @@
-package touch.baton.infra.oauth.github.response;
+package touch.baton.infra.auth.oauth.github.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import touch.baton.domain.member.vo.Email;

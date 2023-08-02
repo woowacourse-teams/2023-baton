@@ -1,4 +1,4 @@
-package touch.baton.infra.oauth.github.token;
+package touch.baton.infra.auth.oauth.github.token;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 

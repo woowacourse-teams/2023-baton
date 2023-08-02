@@ -1,8 +1,10 @@
 package touch.baton.domain.oauth.client;
 
 import org.springframework.stereotype.Component;
+import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.oauth.OauthInformation;
 import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.exception.OauthRequestException;
 
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +28,7 @@ public class OauthInformationClientComposite {
 
     public OauthInformation fetchInformation(final OauthType oauthType, final String authCode) {
         return Optional.ofNullable(clients.get(oauthType))
-                .orElseThrow(() -> new IllegalStateException("새로운 예외를 만듭시다!"))
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.OAUTH_WRONG_SOCIAL_TYPE))
                 .fetchInformation(authCode);
     }
 }
