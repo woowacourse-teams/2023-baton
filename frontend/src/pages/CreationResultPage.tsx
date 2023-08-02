@@ -10,8 +10,8 @@ const CreationResultPage = () => {
   return (
     <Layout>
       <S.ResultMessageContainer>
-        <S.ResultMessage>서포터 선택이 완료되었습니다. </S.ResultMessage>
-        <S.ResultMessage>서포터가 확인 후 리뷰를 진행할 예정입니다.</S.ResultMessage>
+        <S.ResultMessage>리뷰 요청 글이 생성되었어요.</S.ResultMessage>
+        <S.ResultMessage>선택한 서포터가 확인 후 코드 리뷰를 진행할 예정입니다😄</S.ResultMessage>
         <Button onClick={goToMainPage} colorTheme="WHITE">
           홈으로 가기
         </Button>
