@@ -1,6 +1,6 @@
 package touch.baton.infra.auth.jwt;
 
-import com.auth0.jwt.interfaces.Claim;
+import io.jsonwebtoken.Claims;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,9 +24,9 @@ class JwtEncoderAndDecoderTest {
 
     @BeforeEach
     void setUp() {
-        this.jwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyena", "hyena");
-        this.jwtDecoder = new JwtDecoder(jwtConfig);
-        this.jwtEncoder = new JwtEncoder(jwtConfig);
+        this.jwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena");
+        this.jwtDecoder = new JwtDecoder(this.jwtConfig);
+        this.jwtEncoder = new JwtEncoder(this.jwtConfig);
     }
 
     @DisplayName("Claim 으로 email 을 넣어 인코딩한 JWT 를 디코드했을 때 email 을 구할 수 있다..")
@@ -36,8 +36,8 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("email", "test@test.com"));
 
         // when
-        final Map<String, Claim> claims = jwtDecoder.parseJwtToken("Bearer " + encodedJwt);
-        final String email = claims.get("email").asString();
+        final Claims claims = jwtDecoder.parseJwtToken("Bearer " + encodedJwt);
+        final String email = claims.get("email", String.class);
 
         // then
         assertThat(email).isEqualTo("test@test.com");
@@ -49,9 +49,8 @@ class JwtEncoderAndDecoderTest {
         // given
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("email", "test@test.com"));
 
-
         // when
-        final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKey", "hyena");
+        final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKeywrongSecretKeywrongSecretKey", "hyena");
         final JwtDecoder wrongJwtDecoder = new JwtDecoder(wrongJwtConfig);
 
         // then

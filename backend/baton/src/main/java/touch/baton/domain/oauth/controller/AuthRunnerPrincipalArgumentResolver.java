@@ -1,6 +1,6 @@
 package touch.baton.domain.oauth.controller;
 
-import com.auth0.jwt.interfaces.Claim;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -11,8 +11,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import touch.baton.domain.oauth.repository.OauthRunnerRepository;
 import touch.baton.domain.runner.Runner;
 import touch.baton.infra.auth.jwt.JwtDecoder;
-
-import java.util.Map;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
@@ -35,8 +33,8 @@ public class AuthRunnerPrincipalArgumentResolver implements HandlerMethodArgumen
                                   final WebDataBinderFactory binderFactory
     ) throws Exception {
         final String authHeader = webRequest.getHeader(AUTHORIZATION);
-        final Map<String, Claim> claims = jwtDecoder.parseJwtToken(authHeader);
-        final String email = claims.get("email").asString();
+        final Claims claims = jwtDecoder.parseJwtToken(authHeader);
+        final String email = claims.get("email", String.class);
         final Runner foundRunner = oauthRunnerRepository.joinByMemberEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("여기도 고쳐"));
 
