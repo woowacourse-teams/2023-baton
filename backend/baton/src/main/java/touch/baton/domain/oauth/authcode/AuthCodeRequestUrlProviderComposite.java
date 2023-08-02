@@ -1,7 +1,9 @@
 package touch.baton.domain.oauth.authcode;
 
 import org.springframework.stereotype.Component;
+import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.exception.OauthRequestException;
 
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +30,6 @@ public class AuthCodeRequestUrlProviderComposite {
 
     private AuthCodeRequestUrlProvider findAuthCodeProvider(final OauthType oauthType) {
         return Optional.ofNullable(authCodeProviders.get(oauthType))
-                .orElseThrow(() -> new IllegalStateException("예외 만들어주쇼."));
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.OAUTH_REQUEST_URL_PROVIDER_IS_WRONG));
     }
 }

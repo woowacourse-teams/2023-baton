@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import touch.baton.domain.oauth.exception.OauthRequestException;
 
 import java.util.Map;
 
@@ -36,7 +37,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("email", "test@test.com"));
 
         // when
-        final Claims claims = jwtDecoder.parseJwtToken("Bearer " + encodedJwt);
+        final Claims claims = jwtDecoder.parseJwtToken(encodedJwt);
         final String email = claims.get("email", String.class);
 
         // then
@@ -55,6 +56,6 @@ class JwtEncoderAndDecoderTest {
 
         // then
         assertThatThrownBy(() -> wrongJwtDecoder.parseJwtToken(encodedJwt))
-                .isInstanceOf(IllegalStateException.class);
+                .isInstanceOf(OauthRequestException.class);
     }
 }

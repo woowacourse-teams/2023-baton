@@ -28,7 +28,7 @@ public class OauthInformationClientComposite {
 
     public OauthInformation fetchInformation(final OauthType oauthType, final String authCode) {
         return Optional.ofNullable(clients.get(oauthType))
-                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.OAUTH_WRONG_SOCIAL_TYPE))
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.OAUTH_INFORMATION_CLIENT_IS_WRONG))
                 .fetchInformation(authCode);
     }
 }
