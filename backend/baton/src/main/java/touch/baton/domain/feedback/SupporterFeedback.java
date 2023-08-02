@@ -1,5 +1,6 @@
 package touch.baton.domain.feedback;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -36,21 +37,22 @@ public class SupporterFeedback extends BaseEntity {
     private Long id;
 
     @Enumerated(STRING)
+    @Column(nullable = false)
     private ReviewType reviewType;
 
     @Embedded
     private Description description;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "supporter_id", foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_supporter"))
+    @JoinColumn(name = "supporter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_supporter"))
     private Supporter supporter;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_runner"))
+    @JoinColumn(name = "runner_id", nullable = false, foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_runner"))
     private Runner runner;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "runner_post_id",  foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_runner_post"))
+    @JoinColumn(name = "runner_post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_runner_post"))
     private RunnerPost runnerPost;
 
     @Builder
