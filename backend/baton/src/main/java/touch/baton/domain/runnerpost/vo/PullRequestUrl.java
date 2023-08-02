@@ -28,7 +28,7 @@ public class PullRequestUrl {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("pull request url 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("PullRequestUrl 객체 내부에 pull request url 은 null 일 수 없습니다.");
         }
     }
 }

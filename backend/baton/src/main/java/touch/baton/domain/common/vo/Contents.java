@@ -26,7 +26,7 @@ public class Contents {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("contents 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("Contents 객체 내부에 contents 는 null 일 수 없습니다.");
         }
     }
 }

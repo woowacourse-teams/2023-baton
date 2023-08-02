@@ -2,6 +2,7 @@ package touch.baton.domain.common.response;
 
 import lombok.Getter;
 import touch.baton.domain.common.exception.BaseException;
+import touch.baton.domain.common.exception.ClientRequestException;
 
 @Getter
 public class ErrorResponse {
@@ -14,7 +15,7 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public static ErrorResponse from(final BaseException e) {
-        return new ErrorResponse(e.getErrorCode(), e.getMessage());
+    public static ErrorResponse from(final ClientRequestException e) {
+        return new ErrorResponse(e.getErrorCode().getErrorCode(), e.getMessage());
     }
 }

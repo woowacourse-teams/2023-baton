@@ -26,7 +26,7 @@ public class Email {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("email 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("Email 객체 내부에 email 은 null 일 수 없습니다.");
         }
     }
 }

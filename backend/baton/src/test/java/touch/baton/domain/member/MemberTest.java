@@ -3,7 +3,7 @@ package touch.baton.domain.member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.member.exception.OldMemberException;
+import touch.baton.domain.member.exception.MemberDomainException;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.Email;
 import touch.baton.domain.member.vo.GithubUrl;
@@ -45,7 +45,8 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(OldMemberException.NotNull.class);
+            ).isInstanceOf(MemberDomainException.class)
+                    .hasMessage("Member 의 name 은 null 일 수 없습니다.");
         }
 
         @DisplayName("이메일에 null 이 들어갈 경우 예외가 발생한다.")
@@ -59,7 +60,8 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(OldMemberException.NotNull.class);
+            ).isInstanceOf(MemberDomainException.class)
+                    .hasMessage("Member 의 email 은 null 일 수 없습니다.");
         }
 
         @DisplayName("oauth id 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -73,7 +75,8 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(OldMemberException.NotNull.class);
+            ).isInstanceOf(MemberDomainException.class)
+                    .hasMessage("Member 의 oauthId 는 null 일 수 없습니다.");
         }
 
         @DisplayName("github url 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -87,7 +90,8 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(OldMemberException.NotNull.class);
+            ).isInstanceOf(MemberDomainException.class)
+                    .hasMessage("Member 의 githubUrl 은 null 일 수 없습니다.");
         }
 
         @DisplayName("company 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -101,7 +105,8 @@ class MemberTest {
                     .company(null)
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
-            ).isInstanceOf(OldMemberException.NotNull.class);
+            ).isInstanceOf(MemberDomainException.class)
+                    .hasMessage("Member 의 company 는 null 일 수 없습니다.");
         }
 
         @DisplayName("imageUrl 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -115,7 +120,8 @@ class MemberTest {
                     .company(new Company("우아한형제들"))
                     .imageUrl(null)
                     .build()
-            ).isInstanceOf(OldMemberException.NotNull.class);
+            ).isInstanceOf(MemberDomainException.class)
+                    .hasMessage("Member 의 imageUrl 은 null 일 수 없습니다.");
         }
     }
 }

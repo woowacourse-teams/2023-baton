@@ -27,7 +27,7 @@ public class Deadline {
 
     private void validateNotNull(final LocalDateTime value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("deadline 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("Deadline 객체 내부에 deadline 은 null 일 수 없습니다.");
         }
     }
 }
