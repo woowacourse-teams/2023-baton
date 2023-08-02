@@ -4,6 +4,7 @@ import { SupporterCard } from '@/types/supporterCard';
 import React from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
+import TechLabel from '@/components/TechLabel';
 
 interface Props extends SupporterCard {
   selectedSupporter: (selectedSupporter: SupporterCard) => void;
@@ -17,6 +18,7 @@ const SupporterSelectItem = ({
   totalRating,
   githubUrl,
   introduction,
+  technicalTags,
   selectedSupporter,
 }: Props) => {
   const handleSelectedSupporter = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -30,6 +32,7 @@ const SupporterSelectItem = ({
       totalRating,
       githubUrl,
       introduction,
+      technicalTags,
     });
   };
 
@@ -40,13 +43,11 @@ const SupporterSelectItem = ({
         <S.DescriptionContainer>
           <S.Name>{name}</S.Name>
           <S.Company>{company}</S.Company>
-          <S.TechStack>
-            <img src="https://img.shields.io/badge/React-61DAFB?style=round-square&logo=React&logoColor=black" />
-            <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=round-square&logo=Javascript&logoColor=white" />
-            <img src="https://img.shields.io/badge/Typescript-3178C6?style=round-square&logo=Typescript&logoColor=white" />
-            <img src="https://img.shields.io/badge/Java-FF7800.svg?style=round-square&logo=Java&logoColor=white" />
-            <img src="https://img.shields.io/badge/Spring-6DB33F?style=round-square&logo=Spring&logoColor=white" />
-          </S.TechStack>
+          <S.TechStackContainer>
+            {technicalTags.map((tag) => (
+              <TechLabel tag={tag} />
+            ))}
+          </S.TechStackContainer>
           <S.CompletedReviewContainer>
             <S.CompletedReview>완료한 리뷰</S.CompletedReview>
             <S.CompletedReviewCount>{reviewCount}</S.CompletedReviewCount>
@@ -117,10 +118,9 @@ const S = {
     overflow: hidden;
     text-overflow: ellipsis;
   `,
-  TechStack: styled.div`
-    & > img {
-      margin-right: 6px;
-    }
+  TechStackContainer: styled.div`
+    display: flex;
+    gap: 4px;
   `,
   CompletedReviewContainer: styled.div`
     display: flex;
