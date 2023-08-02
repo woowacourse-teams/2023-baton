@@ -23,7 +23,7 @@ const TechLabel = ({ tag }: Props) => {
   const techData = techMapping[tag];
 
   return (
-    <S.TagContainer labelColor={techData.labelColor}>
+    <S.TagContainer $labelColor={techData.labelColor}>
       {techData.icon}
       <p>{tag}</p>
     </S.TagContainer>
@@ -33,7 +33,7 @@ const TechLabel = ({ tag }: Props) => {
 export default TechLabel;
 
 const S = {
-  TagContainer: styled.div<{ labelColor: string }>`
+  TagContainer: styled.div<{ $labelColor: string }>`
     display: flex;
     align-items: center;
     gap: 4px;
@@ -45,6 +45,6 @@ const S = {
 
     border-radius: 2em;
 
-    background-color: ${({ labelColor }) => labelColor};
+    background-color: ${({ $labelColor }) => $labelColor};
   `,
 };
