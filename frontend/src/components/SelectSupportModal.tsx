@@ -32,7 +32,7 @@ const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
           </S.FilterTitle>
         </S.FilterContainer>
         <S.SelectSupportContainer>
-          <SupporterSelectList handleSelectButton={handleSelectButton} />
+          <SupporterSelectList filteredSupporter={selectedFilter} handleSelectButton={handleSelectButton} />
         </S.SelectSupportContainer>
       </S.ModalContainer>
     </Modal>
