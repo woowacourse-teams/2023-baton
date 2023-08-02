@@ -49,7 +49,7 @@ public class AuthRunnerPrincipalArgumentResolver implements HandlerMethodArgumen
         final Claims claims = jwtDecoder.parseJwtToken(token);
         final String email = claims.get("email", String.class);
         final Runner foundRunner = oauthRunnerRepository.joinByMemberEmail(email)
-                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.OAUTH_EMAIL_IS_WRONG));
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_EMAIL_IS_WRONG));
 
         return foundRunner;
     }

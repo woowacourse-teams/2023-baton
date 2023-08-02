@@ -49,7 +49,7 @@ public class AuthSupporterPrincipalArgumentResolver implements HandlerMethodArgu
         final Claims claims = jwtDecoder.parseJwtToken(token);
         final String email = claims.get("email", String.class);
         final Supporter foundSupporter = oauthSupporterRepository.joinByMemberEmail(email)
-                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.OAUTH_EMAIL_IS_WRONG));
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_EMAIL_IS_WRONG));
 
         return foundSupporter;
     }
