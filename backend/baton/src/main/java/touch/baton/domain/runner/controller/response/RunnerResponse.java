@@ -1,8 +1,8 @@
-package touch.baton.domain.runnerpost.controller.response;
+package touch.baton.domain.runner.controller.response;
 
 import touch.baton.domain.runner.Runner;
 
-public record RunnerProfileResponse() {
+public record RunnerResponse() {
 
     public record Detail(Long runnerId,
                          String name,
