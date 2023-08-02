@@ -11,7 +11,8 @@ public enum ClientErrorCode {
     CONTENTS_OVERFLOW(HttpStatus.BAD_REQUEST, "RP005", "내용은 1000자 까지 입력해주세요."),
     PAST_DEADLINE(HttpStatus.BAD_REQUEST, "RP006", "마감일은 오늘보다 과거일 수 없습니다."),
     CONTENTS_NOT_FOUND(HttpStatus.NOT_FOUND, "RP007", "존재하지 않는 게시물입니다."),
-    TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP008", "태그 목록을 빈 값이라도 입력해주세요.");
+    TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP008", "태그 목록을 빈 값이라도 입력해주세요."),
+    COMPANY_IS_NULL(HttpStatus.BAD_REQUEST, "OM001", "사용자의 회사 정보를 입력해주세요.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;

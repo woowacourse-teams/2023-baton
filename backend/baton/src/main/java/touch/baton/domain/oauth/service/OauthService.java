@@ -51,9 +51,8 @@ public class OauthService {
         }
 
         return jwtEncoder.jwtToken(Map.of(
-                "accessToken", oauthInformation.getAccessToken().getValue(),
-                "email", oauthInformation.getEmail().getValue()
-        ));
+                "email", oauthInformation.getEmail().getValue())
+        );
     }
 
     private Member saveNewMember(final OauthInformation oauthInformation) {
