@@ -30,18 +30,18 @@ public class FeedbackService {
 
     public Long createSupporterFeedback(final Runner runner, final SupporterFeedBackCreateRequest request) {
         final Runner foundRunner = runnerRepository.findById(runner.getId())
-                .orElseThrow(() -> new FeedbackBusinessException.NotFoundRunner("러너를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FeedbackBusinessException("러너를 찾을 수 없습니다."));
         final Supporter foundSupporter = supporterRepository.findById(request.supporterId())
-                .orElseThrow(() -> new FeedbackBusinessException.NotFoundSupporter("서포터를 찾을 수 없습니다."));
+                .orElseThrow(() -> new FeedbackBusinessException("서포터를 찾을 수 없습니다."));
         final RunnerPost foundRunnerPost = runnerPostRepository.findById(request.runnerPostId())
-                .orElseThrow(() -> new FeedbackBusinessException.NotFoundRunnerPost("러너 게시글을 찾을 수 없습니다."));
+                .orElseThrow(() -> new FeedbackBusinessException("러너 게시글을 찾을 수 없습니다."));
 
         if (foundRunnerPost.isNotOwner(foundRunner)) {
-            throw new FeedbackBusinessException.NotOwner("리뷰 글을 작성한 주인만 글을 작성할 수 있습니다.");
+            throw new FeedbackBusinessException("리뷰 글을 작성한 주인만 글을 작성할 수 있습니다.");
         }
 
         if (foundRunnerPost.isDifferentSupporter(foundSupporter)) {
-            throw new FeedbackBusinessException.DifferentSupporter("리뷰를 작성한 서포터에 대해서만 피드백을 작성할 수 있습니다.");
+            throw new FeedbackBusinessException("리뷰를 작성한 서포터에 대해서만 피드백을 작성할 수 있습니다.");
         }
 
         final SupporterFeedback supporterFeedback = SupporterFeedback.builder()

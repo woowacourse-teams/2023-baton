@@ -61,7 +61,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> feedbackService.createSupporterFeedback(notOwner, request))
-                .isInstanceOf(FeedbackBusinessException.NotOwner.class)
+                .isInstanceOf(FeedbackBusinessException.class)
                 .hasMessage("리뷰 글을 작성한 주인만 글을 작성할 수 있습니다.");
     }
     
@@ -75,7 +75,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> feedbackService.createSupporterFeedback(exactRunner, notReviewSupporterRequest))
-                .isInstanceOf(FeedbackBusinessException.DifferentSupporter.class)
+                .isInstanceOf(FeedbackBusinessException.class)
                 .hasMessage("리뷰를 작성한 서포터에 대해서만 피드백을 작성할 수 있습니다.");
     }
 }
