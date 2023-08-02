@@ -188,7 +188,7 @@ const S = {
     align-items: center;
   `,
 
-  ListContainer: styled.div`
+  ListContainer: styled.li`
     display: flex;
     flex-direction: column;
     gap: 20px;
