@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @EqualsAndHashCode
 @Getter
-public class AccessToken {
+public final class AccessToken {
 
     private final String value;
 

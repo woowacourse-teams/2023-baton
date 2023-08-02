@@ -15,7 +15,7 @@ import touch.baton.domain.oauth.service.OauthService;
 import java.io.IOException;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.MOVED_TEMPORARILY;
+import static org.springframework.http.HttpStatus.FOUND;
 
 @RequiredArgsConstructor
 @RequestMapping("/oauth")
@@ -32,7 +32,7 @@ public class OauthController {
         final String redirectUrl = oauthService.readAuthCodeRedirect(oauthType);
         response.sendRedirect(redirectUrl);
 
-        return ResponseEntity.status(MOVED_TEMPORARILY).build();
+        return ResponseEntity.status(FOUND).build();
     }
 
     @PostMapping("/login/{oauthType}")
