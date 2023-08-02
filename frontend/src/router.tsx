@@ -13,7 +13,7 @@ export const ROUTER_PATH = {
   RUNNER_POST: '/runner-post/:runnerPostId',
   RUNNER_POST_CREATE: '/runner-post-create/',
   SUPPORTER_SELECT: '/supporter-select',
-  MY_PAGE: 'my-page',
+  MY_PAGE: '/my-page',
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RESULT: '/result',
