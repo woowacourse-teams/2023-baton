@@ -5,9 +5,9 @@ import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
+import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -42,7 +42,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
                         chattingCount(0).getValue(),
                         ReviewStatus.NOT_STARTED,
                         true,
-                        RunnerProfileResponse.Detail.from(runnerHyena),
+                        RunnerResponse.Detail.from(runnerHyena),
                         Collections.emptyList()
                 ));
     }
