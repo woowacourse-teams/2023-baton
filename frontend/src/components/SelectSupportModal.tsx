@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from './common/Modal';
 import { styled } from 'styled-components';
 import SupporterSelectList from './SupporterSelect/SupporterSelectList/SupporterSelectList';
@@ -10,15 +10,31 @@ interface Props {
 }
 
 const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
+  const [selectedFilter, setSelectedFilter] = useState<string | null>('프론트엔드');
+
+  const clickedFilter = (event: React.MouseEvent<HTMLParagraphElement>) => {
+    setSelectedFilter(event.currentTarget.textContent || null);
+  };
+
   return (
-    <Modal width="800px" height="95%" closeModal={closeModal}>
-      <S.TitleContainer>
-        <S.Title>서포터를 선택해 주세요 ✅</S.Title>
-        <S.TitleDescription>선택한 서포터가 확인 후 리뷰를 진행합니다.</S.TitleDescription>
-      </S.TitleContainer>
-      <S.SelectSupportContainer>
-        <SupporterSelectList handleSelectButton={handleSelectButton} />
-      </S.SelectSupportContainer>
+    <Modal width="850px" height="95%" closeModal={closeModal}>
+      <S.ModalContainer>
+        <S.TitleContainer>
+          <S.Title>서포터를 선택해 주세요 ✅</S.Title>
+          <S.TitleDescription>선택한 서포터가 확인 후 리뷰를 진행합니다.</S.TitleDescription>
+        </S.TitleContainer>
+        <S.FilterContainer>
+          <S.FilterTitle onClick={clickedFilter} selected={selectedFilter === '프론트엔드'}>
+            프론트엔드
+          </S.FilterTitle>
+          <S.FilterTitle onClick={clickedFilter} selected={selectedFilter === '백엔드'}>
+            백엔드
+          </S.FilterTitle>
+        </S.FilterContainer>
+        <S.SelectSupportContainer>
+          <SupporterSelectList handleSelectButton={handleSelectButton} />
+        </S.SelectSupportContainer>
+      </S.ModalContainer>
     </Modal>
   );
 };
@@ -26,13 +42,11 @@ const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
 export default SelectSupportModal;
 
 const S = {
-  ModalContainer: styled.div``,
-  SelectSupportContainer: styled.div`
-    width: 696px;
-    max-height: 75%;
-    margin: 0 auto;
-
-    overflow-y: scroll;
+  ModalContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
   `,
 
   ButtonContainer: styled.div`
@@ -59,5 +73,42 @@ const S = {
     font-size: 18px;
     font-weight: 500;
     color: var(--gray-500);
+  `,
+
+  FilterContainer: styled.div`
+    display: flex;
+    gap: 30px;
+
+    margin: 0 0 30px 25px;
+
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-500);
+  `,
+  FilterTitle: styled.p<{ selected: boolean }>`
+    height: 25px;
+
+    cursor: pointer;
+
+    color: ${({ selected }) => (selected ? 'red' : 'var(--gray-500)')};
+    border-bottom: ${({ selected }) => (selected ? '2px solid var(--baton-red)' : '')};
+
+    &:hover {
+      color: var(--baton-red);
+      border-bottom: 2px solid var(--baton-red);
+    }
+  `,
+
+  SelectSupportContainer: styled.div`
+    flex-grow: 1;
+    width: 696px;
+    max-height: 75%;
+    margin: 0 auto;
+
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `,
 };
