@@ -201,4 +201,8 @@ public class RunnerPostService {
     public List<RunnerPost> readAllRunnerPosts() {
         return runnerPostRepository.findAll();
     }
+
+    public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
+        return runnerPostRepository.findByRunnerId(runnerId);
+    }
 }
