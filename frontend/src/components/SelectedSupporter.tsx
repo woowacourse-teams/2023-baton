@@ -1,9 +1,7 @@
 import Avatar from '@/components/common/Avatar';
-import Button from '@/components/common/Button';
 import { SupporterCard } from '@/types/supporterCard';
 import React from 'react';
 import styled from 'styled-components';
-import githubIcon from '@/assets/github-icon.svg';
 
 interface Props extends SupporterCard {}
 
@@ -15,6 +13,7 @@ const SelectedSupporter = ({
   totalRating,
   githubUrl,
   introduction,
+  technicalTags,
 }: Props) => {
   return (
     <S.SelectedSupporterContainer>
@@ -39,8 +38,8 @@ const S = {
     align-items: center;
     gap: 20px;
 
-    width: 300px;
-    height: 105px;
+    width: 400px;
+    height: 135px;
     padding: 35px 40px;
 
     border: 0.5px solid var(--gray-500);
@@ -83,7 +82,7 @@ const S = {
   `,
 
   CompletedReviewCount: styled.p`
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 700;
   `,
 };
