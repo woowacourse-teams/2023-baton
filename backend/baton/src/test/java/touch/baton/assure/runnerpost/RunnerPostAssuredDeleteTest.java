@@ -19,6 +19,7 @@ import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.ContentsFixture.contents;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
@@ -31,7 +32,7 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         final Member member = MemberFixture.createHyena();
         memberRepository.save(member);
 
-        final Runner runner = RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, member);
+        final Runner runner = RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, introduction("hello"), member);
         runnerRepository.save(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),

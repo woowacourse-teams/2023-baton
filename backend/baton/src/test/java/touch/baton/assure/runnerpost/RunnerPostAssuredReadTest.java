@@ -18,6 +18,7 @@ import java.util.Collections;
 
 import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
@@ -27,7 +28,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member memberHyena = memberRepository.save(MemberFixture.createHyena());
-        final Runner runnerHyena = runnerRepository.save(RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, memberHyena));
+        final Runner runnerHyena = runnerRepository.save(RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, introduction("안녕하세요"), memberHyena));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerHyena, deadline(LocalDateTime.now().plusHours(100))));
 
         RunnerPostAssuredSupport
