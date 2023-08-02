@@ -30,7 +30,7 @@ const S = {
     justify-content: center;
     gap: 30px;
 
-    height: 100%;
+    min-height: 80vh;
 
     & button {
       margin-top: 30px;
