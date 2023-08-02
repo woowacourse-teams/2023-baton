@@ -1,4 +1,4 @@
-package touch.baton.domain.common.vo;
+package touch.baton.domain.feedback.vo;
 
 public enum ReviewType {
 

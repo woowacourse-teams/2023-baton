@@ -1,4 +1,4 @@
-package touch.baton.domain.supporter;
+package touch.baton.domain.feedback;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -12,11 +12,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.common.vo.Description;
-import touch.baton.domain.common.vo.ReviewType;
+import touch.baton.domain.feedback.exception.SupporterFeedbackException;
+import touch.baton.domain.feedback.vo.Description;
+import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.supporter.exception.SupporterFeedbackException;
+import touch.baton.domain.supporter.Supporter;
 
 import java.util.Objects;
 
