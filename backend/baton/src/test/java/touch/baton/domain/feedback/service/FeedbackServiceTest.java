@@ -23,20 +23,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class FeedbackServiceTest extends ServiceTestConfig {
 
     private FeedbackService feedbackService;
-    private Member ethan;
     private Runner exactRunner;
-    private Member ditoo;
-    private Supporter supporterDitoo;
     private RunnerPost runnerPost;
     private SupporterFeedBackCreateRequest request;
 
     @BeforeEach
     void setUp() {
         feedbackService = new FeedbackService(supporterFeedbackRepository, runnerRepository, runnerPostRepository, supporterRepository);
-        ethan = memberRepository.save(MemberFixture.createEthan());
+        Member ethan = memberRepository.save(MemberFixture.createEthan());
         exactRunner = runnerRepository.save(RunnerFixture.createRunner(ethan));
-        ditoo = memberRepository.save(MemberFixture.createDitoo());
-        supporterDitoo = supporterRepository.save(SupporterFixture.create(ditoo));
+        Member ditoo = memberRepository.save(MemberFixture.createDitoo());
+        Supporter supporterDitoo = supporterRepository.save(SupporterFixture.create(ditoo));
         runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, supporterDitoo));
 
         request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), supporterDitoo.getId(), runnerPost.getId());
