@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.exception.TagDomainException;
+import touch.baton.domain.tag.exception.TechnicalTagDomainException;
 
 import java.util.Objects;
 
@@ -40,7 +40,7 @@ public class TechnicalTag {
 
     private void validateNotNull(final TagName tagName) {
         if (Objects.isNull(tagName)) {
-            throw new TagDomainException("tagName 은 null 일 수 없습니다.");
+            throw new TechnicalTagDomainException("TechnicalTag 의 tagName 은 null 일 수 없습니다.");
         }
     }
 }
