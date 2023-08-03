@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,7 +52,7 @@ public class SupporterFeedback extends BaseEntity {
     @JoinColumn(name = "runner_id", nullable = false, foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_runner"))
     private Runner runner;
 
-    @ManyToOne(fetch = LAZY)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "runner_post_id", nullable = false, foreignKey = @ForeignKey(name = "fk_supporter_feed_back_to_runner_post"))
     private RunnerPost runnerPost;
 
