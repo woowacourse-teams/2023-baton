@@ -10,7 +10,7 @@ import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class RunnerRepositoryTest extends RepositoryTestConfig {
 
     private static final MemberName memberName = new MemberName("헤에디주");
-    private static final Email email = new Email("test@test.co.kr");
+    private static final SocialId socialId = new SocialId("testSocialId");
     private static final OauthId oauthId = new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j");
     private static final GithubUrl githubUrl = new GithubUrl("github.com/hyena0608");
     private static final Company company = new Company("우아한형제들");
@@ -45,7 +45,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
     void setUp() {
         final Member member = Member.builder()
                 .memberName(memberName)
-                .email(email)
+                .socialId(socialId)
                 .oauthId(oauthId)
                 .githubUrl(githubUrl)
                 .company(company)
@@ -76,7 +76,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
                 () -> assertThat(actualMember.getId()).isNotNull(),
                 () -> assertThat(actualMember.getMemberName()).isEqualTo(memberName),
                 () -> assertThat(actualMember.getCompany()).isEqualTo(company),
-                () -> assertThat(actualMember.getEmail()).isEqualTo(email),
+                () -> assertThat(actualMember.getSocialId()).isEqualTo(socialId),
                 () -> assertThat(actualMember.getOauthId()).isEqualTo(oauthId),
                 () -> assertThat(actualMember.getGithubUrl()).isEqualTo(githubUrl)
         );

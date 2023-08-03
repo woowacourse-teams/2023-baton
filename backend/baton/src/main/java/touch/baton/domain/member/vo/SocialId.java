@@ -14,19 +14,19 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class Email {
+public class SocialId {
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "social_id", nullable = false)
     private String value;
 
-    public Email(final String value) {
+    public SocialId(final String value) {
         validateNotNull(value);
         this.value = value;
     }
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("Email 객체 내부에 email 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("SocialId 객체 내부에 value 은 null 일 수 없습니다.");
         }
     }
 }

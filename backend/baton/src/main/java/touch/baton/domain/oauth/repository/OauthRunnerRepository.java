@@ -13,7 +13,7 @@ public interface OauthRunnerRepository extends JpaRepository<Runner, Long> {
         select r, r.member
         from Runner r
         join fetch Member m on m.id = r.member.id
-        where m.email.value = :email
+        where m.socialId.value = :socialId
         """)
-    Optional<Runner> joinByMemberEmail(@Param("email") final String email);
+    Optional<Runner> joinByMemberSocialId(@Param("socialId") final String socialId);
 }

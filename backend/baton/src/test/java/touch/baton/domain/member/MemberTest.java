@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.member.exception.MemberDomainException;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -25,7 +25,7 @@ class MemberTest {
         void success() {
             assertThatCode(() -> Member.builder()
                     .memberName(new MemberName("헤에디주"))
-                    .email(new Email("test@test.co.kr"))
+                    .socialId(new SocialId("testSocialId"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
@@ -39,7 +39,7 @@ class MemberTest {
         void fail_if_name_is_null() {
             assertThatThrownBy(() -> Member.builder()
                     .memberName(null)
-                    .email(new Email("test@test.co.kr"))
+                    .socialId(new SocialId("testSocialId"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
@@ -49,19 +49,19 @@ class MemberTest {
                     .hasMessage("Member 의 name 은 null 일 수 없습니다.");
         }
 
-        @DisplayName("이메일에 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("socialId에 null 이 들어갈 경우 예외가 발생한다.")
         @Test
-        void fail_if_email_is_null() {
+        void fail_if_socialId_is_null() {
             assertThatThrownBy(() -> Member.builder()
                     .memberName(new MemberName("에단"))
-                    .email(null)
+                    .socialId(null)
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
                     .build()
             ).isInstanceOf(MemberDomainException.class)
-                    .hasMessage("Member 의 email 은 null 일 수 없습니다.");
+                    .hasMessage("Member 의 socialId 은 null 일 수 없습니다.");
         }
 
         @DisplayName("oauth id 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -69,7 +69,7 @@ class MemberTest {
         void fail_if_oauth_id_is_null() {
             assertThatThrownBy(() -> Member.builder()
                     .memberName(new MemberName("에단"))
-                    .email(new Email("test@test.co.kr"))
+                    .socialId(new SocialId("testSocialId"))
                     .oauthId(null)
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
@@ -84,7 +84,7 @@ class MemberTest {
         void fail_if_github_url_is_null() {
             assertThatThrownBy(() -> Member.builder()
                     .memberName(new MemberName("에단"))
-                    .email(new Email("test@test.co.kr"))
+                    .socialId(new SocialId("testSocialId"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(null)
                     .company(new Company("우아한형제들"))
@@ -99,7 +99,7 @@ class MemberTest {
         void fail_if_company_is_null() {
             assertThatThrownBy(() -> Member.builder()
                     .memberName(new MemberName("에단"))
-                    .email(new Email("test@test.co.kr"))
+                    .socialId(new SocialId("testSocialId"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(null)
@@ -114,7 +114,7 @@ class MemberTest {
         void fail_if_imageUrl_is_null() {
             assertThatThrownBy(() -> Member.builder()
                     .memberName(new MemberName("에단"))
-                    .email(new Email("test@test.co.kr"))
+                    .socialId(new SocialId("testSocialId"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))

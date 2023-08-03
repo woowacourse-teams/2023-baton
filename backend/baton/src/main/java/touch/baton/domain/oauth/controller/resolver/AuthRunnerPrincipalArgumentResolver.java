@@ -54,9 +54,9 @@ public class AuthRunnerPrincipalArgumentResolver implements HandlerMethodArgumen
 
         final String token = authHeader.substring(BEARER.length());
         final Claims claims = jwtDecoder.parseJwtToken(token);
-        final String email = claims.get("email", String.class);
-        final Runner foundRunner = oauthRunnerRepository.joinByMemberEmail(email)
-                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_EMAIL_IS_WRONG));
+        final String socialId = claims.get("socialId", String.class);
+        final Runner foundRunner = oauthRunnerRepository.joinByMemberSocialId(socialId)
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_SOCIAL_ID_IS_WRONG));
 
         return foundRunner;
     }

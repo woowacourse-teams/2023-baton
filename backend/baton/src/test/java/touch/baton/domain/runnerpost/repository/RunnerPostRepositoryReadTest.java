@@ -32,7 +32,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
+class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
     private MemberRepository memberRepository;
