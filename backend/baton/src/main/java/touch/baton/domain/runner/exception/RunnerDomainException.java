@@ -6,6 +6,5 @@ public class RunnerDomainException extends DomainException {
 
     public RunnerDomainException(final String message) {
         super(message);
-
     }
 }

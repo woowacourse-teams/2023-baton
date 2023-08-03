@@ -17,7 +17,7 @@ import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.exception.OldRunnerPostException;
+import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -103,7 +103,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
-                    .reviewStatus(ReviewStatus.NOT_STARTED  )
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(null)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -121,11 +121,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 title 은 null 일 수 없습니다.");
         }
 
         @DisplayName("contents 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -138,11 +140,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 contents 는 null 일 수 없습니다.");
         }
 
         @DisplayName("pull request url 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -155,11 +159,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 pullRequestUrl 은 null 일 수 없습니다.");
         }
 
         @DisplayName("deadline 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -172,11 +178,13 @@ class RunnerPostTest {
                     .deadline(null)
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 deadline 은 null 일 수 없습니다.");
         }
 
         @DisplayName("watched count 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -189,11 +197,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(null)
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 watchedCount 는 null 일 수 없습니다.");
         }
 
         @DisplayName("chatting room count 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -206,11 +216,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(null)
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 chattingCount 는 null 일 수 없습니다.");
         }
 
         @DisplayName("runner 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -223,11 +235,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(null)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 runner 는 null 일 수 없습니다.");
         }
 
         @DisplayName("runnerPostTags 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -240,11 +254,13 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .chattingCount(new ChattingCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(null)
                     .build()
-            ).isInstanceOf(OldRunnerPostException.NotNull.class);
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 runnerPostTags 는 null 일 수 없습니다.");
         }
 
         @DisplayName("태그, 조회수, 채팅수가 초기화된 RunnerPost 를 생성할 수 있다.")

@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.exception.OldTagException;
+import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.domain.tag.vo.TagCount;
 
 import java.util.Objects;
@@ -45,11 +45,11 @@ public class Tag {
 
     private void validateNotNull(final TagName tagName, final TagCount tagCount) {
         if (Objects.isNull(tagName)) {
-            throw new OldTagException.NotNull("tagName 은 null 일 수 없습니다.");
+            throw new TagDomainException("Tag 의 tagName 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(tagCount)) {
-            throw new OldTagException.NotNull("tagCount 은 null 일 수 없습니다.");
+            throw new TagDomainException("Tag 의 tagCount 는 null 일 수 없습니다.");
         }
     }
 

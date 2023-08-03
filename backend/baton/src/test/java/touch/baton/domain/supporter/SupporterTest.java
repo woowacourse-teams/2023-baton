@@ -13,7 +13,7 @@ import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.supporter.exception.OldSupporterException;
+import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
@@ -69,7 +69,8 @@ class SupporterTest {
                     .member(member)
                     .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldSupporterException.NotNull.class);
+            ).isInstanceOf(SupporterDomainException.class)
+                    .hasMessage("Supporter 의 starCount 는 null 일 수 없습니다.");
         }
 
         @DisplayName("totalRating 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -83,7 +84,8 @@ class SupporterTest {
                     .member(member)
                     .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldSupporterException.NotNull.class);
+            ).isInstanceOf(SupporterDomainException.class)
+                    .hasMessage("Supporter 의 totalRating 은 null 일 수 없습니다.");
         }
 
         @DisplayName("grade 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -97,7 +99,8 @@ class SupporterTest {
                     .member(member)
                     .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldSupporterException.NotNull.class);
+            ).isInstanceOf(SupporterDomainException.class)
+                    .hasMessage("Supporter 의 grade 는 null 일 수 없습니다.");
         }
 
         @DisplayName("member 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -111,7 +114,8 @@ class SupporterTest {
                     .member(null)
                     .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
-            ).isInstanceOf(OldSupporterException.NotNull.class);
+            ).isInstanceOf(SupporterDomainException.class)
+                    .hasMessage("Supporter 의 member 는 null 일 수 없습니다.");
         }
 
         @DisplayName("supporterTechnicalTags 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -125,7 +129,8 @@ class SupporterTest {
                     .member(member)
                     .supporterTechnicalTags(null)
                     .build()
-            ).isInstanceOf(OldSupporterException.NotNull.class);
+            ).isInstanceOf(SupporterDomainException.class)
+                    .hasMessage("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
         }
     }
 
