@@ -45,7 +45,7 @@ class TagTest {
                     .tagCount(null)
                     .build()
             ).isInstanceOf(TagDomainException.class)
-                    .hasMessage("Tag 의 tagCount 은 null 일 수 없습니다.");
+                    .hasMessage("Tag 의 tagCount 는 null 일 수 없습니다.");
         }
     }
 
