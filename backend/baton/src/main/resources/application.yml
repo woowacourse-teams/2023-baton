@@ -14,10 +14,15 @@ logging:
 
 oauth:
   github:
-    client_id: ${GITHUB_CLIENT_ID}
-    redirect_uri: ${GITHUB_REDIRECT_URI}
-    client_secret: ${GITHUB_CLIENT_SECRET}
-    scope: ${GITHUB_SCOPE}
+    client_id: ${OAUTH_GITHUB_CLIENT_ID}
+    redirect_uri: ${OAUTH_GITHUB_REDIRECT_URI}
+    client_secret: ${OAUTH_GITHUB_CLIENT_SECRET}
+    scope: ${OAUTH_GITHUB_SCOPE}
 
 cors:
   allowed-origin: http://localhost:8080
+
+jwt:
+  token:
+    secret_key: ${JWT_SECRET_KEY}
+    issuer: ${JWT_ISSUER}
