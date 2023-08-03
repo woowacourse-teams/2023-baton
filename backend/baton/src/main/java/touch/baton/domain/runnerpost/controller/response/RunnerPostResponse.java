@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost.controller.response;
 
+import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
@@ -17,11 +18,11 @@ public record RunnerPostResponse() {
                          Integer chattingCount,
                          ReviewStatus reviewStatus,
                          boolean isOwner,
-                         RunnerProfileResponse.Detail runnerProfile,
+                         RunnerResponse.Detail runnerProfile,
                          List<String> tags
     ) {
 
-        public static Detail from(final RunnerPost runnerPost) {
+        public static Detail of(final RunnerPost runnerPost, final boolean isOwner) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -31,8 +32,8 @@ public record RunnerPostResponse() {
                     runnerPost.getWatchedCount().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getReviewStatus(),
-                    true,
-                    RunnerProfileResponse.Detail.from(runnerPost.getRunner()),
+                    isOwner,
+                    RunnerResponse.Detail.from(runnerPost.getRunner()),
                     convertToTags(runnerPost)
             );
         }
@@ -47,12 +48,12 @@ public record RunnerPostResponse() {
                                     Integer watchedCount,
                                     Integer chattingCount,
                                     ReviewStatus reviewStatus,
-                                    RunnerProfileResponse.Detail runnerProfile,
+                                    RunnerResponse.Detail runnerProfile,
                                     SupporterResponseTestVersion.Simple supporterProfile,
                                     boolean isOwner,
                                     List<String> tags
     ) {
-        public static DetailVersionTest fromVersionTest(final RunnerPost runnerPost) {
+        public static DetailVersionTest ofVersionTest(final RunnerPost runnerPost, final boolean isOwner) {
             return new DetailVersionTest(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -62,9 +63,9 @@ public record RunnerPostResponse() {
                     runnerPost.getWatchedCount().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getReviewStatus(),
-                    RunnerProfileResponse.Detail.from(runnerPost.getRunner()),
+                    RunnerResponse.Detail.from(runnerPost.getRunner()),
                     SupporterResponseTestVersion.Simple.fromTestVersion(runnerPost.getSupporter()),
-                    true,
+                    isOwner,
                     convertToTags(runnerPost)
             );
         }
@@ -76,7 +77,7 @@ public record RunnerPostResponse() {
                          int watchedCount,
                          int chattingCount,
                          String reviewStatus,
-                         RunnerProfileResponse.Simple runnerProfile,
+                         RunnerResponse.Simple runnerProfile,
                          List<String> tags
     ) {
 
@@ -88,8 +89,26 @@ public record RunnerPostResponse() {
                     runnerPost.getWatchedCount().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getReviewStatus().name(),
-                    RunnerProfileResponse.Simple.from(runnerPost.getRunner()),
+                    RunnerResponse.Simple.from(runnerPost.getRunner()),
                     convertToTags(runnerPost)
+            );
+        }
+    }
+
+    public record Mine(Long runnerPostId,
+                       String title,
+                       LocalDateTime deadline,
+                       List<String> tags,
+                       String reviewStatus
+
+    ) {
+        public static Mine from(final RunnerPost runnerPost) {
+            return new Mine(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getReviewStatus().name()
             );
         }
     }

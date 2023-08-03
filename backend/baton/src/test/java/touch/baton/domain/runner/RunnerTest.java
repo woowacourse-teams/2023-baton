@@ -7,12 +7,12 @@ import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.runner.exception.OldRunnerException;
+import touch.baton.domain.runner.exception.RunnerDomainException;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +25,7 @@ class RunnerTest {
 
         private final Member member = Member.builder()
                 .memberName(new MemberName("헤에디주"))
-                .email(new Email("test@test.co.kr"))
+                .socialId(new SocialId("testSocialId"))
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한형제들"))
@@ -51,7 +51,8 @@ class RunnerTest {
                     .grade(Grade.BARE_FOOT)
                     .member(member)
                     .build()
-            ).isInstanceOf(OldRunnerException.NotNull.class);
+            ).isInstanceOf(RunnerDomainException.class)
+                    .hasMessage("Runner 의 totalRating 은 null 일 수 없습니다.");
         }
 
         @DisplayName("grade 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -62,7 +63,8 @@ class RunnerTest {
                     .grade(null)
                     .member(member)
                     .build()
-            ).isInstanceOf(OldRunnerException.NotNull.class);
+            ).isInstanceOf(RunnerDomainException.class)
+                    .hasMessage("Runner 의 grade 는 null 일 수 없습니다.");
         }
 
         @DisplayName("member 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -73,7 +75,8 @@ class RunnerTest {
                     .grade(Grade.BARE_FOOT)
                     .member(null)
                     .build()
-            ).isInstanceOf(OldRunnerException.NotNull.class);
+            ).isInstanceOf(RunnerDomainException.class)
+                    .hasMessage("Runner 의 member 는 null 일 수 없습니다.");
         }
     }
 }

@@ -26,7 +26,7 @@ public class OauthId {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("oauthId 는 null 일 수 없습니다.");
+            throw new IllegalArgumentException("OauthId 객체 내부에 oauthId 는 null 일 수 없습니다.");
         }
     }
 }

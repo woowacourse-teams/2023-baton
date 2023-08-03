@@ -26,7 +26,7 @@ public class GithubUrl {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("githubUrl 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("GithubUrl 객체 내부에 githubUrl 은 null 일 수 없습니다.");
         }
     }
 }

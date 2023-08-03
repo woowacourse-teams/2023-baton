@@ -26,7 +26,7 @@ public class MemberName {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("name 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("MemberName 객체 내부에 name 은 null 일 수 없습니다.");
         }
     }
 }

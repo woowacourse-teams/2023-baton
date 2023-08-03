@@ -4,15 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
-import touch.baton.config.JpaConfig;
+import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -24,12 +22,10 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@Import(JpaConfig.class)
-@DataJpaTest
-class RunnerRepositoryTest {
+class RunnerRepositoryTest extends RepositoryTestConfig {
 
     private static final MemberName memberName = new MemberName("헤에디주");
-    private static final Email email = new Email("test@test.co.kr");
+    private static final SocialId socialId = new SocialId("testSocialId");
     private static final OauthId oauthId = new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j");
     private static final GithubUrl githubUrl = new GithubUrl("github.com/hyena0608");
     private static final Company company = new Company("우아한형제들");
@@ -43,14 +39,13 @@ class RunnerRepositoryTest {
     @Autowired
     private MemberRepository memberRepository;
 
-    private Member member;
     private Runner runner;
 
     @BeforeEach
     void setUp() {
-        member = Member.builder()
+        final Member member = Member.builder()
                 .memberName(memberName)
-                .email(email)
+                .socialId(socialId)
                 .oauthId(oauthId)
                 .githubUrl(githubUrl)
                 .company(company)
@@ -81,7 +76,7 @@ class RunnerRepositoryTest {
                 () -> assertThat(actualMember.getId()).isNotNull(),
                 () -> assertThat(actualMember.getMemberName()).isEqualTo(memberName),
                 () -> assertThat(actualMember.getCompany()).isEqualTo(company),
-                () -> assertThat(actualMember.getEmail()).isEqualTo(email),
+                () -> assertThat(actualMember.getSocialId()).isEqualTo(socialId),
                 () -> assertThat(actualMember.getOauthId()).isEqualTo(oauthId),
                 () -> assertThat(actualMember.getGithubUrl()).isEqualTo(githubUrl)
         );

@@ -11,6 +11,6 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(ClientRequestException.class)
     public ResponseEntity<ErrorResponse> handleClientRequest(ClientRequestException e) {
-        return ResponseEntity.status(e.getHttpStatus().value()).body(ErrorResponse.from(e));
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus()).body(ErrorResponse.from(e));
     }
 }

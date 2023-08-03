@@ -26,7 +26,7 @@ public class ImageUrl {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("imageUrl 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("ImageUrl 객체 내부에 imageUrl 은 null 일 수 없습니다.");
         }
     }
 }

@@ -26,7 +26,7 @@ public class Title {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("title 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("Title 객체 내부에 title 은 null 일 수 없습니다.");
         }
     }
 }

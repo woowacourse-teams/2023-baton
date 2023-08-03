@@ -12,7 +12,7 @@ import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -25,7 +25,8 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
-import touch.baton.domain.tag.exception.OldTagException;
+import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
+import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
@@ -43,7 +44,7 @@ class RunnerPostTagTest {
 
         private final Member runnerMember = Member.builder()
                 .memberName(new MemberName("러너 사용자"))
-                .email(new Email("test@test.co.kr"))
+                .socialId(new SocialId("testSocialId"))
                 .oauthId(new OauthId("ads7821iuqjkrhadsioh1f1r4efsoi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한테크코스"))
@@ -52,7 +53,7 @@ class RunnerPostTagTest {
 
         private final Member supporterMember = Member.builder()
                 .memberName(new MemberName("서포터 사용자"))
-                .email(new Email("test@test.co.kr"))
+                .socialId(new SocialId("testSocialId"))
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/pobi"))
                 .company(new Company("우아한형제들"))
@@ -109,7 +110,8 @@ class RunnerPostTagTest {
                     .runnerPost(null)
                     .tag(tag)
                     .build()
-            ).isInstanceOf(OldTagException.NotNull.class);
+            ).isInstanceOf(RunnerPostTagDomainException.class)
+                    .hasMessage("RunnerPostTag 의 runnerPost 는 null 일 수 없습니다.");
         }
 
         @DisplayName("tag 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -119,7 +121,8 @@ class RunnerPostTagTest {
                     .runnerPost(runnerPost)
                     .tag(null)
                     .build()
-            ).isInstanceOf(OldTagException.NotNull.class);
+            ).isInstanceOf(RunnerPostTagDomainException.class)
+                    .hasMessage("RunnerPostTag 의 tag 는 null 일 수 없습니다.");
         }
     }
 }

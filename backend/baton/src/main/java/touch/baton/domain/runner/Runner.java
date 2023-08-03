@@ -17,7 +17,7 @@ import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.exception.OldRunnerException;
+import touch.baton.domain.runner.exception.RunnerDomainException;
 
 import java.util.Objects;
 
@@ -74,15 +74,28 @@ public class Runner extends BaseEntity {
 
     private void validateNotNull(final TotalRating totalRating, final Grade grade, final Member member) {
         if (Objects.isNull(totalRating)) {
-            throw new OldRunnerException.NotNull("totalRating 은 null 일 수 없습니다.");
+            throw new RunnerDomainException("Runner 의 totalRating 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(grade)) {
-            throw new OldRunnerException.NotNull("grade 는 null 일 수 없습니다.");
+            throw new RunnerDomainException("Runner 의 grade 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(member)) {
-            throw new OldRunnerException.NotNull("member 는 null 일 수 없습니다.");
+            throw new RunnerDomainException("Runner 의 member 는 null 일 수 없습니다.");
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Runner runner = (Runner) o;
+        return Objects.equals(id, runner.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

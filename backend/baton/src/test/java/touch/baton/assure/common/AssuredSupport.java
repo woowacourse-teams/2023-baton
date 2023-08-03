@@ -8,11 +8,32 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AssuredSupport {
 
+    public static ExtractableResponse<Response> post(final String uri, final Object params) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(params)
+                .when().log().ifValidationFails()
+                .post(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> get(final String uri, final String pathParamName, final Long id) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .when().log().ifValidationFails()
                 .pathParam(pathParamName, id)
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .header("authorization", "Bearer " + accessToken)
+                .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();
