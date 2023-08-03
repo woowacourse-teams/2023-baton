@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.ContentsFixture.contents;
@@ -110,9 +111,53 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         runnerPostRepository.save(runnerPost);
 
         // when
-        final List<RunnerPost> expected = runnerPostRepository.findByRunnerId(runner.getId());
+        final List<RunnerPost> actual = runnerPostRepository.findByRunnerId(runner.getId());
 
         // then
-        assertThat(expected).containsExactly(runnerPost);
+        assertThat(actual).containsExactly(runnerPost);
+    }
+
+    @DisplayName("RunnerPost 최신 순으로 전체 조회한다.")
+    @Test
+    void findAllByOrderByCreatedAt() {
+        // given
+        final Member ditoo = MemberFixture.createDitoo();
+        memberRepository.save(ditoo);
+        final Runner runner = RunnerFixture.createRunner(ditoo);
+        runnerRepository.save(runner);
+
+        final RunnerPost previousRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
+                contents("제 코드의 내용은 이렇습니다."),
+                pullRequestUrl("https://"),
+                deadline(LocalDateTime.now().plusHours(10)),
+                watchedCount(0),
+                chattingCount(0),
+                NOT_STARTED,
+                runner,
+                null,
+                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+        runnerPostRepository.save(previousRunnerPost);
+
+        final RunnerPost nextRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
+                contents("제 코드의 내용은 이렇습니다."),
+                pullRequestUrl("https://"),
+                deadline(LocalDateTime.now().plusHours(10)),
+                watchedCount(0),
+                chattingCount(0),
+                NOT_STARTED,
+                runner,
+                null,
+                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+        runnerPostRepository.save(nextRunnerPost);
+
+        // when
+        final List<RunnerPost> actual = runnerPostRepository.findAllByOrderByCreatedAt();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actual).hasSize(2);
+            softly.assertThat(actual.get(0)).isEqualTo(previousRunnerPost);
+            softly.assertThat(actual.get(1)).isEqualTo(nextRunnerPost);
+        });
     }
 }
