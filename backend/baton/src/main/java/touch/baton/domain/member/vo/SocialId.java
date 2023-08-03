@@ -16,7 +16,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class SocialId {
 
-    @Column(name = "socialId", nullable = false)
+    @Column(name = "social_id", nullable = false)
     private String value;
 
     public SocialId(final String value) {
