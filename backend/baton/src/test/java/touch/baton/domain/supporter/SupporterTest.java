@@ -8,11 +8,11 @@ import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
@@ -130,7 +130,7 @@ class SupporterTest {
                     .supporterTechnicalTags(null)
                     .build()
             ).isInstanceOf(SupporterDomainException.class)
-                    .hasMessage("Supporter 의 technicalTags 는 null 일 수 없습니다.");
+                    .hasMessage("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
         }
     }
 
