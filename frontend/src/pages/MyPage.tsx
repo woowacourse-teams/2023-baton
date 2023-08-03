@@ -2,6 +2,7 @@ import ListFilter from '@/components/ListFilter';
 import ProfileRunnerPostItem from '@/components/Profile/ProfileRunnerPostItem/ProfileRunnerPostItem';
 import Avatar from '@/components/common/Avatar';
 import { BATON_BASE_URL } from '@/constants';
+import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetRunnerProfileResponse } from '@/types/profile';
 import { ReviewStatus } from '@/types/runnerPost';
@@ -36,10 +37,16 @@ const MyPage = () => {
 
   const [isRunner, setIsRunner] = useState(true);
 
+  const { getToken } = useToken();
+
   const getRunnerProfile = async () => {
     try {
+      const token = getToken()?.value;
+      if (!token) throw new Error('토큰이 존재하지 않습니다');
+
       const response = await fetch(`${BATON_BASE_URL}/profile/runner`, {
         method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) {
@@ -95,7 +102,7 @@ const MyPage = () => {
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
-            imageUrl={runnerProfile?.profile.imageUrl ?? 'https://via.placeholder.com/150'}
+            imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
             width={'100px'}
             height={'100px'}
           />

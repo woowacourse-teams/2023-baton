@@ -11,9 +11,11 @@ import SelectedSupporter from '@/components/SelectedSupporter';
 import { BATON_BASE_URL } from '@/constants';
 import { SupporterCard } from '@/types/supporterCard';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
+import { useToken } from '@/hooks/useToken';
 
 const RunnerPostCreatePage = () => {
   const { goBack, goToCreationResultPage } = usePageRouter();
+  const { getToken } = useToken();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -118,12 +120,19 @@ const RunnerPostCreatePage = () => {
   };
 
   const postRunnerForm = async (data: CreateRunnerPostRequest) => {
+    const token = getToken()?.value;
     const body = JSON.stringify(data);
+
+    if (!token) {
+      throw new Error('토큰이 존재하지 않습니다');
+    }
+
     const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
       method: 'POST',
       body,
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     });
 
