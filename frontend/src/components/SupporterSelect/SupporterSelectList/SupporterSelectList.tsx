@@ -58,7 +58,7 @@ const SupporterSelectList = ({ handleSelectButton, selectedTechField }: Props) =
       });
       if (backend) setFilteredSupporter(backend);
     }
-  }, [filteredSupporter, supporterCardList]);
+  }, [supporterCardList, selectedTechField]);
 
   const selectedSupporter = (selectedSupporter: SupporterCard) => {
     handleSelectButton(selectedSupporter);
