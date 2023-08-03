@@ -1,6 +1,7 @@
 import Button from '@/components/common/Button';
 import Label from '@/components/common/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
+import { usePageRouter } from '@/hooks/usePageRouter';
 import { ProfileRunnerPost } from '@/types/profile';
 import React from 'react';
 import styled from 'styled-components';
@@ -12,8 +13,14 @@ const ProfileRunnerPostItem = ({ runnerPostId, title, deadline, reviewStatus, ta
     alert('준비중인 기능입니다');
   };
 
+  const { goToRunnerPostPage } = usePageRouter();
+
+  const handlePostClick = () => {
+    goToRunnerPostPage(runnerPostId);
+  };
+
   return (
-    <S.RunnerPostItemContainer>
+    <S.RunnerPostItemContainer onClick={handlePostClick}>
       <S.LeftSideContainer>
         <S.PostTitle>{title}</S.PostTitle>
         <S.DeadLineContainer>
@@ -61,6 +68,12 @@ const S = {
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
+
+    &:hover {
+      transition: all 0.3s ease;
+      transform: scale(1.015);
+      outline: 1.5px solid var(--baton-red);
+    }
   `,
 
   PostTitle: styled.p`

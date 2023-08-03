@@ -5,6 +5,8 @@ import Avatar from '@/components/common/Avatar';
 import { RunnerPost } from '@/types/runnerPost';
 import Label from '@/components/common/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
+import eyeIcon from '@/assets/eye-icon.svg';
+import chattingIcon from '@/assets/chatting-icon.svg';
 
 const RunnerPostItem = ({
   runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, chattingCount, reviewStatus },
@@ -22,7 +24,7 @@ const RunnerPostItem = ({
       <S.LeftSideContainer>
         <S.PostTitle>{title}</S.PostTitle>
         <S.DeadLineContainer>
-          <S.DeadLine>{deadline} 까지</S.DeadLine>
+          <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
           <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'WHITE'}>
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
@@ -39,8 +41,12 @@ const RunnerPostItem = ({
           <S.ProfileName>{runnerProfile.name}</S.ProfileName>
         </S.ProfileContainer>
         <S.ChatViewContainer>
-          <div>조회수: {watchedCount}</div>
-          <div>채팅수: {chattingCount}</div>
+          <S.statisticsContainer>
+            <S.statisticsImage src={eyeIcon} />
+            <S.statisticsText>{watchedCount}</S.statisticsText>
+            <S.statisticsImage src={chattingIcon} />
+            <S.statisticsText>{chattingCount}</S.statisticsText>
+          </S.statisticsContainer>
         </S.ChatViewContainer>
       </S.RightSideContainer>
     </S.RunnerPostItemContainer>
@@ -126,5 +132,27 @@ const S = {
     gap: 10px;
 
     font-size: 12px;
+  `,
+
+  statisticsContainer: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-bottom: auto;
+
+    & > p {
+      color: #a4a4a4;
+    }
+  `,
+
+  statisticsImage: styled.img`
+    width: 20px;
+
+    margin-left: 8px;
+  `,
+
+  statisticsText: styled.p`
+    font-size: 14px;
   `,
 };

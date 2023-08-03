@@ -2,12 +2,28 @@ import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostLis
 import Button from '@/components/common/Button';
 import Tag from '@/components/common/Tag';
 import { usePageRouter } from '@/hooks/usePageRouter';
+import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import React from 'react';
 import { styled } from 'styled-components';
 
 const MainPage = () => {
-  const { goToRunnerPostCreatePage } = usePageRouter();
+  const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
+  const { getToken } = useToken();
+
+  const handleClickPostButton = () => {
+    const isLogin = !!getToken();
+
+    if (!isLogin) {
+      alert('로그인이 필요한 서비스입니다.🥺');
+
+      goToLoginPage();
+
+      return;
+    }
+
+    goToRunnerPostCreatePage();
+  };
 
   return (
     <Layout>
@@ -27,7 +43,7 @@ const MainPage = () => {
           </S.TagContainer> */}
         </S.LeftSideContainer>
 
-        <Button onClick={goToRunnerPostCreatePage} colorTheme="WHITE" fontSize="18px" ariaLabel="리뷰 요청 글 작성하기">
+        <Button onClick={handleClickPostButton} colorTheme="WHITE" fontSize="18px" ariaLabel="리뷰 요청 글 작성하기">
           리뷰 요청 글 작성하기
         </Button>
       </S.ControlPanelContainer>

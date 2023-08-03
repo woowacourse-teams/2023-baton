@@ -2,6 +2,7 @@ import ListFilter from '@/components/ListFilter';
 import ProfileRunnerPostItem from '@/components/Profile/ProfileRunnerPostItem/ProfileRunnerPostItem';
 import Avatar from '@/components/common/Avatar';
 import { BATON_BASE_URL } from '@/constants';
+import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetRunnerProfileResponse } from '@/types/profile';
 import { ReviewStatus } from '@/types/runnerPost';
@@ -36,10 +37,16 @@ const MyPage = () => {
 
   const [isRunner, setIsRunner] = useState(true);
 
+  const { getToken } = useToken();
+
   const getRunnerProfile = async () => {
     try {
+      const token = getToken()?.value;
+      if (!token) throw new Error('토큰이 존재하지 않습니다');
+
       const response = await fetch(`${BATON_BASE_URL}/profile/runner`, {
         method: 'GET',
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (!response.ok) {
@@ -95,7 +102,7 @@ const MyPage = () => {
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
-            imageUrl={runnerProfile?.profile.imageUrl ?? 'https://via.placeholder.com/150'}
+            imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
             width={'100px'}
             height={'100px'}
           />
@@ -105,8 +112,8 @@ const MyPage = () => {
           </S.IntroduceContainer>
         </S.InfoContainer>
         <S.ButtonContainer>
-          <S.RunnerSupporterButton isSelected={isRunner}>러너</S.RunnerSupporterButton>
-          <S.RunnerSupporterButton isSelected={!isRunner} onClick={handleClickSupporterButton}>
+          <S.RunnerSupporterButton $isSelected={isRunner}>러너</S.RunnerSupporterButton>
+          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
             서포터
           </S.RunnerSupporterButton>
         </S.ButtonContainer>
@@ -117,7 +124,7 @@ const MyPage = () => {
         </S.FilterWrapper>
         <S.ListContainer>
           {filterList()?.map((item) => (
-            <ProfileRunnerPostItem {...item} />
+            <ProfileRunnerPostItem key={item.runnerPostId} {...item} />
           ))}
         </S.ListContainer>
       </S.PostsContainer>
@@ -167,7 +174,7 @@ const S = {
     gap: 20px;
   `,
 
-  RunnerSupporterButton: styled.button<{ isSelected: boolean }>`
+  RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -175,11 +182,11 @@ const S = {
     width: 220px;
     height: 38px;
     border-radius: 18px;
-    border: 1px solid ${({ isSelected }) => (isSelected ? 'white' : 'var(--baton-red)')};
+    border: 1px solid ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
 
-    background-color: ${({ isSelected }) => (isSelected ? 'var(--baton-red)' : 'white')};
+    background-color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'white')};
 
-    color: ${({ isSelected }) => (isSelected ? 'white' : 'var(--baton-red)')};
+    color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
   `,
 
   PostsContainer: styled.div`

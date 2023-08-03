@@ -3,8 +3,13 @@ import React from 'react';
 import { styled } from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import GithubIcon from '@/assets/github-icon.svg';
+import { BATON_BASE_URL } from '@/constants';
 
 const LoginPage = () => {
+  const handleLoginButton = () => {
+    window.location.href = `${BATON_BASE_URL}/oauth/github`;
+  };
+
   return (
     <Layout>
       <S.LoginContainer>
@@ -12,7 +17,7 @@ const LoginPage = () => {
         <S.LoginBoxContainer>
           <S.LoginBoxText>코드 리뷰를 위해 github로 로그인 해주세요</S.LoginBoxText>
           <S.LoginBoxGithubIcon src={GithubIcon} />
-          <S.LoginButton>
+          <S.LoginButton onClick={handleLoginButton}>
             <S.LoginButtonIcon src={GithubIcon} />
             <S.LoginButtonText>Sign in with github</S.LoginButtonText>
           </S.LoginButton>
