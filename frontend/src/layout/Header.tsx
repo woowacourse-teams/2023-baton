@@ -1,24 +1,36 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
+import { useLogin } from '@/hooks/useLogin';
 
 const Header = () => {
-  const { goToMainPage } = usePageRouter();
+  const { goToMainPage, goToLoginPage } = usePageRouter();
+  const { getToken, removeToken } = useLogin();
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    setIsLogin(!!getToken());
+  }, []);
+
+  const handleClickLogoutButton = () => {
+    removeToken();
+    setIsLogin(false);
+  };
 
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
         <S.Logo src={LogoImage} onClick={goToMainPage} />
         <S.MenuContainer>
-          <S.LoginButton
-            onClick={() => {
-              alert('준비중인 기능입니다.🥺');
-            }}
-          >
-            로그인
-          </S.LoginButton>
-          {/* <S.ProfileAvatar /> */}
+          {isLogin ? (
+            <>
+              <S.ProfileAvatar />
+              <S.LoginButton onClick={handleClickLogoutButton}>로그아웃</S.LoginButton>
+            </>
+          ) : (
+            <S.LoginButton onClick={goToLoginPage}>로그인</S.LoginButton>
+          )}
         </S.MenuContainer>
       </S.HeaderContainer>
     </S.HeaderWrapper>
