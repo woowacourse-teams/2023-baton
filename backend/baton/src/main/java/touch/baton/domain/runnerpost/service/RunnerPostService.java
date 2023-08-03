@@ -8,7 +8,7 @@ import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.exception.OldRunnerPostBusinessException;
+import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
@@ -16,7 +16,6 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.exception.OldSupporterException;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
@@ -61,8 +60,7 @@ public class RunnerPostService {
         final List<RunnerPostTag> postTags = toSaveTags.stream()
                 .map(tag -> RunnerPostTag.builder()
                         .tag(tag)
-                        .runnerPost(runnerPost)
-                        .build())
+                        .runnerPost(runnerPost).build())
                 .toList();
 
         runnerPost.addAllRunnerPostTags(postTags);
@@ -87,7 +85,7 @@ public class RunnerPostService {
 
         if (Objects.nonNull(request.supporterId())) {
             final Supporter supporter = supporterRepository.findById(request.supporterId())
-                    .orElseThrow(() -> new OldSupporterException.NotNull("서포터가 존재하지 않습니다."));
+                    .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 서포터가 존재하지 않습니다."));
             runnerPost.assignSupporter(supporter);
         }
 
@@ -121,8 +119,7 @@ public class RunnerPostService {
 
     public RunnerPost readByRunnerPostId(final Long runnerPostId) {
         runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId);
-        final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
-                .orElseThrow(() -> new OldRunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+        final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId).orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
         findRunnerPost.increaseWatchedCount();
 
@@ -133,7 +130,7 @@ public class RunnerPostService {
     public void deleteByRunnerPostId(final Long runnerPostId) {
         final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.findById(runnerPostId);
         if (maybeRunnerPost.isEmpty()) {
-            throw new OldRunnerPostBusinessException.NotFound("러너 게시글 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
+            throw new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
         runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId)
@@ -148,14 +145,13 @@ public class RunnerPostService {
     public Long updateRunnerPost(final Long runnerPostId, final RunnerPostUpdateRequest request) {
         // TODO: 메소드 분리
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
-                .orElseThrow(() -> new IllegalArgumentException("잘못된 runnerPostId 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId를 다시 확인해주세요"));
         runnerPost.updateTitle(new Title(request.title()));
         runnerPost.updateContents(new Contents(request.contents()));
         runnerPost.updatePullRequestUrl(new PullRequestUrl(request.pullRequestUrl()));
         runnerPost.updateDeadLine(new Deadline(request.deadline()));
 
-        final List<RunnerPostTag> presentRunnerPostTags =
-                runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
+        final List<RunnerPostTag> presentRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
         // TODO: tag 개수 차감 메소드 분리
         final List<touch.baton.domain.tag.Tag> presentTags = presentRunnerPostTags.stream()
                 .map(RunnerPostTag::getTag)
