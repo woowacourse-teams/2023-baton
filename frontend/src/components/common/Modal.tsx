@@ -9,7 +9,7 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
 
 const Modal = ({ children, closeModal, width, height }: Props) => {
   return createPortal(
-    <S.ModalContainer>
+    <S.ModalContainer aria-label="서포터 선택 모달창" aria-modal="true" role="서포터 선택 모달창">
       <S.BackDrop onClick={closeModal} />
       <S.ModalViewContainer $width={width} $height={height}>
         {children}
