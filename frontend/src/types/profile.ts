@@ -1,12 +1,7 @@
 import { ReviewStatus } from './runnerPost';
 
 export interface GetRunnerProfileResponse {
-  profile: {
-    name: string;
-    imageUrl: string;
-    githubUrl: string;
-    introduction: string;
-  };
+  profile: Profile;
   runnerPosts: ProfileRunnerPost[];
 }
 
@@ -16,4 +11,11 @@ export interface ProfileRunnerPost {
   deadline: string;
   tags: string[];
   reviewStatus: ReviewStatus;
+}
+
+export interface Profile {
+  name: string;
+  imageUrl: string;
+  githubUrl: string;
+  introduction: string;
 }
