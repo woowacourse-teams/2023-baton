@@ -10,10 +10,10 @@ interface Props {
 }
 
 const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
-  const [selectedFilter, setSelectedFilter] = useState<string | null>('프론트엔드');
+  const [selectedTechField, setSelectedTechField] = useState<string | null>('프론트엔드');
 
   const clickedFilter = (event: React.MouseEvent<HTMLParagraphElement>) => {
-    setSelectedFilter(event.currentTarget.textContent || null);
+    setSelectedTechField(event.currentTarget.textContent || null);
   };
 
   return (
@@ -24,15 +24,15 @@ const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
           <S.TitleDescription>선택한 서포터가 확인 후 리뷰를 진행합니다.</S.TitleDescription>
         </S.TitleContainer>
         <S.FilterContainer>
-          <S.FilterTitle onClick={clickedFilter} selected={selectedFilter === '프론트엔드'}>
+          <S.FilterTitle onClick={clickedFilter} selected={selectedTechField === '프론트엔드'}>
             프론트엔드
           </S.FilterTitle>
-          <S.FilterTitle onClick={clickedFilter} selected={selectedFilter === '백엔드'}>
+          <S.FilterTitle onClick={clickedFilter} selected={selectedTechField === '백엔드'}>
             백엔드
           </S.FilterTitle>
         </S.FilterContainer>
         <S.SelectSupportContainer>
-          <SupporterSelectList filteredSupporter={selectedFilter} handleSelectButton={handleSelectButton} />
+          <SupporterSelectList selectedTechField={selectedTechField} handleSelectButton={handleSelectButton} />
         </S.SelectSupportContainer>
       </S.ModalContainer>
     </Modal>
