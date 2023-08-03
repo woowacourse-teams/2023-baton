@@ -214,7 +214,7 @@ const S = {
     gap: 10px;
   `,
 
-  PostTitle: styled.div`
+  PostTitle: styled.h1`
     font-size: 38px;
     font-weight: 700;
   `,

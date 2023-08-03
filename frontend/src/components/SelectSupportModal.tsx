@@ -54,7 +54,7 @@ const S = {
     gap: 20px;
   `,
 
-  TitleContainer: styled.div`
+  TitleContainer: styled.header`
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -62,12 +62,12 @@ const S = {
     margin: 20px 0 53px 20px;
   `,
 
-  Title: styled.p`
+  Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
   `,
 
-  TitleDescription: styled.div`
+  TitleDescription: styled.h2`
     margin-left: 5px;
 
     font-size: 18px;

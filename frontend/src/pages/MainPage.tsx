@@ -41,10 +41,10 @@ const MainPage = () => {
 export default MainPage;
 
 const S = {
-  TitleWrapper: styled.div`
+  TitleWrapper: styled.header`
     margin: 72px 0 53px 0;
   `,
-  Title: styled.p`
+  Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
   `,
