@@ -7,7 +7,7 @@ import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -25,7 +25,7 @@ class RunnerTest {
 
         private final Member member = Member.builder()
                 .memberName(new MemberName("헤에디주"))
-                .email(new Email("test@test.co.kr"))
+                .socialId(new SocialId("testSocialId"))
                 .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                 .githubUrl(new GithubUrl("github.com/hyena0608"))
                 .company(new Company("우아한형제들"))

@@ -30,25 +30,25 @@ class JwtEncoderAndDecoderTest {
         this.jwtEncoder = new JwtEncoder(this.jwtConfig);
     }
 
-    @DisplayName("Claim 으로 email 을 넣어 인코딩한 JWT 를 디코드했을 때 email 을 구할 수 있다.")
+    @DisplayName("Claim 으로 socialId 를 넣어 인코딩한 JWT 를 디코드했을 때 socialId 을 구할 수 있다.")
     @Test
     void encode_and_decode() {
         // given
-        final String encodedJwt = jwtEncoder.jwtToken(Map.of("email", "test@test.com"));
+        final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
         final Claims claims = jwtDecoder.parseJwtToken(encodedJwt);
-        final String email = claims.get("email", String.class);
+        final String socialId = claims.get("socialId", String.class);
 
         // then
-        assertThat(email).isEqualTo("test@test.com");
+        assertThat(socialId).isEqualTo("testSocialId");
     }
 
     @DisplayName("인코드할 때 사용한 secretKey 가 디코드할 때 사용할 secretKey 와 다를 경우 예외가 발생한다.")
     @Test
     void fail_decode_with_wrong_secretKey() {
         // given
-        final String encodedJwt = jwtEncoder.jwtToken(Map.of("email", "test@test.com"));
+        final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
         final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKeywrongSecretKeywrongSecretKey", "hyena");

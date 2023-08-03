@@ -51,14 +51,14 @@ public class OauthService {
         }
 
         return jwtEncoder.jwtToken(Map.of(
-                "email", oauthInformation.getEmail().getValue())
+                "socialId", oauthInformation.getSocialId().getValue())
         );
     }
 
     private Member signUpMember(final OauthInformation oauthInformation) {
         final Member newMember = Member.builder()
                 .memberName(oauthInformation.getMemberName())
-                .email(oauthInformation.getEmail())
+                .socialId(oauthInformation.getSocialId())
                 .oauthId(oauthInformation.getOauthId())
                 .githubUrl(oauthInformation.getGithubUrl())
                 .company(new Company(""))
