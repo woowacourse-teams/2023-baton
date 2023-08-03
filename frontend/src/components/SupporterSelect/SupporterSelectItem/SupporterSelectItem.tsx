@@ -45,7 +45,7 @@ const SupporterSelectItem = ({
           <S.Company>{company}</S.Company>
           <S.TechStackContainer>
             {technicalTags.map((tag) => (
-              <TechLabel key={supporterId} tag={tag} />
+              <TechLabel key={tag} tag={tag} />
             ))}
           </S.TechStackContainer>
           <S.CompletedReviewContainer>
