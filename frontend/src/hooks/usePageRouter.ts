@@ -20,6 +20,10 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.LOGIN);
   };
 
+  const goToMyPage = () => {
+    navigate(ROUTER_PATH.MY_PAGE);
+  };
+
   const goToCreationResultPage = () => {
     navigate(ROUTER_PATH.RESULT);
   };
@@ -33,6 +37,7 @@ export const usePageRouter = () => {
     goToRunnerPostPage,
     goToRunnerPostCreatePage,
     goToLoginPage,
+    goToMyPage,
     goToCreationResultPage,
     goBack,
   };
