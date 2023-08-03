@@ -30,7 +30,7 @@ class JwtEncoderAndDecoderTest {
         this.jwtEncoder = new JwtEncoder(this.jwtConfig);
     }
 
-    @DisplayName("Claim 으로 email 을 넣어 인코딩한 JWT 를 디코드했을 때 email 을 구할 수 있다..")
+    @DisplayName("Claim 으로 email 을 넣어 인코딩한 JWT 를 디코드했을 때 email 을 구할 수 있다.")
     @Test
     void encode_and_decode() {
         // given

@@ -4,8 +4,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.core.annotation.AliasFor;
-import touch.baton.domain.oauth.controller.AuthRunnerPrincipalArgumentResolver;
-import touch.baton.domain.oauth.controller.AuthSupporterPrincipalArgumentResolver;
+import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipalArgumentResolver;
+import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

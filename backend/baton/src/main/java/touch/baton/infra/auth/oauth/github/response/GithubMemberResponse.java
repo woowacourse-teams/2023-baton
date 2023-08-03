@@ -6,7 +6,7 @@ import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.oauth.AccessToken;
+import touch.baton.domain.oauth.SocialToken;
 import touch.baton.domain.oauth.OauthInformation;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
@@ -21,7 +21,7 @@ public record GithubMemberResponse(String id,
 
     public OauthInformation toOauthInformation(final String accessToken) {
         return OauthInformation.builder()
-                .accessToken(new AccessToken(accessToken))
+                .socialToken(new SocialToken(accessToken))
                 .oauthId(new OauthId(id))
                 .memberName(new MemberName(name))
                 .email(new Email(email))

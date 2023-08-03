@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import touch.baton.domain.oauth.controller.OauthTypeConverter;
 
 import java.time.format.DateTimeFormatter;
 import java.util.TimeZone;

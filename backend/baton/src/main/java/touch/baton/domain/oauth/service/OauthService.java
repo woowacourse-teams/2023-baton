@@ -43,9 +43,9 @@ public class OauthService {
     public String login(final OauthType oauthType, final String code) {
         final OauthInformation oauthInformation = oauthInformationClientComposite.fetchInformation(oauthType, code);
 
-        final Optional<Member> memberMember = oauthMemberRepository.findMemberByOauthId(oauthInformation.getOauthId());
-        if (memberMember.isEmpty()) {
-            final Member savedMember = saveNewMember(oauthInformation);
+        final Optional<Member> maybeMember = oauthMemberRepository.findMemberByOauthId(oauthInformation.getOauthId());
+        if (maybeMember.isEmpty()) {
+            final Member savedMember = signUpMember(oauthInformation);
             saveNewRunner(savedMember);
             saveNewSupporter(savedMember);
         }
@@ -55,7 +55,7 @@ public class OauthService {
         );
     }
 
-    private Member saveNewMember(final OauthInformation oauthInformation) {
+    private Member signUpMember(final OauthInformation oauthInformation) {
         final Member newMember = Member.builder()
                 .memberName(oauthInformation.getMemberName())
                 .email(oauthInformation.getEmail())

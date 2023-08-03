@@ -5,11 +5,11 @@ import lombok.Getter;
 
 @EqualsAndHashCode
 @Getter
-public final class AccessToken {
+public final class SocialToken {
 
     private final String value;
 
-    public AccessToken(final String value) {
+    public SocialToken(final String value) {
         this.value = value;
     }
 }

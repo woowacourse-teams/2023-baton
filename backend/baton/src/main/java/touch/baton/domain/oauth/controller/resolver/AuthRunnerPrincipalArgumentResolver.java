@@ -1,4 +1,4 @@
-package touch.baton.domain.oauth.controller;
+package touch.baton.domain.oauth.controller.resolver;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;

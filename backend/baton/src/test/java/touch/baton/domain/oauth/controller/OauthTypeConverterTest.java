@@ -3,6 +3,7 @@ package touch.baton.domain.oauth.controller;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import touch.baton.config.converter.OauthTypeConverter;
 import touch.baton.domain.oauth.OauthType;
 
 import static org.assertj.core.api.Assertions.assertThat;

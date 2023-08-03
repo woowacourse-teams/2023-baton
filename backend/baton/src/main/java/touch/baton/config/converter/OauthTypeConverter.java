@@ -1,4 +1,4 @@
-package touch.baton.domain.oauth.controller;
+package touch.baton.config.converter;
 
 import org.springframework.core.convert.converter.Converter;
 import touch.baton.domain.oauth.OauthType;

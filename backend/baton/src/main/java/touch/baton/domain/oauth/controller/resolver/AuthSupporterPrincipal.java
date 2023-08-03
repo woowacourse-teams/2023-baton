@@ -1,4 +1,4 @@
-package touch.baton.domain.oauth.controller;
+package touch.baton.domain.oauth.controller.resolver;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -7,5 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AuthRunnerPrincipal {
+public @interface AuthSupporterPrincipal {
 }

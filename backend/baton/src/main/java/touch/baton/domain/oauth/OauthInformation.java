@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @NoArgsConstructor(access = PROTECTED)
 public class OauthInformation {
 
-    private AccessToken accessToken;
+    private SocialToken socialToken;
 
     private OauthId oauthId;
 
@@ -31,14 +31,14 @@ public class OauthInformation {
     private ImageUrl imageUrl;
 
     @Builder
-    private OauthInformation(final AccessToken accessToken,
+    private OauthInformation(final SocialToken socialToken,
                              final OauthId oauthId,
                              final MemberName memberName,
                              final Email email,
                              final GithubUrl githubUrl,
                              final ImageUrl imageUrl
     ) {
-        this.accessToken = accessToken;
+        this.socialToken = socialToken;
         this.oauthId = oauthId;
         this.memberName = memberName;
         this.email = email;
