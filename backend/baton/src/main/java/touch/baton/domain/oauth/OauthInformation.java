@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -24,7 +24,7 @@ public class OauthInformation {
 
     private MemberName memberName;
 
-    private Email email;
+    private SocialId socialId;
 
     private GithubUrl githubUrl;
 
@@ -34,14 +34,14 @@ public class OauthInformation {
     private OauthInformation(final SocialToken socialToken,
                              final OauthId oauthId,
                              final MemberName memberName,
-                             final Email email,
+                             final SocialId socialId,
                              final GithubUrl githubUrl,
                              final ImageUrl imageUrl
     ) {
         this.socialToken = socialToken;
         this.oauthId = oauthId;
         this.memberName = memberName;
-        this.email = email;
+        this.socialId = socialId;
         this.githubUrl = githubUrl;
         this.imageUrl = imageUrl;
     }

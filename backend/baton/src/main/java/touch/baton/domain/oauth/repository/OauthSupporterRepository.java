@@ -13,7 +13,7 @@ public interface OauthSupporterRepository extends JpaRepository<Supporter, Long>
         select s, s.member
         from Supporter s
         join fetch Member m on m.id = s.member.id
-        where m.email.value = :email
+        where m.socialId.value = :socialId
         """)
-    Optional<Supporter> joinByMemberEmail(@Param("email") final String email);
+    Optional<Supporter> joinByMemberSocialId(@Param("socialId") final String socialId);
 }
