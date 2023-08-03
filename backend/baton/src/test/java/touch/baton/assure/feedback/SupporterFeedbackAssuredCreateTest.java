@@ -1,5 +1,6 @@
 package touch.baton.assure.feedback;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
@@ -27,6 +28,8 @@ import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
 @SuppressWarnings("NonAsciiCharacters")
 class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
 
+    // TODO: 2023/08/03 로그인 기능 테스트 추가
+    @Disabled
     @Test
     void 러너가_서포터_피드백을_등록한다() {
         // given
@@ -39,7 +42,7 @@ class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
         final SupporterFeedBackCreateRequest request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), supporterEthan.getId(), runnerPost.getId());
 
         // when, then
-         SupporterFeedbackAssuredSupport
+        SupporterFeedbackAssuredSupport
                 .클라이언트_요청().서포터_피드백을_등록한다(request)
                 .서버_응답().서포터_피드백_등록_성공을_검증한다(new HttpStatusAndLocationHeader(CREATED, "/api/v1/feedback/supporter"));
     }

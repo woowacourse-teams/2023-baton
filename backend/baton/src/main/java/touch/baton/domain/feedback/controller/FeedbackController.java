@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.feedback.service.FeedbackService;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
+import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.service.RunnerService;
 
@@ -24,9 +25,9 @@ public class FeedbackController {
     private final RunnerService runnerService;
 
     @PostMapping("/supporter")
-    public ResponseEntity<Void> createSupporterFeedback(@Valid @RequestBody SupporterFeedBackCreateRequest request) {
-        // TODO: 2023/08/02 로그인 기능 추가 시 변경
-        final Runner runner = runnerService.readRunnerWithMember(1L);
+    public ResponseEntity<Void> createSupporterFeedback(@AuthRunnerPrincipal final Runner runner,
+                                                        @Valid @RequestBody final SupporterFeedBackCreateRequest request
+    ) {
         final Long savedId = feedbackService.createSupporterFeedback(runner, request);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/feedback/supporter")
