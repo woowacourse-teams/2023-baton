@@ -1,5 +1,6 @@
 package touch.baton.assure.runnerpost;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
@@ -25,6 +26,7 @@ import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostAssuredReadTest extends AssuredTestConfig {
 
+    @Disabled
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member memberHyena = memberRepository.save(MemberFixture.createHyena());

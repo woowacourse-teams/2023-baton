@@ -12,7 +12,6 @@ import touch.baton.domain.feedback.service.FeedbackService;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.service.RunnerService;
 
 import java.net.URI;
 
@@ -22,7 +21,6 @@ import java.net.URI;
 public class FeedbackController {
 
     private final FeedbackService feedbackService;
-    private final RunnerService runnerService;
 
     @PostMapping("/supporter")
     public ResponseEntity<Void> createSupporterFeedback(@AuthRunnerPrincipal final Runner runner,

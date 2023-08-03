@@ -72,7 +72,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         runnerPostRepository.save(runnerPost);
 
         // when
-        final Long savedId = runnerPostService.updateRunnerPost(runnerPost.getId(), request);
+        final Long savedId = runnerPostService.updateRunnerPost(runnerPost.getId(), runner, request);
 
         // then
         assertThat(savedId).isNotNull();

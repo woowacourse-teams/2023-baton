@@ -22,7 +22,7 @@ public record RunnerPostResponse() {
                          List<String> tags
     ) {
 
-        public static Detail from(final RunnerPost runnerPost) {
+        public static Detail of(final RunnerPost runnerPost, final boolean isOwner) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -32,7 +32,7 @@ public record RunnerPostResponse() {
                     runnerPost.getWatchedCount().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getReviewStatus(),
-                    true,
+                    isOwner,
                     RunnerResponse.Detail.from(runnerPost.getRunner()),
                     convertToTags(runnerPost)
             );
@@ -53,7 +53,7 @@ public record RunnerPostResponse() {
                                     boolean isOwner,
                                     List<String> tags
     ) {
-        public static DetailVersionTest fromVersionTest(final RunnerPost runnerPost) {
+        public static DetailVersionTest ofVersionTest(final RunnerPost runnerPost, final boolean isOwner) {
             return new DetailVersionTest(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -65,7 +65,7 @@ public record RunnerPostResponse() {
                     runnerPost.getReviewStatus(),
                     RunnerResponse.Detail.from(runnerPost.getRunner()),
                     SupporterResponseTestVersion.Simple.fromTestVersion(runnerPost.getSupporter()),
-                    true,
+                    isOwner,
                     convertToTags(runnerPost)
             );
         }

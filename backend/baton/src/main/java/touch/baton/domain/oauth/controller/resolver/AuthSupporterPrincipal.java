@@ -8,4 +8,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthSupporterPrincipal {
+
+    boolean required() default true;
 }
