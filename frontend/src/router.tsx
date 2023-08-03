@@ -6,6 +6,7 @@ import RunnerPostPage from './pages/RunnerPostDetailPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
 import CreationResultPage from './pages/CreationResultPage';
+import GithubCallbackPage from './pages/GithubCallbackPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -15,6 +16,7 @@ export const ROUTER_PATH = {
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RESULT: '/result',
+  GITHUB_CALLBACK: '/oauth/github/callback', // Authorization callback URL?
 };
 
 export const router = createBrowserRouter(
@@ -42,6 +44,7 @@ export const router = createBrowserRouter(
           path: ROUTER_PATH.RESULT,
           element: <CreationResultPage />,
         },
+        { path: ROUTER_PATH.GITHUB_CALLBACK, element: <GithubCallbackPage /> },
       ],
     },
   ],
