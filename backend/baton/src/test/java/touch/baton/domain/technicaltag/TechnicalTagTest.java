@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.exception.TagDomainException;
+import touch.baton.domain.tag.exception.TechnicalTagDomainException;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -25,7 +26,7 @@ class TechnicalTagTest {
         assertThatThrownBy(() -> TechnicalTag.builder()
                 .tagName(null)
                 .build()
-        ).isInstanceOf(TagDomainException.class)
-                .hasMessage("tagName 은 null 일 수 없습니다.");
+        ).isInstanceOf(TechnicalTagDomainException.class)
+                .hasMessage("TechnicalTag 의 tagName 은 null 일 수 없습니다.");
     }
 }

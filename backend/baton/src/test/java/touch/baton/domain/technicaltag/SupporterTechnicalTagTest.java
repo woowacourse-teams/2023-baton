@@ -9,6 +9,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
+import touch.baton.domain.tag.exception.SupporterTechnicalTagDomainException;
 import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
@@ -54,7 +55,7 @@ class SupporterTechnicalTagTest {
                     .supporter(null)
                     .technicalTag(technicalTag)
                     .build()
-            ).isInstanceOf(TagDomainException.class)
+            ).isInstanceOf(SupporterTechnicalTagDomainException.class)
                     .hasMessage("SupporterTechnicalTag 의 supporter 는 null 일 수 없습니다.");
         }
 
@@ -65,7 +66,7 @@ class SupporterTechnicalTagTest {
                     .supporter(supporter)
                     .technicalTag(null)
                     .build()
-            ).isInstanceOf(TagDomainException.class)
+            ).isInstanceOf(SupporterTechnicalTagDomainException.class)
                     .hasMessage("SupporterTechnicalTag 의 technicalTag 는 null 일 수 없습니다.");
         }
     }
