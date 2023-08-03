@@ -61,8 +61,8 @@ public class RunnerPostController {
                                                                         @PathVariable final Long runnerPostId
     ) {
         final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
-        final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.from(
-                runnerPostService.readByRunnerPostId(runnerPostId),
+        final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.of(
+                runnerPost,
                 runnerPost.getRunner().equals(runner)
         );
 
@@ -70,25 +70,33 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}/test")
-    public ResponseEntity<RunnerPostResponse.DetailVersionTest> readByRunnerPostIdVersionTest(@PathVariable final Long runnerPostId) {
-        final RunnerPostResponse.DetailVersionTest response
-                = RunnerPostResponse.DetailVersionTest.fromVersionTest(runnerPostService.readByRunnerPostId(runnerPostId));
+    public ResponseEntity<RunnerPostResponse.DetailVersionTest> readByRunnerPostIdVersionTest(@AuthRunnerPrincipal(required = false) final Runner runner,
+                                                                                              @PathVariable final Long runnerPostId
+    ) {
+        final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
+        final RunnerPostResponse.DetailVersionTest response = RunnerPostResponse.DetailVersionTest.ofVersionTest(
+                runnerPost,
+                runnerPost.getRunner().equals(runner)
+        );
 
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{runnerPostId}")
-    public ResponseEntity<Void> deleteByRunnerPostId(@PathVariable final Long runnerPostId) {
-        runnerPostService.deleteByRunnerPostId(runnerPostId);
+    public ResponseEntity<Void> deleteByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
+                                                     @PathVariable final Long runnerPostId
+    ) {
+        runnerPostService.deleteByRunnerPostId(runnerPostId, runner);
 
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{runnerPostId}")
-    public ResponseEntity<Void> update(@PathVariable final Long runnerPostId,
+    public ResponseEntity<Void> update(@AuthRunnerPrincipal Runner runner,
+                                       @PathVariable final Long runnerPostId,
                                        @Valid @RequestBody final RunnerPostUpdateRequest request
     ) {
-        final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, request);
+        final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, runner, request);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{runnerPostId}")
                 .buildAndExpand(updatedId)
