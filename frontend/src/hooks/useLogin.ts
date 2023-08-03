@@ -36,8 +36,9 @@ export const useLogin = () => {
     if (!item) return;
 
     const token: LoginToken = JSON.parse(item);
+    const time = new Date(token.expirationDate);
 
-    if (Date.now() - Number(token.expirationDate) < 0) {
+    if (Number(time) - Date.now() < 0) {
       removeToken();
 
       alert('로그인 토큰 유효기간이 지났습니다. 다시 로그인해 주세요');
