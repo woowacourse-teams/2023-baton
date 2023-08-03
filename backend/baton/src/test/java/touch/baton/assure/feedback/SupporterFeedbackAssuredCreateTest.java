@@ -21,6 +21,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.CREATED;
 import static touch.baton.fixture.domain.SupporterFixture.create;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.StarCountFixture.starCount;
 import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
@@ -34,7 +35,7 @@ class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
     void 러너가_서포터_피드백을_등록한다() {
         // given
         final Member memberHyena = memberRepository.save(MemberFixture.createHyena());
-        final Runner runnerHyena = runnerRepository.save(RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, memberHyena));
+        final Runner runnerHyena = runnerRepository.save(RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, introduction("안녕하세요"), memberHyena));
         final Member memberEthan = memberRepository.save(MemberFixture.createEthan());
         final Supporter supporterEthan = supporterRepository.save(create(reviewCount(0), starCount(0), totalRating(0), Grade.BARE_FOOT, memberEthan, new ArrayList<>()));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerHyena, supporterEthan, deadline(LocalDateTime.now().plusHours(100))));
