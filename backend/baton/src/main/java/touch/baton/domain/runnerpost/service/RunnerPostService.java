@@ -59,8 +59,8 @@ public class RunnerPostService {
 
         final List<RunnerPostTag> postTags = toSaveTags.stream()
                 .map(tag -> RunnerPostTag.builder()
-                        .tag(tag).
-                        runnerPost(runnerPost).build())
+                        .tag(tag)
+                        .runnerPost(runnerPost).build())
                 .toList();
 
         runnerPost.addAllRunnerPostTags(postTags);
