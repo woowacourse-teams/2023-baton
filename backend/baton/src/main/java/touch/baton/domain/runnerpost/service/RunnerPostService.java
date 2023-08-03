@@ -68,15 +68,24 @@ public class RunnerPostService {
     }
 
     private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
-        return RunnerPost.newInstance(request.title(), request.contents(), request.pullRequestUrl(), request.deadline(), runner);
+        return RunnerPost.newInstance(request.title(),
+                request.contents(),
+                request.pullRequestUrl(),
+                request.deadline(),
+                runner);
     }
 
     @Transactional
     public Long createRunnerPostTest(final Runner runner, final RunnerPostCreateTestRequest request) {
-        final RunnerPost runnerPost = RunnerPost.newInstance(request.title(), request.contents(), request.pullRequestUrl(), request.deadline(), runner);
+        final RunnerPost runnerPost = RunnerPost.newInstance(request.title(),
+                request.contents(),
+                request.pullRequestUrl(),
+                request.deadline(),
+                runner);
 
         if (Objects.nonNull(request.supporterId())) {
-            final Supporter supporter = supporterRepository.findById(request.supporterId()).orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 서포터가 존재하지 않습니다."));
+            final Supporter supporter = supporterRepository.findById(request.supporterId())
+                    .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 서포터가 존재하지 않습니다."));
             runnerPost.assignSupporter(supporter);
         }
 
@@ -124,7 +133,8 @@ public class RunnerPostService {
             throw new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
-        runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId).stream()
+        runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId)
+                .stream()
                 .map(RunnerPostTag::getTag)
                 .forEach(Tag::decreaseCount);
 
@@ -134,7 +144,8 @@ public class RunnerPostService {
     @Transactional
     public Long updateRunnerPost(final Long runnerPostId, final RunnerPostUpdateRequest request) {
         // TODO: 메소드 분리
-        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId).orElseThrow(() -> new IllegalArgumentException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId를 다시 확인해주세요"));
+        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId를 다시 확인해주세요"));
         runnerPost.updateTitle(new Title(request.title()));
         runnerPost.updateContents(new Contents(request.contents()));
         runnerPost.updatePullRequestUrl(new PullRequestUrl(request.pullRequestUrl()));
@@ -162,12 +173,18 @@ public class RunnerPostService {
                 final Optional<Tag> tag = tagRepository.findByTagName(new TagName(tagName));
                 if (tag.isEmpty()) {
                     final Tag newTag = tagRepository.save(Tag.newInstance(tagName));
-                    final RunnerPostTag newRunnerPostTag = runnerPostTagRepository.save(RunnerPostTag.builder().runnerPost(runnerPost).tag(newTag).build());
+                    final RunnerPostTag newRunnerPostTag = runnerPostTagRepository.save(RunnerPostTag.builder()
+                            .runnerPost(runnerPost)
+                            .tag(newTag)
+                            .build());
                     runnerPost.appendRunnerPostTag(newRunnerPostTag);
                 }
                 if (tag.isPresent()) {
                     tag.get().increaseCount();
-                    final RunnerPostTag newRunnerPostTag = runnerPostTagRepository.save(RunnerPostTag.builder().runnerPost(runnerPost).tag(tag.get()).build());
+                    final RunnerPostTag newRunnerPostTag = runnerPostTagRepository.save(RunnerPostTag.builder()
+                            .runnerPost(runnerPost)
+                            .tag(tag.get())
+                            .build());
                     runnerPost.appendRunnerPostTag(newRunnerPostTag);
                 }
             }
@@ -176,7 +193,7 @@ public class RunnerPostService {
 
         return runnerPost.getId();
     }
-
+    
     public List<RunnerPost> readAllRunnerPosts() {
         return runnerPostRepository.findAll();
     }
