@@ -118,7 +118,7 @@ class SupporterTest {
                     .hasMessage("Supporter 의 member 는 null 일 수 없습니다.");
         }
 
-        @DisplayName("supporterTechnicalTags 가 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("technicalTags 가 null 이 들어갈 경우 예외가 발생한다.")
         @Test
         void fail_if_supporterTechnicalTags_is_null() {
             assertThatThrownBy(() -> Supporter.builder()
@@ -130,11 +130,11 @@ class SupporterTest {
                     .supporterTechnicalTags(null)
                     .build()
             ).isInstanceOf(SupporterDomainException.class)
-                    .hasMessage("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
+                    .hasMessage("Supporter 의 technicalTags 는 null 일 수 없습니다.");
         }
     }
 
-    @DisplayName("supporter 의 supporterTechnicalTags 를 조회한다.")
+    @DisplayName("supporter 의 technicalTags 를 조회한다.")
     @Test
     void read_supporterTechnicalTags() {
         // given
