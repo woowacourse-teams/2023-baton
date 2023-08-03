@@ -27,7 +27,7 @@ const MainPage = () => {
           </S.TagContainer> */}
         </S.LeftSideContainer>
 
-        <Button onClick={goToRunnerPostCreatePage} colorTheme="WHITE" fontSize="18px">
+        <Button onClick={goToRunnerPostCreatePage} colorTheme="WHITE" fontSize="18px" ariaLabel="리뷰 요청 글 작성하기">
           리뷰 요청 글 작성하기
         </Button>
       </S.ControlPanelContainer>
