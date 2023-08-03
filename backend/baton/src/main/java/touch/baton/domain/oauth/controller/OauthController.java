@@ -25,9 +25,8 @@ public class OauthController {
     private final OauthService oauthService;
 
     @GetMapping("/{oauthType}")
-    public ResponseEntity<Void> redirectAuthCode(
-            @PathVariable("oauthType") OauthType oauthType,
-            HttpServletResponse response
+    public ResponseEntity<Void> redirectAuthCode(@PathVariable("oauthType") final OauthType oauthType,
+                                                 final HttpServletResponse response
     ) throws IOException {
         final String redirectUrl = oauthService.readAuthCodeRedirect(oauthType);
         response.sendRedirect(redirectUrl);
@@ -36,9 +35,8 @@ public class OauthController {
     }
 
     @PostMapping("/login/{oauthType}")
-    public ResponseEntity<Void> login(
-            @PathVariable OauthType oauthType,
-            @RequestParam("code") String code
+    public ResponseEntity<Void> login(@PathVariable final OauthType oauthType,
+                                      @RequestParam final String code
     ) {
         final String jwtToken = oauthService.login(oauthType, code);
 

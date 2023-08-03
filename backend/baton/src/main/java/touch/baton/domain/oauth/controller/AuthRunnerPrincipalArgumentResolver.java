@@ -22,6 +22,8 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Component
 public class AuthRunnerPrincipalArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String BEARER = "Bearer ";
+
     private final JwtDecoder jwtDecoder;
     private final OauthRunnerRepository oauthRunnerRepository;
 
@@ -41,11 +43,11 @@ public class AuthRunnerPrincipalArgumentResolver implements HandlerMethodArgumen
         if (Objects.isNull(authHeader)) {
             throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_VALUE_IS_NULL);
         }
-        if (!authHeader.startsWith("Bearer ")) {
+        if (!authHeader.startsWith(BEARER)) {
             throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_BEARER_TYPE_NOT_FOUND);
         }
 
-        final String token = authHeader.substring("Bearer ".length());
+        final String token = authHeader.substring(BEARER.length());
         final Claims claims = jwtDecoder.parseJwtToken(token);
         final String email = claims.get("email", String.class);
         final Runner foundRunner = oauthRunnerRepository.joinByMemberEmail(email)
