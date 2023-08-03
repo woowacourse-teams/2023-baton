@@ -1,8 +1,8 @@
-package touch.baton.domain.runnerpost.controller.response;
+package touch.baton.domain.runner.controller.response;
 
 import touch.baton.domain.runner.Runner;
 
-public record RunnerProfileResponse() {
+public record RunnerResponse() {
 
     public record Detail(Long runnerId,
                          String name,
@@ -26,6 +26,22 @@ public record RunnerProfileResponse() {
             return new Simple(
                     runner.getMember().getMemberName().getValue(),
                     runner.getMember().getImageUrl().getValue()
+            );
+        }
+    }
+
+    public record Mine(String name,
+                       String imageUrl,
+                       String githubUrl,
+                       String introduction
+    ) {
+
+        public static Mine from(final Runner runner) {
+            return new Mine(
+                    runner.getMember().getMemberName().getValue(),
+                    runner.getMember().getImageUrl().getValue(),
+                    runner.getMember().getGithubUrl().getValue(),
+                    runner.getIntroduction().getValue()
             );
         }
     }
