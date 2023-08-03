@@ -18,9 +18,9 @@ const ListFilter = ({ options, selectOption, width }: Props) => {
   return (
     <S.FilterContainer>
       <S.FilterList $width={width}>
-        {options.map((item) => (
-          <S.FilterItem key={item.value} onClick={makeHandleClickOption(item.value)} isSelected={item.selected}>
-            {item.label}
+        {options.map((option) => (
+          <S.FilterItem key={option.value} onClick={makeHandleClickOption(option.value)} isSelected={option.selected}>
+            {option.label}
           </S.FilterItem>
         ))}
       </S.FilterList>
