@@ -18,7 +18,7 @@ const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { goToMainPage } = usePageRouter();
+  const { goToMainPage, goBack } = usePageRouter();
   const { runnerPostId } = useParams();
 
   useEffect(() => {
@@ -136,7 +136,7 @@ const RunnerPostPage = () => {
               </S.BottomContentContainer>
             </S.PostBodyContainer>
             <S.PostFooterContainer>
-              <Button colorTheme="GRAY" fontWeight={700} onClick={goToMainPage}>
+              <Button colorTheme="GRAY" fontWeight={700} onClick={goBack}>
                 목록
               </Button>
             </S.PostFooterContainer>
