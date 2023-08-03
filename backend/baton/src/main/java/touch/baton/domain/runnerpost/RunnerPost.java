@@ -18,7 +18,7 @@ import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.exception.OldRunnerPostException;
+import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -130,39 +130,39 @@ public class RunnerPost extends BaseEntity {
                                  final RunnerPostTags runnerPostTags
     ) {
         if (Objects.isNull(title)) {
-            throw new OldRunnerPostException.NotNull("title 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 title 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(contents)) {
-            throw new OldRunnerPostException.NotNull("contents 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 contents 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(pullRequestUrl)) {
-            throw new OldRunnerPostException.NotNull("pullRequestUrl 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 pullRequestUrl 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(deadline)) {
-            throw new OldRunnerPostException.NotNull("deadline 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 deadline 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(watchedCount)) {
-            throw new OldRunnerPostException.NotNull("watchedCount 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 watchedCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(chattingCount)) {
-            throw new OldRunnerPostException.NotNull("chattingCount 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 chattingCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(reviewStatus)) {
-            throw new OldRunnerPostException.NotNull("reviewStatus 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 reviewStatus 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(runner)) {
-            throw new OldRunnerPostException.NotNull("runner 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 runner 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(runnerPostTags)) {
-            throw new OldRunnerPostException.NotNull("runnerPostTags 는 null 일 수 없습니다.");
+            throw new RunnerPostDomainException("RunnerPost 의 runnerPostTags 는 null 일 수 없습니다.");
         }
     }
 
