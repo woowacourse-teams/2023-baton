@@ -85,4 +85,17 @@ public class Runner extends BaseEntity {
             throw new RunnerDomainException("Runner 의 member 는 null 일 수 없습니다.");
         }
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Runner runner = (Runner) o;
+        return Objects.equals(id, runner.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

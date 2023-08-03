@@ -217,6 +217,14 @@ public class RunnerPost extends BaseEntity {
         this.watchedCount = watchedCount.increase();
     }
 
+    public boolean isNotOwner(final Runner targetRunner) {
+        return !runner.equals(targetRunner);
+    }
+
+    public boolean isDifferentSupporter(final Supporter targetSupporter) {
+        return !supporter.equals(targetSupporter);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

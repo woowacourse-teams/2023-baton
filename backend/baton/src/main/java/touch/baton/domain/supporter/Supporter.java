@@ -130,4 +130,17 @@ public class Supporter extends BaseEntity {
     public void addAllSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {
         this.supporterTechnicalTags.addAll(supporterTechnicalTags);
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        final Supporter supporter = (Supporter) o;
+        return Objects.equals(id, supporter.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
