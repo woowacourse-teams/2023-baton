@@ -8,11 +8,11 @@ import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.supporter.vo.StarCount;
@@ -118,7 +118,7 @@ class SupporterTest {
                     .hasMessage("Supporter 의 member 는 null 일 수 없습니다.");
         }
 
-        @DisplayName("supporterTechnicalTags 가 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("technicalTags 가 null 이 들어갈 경우 예외가 발생한다.")
         @Test
         void fail_if_supporterTechnicalTags_is_null() {
             assertThatThrownBy(() -> Supporter.builder()
@@ -134,7 +134,7 @@ class SupporterTest {
         }
     }
 
-    @DisplayName("supporter 의 supporterTechnicalTags 를 조회한다.")
+    @DisplayName("supporter 의 technicalTags 를 조회한다.")
     @Test
     void read_supporterTechnicalTags() {
         // given
