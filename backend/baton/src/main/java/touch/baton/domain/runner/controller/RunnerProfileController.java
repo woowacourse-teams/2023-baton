@@ -22,7 +22,7 @@ public class RunnerProfileController {
     private final RunnerPostService runnerPostService;
 
     @GetMapping
-    public ResponseEntity<RunnerMyProfileResponse> read(@AuthRunnerPrincipal final Runner runner) {
+    public ResponseEntity<RunnerMyProfileResponse> readMyProfile(@AuthRunnerPrincipal final Runner runner) {
         final RunnerResponse.Mine me = RunnerResponse.Mine.from(runner);
         final List<RunnerPostResponse.Mine> runnerPosts = runnerPostService.readRunnerPostsByRunnerId(runner.getId()).stream()
                 .map(RunnerPostResponse.Mine::from)
