@@ -39,9 +39,30 @@ public class AuthSupporterPrincipalArgumentResolver implements HandlerMethodArgu
                                   final WebDataBinderFactory binderFactory
     ) throws Exception {
         final String authHeader = webRequest.getHeader(AUTHORIZATION);
+        // FIXME: 2023/08/03 null 말고 GUEST, USER, ADMIN role 추가해야할 것 같아요.
+        if (!Objects.requireNonNull(parameter.getParameterAnnotation(AuthRunnerPrincipal.class)).required()) {
+            return getSupporterIfExist(authHeader);
+        }
 
         if (Objects.isNull(authHeader)) {
             throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_VALUE_IS_NULL);
+        }
+        if (!authHeader.startsWith(BEARER)) {
+            throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_BEARER_TYPE_NOT_FOUND);
+        }
+
+        final String token = authHeader.substring(BEARER.length());
+        final Claims claims = jwtDecoder.parseJwtToken(token);
+        final String email = claims.get("email", String.class);
+        final Supporter foundSupporter = oauthSupporterRepository.joinByMemberEmail(email)
+                .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_EMAIL_IS_WRONG));
+
+        return foundSupporter;
+    }
+
+    private Supporter getSupporterIfExist(final String authHeader) {
+        if (Objects.isNull(authHeader)) {
+            return null;
         }
         if (!authHeader.startsWith(BEARER)) {
             throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_BEARER_TYPE_NOT_FOUND);

@@ -22,7 +22,7 @@ public record RunnerPostResponse() {
                          List<String> tags
     ) {
 
-        public static Detail from(final RunnerPost runnerPost) {
+        public static Detail from(final RunnerPost runnerPost, final boolean isOwner) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -32,7 +32,7 @@ public record RunnerPostResponse() {
                     runnerPost.getWatchedCount().getValue(),
                     runnerPost.getChattingCount().getValue(),
                     runnerPost.getReviewStatus(),
-                    true,
+                    isOwner,
                     RunnerResponse.Detail.from(runnerPost.getRunner()),
                     convertToTags(runnerPost)
             );

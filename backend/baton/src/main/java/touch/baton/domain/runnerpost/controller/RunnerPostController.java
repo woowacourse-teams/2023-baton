@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.runner.Runner;
+import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
@@ -56,11 +57,14 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}")
-    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
+    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthRunnerPrincipal(required = false) final Runner runner,
                                                                         @PathVariable final Long runnerPostId
     ) {
-        final RunnerPostResponse.Detail response
-                = RunnerPostResponse.Detail.from(runnerPostService.readByRunnerPostId(runnerPostId));
+        final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
+        final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.from(
+                runnerPostService.readByRunnerPostId(runnerPostId),
+                runnerPost.getRunner().equals(runner)
+        );
 
         return ResponseEntity.ok(response);
     }
