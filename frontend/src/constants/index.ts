@@ -7,3 +7,5 @@ export const REVIEW_STATUS_LABEL_TEXT: { [key in ReviewStatus]: string } = {
   IN_PROGRESS: '리뷰 진행중',
   DONE: '리뷰 완료',
 };
+
+export const ACCESS_TOKEN_LOCAL_STORAGE_KEY = 'ACCESS_TOKEN';
