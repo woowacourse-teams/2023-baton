@@ -18,7 +18,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
@@ -46,7 +45,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                 .thenReturn(githubOauthConfig.redirectUri());
 
         // then
-        mockMvc.perform(get("/oauth/{oauthType}", "github"))
+        mockMvc.perform(get("/api/v1/oauth/{oauthType}", "github"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(githubOauthConfig.redirectUri()))
                 .andDo(restDocs.document(
@@ -65,7 +64,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                 .thenReturn("Bearer Jwt");
 
         // then
-        mockMvc.perform(post("/oauth/login/{oauthType}", "github")
+        mockMvc.perform(get("/api/v1/oauth/login/{oauthType}", "github")
                         .queryParam("code", "authcode")
                         .contentType(APPLICATION_JSON)
                         .characterEncoding(UTF_8)
