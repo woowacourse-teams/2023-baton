@@ -6,6 +6,7 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
   handleInputTextState: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fontSize?: string | number;
   fontWeight?: string | number;
+  autoFocus?: boolean;
 }
 
 const InputBox = ({
@@ -16,11 +17,17 @@ const InputBox = ({
   height,
   fontSize,
   fontWeight,
+  autoFocus,
   handleInputTextState,
 }: Props) => {
   return (
     <S.InputContainer $fontSize={fontSize} $fontWeight={fontWeight} $width={width} $height={height}>
-      <S.InputBox onChange={handleInputTextState} maxLength={maxLength} placeholder={placeholder} />
+      <S.InputBox
+        onChange={handleInputTextState}
+        maxLength={maxLength}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+      />
       {maxLength && (
         <S.InputTextLength>
           {inputTextState.length ?? 0} / {maxLength}

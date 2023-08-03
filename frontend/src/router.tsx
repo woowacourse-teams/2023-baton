@@ -6,6 +6,7 @@ import RunnerPostPage from './pages/RunnerPostDetailPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
 import CreationResultPage from './pages/CreationResultPage';
+import MyPage from './pages/MyPage';
 import GithubCallbackPage from './pages/GithubCallbackPage';
 
 export const ROUTER_PATH = {
@@ -13,6 +14,7 @@ export const ROUTER_PATH = {
   RUNNER_POST: '/runner-post/:runnerPostId',
   RUNNER_POST_CREATE: '/runner-post-create/',
   SUPPORTER_SELECT: '/supporter-select',
+  MY_PAGE: '/my-page',
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RESULT: '/result',
@@ -43,6 +45,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.RESULT,
           element: <CreationResultPage />,
+        },
+        {
+          path: ROUTER_PATH.MY_PAGE,
+          element: <MyPage />,
         },
         { path: ROUTER_PATH.GITHUB_CALLBACK, element: <GithubCallbackPage /> },
       ],

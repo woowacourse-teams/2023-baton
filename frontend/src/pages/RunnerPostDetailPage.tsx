@@ -12,6 +12,7 @@ import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
 import Label from '@/components/common/Label';
 import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 import ConfirmModal from '@/components/ConfirmModal';
+import githubIcon from '@/assets/github-icon.svg';
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
@@ -73,62 +74,71 @@ const RunnerPostPage = () => {
   return (
     <Layout>
       <S.RunnerPostContainer>
-        <S.Title> 서포터를 찾고 있어요 👀</S.Title>
         {runnerPost && (
           <S.PostContainer>
             <S.PostHeaderContainer>
-              <PostTagList tags={runnerPost.tags} />
-              <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
-                <S.EditLink>{/*수정 기능 구현 필요*/}</S.EditLink> <S.EditLink onClick={openModal}>삭제</S.EditLink>
-              </S.EditLinkContainer>
+              <Label
+                width="131px"
+                height="33px"
+                fontSize="16px"
+                colorTheme={
+                  runnerPost.reviewStatus === 'DONE'
+                    ? 'GRAY'
+                    : runnerPost.reviewStatus === 'IN_PROGRESS'
+                    ? 'RED'
+                    : 'WHITE'
+                }
+              >
+                {REVIEW_STATUS_LABEL_TEXT[runnerPost.reviewStatus]}
+              </Label>
+              <S.PostDeadlineContainer>
+                <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
+                <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
+                  <S.EditLink>{/*수정 기능 구현 필요*/}</S.EditLink> <S.EditLink onClick={openModal}>삭제</S.EditLink>
+                </S.EditLinkContainer>
+              </S.PostDeadlineContainer>
               <S.PostTitleContainer>
                 <S.PostTitle>{runnerPost.title}.</S.PostTitle>
-                <Label
-                  colorTheme={
-                    runnerPost.reviewStatus === 'DONE'
-                      ? 'GRAY'
-                      : runnerPost.reviewStatus === 'IN_PROGRESS'
-                      ? 'RED'
-                      : 'WHITE'
-                  }
-                >
-                  {REVIEW_STATUS_LABEL_TEXT[runnerPost.reviewStatus]}
-                </Label>
+                <S.InformationContainer>
+                  <S.statisticsContainer>
+                    <S.statisticsImage src={eyeIcon} />
+                    <S.statisticsText>{runnerPost.watchedCount}</S.statisticsText>
+                    <S.statisticsImage src={chattingIcon} />
+                    <S.statisticsText>{runnerPost.chattingCount}</S.statisticsText>
+                  </S.statisticsContainer>
+                </S.InformationContainer>
               </S.PostTitleContainer>
-              <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
             </S.PostHeaderContainer>
             <S.PostBodyContainer>
-              <S.InformationContainer>
-                <S.ProfileContainer>
-                  <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
-                  <S.Profile>
-                    <S.Name>{runnerPost.runnerProfile.name}</S.Name>
-                    <S.Job>{runnerPost.runnerProfile.company}</S.Job>
-                  </S.Profile>
-                </S.ProfileContainer>
-                <S.statisticsContainer>
-                  <S.statisticsImage src={eyeIcon} />
-                  <S.statisticsText>{runnerPost.watchedCount}</S.statisticsText>
-                  <S.statisticsImage src={chattingIcon} />
-                  <S.statisticsText>{runnerPost.chattingCount}</S.statisticsText>
-                </S.statisticsContainer>
-              </S.InformationContainer>
               <S.Contents>{runnerPost.contents}</S.Contents>
+              <S.BottomContentContainer>
+                <S.LeftSideContainer>
+                  <S.ProfileContainer>
+                    <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
+                    <S.Profile>
+                      <S.Name>{runnerPost.runnerProfile.name}</S.Name>
+                      <S.Job>{runnerPost.runnerProfile.company}</S.Job>
+                    </S.Profile>
+                  </S.ProfileContainer>
+                  <PostTagList tags={runnerPost.tags} />
+                </S.LeftSideContainer>
+                <S.RightSideContainer>
+                  <Button colorTheme="BLACK" fontWeight={700}>
+                    <S.Anchor href={runnerPost.pullRequestUrl} target="_blank">
+                      <img src={githubIcon} />
+                      <S.GoToGitHub>코드 보러가기</S.GoToGitHub>
+                    </S.Anchor>
+                  </Button>
+                  {/* <Button colorTheme="WHITE" fontWeight={700}>
+                    1:1 대화하기
+                  </Button> */}
+                </S.RightSideContainer>
+              </S.BottomContentContainer>
             </S.PostBodyContainer>
             <S.PostFooterContainer>
               <Button colorTheme="GRAY" fontWeight={700} onClick={goToMainPage}>
                 목록
               </Button>
-              <S.PrimaryButtonContainer>
-                <Button colorTheme="WHITE" fontWeight={700}>
-                  <S.Anchor href={runnerPost.pullRequestUrl} target="_blank">
-                    코드 보러가기
-                  </S.Anchor>
-                </Button>
-                {/* <Button colorTheme="WHITE" fontWeight={700}>
-                  1:1 대화하기
-                </Button> */}
-              </S.PrimaryButtonContainer>
             </S.PostFooterContainer>
           </S.PostContainer>
         )}
@@ -149,14 +159,20 @@ const S = {
     width: 100%;
     height: 100%;
 
+    margin: 72px 0 53px 0;
+
     background-color: white;
   `,
 
   Title: styled.div`
-    margin: 72px 0 53px 0;
-
     font-size: 36px;
     font-weight: bold;
+  `,
+  PostDeadlineContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    margin: 20px 0;
   `,
 
   PostContainer: styled.div`
@@ -169,11 +185,6 @@ const S = {
   `,
 
   PostHeaderContainer: styled.div`
-    display: grid;
-    grid-template-columns: 8fr 2fr;
-    grid-template-rows: 1fr 1fr;
-    row-gap: 10px;
-
     width: 100%;
   `,
 
@@ -192,23 +203,25 @@ const S = {
   `,
 
   EditLink: styled.a`
-    background-color: white;
+    font-size: 16px;
+    color: var(--gray-500);
   `,
 
   PostTitleContainer: styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
   `,
 
-  PostTitle: styled.div`
-    font-size: 28px;
-    font-weight: bold;
+  PostTitle: styled.h1`
+    font-size: 38px;
+    font-weight: 700;
   `,
 
   PostDeadline: styled.div`
-    margin-left: auto;
-
+    display: flex;
+    align-items: center;
     font-size: 16px;
     color: var(--gray-600);
   `,
@@ -220,10 +233,9 @@ const S = {
 
     width: 100%;
 
-    margin-bottom: 10px;
-    padding: 20px 10px 20px 10px;
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+    padding: 40px 10px 40px 0;
+    border-bottom: 1px solid #9d9d9d;
   `,
 
   InformationContainer: styled.div`
@@ -259,6 +271,10 @@ const S = {
     gap: 5px;
 
     margin-bottom: auto;
+
+    & > p {
+      color: #a4a4a4;
+    }
   `,
 
   statisticsImage: styled.img`
@@ -279,6 +295,27 @@ const S = {
     white-space: pre-wrap;
   `,
 
+  BottomContentContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: end; // 1:1 대화버튼 추가시 center로 수정
+  `,
+
+  LeftSideContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  `,
+
+  RightSideContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+
+    gap: 24px;
+  `,
+
+  GoToGitHub: styled.p``,
+
   PostFooterContainer: styled.div`
     display: flex;
     justify-content: space-between;
@@ -287,12 +324,12 @@ const S = {
     font-weight: bold;
   `,
 
-  PrimaryButtonContainer: styled.div`
+  Anchor: styled.a`
     display: flex;
-    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
   `,
-
-  Anchor: styled.a``,
 };
 
 export default RunnerPostPage;

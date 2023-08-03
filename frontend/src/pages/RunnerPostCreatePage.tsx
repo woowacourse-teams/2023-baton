@@ -162,6 +162,7 @@ const RunnerPostCreatePage = () => {
               fontSize="38px"
               fontWeight="700"
               placeholder="제목을 입력해주세요"
+              autoFocus={true}
             />
           </S.InputContainer>
           <S.InputContainer>

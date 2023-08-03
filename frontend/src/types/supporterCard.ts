@@ -10,4 +10,5 @@ export interface SupporterCard {
   totalRating: number;
   githubUrl: string;
   introduction: string;
+  technicalTags: string[];
 }

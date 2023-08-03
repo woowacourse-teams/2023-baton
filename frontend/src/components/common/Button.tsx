@@ -3,13 +3,14 @@ import styled, { css } from 'styled-components';
 
 interface Props extends React.HTMLProps<HTMLButtonElement> {
   children: React.ReactNode;
-  colorTheme: 'RED' | 'WHITE' | 'GRAY';
+  colorTheme: 'RED' | 'WHITE' | 'GRAY' | 'BLACK';
   fontSize?: string | number;
   fontWeight?: number;
   type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
 }
 
-const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeight, onClick }: Props) => {
+const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeight, onClick, ariaLabel }: Props) => {
   return (
     <S.ButtonWrapper>
       <S.Button
@@ -20,6 +21,7 @@ const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeigh
         $fontSize={fontSize}
         $fontWeight={fontWeight}
         onClick={onClick}
+        aria-label={ariaLabel}
       >
         {children}
       </S.Button>
@@ -33,7 +35,7 @@ const S = {
   ButtonWrapper: styled.div``,
 
   Button: styled.button<{
-    $colorTheme: 'RED' | 'WHITE' | 'GRAY';
+    $colorTheme: 'RED' | 'WHITE' | 'GRAY' | 'BLACK';
     $width?: string | number;
     $height?: string | number;
     $fontSize?: string | number;
@@ -56,7 +58,7 @@ export const themeStyles = {
     background: var(--baton-red);
     border-radius: 6px;
 
-    color: white;
+    color: #ffffff;
   `,
   WHITE: css`
     background: #ffffff;
@@ -66,10 +68,18 @@ export const themeStyles = {
     color: var(--baton-red);
   `,
   GRAY: css`
-    background: white;
+    background: #ffffff;
     border: 1px solid var(--gray-500);
     border-radius: 6px;
 
     color: var(--gray-400);
+  `,
+
+  BLACK: css`
+    background: #ffffff;
+    border: 1px solid #000000;
+    border-radius: 6px;
+
+    color: #000000;
   `,
 };

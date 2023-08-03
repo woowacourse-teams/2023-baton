@@ -8,7 +8,7 @@ interface Props extends React.HTMLProps<HTMLImageElement> {
 const Avatar = ({ imageUrl, width, height }: Props) => {
   return (
     <S.ImageWrapper>
-      <S.Image src={imageUrl} $width={width} $height={height} />
+      <S.Image src={imageUrl} $width={width} $height={height} alt="프로필" />
     </S.ImageWrapper>
   );
 };
