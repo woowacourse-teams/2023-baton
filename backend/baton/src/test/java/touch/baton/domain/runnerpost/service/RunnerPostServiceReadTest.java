@@ -28,6 +28,9 @@ import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.vo.TagCount;
+import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -35,6 +38,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class RunnerPostServiceReadTest extends ServiceTestConfig {
 
@@ -45,7 +49,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
     }
 
-    @DisplayName("RunnerPost 식별자값으로 RunnerPost 를 조회한다.")
+    @DisplayName("RunnerPost 식별자로 RunnerPost 를 조회한다.")
     @Test
     void success_findByRunnerPostId() {
         // given
@@ -103,11 +107,32 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .isEqualTo(runnerPost);
     }
 
-    @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 을 조회할 경우 예외가 발생한다.")
+    @DisplayName("RunnerPost 식별자로 존재하지 않는 RunnerPost 를 조회할 경우 예외가 발생한다.")
     @Test
     void fail_findByRunnerPostId_if_runner_post_is_null() {
         assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(0L))
                 .isInstanceOf(RunnerPostBusinessException.class)
                 .hasMessage("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다.");
+    }
+
+    @DisplayName("Runner 식별자값으로 RunnerPost 를 조회한다.")
+    @Test
+    void success_findByRunnerId() {
+        // given
+        final Member ditoo = MemberFixture.createDitoo();
+        memberRepository.save(ditoo);
+        final Runner runner = RunnerFixture.createRunner(ditoo);
+        runnerRepository.save(runner);
+        final RunnerPost expected = RunnerPostFixture.create(runner, new Deadline(LocalDateTime.now().plusHours(100)));
+        runnerPostRepository.save(expected);
+
+        // when
+        final List<RunnerPost> actual = runnerPostService.readRunnerPostsByRunnerId(runner.getId());
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actual).hasSize(1);
+            softly.assertThat(actual.get(0)).isEqualTo(expected);
+        });
     }
 }

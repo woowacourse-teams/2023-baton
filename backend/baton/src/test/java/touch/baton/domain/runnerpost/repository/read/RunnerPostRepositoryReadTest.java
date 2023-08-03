@@ -87,4 +87,32 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         // then
         assertThat(expected).containsExactly(javaRunnerPostTag, springRunnerPostTag);
     }
+
+    @DisplayName("Runner 식별자로 RunnerPost 목록을 조회한다.")
+    @Test
+    void findByRunnerId() {
+        // given
+        final Member ditoo = MemberFixture.createDitoo();
+        memberRepository.save(ditoo);
+        final Runner runner = RunnerFixture.createRunner(ditoo);
+        runnerRepository.save(runner);
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
+                contents("제 코드의 내용은 이렇습니다."),
+                pullRequestUrl("https://"),
+                deadline(LocalDateTime.now().plusHours(10)),
+                watchedCount(0),
+                chattingCount(0),
+                NOT_STARTED,
+                runner,
+                null,
+                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+        runnerPostRepository.save(runnerPost);
+
+        // when
+        final List<RunnerPost> expected = runnerPostRepository.findByRunnerId(runner.getId());
+
+        // then
+        assertThat(expected).containsExactly(runnerPost);
+    }
 }

@@ -29,6 +29,16 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .header("authorization", "Bearer " + accessToken)
+                .when().log().ifValidationFails()
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> delete(final String uri, final String pathParamName, final Long id) {
         return RestAssured
                 .given().log().ifValidationFails()
