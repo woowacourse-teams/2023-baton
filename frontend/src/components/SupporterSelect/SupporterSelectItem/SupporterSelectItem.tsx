@@ -44,8 +44,8 @@ const SupporterSelectItem = ({
           <S.Name tabIndex={0}>{name}</S.Name>
           <S.Company tabIndex={0}>{company}</S.Company>
           <S.TechStackContainer>
-            {technicalTags.map((tag, index) => (
-              <TechLabel key={index} tag={tag} />
+            {technicalTags.map((tag) => (
+              <TechLabel key={tag} tag={tag} />
             ))}
           </S.TechStackContainer>
           <S.CompletedReviewContainer>
