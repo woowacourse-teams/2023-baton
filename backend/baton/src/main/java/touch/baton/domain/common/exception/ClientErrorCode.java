@@ -18,7 +18,9 @@ public enum ClientErrorCode {
     OAUTH_AUTHORIZATION_VALUE_IS_NULL(HttpStatus.BAD_REQUEST, "OA003", "Authorization 값을 입력해주세요."),
     OAUTH_AUTHORIZATION_BEARER_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "OA004", "Authorization 값을 Bearer 타입으로 입력해주세요."),
     JWT_SIGNATURE_IS_WRONG(HttpStatus.BAD_REQUEST, "JW001", "시그니처가 다른 잘못된 JWT 입니다."),
-    JWT_CLAIM_EMAIL_IS_WRONG(HttpStatus.BAD_REQUEST, "JW002", "사용자의 잘못된 이메일 정보를 가진 JWT 입니다.");
+    JWT_FORM_IS_WRONG(HttpStatus.BAD_REQUEST, "JW002", "잘못 생성된 JWT 로 디코딩 할 수 없습니다."),
+    JWT_CLAIM_IS_WRONG(HttpStatus.BAD_REQUEST, "JW003", "JWT 에 기대한 정보를 모두 포함하고 있지 않습니다."),
+    JWT_CLAIM_EMAIL_IS_WRONG(HttpStatus.BAD_REQUEST, "JW004", "사용자의 잘못된 이메일 정보를 가진 JWT 입니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;

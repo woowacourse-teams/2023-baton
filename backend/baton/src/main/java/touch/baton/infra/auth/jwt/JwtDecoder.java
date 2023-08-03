@@ -1,8 +1,11 @@
 package touch.baton.infra.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.IncorrectClaimException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.MissingClaimException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,10 @@ public class JwtDecoder {
             return jwtParser.parseClaimsJws(token).getBody();
         } catch (SignatureException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
+        } catch (MalformedJwtException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_FORM_IS_WRONG);
+        } catch (MissingClaimException | IncorrectClaimException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_WRONG);
         }
     }
 }
