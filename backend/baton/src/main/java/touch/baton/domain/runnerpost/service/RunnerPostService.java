@@ -57,7 +57,11 @@ public class RunnerPostService {
             toSaveTags.add(presentTag);
         }
 
-        final List<RunnerPostTag> postTags = toSaveTags.stream().map(tag -> RunnerPostTag.builder().tag(tag).runnerPost(runnerPost).build()).toList();
+        final List<RunnerPostTag> postTags = toSaveTags.stream()
+                .map(tag -> RunnerPostTag.builder()
+                        .tag(tag).
+                        runnerPost(runnerPost).build())
+                .toList();
 
         runnerPost.addAllRunnerPostTags(postTags);
         return runnerPost.getId();
@@ -93,7 +97,12 @@ public class RunnerPostService {
             toSaveTags.add(presentTag);
         }
 
-        final List<RunnerPostTag> postTags = toSaveTags.stream().map(tag -> RunnerPostTag.builder().tag(tag).runnerPost(runnerPost).build()).toList();
+        final List<RunnerPostTag> postTags = toSaveTags.stream()
+                .map(tag -> RunnerPostTag.builder()
+                        .tag(tag)
+                        .runnerPost(runnerPost)
+                        .build())
+                .toList();
 
         runnerPost.addAllRunnerPostTags(postTags);
         return runnerPost.getId();
@@ -115,7 +124,9 @@ public class RunnerPostService {
             throw new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
-        runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId).stream().map(RunnerPostTag::getTag).forEach(Tag::decreaseCount);
+        runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId).stream()
+                .map(RunnerPostTag::getTag)
+                .forEach(Tag::decreaseCount);
 
         runnerPostRepository.deleteById(runnerPostId);
     }
@@ -131,13 +142,17 @@ public class RunnerPostService {
 
         final List<RunnerPostTag> presentRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
         // TODO: tag 개수 차감 메소드 분리
-        final List<touch.baton.domain.tag.Tag> presentTags = presentRunnerPostTags.stream().map(RunnerPostTag::getTag).toList();
+        final List<touch.baton.domain.tag.Tag> presentTags = presentRunnerPostTags.stream()
+                .map(RunnerPostTag::getTag)
+                .toList();
         presentTags.forEach(Tag::decreaseCount);
 
         // TODO: 새로운 tag 로 교체 메소드 분리
         final List<RunnerPostTag> removedRunnerPostTags = new ArrayList<>(presentRunnerPostTags);
         for (String tagName : request.tags()) {
-            final Optional<RunnerPostTag> existRunnerPostTag = presentRunnerPostTags.stream().filter(presentRunnerPostTag -> presentRunnerPostTag.isSameTagName(tagName)).findFirst();
+            final Optional<RunnerPostTag> existRunnerPostTag = presentRunnerPostTags.stream()
+                    .filter(presentRunnerPostTag -> presentRunnerPostTag.isSameTagName(tagName))
+                    .findFirst();
             if (existRunnerPostTag.isPresent()) {
                 removedRunnerPostTags.remove(existRunnerPostTag.get());
                 existRunnerPostTag.get().getTag().increaseCount();
