@@ -2,11 +2,11 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
-import { useLogin } from '@/hooks/useLogin';
+import { useToken } from '@/hooks/useToken';
 
 const Header = () => {
   const { goToMainPage, goToLoginPage } = usePageRouter();
-  const { getToken, removeToken } = useLogin();
+  const { getToken, removeToken } = useToken();
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {

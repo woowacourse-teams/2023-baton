@@ -5,7 +5,7 @@ export interface LoginToken {
   expirationDate: Date;
 }
 
-export const useLogin = () => {
+export const useToken = () => {
   const getToken = (): LoginToken | null => {
     try {
       const item = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);

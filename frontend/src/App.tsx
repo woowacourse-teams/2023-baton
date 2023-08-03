@@ -1,10 +1,10 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
-import { useLogin } from './hooks/useLogin';
+import { useToken } from './hooks/useToken';
 
 const App = () => {
-  const { validateToken } = useLogin();
+  const { validateToken } = useToken();
 
   validateToken();
 

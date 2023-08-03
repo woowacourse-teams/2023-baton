@@ -1,5 +1,5 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
-import { useLogin } from '@/hooks/useLogin';
+import { useToken } from '@/hooks/useToken';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -8,7 +8,7 @@ function GithubCallbackPage() {
   const location = useLocation();
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
-  const { saveToken } = useLogin();
+  const { saveToken } = useToken();
   const getToken = async (code: string) => {
     if (localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY) === null) {
       try {
