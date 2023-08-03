@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.member.exception.MemberDomainException;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.Email;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -34,7 +34,7 @@ public class Member extends BaseEntity {
     private MemberName memberName;
 
     @Embedded
-    private Email email;
+    private SocialId socialId;
 
     @Embedded
     private OauthId oauthId;
@@ -50,27 +50,27 @@ public class Member extends BaseEntity {
 
     @Builder
     private Member(final MemberName memberName,
-                   final Email email,
+                   final SocialId socialId,
                    final OauthId oauthId,
                    final GithubUrl githubUrl,
                    final Company company,
                    final ImageUrl imageUrl
     ) {
-        this(null, memberName, email, oauthId, githubUrl, company, imageUrl);
+        this(null, memberName, socialId, oauthId, githubUrl, company, imageUrl);
     }
 
     private Member(final Long id,
                    final MemberName memberName,
-                   final Email email,
+                   final SocialId socialId,
                    final OauthId oauthId,
                    final GithubUrl githubUrl,
                    final Company company,
                    final ImageUrl imageUrl
     ) {
-        validateNotNull(memberName, email, oauthId, githubUrl, company, imageUrl);
+        validateNotNull(memberName, socialId, oauthId, githubUrl, company, imageUrl);
         this.id = id;
         this.memberName = memberName;
-        this.email = email;
+        this.socialId = socialId;
         this.oauthId = oauthId;
         this.githubUrl = githubUrl;
         this.company = company;
@@ -78,7 +78,7 @@ public class Member extends BaseEntity {
     }
 
     private void validateNotNull(final MemberName memberName,
-                                 final Email email,
+                                 final SocialId socialId,
                                  final OauthId oauthId,
                                  final GithubUrl githubUrl,
                                  final Company company,
@@ -88,8 +88,8 @@ public class Member extends BaseEntity {
             throw new MemberDomainException("Member 의 name 은 null 일 수 없습니다.");
         }
 
-        if (Objects.isNull(email)) {
-            throw new MemberDomainException("Member 의 email 은 null 일 수 없습니다.");
+        if (Objects.isNull(socialId)) {
+            throw new MemberDomainException("Member 의 socialId 은 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(oauthId)) {
