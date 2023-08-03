@@ -1,10 +1,7 @@
 package touch.baton.assure.feedback;
 
-import io.restassured.response.ExtractableResponse;
-import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-import org.springframework.http.HttpHeaders;
-import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
@@ -20,8 +17,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.http.HttpStatus.CREATED;
 import static touch.baton.fixture.domain.SupporterFixture.create;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
@@ -43,13 +38,9 @@ class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
 
         final SupporterFeedBackCreateRequest request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), supporterEthan.getId(), runnerPost.getId());
 
-        // when
-        final ExtractableResponse<Response> result = AssuredSupport.post("/api/v1/feedback/supporter", request);
-
-        // then
-        assertAll(
-                () -> assertThat(result.statusCode()).isEqualTo(CREATED.value()),
-                () -> assertThat(result.header(HttpHeaders.LOCATION)).contains("/api/v1/feedback/supporter")
-        );
+        // when, then
+         SupporterFeedbackAssuredSupport
+                .클라이언트_요청().서포터_피드백을_등록한다(request)
+                .서버_응답().서포터_피드백_등록_성공을_검증한다(new HttpStatusAndLocationHeader(CREATED, "/api/v1/feedback/supporter"));
     }
 }
