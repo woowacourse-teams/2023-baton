@@ -29,7 +29,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        feedbackService = new FeedbackService(supporterFeedbackRepository, runnerRepository, runnerPostRepository, supporterRepository);
+        feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterRepository);
         Member ethan = memberRepository.save(MemberFixture.createEthan());
         exactRunner = runnerRepository.save(RunnerFixture.createRunner(ethan));
         Member ditoo = memberRepository.save(MemberFixture.createDitoo());
