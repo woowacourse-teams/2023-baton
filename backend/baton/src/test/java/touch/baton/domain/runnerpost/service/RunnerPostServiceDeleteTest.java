@@ -89,7 +89,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
         runnerPostTagRepository.save(runnerPostTag);
 
         // when
-        runnerPostService.deleteByRunnerPostId(saveRunnerPostId);
+        runnerPostService.deleteByRunnerPostId(saveRunnerPostId, runner);
 
         // then
         assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(saveRunnerPostId))

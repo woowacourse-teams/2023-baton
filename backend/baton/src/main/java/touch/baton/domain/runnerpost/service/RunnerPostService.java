@@ -119,7 +119,8 @@ public class RunnerPostService {
 
     public RunnerPost readByRunnerPostId(final Long runnerPostId) {
         runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId);
-        final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId).orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+        final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
         findRunnerPost.increaseWatchedCount();
 
@@ -127,7 +128,8 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public void deleteByRunnerPostId(final Long runnerPostId) {
+    public void deleteByRunnerPostId(final Long runnerPostId, final Runner runner) {
+        // FIXME: 2023/08/03 삭제 시 본인인지 확인하는 로직 넣기
         final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.findById(runnerPostId);
         if (maybeRunnerPost.isEmpty()) {
             throw new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
@@ -142,8 +144,9 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public Long updateRunnerPost(final Long runnerPostId, final RunnerPostUpdateRequest request) {
+    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest request) {
         // TODO: 메소드 분리
+        // FIXME: 2023/08/03 주인 확인 로직 넣기
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId를 다시 확인해주세요"));
         runnerPost.updateTitle(new Title(request.title()));
