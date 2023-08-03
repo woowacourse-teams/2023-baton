@@ -28,6 +28,7 @@ public class FeedbackService {
     private final RunnerPostRepository runnerPostRepository;
     private final SupporterRepository supporterRepository;
 
+    @Transactional
     public Long createSupporterFeedback(final Runner runner, final SupporterFeedBackCreateRequest request) {
         final Runner foundRunner = runnerRepository.findById(runner.getId())
                 .orElseThrow(() -> new FeedbackBusinessException("러너를 찾을 수 없습니다."));
