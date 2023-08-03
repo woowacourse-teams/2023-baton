@@ -24,7 +24,7 @@ const S = {
     align-items: center;
   `,
 
-  ChildrenWrapper: styled.div`
+  ChildrenWrapper: styled.article`
     width: 1200px;
 
     margin-bottom: 80px;

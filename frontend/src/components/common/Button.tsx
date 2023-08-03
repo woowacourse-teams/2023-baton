@@ -7,9 +7,10 @@ interface Props extends React.HTMLProps<HTMLButtonElement> {
   fontSize?: string | number;
   fontWeight?: number;
   type?: 'button' | 'submit' | 'reset';
+  ariaLabel?: string;
 }
 
-const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeight, onClick }: Props) => {
+const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeight, onClick, ariaLabel }: Props) => {
   return (
     <S.ButtonWrapper>
       <S.Button
@@ -20,6 +21,7 @@ const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeigh
         $fontSize={fontSize}
         $fontWeight={fontWeight}
         onClick={onClick}
+        aria-label={ariaLabel}
       >
         {children}
       </S.Button>

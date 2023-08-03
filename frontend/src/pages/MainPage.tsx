@@ -27,7 +27,7 @@ const MainPage = () => {
           </S.TagContainer> */}
         </S.LeftSideContainer>
 
-        <Button onClick={goToRunnerPostCreatePage} colorTheme="WHITE" fontSize="18px">
+        <Button onClick={goToRunnerPostCreatePage} colorTheme="WHITE" fontSize="18px" ariaLabel="리뷰 요청 글 작성하기">
           리뷰 요청 글 작성하기
         </Button>
       </S.ControlPanelContainer>
@@ -41,10 +41,10 @@ const MainPage = () => {
 export default MainPage;
 
 const S = {
-  TitleWrapper: styled.div`
+  TitleWrapper: styled.header`
     margin: 72px 0 53px 0;
   `,
-  Title: styled.p`
+  Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
   `,

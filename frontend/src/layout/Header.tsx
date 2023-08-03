@@ -9,7 +9,7 @@ const Header = () => {
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
-        <S.Logo src={LogoImage} onClick={goToMainPage} />
+        <S.Logo src={LogoImage} onClick={goToMainPage} alt="바톤로고" />
         <S.MenuContainer>
           <S.LoginButton
             onClick={() => {
@@ -28,7 +28,7 @@ const Header = () => {
 export default Header;
 
 const S = {
-  HeaderWrapper: styled.div`
+  HeaderWrapper: styled.header`
     display: flex;
     justify-content: center;
 

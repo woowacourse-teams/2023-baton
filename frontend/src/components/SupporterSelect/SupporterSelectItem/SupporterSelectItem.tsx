@@ -37,25 +37,25 @@ const SupporterSelectItem = ({
   };
 
   return (
-    <S.SupporterSelectItemContainer>
+    <S.SupporterSelectItemContainer tabIndex={0} aria-label="서포터 정보">
       <S.LeftSideContainer>
         <Avatar width="60px" height="60px" imageUrl={'https://via.placeholder.com/150'} />
         <S.DescriptionContainer>
-          <S.Name>{name}</S.Name>
-          <S.Company>{company}</S.Company>
+          <S.Name tabIndex={0}>{name}</S.Name>
+          <S.Company tabIndex={0}>{company}</S.Company>
           <S.TechStackContainer>
             {technicalTags.map((tag) => (
               <TechLabel key={tag} tag={tag} />
             ))}
           </S.TechStackContainer>
           <S.CompletedReviewContainer>
-            <S.CompletedReview>완료한 리뷰</S.CompletedReview>
-            <S.CompletedReviewCount>{reviewCount}</S.CompletedReviewCount>
+            <S.CompletedReview tabIndex={0}>완료한 리뷰</S.CompletedReview>
+            <S.CompletedReviewCount tabIndex={0}>{reviewCount}</S.CompletedReviewCount>
           </S.CompletedReviewContainer>
         </S.DescriptionContainer>
       </S.LeftSideContainer>
       <S.ButtonContainer>
-        <S.GithubButton href={githubUrl} target="_blank">
+        <S.GithubButton href={githubUrl} target="_blank" aria-label={`${name} github 바로가기`}>
           <S.GithubIcon src={githubIcon} />
           <S.GithubButtonText>github</S.GithubButtonText>
         </S.GithubButton>
@@ -66,6 +66,7 @@ const SupporterSelectItem = ({
           fontSize="12px"
           fontWeight={700}
           onClick={handleSelectedSupporter}
+          ariaLabel={`${name} 선택하기`}
         >
           선택하기
         </Button>

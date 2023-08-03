@@ -23,11 +23,11 @@ const SelectSupportModal = ({ closeModal, handleSelectButton }: Props) => {
           <S.Title>서포터를 선택해 주세요 ✅</S.Title>
           <S.TitleDescription>선택한 서포터가 확인 후 리뷰를 진행합니다.</S.TitleDescription>
         </S.TitleContainer>
-        <S.FilterContainer>
-          <S.FilterTitle onClick={clickedFilter} selected={selectedTechField === '프론트엔드'}>
+        <S.FilterContainer tabIndex={0} aria-label="개발 분야 필터 리스트">
+          <S.FilterTitle tabIndex={0} onClick={clickedFilter} selected={selectedTechField === '프론트엔드'}>
             프론트엔드
           </S.FilterTitle>
-          <S.FilterTitle onClick={clickedFilter} selected={selectedTechField === '백엔드'}>
+          <S.FilterTitle tabIndex={0} onClick={clickedFilter} selected={selectedTechField === '백엔드'}>
             백엔드
           </S.FilterTitle>
         </S.FilterContainer>
@@ -54,7 +54,7 @@ const S = {
     gap: 20px;
   `,
 
-  TitleContainer: styled.div`
+  TitleContainer: styled.header`
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -62,12 +62,12 @@ const S = {
     margin: 20px 0 53px 20px;
   `,
 
-  Title: styled.p`
+  Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
   `,
 
-  TitleDescription: styled.div`
+  TitleDescription: styled.h2`
     margin-left: 5px;
 
     font-size: 18px;
