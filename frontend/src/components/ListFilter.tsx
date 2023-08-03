@@ -19,7 +19,7 @@ const ListFilter = ({ options, selectOption, width }: Props) => {
     <S.FilterContainer>
       <S.FilterList $width={width}>
         {options.map((option) => (
-          <S.FilterItem key={option.value} onClick={makeHandleClickOption(option.value)} isSelected={option.selected}>
+          <S.FilterItem key={option.value} onClick={makeHandleClickOption(option.value)} $isSelected={option.selected}>
             {option.label}
           </S.FilterItem>
         ))}
@@ -58,17 +58,17 @@ const S = {
     width: ${({ $width }) => $width ?? '920px'};
   `,
 
-  FilterItem: styled.li<{ isSelected: boolean }>`
+  FilterItem: styled.li<{ $isSelected: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
 
     font-size: 26px;
     font-weight: 700;
-    color: ${({ isSelected }) => (isSelected ? 'var(--baton-red)' : 'var(--gray-700)')};
+    color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'var(--gray-700)')};
 
     &::after {
-      ${({ isSelected }) => (isSelected ? underLine : null)}
+      ${({ $isSelected }) => ($isSelected ? underLine : null)}
     }
 
     cursor: pointer;

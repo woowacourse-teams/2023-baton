@@ -112,8 +112,8 @@ const MyPage = () => {
           </S.IntroduceContainer>
         </S.InfoContainer>
         <S.ButtonContainer>
-          <S.RunnerSupporterButton isSelected={isRunner}>러너</S.RunnerSupporterButton>
-          <S.RunnerSupporterButton isSelected={!isRunner} onClick={handleClickSupporterButton}>
+          <S.RunnerSupporterButton $isSelected={isRunner}>러너</S.RunnerSupporterButton>
+          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
             서포터
           </S.RunnerSupporterButton>
         </S.ButtonContainer>
@@ -124,7 +124,7 @@ const MyPage = () => {
         </S.FilterWrapper>
         <S.ListContainer>
           {filterList()?.map((item) => (
-            <ProfileRunnerPostItem {...item} />
+            <ProfileRunnerPostItem key={item.runnerPostId} {...item} />
           ))}
         </S.ListContainer>
       </S.PostsContainer>
@@ -174,7 +174,7 @@ const S = {
     gap: 20px;
   `,
 
-  RunnerSupporterButton: styled.button<{ isSelected: boolean }>`
+  RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -182,11 +182,11 @@ const S = {
     width: 220px;
     height: 38px;
     border-radius: 18px;
-    border: 1px solid ${({ isSelected }) => (isSelected ? 'white' : 'var(--baton-red)')};
+    border: 1px solid ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
 
-    background-color: ${({ isSelected }) => (isSelected ? 'var(--baton-red)' : 'white')};
+    background-color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'white')};
 
-    color: ${({ isSelected }) => (isSelected ? 'white' : 'var(--baton-red)')};
+    color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
   `,
 
   PostsContainer: styled.div`
