@@ -6,10 +6,12 @@ import { GetSupporterCardResponse, SupporterCard } from '@/types/supporterCard';
 
 interface Props {
   handleSelectButton: (selectedSupporter: SupporterCard) => void;
+  selectedTechField: string | null;
 }
 
-const SupporterSelectList = ({ handleSelectButton }: Props) => {
+const SupporterSelectList = ({ handleSelectButton, selectedTechField }: Props) => {
   const [supporterCardList, setSupporterCardList] = useState<GetSupporterCardResponse | null>(null);
+  const [filteredSupporter, setFilteredSupporter] = useState<SupporterCard[] | null>(null);
 
   const getSupporterCardList = async () => {
     try {
@@ -38,13 +40,33 @@ const SupporterSelectList = ({ handleSelectButton }: Props) => {
     fetchRunnerPost();
   }, []);
 
+  useEffect(() => {
+    if (selectedTechField === '프론트엔드') {
+      const frontend = supporterCardList?.data.filter((supporter: SupporterCard) => {
+        const frontendCrew = ['가람', '에이든', '도리'];
+
+        return frontendCrew.includes(supporter.name);
+      });
+      if (frontend) setFilteredSupporter(frontend);
+    }
+
+    if (selectedTechField === '백엔드') {
+      const backend = supporterCardList?.data.filter((supporter: SupporterCard) => {
+        const backendCrew = ['헤나', '주디', '박정훈', '김석호'];
+
+        return backendCrew.includes(supporter.name);
+      });
+      if (backend) setFilteredSupporter(backend);
+    }
+  }, [filteredSupporter, supporterCardList]);
+
   const selectedSupporter = (selectedSupporter: SupporterCard) => {
     handleSelectButton(selectedSupporter);
   };
 
   return (
     <S.SupporterSelectListContainer>
-      {supporterCardList?.data.map((card) => (
+      {filteredSupporter?.map((card) => (
         <SupporterSelectItem key={card.supporterId} {...card} selectedSupporter={selectedSupporter} />
       ))}
     </S.SupporterSelectListContainer>
@@ -56,7 +78,7 @@ export default SupporterSelectList;
 const S = {
   SupporterSelectListContainer: styled.ul`
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     column-gap: 27px;
     row-gap: 20px;
 
