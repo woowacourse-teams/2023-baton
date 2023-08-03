@@ -1,6 +1,6 @@
 import { ReviewStatus } from './runnerPost';
 
-export interface RunnerProfileResponse {
+export interface GetRunnerProfileResponse {
   profile: {
     name: string;
     imageUrl: string;

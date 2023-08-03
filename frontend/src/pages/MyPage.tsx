@@ -3,7 +3,7 @@ import ProfileRunnerPostItem from '@/components/Profile/ProfileRunnerPostItem/Pr
 import Avatar from '@/components/common/Avatar';
 import { BATON_BASE_URL } from '@/constants';
 import Layout from '@/layout/Layout';
-import { RunnerProfileResponse } from '@/types/profile';
+import { GetRunnerProfileResponse } from '@/types/profile';
 import { ReviewStatus } from '@/types/runnerPost';
 import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
@@ -30,7 +30,7 @@ const reviewPostOptions: ReviewPostOptions = [
 ];
 
 const MyPage = () => {
-  const [runnerProfile, setRunnerProfile] = useState<RunnerProfileResponse | null>(null);
+  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
 
   const [postOptions, setPostOptions] = useState<ReviewPostOptions>(reviewPostOptions);
 
@@ -188,7 +188,7 @@ const S = {
     align-items: center;
   `,
 
-  ListContainer: styled.li`
+  ListContainer: styled.ul`
     display: flex;
     flex-direction: column;
     gap: 20px;
