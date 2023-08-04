@@ -114,7 +114,7 @@ const RunnerPostPage = () => {
                 </S.EditLinkContainer>
               </S.PostDeadlineContainer>
               <S.PostTitleContainer>
-                <S.PostTitle>{runnerPost.title}.</S.PostTitle>
+                <S.PostTitle>{runnerPost.title}</S.PostTitle>
                 <S.InformationContainer>
                   <S.statisticsContainer>
                     <S.statisticsImage src={eyeIcon} />
