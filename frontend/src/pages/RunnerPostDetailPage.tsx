@@ -36,7 +36,19 @@ const RunnerPostPage = () => {
   const getRunnerPost = async (): Promise<GetDetailedRunnerPostResponse> => {
     const token = getToken()?.value;
 
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) {
+      const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
+        method: 'GET',
+      });
+
+      if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
+
+      const data = await response.json().catch(() => {
+        throw new Error('게시글을 불러오지 못했습니다.');
+      });
+
+      return data;
+    }
 
     const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
       method: 'GET',
