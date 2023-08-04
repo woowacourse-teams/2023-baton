@@ -13,6 +13,7 @@ import Label from '@/components/common/Label';
 import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 import ConfirmModal from '@/components/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
+import { useToken } from '@/hooks/useToken';
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
@@ -20,6 +21,7 @@ const RunnerPostPage = () => {
 
   const { goToMainPage, goBack } = usePageRouter();
   const { runnerPostId } = useParams();
+  const { getToken } = useToken();
 
   useEffect(() => {
     getRunnerPost()
@@ -32,8 +34,13 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = async (): Promise<GetDetailedRunnerPostResponse> => {
+    const token = getToken()?.value;
+
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
     const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
       method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
@@ -45,22 +52,31 @@ const RunnerPostPage = () => {
     return data;
   };
 
-  const deleteRunnerPost = async () => {
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
+  const deleteRunnerPost = () => {
+    const token = getToken()?.value;
+
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-    });
-
-    if (!response.ok) throw new Error('게시글을 삭제하지 못했습니다.');
+    })
+      .then(() => {
+        goToMainPage();
+      })
+      .catch(() => {
+        alert('게시글을 삭제하지 못했습니다.');
+      });
   };
 
   const handleClickDeleteButton = () => {
     setIsModalOpen(false);
 
     deleteRunnerPost();
-    goToMainPage();
+    // goToMainPage();
   };
 
   const openModal = () => {
