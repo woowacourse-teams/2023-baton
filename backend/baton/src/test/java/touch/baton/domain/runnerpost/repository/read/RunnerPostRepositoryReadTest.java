@@ -151,13 +151,13 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         runnerPostRepository.save(nextRunnerPost);
 
         // when
-        final List<RunnerPost> actual = runnerPostRepository.findAllByOrderByCreatedAt();
+        final List<RunnerPost> actual = runnerPostRepository.findAllByOrderByCreatedAtDesc();
 
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual).hasSize(2);
-            softly.assertThat(actual.get(0)).isEqualTo(previousRunnerPost);
-            softly.assertThat(actual.get(1)).isEqualTo(nextRunnerPost);
+            softly.assertThat(actual.get(0)).isEqualTo(nextRunnerPost);
+            softly.assertThat(actual.get(1)).isEqualTo(previousRunnerPost);
         });
     }
 }
