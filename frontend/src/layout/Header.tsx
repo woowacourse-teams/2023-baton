@@ -63,12 +63,14 @@ const Header = () => {
         <S.MenuContainer>
           {isLogin ? (
             <>
-              <Avatar
-                width="50px"
-                height="50px"
-                imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
-                onClick={handleClickProfile}
-              />
+              <S.AvatarContainer onClick={handleClickProfile}>
+                <Avatar
+                  width="35px"
+                  height="35px"
+                  imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
+                />
+                <p>{runnerProfile?.profile.name}</p>
+              </S.AvatarContainer>
               <S.LoginButton onClick={handleClickLogoutButton}>로그아웃</S.LoginButton>
             </>
           ) : (
@@ -100,6 +102,14 @@ const S = {
 
     width: 1200px;
     height: 80px;
+  `,
+
+  AvatarContainer: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
   `,
 
   Logo: styled.img`
