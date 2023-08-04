@@ -20,7 +20,7 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
             """)
     Optional<RunnerPost> joinMemberByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
-    List<RunnerPost> findAllByOrderByCreatedAt();
+    List<RunnerPost> findAllByOrderByCreatedAtDesc();
 
     List<RunnerPost> findByRunnerId(Long runnerId);
     List<RunnerPost> readBySupporterId(Long supporterId);
