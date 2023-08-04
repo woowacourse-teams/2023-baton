@@ -61,6 +61,8 @@ public class RunnerPostController {
                                                                         @PathVariable final Long runnerPostId
     ) {
         final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
+        runnerPostService.increaseWatchedCount(runnerPost);
+
         final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.of(
                 runnerPost,
                 runnerPost.getRunner().equals(runner)
@@ -74,6 +76,8 @@ public class RunnerPostController {
                                                                                               @PathVariable final Long runnerPostId
     ) {
         final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
+        runnerPostService.increaseWatchedCount(runnerPost);
+
         final RunnerPostResponse.DetailVersionTest response = RunnerPostResponse.DetailVersionTest.ofVersionTest(
                 runnerPost,
                 runnerPost.getRunner().equals(runner)

@@ -119,12 +119,13 @@ public class RunnerPostService {
 
     public RunnerPost readByRunnerPostId(final Long runnerPostId) {
         runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId);
-        final RunnerPost findRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
+        return runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+    }
 
-        findRunnerPost.increaseWatchedCount();
-
-        return findRunnerPost;
+    @Transactional
+    public void increaseWatchedCount(final RunnerPost runnerPost) {
+        runnerPost.increaseWatchedCount();
     }
 
     @Transactional
@@ -196,7 +197,7 @@ public class RunnerPostService {
 
         return runnerPost.getId();
     }
-    
+
     public List<RunnerPost> readAllRunnerPosts() {
         return runnerPostRepository.findAllByOrderByCreatedAtDesc();
     }
