@@ -22,11 +22,19 @@ const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
       popTag();
     }
 
-    if (!inputRef.current.value) return;
+    if (!inputRef.current.value.trim()) {
+      inputRef.current.value = '';
+
+      if (e.key === 'Enter') {
+        e.preventDefault();
+      }
+
+      return;
+    }
 
     if (e.key === 'Enter') {
       e.preventDefault();
-      const newTag = inputRef.current.value;
+      const newTag = inputRef.current.value.trim();
       pushTag(newTag);
       inputRef.current.value = '';
     }
