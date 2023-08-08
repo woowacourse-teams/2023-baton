@@ -6,8 +6,6 @@ on:
       - closed
     branches:
       - deploy/FE
-    paths:
-      - 'frontend/**'
 
 defaults:
   run:
@@ -32,7 +30,7 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
-      - name: 의존성을 설치한다
+      - name: Install Dependancies
         run: npm install
 
       - name: Build App
@@ -42,15 +40,15 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: FrontendApplication
-          path: .frontend/dist
+          path: frontend/dist
 
   deploy:
     needs: build-and-upload
-    runs-on: self-hosted
+    runs-on: [self-hosted, Linux, ARM64, deploy]
 
     steps:
       - name: Remove previous version app
-        working-directory: ./frontend/dist
+        working-directory: frontend/dist
         run: rm -rf dist
 
       - name: Download build file from artifact
