@@ -32,6 +32,9 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
+      - name: 의존성을 설치한다
+        run: npm install
+
       - name: Build App
         run: npm run build
 
