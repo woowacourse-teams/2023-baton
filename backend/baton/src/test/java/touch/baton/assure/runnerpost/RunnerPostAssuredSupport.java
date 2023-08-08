@@ -57,7 +57,6 @@ public class RunnerPostAssuredSupport {
                         softly.assertThat(actual.runnerProfile().company()).isEqualTo(러너_게시글_응답.runnerProfile().company());
                         softly.assertThat(actual.runnerProfile().imageUrl()).isEqualTo(러너_게시글_응답.runnerProfile().imageUrl());
                         softly.assertThat(actual.runnerProfile().runnerId()).isEqualTo(러너_게시글_응답.runnerProfile().runnerId());
-                        softly.assertThat(actual.chattingCount()).isEqualTo(러너_게시글_응답.chattingCount());
                         softly.assertThat(actual.watchedCount()).isEqualTo(러너_게시글_응답.watchedCount());
                         softly.assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId());
                     }

@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
-import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.ContentsFixture.contents;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
@@ -40,7 +39,6 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
                 pullRequestUrl("https://"),
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
-                chattingCount(0),
                 NOT_STARTED,
                 runner,
                 null,

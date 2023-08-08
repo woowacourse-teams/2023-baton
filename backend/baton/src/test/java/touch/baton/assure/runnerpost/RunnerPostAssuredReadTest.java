@@ -16,7 +16,6 @@ import touch.baton.fixture.domain.RunnerPostFixture;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
-import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
@@ -40,7 +39,6 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
                         runnerPost.getPullRequestUrl().getValue(),
                         runnerPost.getDeadline().getValue(),
                         watchedCount(1).getValue(),
-                        chattingCount(0).getValue(),
                         ReviewStatus.NOT_STARTED,
                         true,
                         RunnerResponse.Detail.from(runnerHyena),

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
@@ -73,7 +72,6 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .deadline(new Deadline(deadline))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
