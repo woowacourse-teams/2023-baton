@@ -50,6 +50,8 @@ const Header = () => {
   const handleClickLogoutButton = () => {
     removeToken();
     setIsLogin(false);
+
+    goToMainPage();
   };
 
   const handleClickProfile = () => {
