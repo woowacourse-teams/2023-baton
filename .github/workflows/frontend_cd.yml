@@ -1,0 +1,57 @@
+name: frontend_cd
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - deploy/FE
+    paths:
+      - 'frontend/**'
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-upload:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Repository
+        uses: actions/checkout@v3
+
+      - name: Setup node with cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+
+      - name: Build App
+        run: npm run build
+
+      - name: Upload frontend build file to artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: FrontendApplication
+          path: .frontend/dist
+
+  deploy:
+    needs: build-and-upload
+    runs-on: self-hosted
+
+    steps:
+      - name: Remove previous version app
+        working-directory: ./frontend/dist
+        run: rm -rf dist
+
+      - name: Download build file from artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: FrontendApplication
+          path: frontend/dist
