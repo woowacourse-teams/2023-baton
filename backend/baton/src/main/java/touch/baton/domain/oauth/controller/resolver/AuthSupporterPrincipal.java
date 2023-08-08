@@ -9,5 +9,4 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AuthSupporterPrincipal {
 
-    boolean required() default true;
 }
