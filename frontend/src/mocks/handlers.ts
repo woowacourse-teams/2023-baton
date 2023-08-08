@@ -39,7 +39,7 @@ export const handlers = [
   }),
 
   rest.post('*/posts/runner/test', async (req, res, ctx) => {
-    const { title, tags, pullRequestUrl, deadline, contents, supporterId } = await req.json();
+    const { title, tags, pullRequestUrl, deadline, contents } = await req.json();
 
     return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
   }),
