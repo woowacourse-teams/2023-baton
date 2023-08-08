@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -60,9 +59,6 @@ public class RunnerPost extends BaseEntity {
     @Embedded
     private WatchedCount watchedCount;
 
-    @Embedded
-    private ChattingCount chattingCount;
-
     @Enumerated(STRING)
     @Column(nullable = false)
     private ReviewStatus reviewStatus = ReviewStatus.NOT_STARTED;
@@ -84,13 +80,12 @@ public class RunnerPost extends BaseEntity {
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
-                       final ChattingCount chattingCount,
                        final ReviewStatus reviewStatus,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        this(null, title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, reviewStatus, runner, supporter, runnerPostTags);
+        this(null, title, contents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, supporter, runnerPostTags);
     }
 
     private RunnerPost(final Long id,
@@ -99,20 +94,18 @@ public class RunnerPost extends BaseEntity {
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
-                       final ChattingCount chattingCount,
                        final ReviewStatus reviewStatus,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, chattingCount, reviewStatus, runner, runnerPostTags);
+        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, runnerPostTags);
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.pullRequestUrl = pullRequestUrl;
         this.deadline = deadline;
         this.watchedCount = watchedCount;
-        this.chattingCount = chattingCount;
         this.reviewStatus = reviewStatus;
         this.runner = runner;
         this.supporter = supporter;
@@ -124,7 +117,6 @@ public class RunnerPost extends BaseEntity {
                                  final PullRequestUrl pullRequestUrl,
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
-                                 final ChattingCount chattingCount,
                                  final ReviewStatus reviewStatus,
                                  final Runner runner,
                                  final RunnerPostTags runnerPostTags
@@ -147,10 +139,6 @@ public class RunnerPost extends BaseEntity {
 
         if (Objects.isNull(watchedCount)) {
             throw new RunnerPostDomainException("RunnerPost 의 watchedCount 는 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(chattingCount)) {
-            throw new RunnerPostDomainException("RunnerPost 의 chattingCount 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(reviewStatus)) {
@@ -181,7 +169,6 @@ public class RunnerPost extends BaseEntity {
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .watchedCount(WatchedCount.zero())
                 .reviewStatus(ReviewStatus.NOT_STARTED)
-                .chattingCount(ChattingCount.zero())
                 .build();
     }
 

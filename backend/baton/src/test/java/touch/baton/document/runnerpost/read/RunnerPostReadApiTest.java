@@ -62,7 +62,6 @@ class RunnerPostReadApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].title").type(STRING).description("러너 게시글의 제목"),
                                 fieldWithPath("data.[].deadline").type(STRING).description("러너 게시글의 마감 기한"),
                                 fieldWithPath("data.[].watchedCount").type(NUMBER).description("러너 게시글의 조회수"),
-                                fieldWithPath("data.[].chattingCount").type(NUMBER).description("러너 게시글의 채팅수"),
                                 fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글의 리뷰 상태"),
                                 fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
                                 fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),

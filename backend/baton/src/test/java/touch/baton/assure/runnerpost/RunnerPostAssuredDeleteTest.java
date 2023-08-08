@@ -3,7 +3,6 @@ package touch.baton.assure.runnerpost;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -17,13 +16,11 @@ import java.util.ArrayList;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
-import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.ContentsFixture.contents;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
-import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
@@ -34,7 +31,7 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         final Member member = MemberFixture.createHyena();
         memberRepository.save(member);
 
-        final Runner runner = RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, introduction("hello"), member);
+        final Runner runner = RunnerFixture.create(introduction("hello"), member);
         runnerRepository.save(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
@@ -42,7 +39,6 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
                 pullRequestUrl("https://"),
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
-                chattingCount(0),
                 NOT_STARTED,
                 runner,
                 null,

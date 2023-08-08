@@ -3,9 +3,7 @@ package touch.baton.domain.supporter;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.GithubUrl;
@@ -15,7 +13,6 @@ import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.domain.technicaltag.TechnicalTag;
@@ -49,58 +46,10 @@ class SupporterTest {
         void success() {
             assertThatCode(() -> Supporter.builder()
                     .reviewCount(new ReviewCount(10))
-                    .starCount(new StarCount(10))
-                    .totalRating(new TotalRating(100))
-                    .grade(Grade.BARE_FOOT)
                     .member(member)
                     .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
             ).doesNotThrowAnyException();
-        }
-
-        @DisplayName("startCount 가 null 이 들어갈 경우 예외가 발생한다.")
-        @Test
-        void fail_if_startCount_is_null() {
-            assertThatThrownBy(() -> Supporter.builder()
-                    .reviewCount(new ReviewCount(10))
-                    .starCount(null)
-                    .totalRating(new TotalRating(100))
-                    .grade(Grade.BARE_FOOT)
-                    .member(member)
-                    .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
-                    .build()
-            ).isInstanceOf(SupporterDomainException.class)
-                    .hasMessage("Supporter 의 starCount 는 null 일 수 없습니다.");
-        }
-
-        @DisplayName("totalRating 가 null 이 들어갈 경우 예외가 발생한다.")
-        @Test
-        void fail_if_totalRating_is_null() {
-            assertThatThrownBy(() -> Supporter.builder()
-                    .reviewCount(new ReviewCount(10))
-                    .starCount(new StarCount(10))
-                    .totalRating(null)
-                    .grade(Grade.BARE_FOOT)
-                    .member(member)
-                    .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
-                    .build()
-            ).isInstanceOf(SupporterDomainException.class)
-                    .hasMessage("Supporter 의 totalRating 은 null 일 수 없습니다.");
-        }
-
-        @DisplayName("grade 가 null 이 들어갈 경우 예외가 발생한다.")
-        @Test
-        void fail_if_grade_is_null() {
-            assertThatThrownBy(() -> Supporter.builder()
-                    .reviewCount(new ReviewCount(10))
-                    .starCount(new StarCount(10))
-                    .totalRating(new TotalRating(100))
-                    .grade(null)
-                    .member(member)
-                    .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
-                    .build()
-            ).isInstanceOf(SupporterDomainException.class)
-                    .hasMessage("Supporter 의 grade 는 null 일 수 없습니다.");
         }
 
         @DisplayName("member 가 null 이 들어갈 경우 예외가 발생한다.")
@@ -108,9 +57,6 @@ class SupporterTest {
         void fail_if_member_is_null() {
             assertThatThrownBy(() -> Supporter.builder()
                     .reviewCount(new ReviewCount(10))
-                    .starCount(new StarCount(10))
-                    .totalRating(new TotalRating(100))
-                    .grade(Grade.BARE_FOOT)
                     .member(null)
                     .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                     .build()
@@ -123,9 +69,6 @@ class SupporterTest {
         void fail_if_supporterTechnicalTags_is_null() {
             assertThatThrownBy(() -> Supporter.builder()
                     .reviewCount(new ReviewCount(10))
-                    .starCount(new StarCount(10))
-                    .totalRating(new TotalRating(100))
-                    .grade(Grade.BARE_FOOT)
                     .member(member)
                     .supporterTechnicalTags(null)
                     .build()
@@ -140,9 +83,6 @@ class SupporterTest {
         // given
         final Supporter supporter = Supporter.builder()
                 .reviewCount(new ReviewCount(10))
-                .starCount(new StarCount(10))
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(member)
                 .supporterTechnicalTags(new SupporterTechnicalTags(
                         new ArrayList<>()))

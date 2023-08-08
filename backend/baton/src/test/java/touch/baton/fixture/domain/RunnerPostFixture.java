@@ -1,6 +1,5 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -29,7 +28,6 @@ public abstract class RunnerPostFixture {
                                     final PullRequestUrl pullRequestUrl,
                                     final Deadline deadline,
                                     final WatchedCount watchedCount,
-                                    final ChattingCount chattingCount,
                                     final ReviewStatus reviewStatus,
                                     final Runner runner,
                                     final Supporter supporter,
@@ -41,7 +39,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(pullRequestUrl)
                 .deadline(deadline)
                 .watchedCount(watchedCount)
-                .chattingCount(chattingCount)
                 .reviewStatus(reviewStatus)
                 .runner(runner)
                 .supporter(supporter)
@@ -56,7 +53,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
                 .supporter(null)
@@ -71,7 +67,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(runner)
                 .supporter(null)
@@ -95,7 +90,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .runner(runner)
                 .supporter(null)
                 .runnerPostTags(runnerPostTags)
@@ -109,7 +103,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(DeadlineFixture.deadline(LocalDateTime.now().plusHours(100)))
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .runner(runner)
                 .supporter(supporter)
                 .reviewStatus(ReviewStatus.NOT_STARTED)
@@ -124,7 +117,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .runner(runner)
                 .supporter(supporter)
                 .reviewStatus(ReviewStatus.NOT_STARTED)
@@ -139,7 +131,6 @@ public abstract class RunnerPostFixture {
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(runnerPostTags)

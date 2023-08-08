@@ -1,9 +1,7 @@
 package touch.baton.domain.supporter;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -13,20 +11,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Introduction;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
 import java.util.List;
 import java.util.Objects;
 
-import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -44,16 +38,6 @@ public class Supporter extends BaseEntity {
     private ReviewCount reviewCount;
 
     @Embedded
-    private StarCount starCount;
-
-    @Embedded
-    private TotalRating totalRating;
-
-    @Enumerated(STRING)
-    @Column(nullable = false)
-    private Grade grade;
-
-    @Embedded
     private Introduction introduction;
 
     @OneToOne(fetch = LAZY)
@@ -65,57 +49,33 @@ public class Supporter extends BaseEntity {
 
     @Builder
     private Supporter(final ReviewCount reviewCount,
-                      final StarCount starCount,
-                      final TotalRating totalRating,
-                      final Grade grade,
                       final Introduction introduction,
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        this(null, reviewCount, starCount, totalRating, grade, introduction, member, supporterTechnicalTags);
+        this(null, reviewCount, introduction, member, supporterTechnicalTags);
     }
 
     private Supporter(final Long id,
                       final ReviewCount reviewCount,
-                      final StarCount starCount,
-                      final TotalRating totalRating,
-                      final Grade grade,
                       final Introduction introduction,
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        validateNotNull(reviewCount, starCount, totalRating, grade, member, supporterTechnicalTags);
+        validateNotNull(reviewCount, member, supporterTechnicalTags);
         this.id = id;
         this.reviewCount = reviewCount;
-        this.starCount = starCount;
-        this.totalRating = totalRating;
-        this.grade = grade;
         this.introduction = introduction;
         this.member = member;
         this.supporterTechnicalTags = supporterTechnicalTags;
     }
 
     private void validateNotNull(final ReviewCount reviewCount,
-                                 final StarCount starCount,
-                                 final TotalRating totalRating,
-                                 final Grade grade,
                                  final Member member,
                                  final SupporterTechnicalTags supporterTechnicalTags
     ) {
         if (Objects.isNull(reviewCount)) {
             throw new SupporterDomainException("Supporter 의 reviewCount 는 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(starCount)) {
-            throw new SupporterDomainException("Supporter 의 starCount 는 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(totalRating)) {
-            throw new SupporterDomainException("Supporter 의 totalRating 은 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(grade)) {
-            throw new SupporterDomainException("Supporter 의 grade 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(member)) {

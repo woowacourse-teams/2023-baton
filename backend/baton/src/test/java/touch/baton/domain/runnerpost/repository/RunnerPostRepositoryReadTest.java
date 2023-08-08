@@ -4,20 +4,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -58,8 +55,6 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         final Member saveMember = memberRepository.saveAndFlush(member);
 
         final Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(saveMember)
                 .build();
         final Runner saveRunner = runnerRepository.saveAndFlush(runner);
@@ -70,7 +65,6 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 .deadline(new Deadline(LocalDateTime.now()))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(1))
-                .chattingCount(new ChattingCount(1))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
                 .runner(saveRunner)

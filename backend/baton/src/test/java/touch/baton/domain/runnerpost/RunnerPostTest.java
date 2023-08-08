@@ -3,19 +3,16 @@ package touch.baton.domain.runnerpost;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -23,7 +20,6 @@ import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
@@ -57,16 +53,11 @@ class RunnerPostTest {
             .build();
 
     private final Runner runner = Runner.builder()
-            .totalRating(new TotalRating(100))
-            .grade(Grade.BARE_FOOT)
             .member(runnerMember)
             .build();
 
     private final Supporter supporter = Supporter.builder()
             .reviewCount(new ReviewCount(10))
-            .starCount(new StarCount(10))
-            .totalRating(new TotalRating(100))
-            .grade(Grade.BARE_FOOT)
             .member(supporterMember)
             .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
             .build();
@@ -84,7 +75,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -102,7 +92,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(null)
@@ -120,7 +109,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -139,7 +127,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -158,7 +145,6 @@ class RunnerPostTest {
                     .pullRequestUrl(null)
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -177,7 +163,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(null)
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -196,7 +181,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(null)
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -204,25 +188,6 @@ class RunnerPostTest {
                     .build()
             ).isInstanceOf(RunnerPostDomainException.class)
                     .hasMessage("RunnerPost 의 watchedCount 는 null 일 수 없습니다.");
-        }
-
-        @DisplayName("chatting room count 에 null 이 들어갈 경우 예외가 발생한다.")
-        @Test
-        void fail_if_chattingRoomCount_is_null() {
-            assertThatThrownBy(() -> RunnerPost.builder()
-                    .title(new Title("아이"))
-                    .contents(new Contents("김영한 짱짱맨"))
-                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
-                    .deadline(new Deadline(LocalDateTime.now()))
-                    .watchedCount(new WatchedCount(0))
-                    .chattingCount(null)
-                    .reviewStatus(ReviewStatus.NOT_STARTED)
-                    .runner(runner)
-                    .supporter(supporter)
-                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                    .build()
-            ).isInstanceOf(RunnerPostDomainException.class)
-                    .hasMessage("RunnerPost 의 chattingCount 는 null 일 수 없습니다.");
         }
 
         @DisplayName("runner 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -234,7 +199,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(null)
                     .supporter(supporter)
@@ -253,7 +217,6 @@ class RunnerPostTest {
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
-                    .chattingCount(new ChattingCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
                     .runner(runner)
                     .supporter(supporter)
@@ -280,7 +243,6 @@ class RunnerPostTest {
                     () -> assertThat(runnerPost.getPullRequestUrl()).isEqualTo(new PullRequestUrl(pullRequestUrl)),
                     () -> assertThat(runnerPost.getDeadline()).isEqualTo(new Deadline(deadline)),
                     () -> assertThat(runnerPost.getRunnerPostTags()).isNotNull(),
-                    () -> assertThat(runnerPost.getChattingCount()).isEqualTo(new ChattingCount(0)),
                     () -> assertThat(runnerPost.getWatchedCount()).isEqualTo(new WatchedCount(0))
             );
         }

@@ -15,16 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import touch.baton.config.JpaConfig;
-import touch.baton.domain.common.vo.Grade;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
@@ -33,7 +31,6 @@ import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
 import java.util.ArrayList;
@@ -87,16 +84,11 @@ class RunnerPostControllerReadTest {
             .build();
 
     private final Runner runner = Runner.builder()
-            .totalRating(new TotalRating(2))
-            .grade(Grade.BARE_FOOT)
             .member(runnerMember)
             .build();
 
     private final Supporter supporter = Supporter.builder()
             .reviewCount(new ReviewCount(10))
-            .starCount(new StarCount(10))
-            .totalRating(new TotalRating(100))
-            .grade(Grade.BARE_FOOT)
             .member(supporterMember)
             .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
             .build();

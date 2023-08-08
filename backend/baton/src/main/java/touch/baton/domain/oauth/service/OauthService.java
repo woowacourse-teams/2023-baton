@@ -2,9 +2,7 @@ package touch.baton.domain.oauth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.Introduction;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.oauth.OauthInformation;
@@ -17,7 +15,6 @@ import touch.baton.domain.oauth.repository.OauthSupporterRepository;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 
@@ -70,8 +67,6 @@ public class OauthService {
 
     private Runner saveNewRunner(final Member member) {
         final Runner newRunner = Runner.builder()
-                .totalRating(new TotalRating(0))
-                .grade(Grade.BARE_FOOT)
                 .introduction(new Introduction(""))
                 .member(member)
                 .build();
@@ -82,9 +77,6 @@ public class OauthService {
     private Supporter saveNewSupporter(final Member member) {
         final Supporter newSupporter = Supporter.builder()
                 .reviewCount(new ReviewCount(0))
-                .starCount(new StarCount(0))
-                .totalRating(new TotalRating(0))
-                .grade(Grade.BARE_FOOT)
                 .introduction(new Introduction(""))
                 .member(member)
                 .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))

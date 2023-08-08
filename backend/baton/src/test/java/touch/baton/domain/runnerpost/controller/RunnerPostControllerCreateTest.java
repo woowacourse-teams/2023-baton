@@ -12,16 +12,14 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import touch.baton.domain.common.vo.Grade;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
@@ -56,8 +54,6 @@ class RunnerPostControllerCreateTest {
                 .build();
         memberRepository.save(member);
         final Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(member)
                 .build();
         runnerRepository.save(runner);

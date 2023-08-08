@@ -5,19 +5,16 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
@@ -57,8 +54,6 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
         memberRepository.saveAndFlush(member);
 
         final Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(member)
                 .build();
         runnerRepository.saveAndFlush(runner);
@@ -69,7 +64,6 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
                 .deadline(new Deadline(LocalDateTime.now()))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(0))
-                .chattingCount(new ChattingCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .runner(runner)
                 .supporter(null)
