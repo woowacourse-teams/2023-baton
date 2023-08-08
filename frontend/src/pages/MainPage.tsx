@@ -1,6 +1,6 @@
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
-import Button from '@/components/common/Button';
-import Tag from '@/components/common/Tag';
+import Button from '@/components/common/Button/Button';
+import Tag from '@/components/common/Tag/Tag';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';

@@ -1,10 +1,10 @@
-import Avatar from '@/components/common/Avatar';
-import Button from '@/components/common/Button';
+import Avatar from '@/components/common/Avatar/Avatar';
+import Button from '@/components/common/Button/Button';
 import { SupporterCard } from '@/types/supporterCard';
 import React from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import TechLabel from '@/components/TechLabel';
+import TechLabel from '@/components/TechLabel/TechLabel';
 
 interface Props extends SupporterCard {
   selectedSupporter: (selectedSupporter: SupporterCard) => void;

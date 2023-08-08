@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Modal from './common/Modal';
+import Modal from '../common/Modal/Modal';
 import { styled } from 'styled-components';
-import SupporterSelectList from './SupporterSelect/SupporterSelectList/SupporterSelectList';
+import SupporterSelectList from '../SupporterSelect/SupporterSelectList/SupporterSelectList';
 import { SupporterCard } from '@/types/supporterCard';
 
 interface Props {

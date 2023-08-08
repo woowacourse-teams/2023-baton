@@ -1,5 +1,5 @@
-import Button from '@/components/common/Button';
-import Label from '@/components/common/Label';
+import Button from '@/components/common/Button/Button';
+import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { ProfileRunnerPost } from '@/types/profile';

@@ -1,4 +1,4 @@
-import Avatar from '@/components/common/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import { SupporterCard } from '@/types/supporterCard';
 import React from 'react';
 import styled from 'styled-components';

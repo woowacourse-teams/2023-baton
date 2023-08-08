@@ -5,7 +5,7 @@ import LogoImage from '@/assets/logo-image.svg';
 import { useToken } from '@/hooks/useToken';
 import { GetRunnerProfileResponse } from '@/types/profile';
 import { BATON_BASE_URL } from '@/constants';
-import Avatar from '@/components/common/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 
 const Header = () => {
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();

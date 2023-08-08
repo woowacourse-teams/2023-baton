@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { styled } from 'styled-components';
-import Tag from './common/Tag';
+import Tag from '../common/Tag/Tag';
 
 interface Props {
   tags: string[];
