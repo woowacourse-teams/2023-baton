@@ -40,7 +40,7 @@ public class SupporterTechnicalTag {
     private TechnicalTag technicalTag;
 
     @Builder
-    public SupporterTechnicalTag(final Supporter supporter, final TechnicalTag technicalTag) {
+    private SupporterTechnicalTag(final Supporter supporter, final TechnicalTag technicalTag) {
         this(null, supporter, technicalTag);
     }
 
