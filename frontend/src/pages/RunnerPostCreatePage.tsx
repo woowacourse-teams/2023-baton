@@ -1,7 +1,7 @@
-import InputBox from '@/components/InputBox';
-import TagInput from '@/components/TagInput';
-import TextArea from '@/components/Textarea';
-import Button from '@/components/common/Button';
+import InputBox from '@/components/InputBox/InputBox';
+import TagInput from '@/components/TagInput/TagInput';
+import TextArea from '@/components/Textarea/Textarea';
+import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import React, { useState } from 'react';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import PostTagList from '@/components/PostTagList';
-import ConfirmModal from '@/components/ConfirmModal';
+import PostTagList from '@/components/PostTagList/PostTagList';
+import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 
 describe('컴포넌트를 렌더링 한다.', () => {
   test('PostTagList: 개발 언어 태그 렌더링', () => {

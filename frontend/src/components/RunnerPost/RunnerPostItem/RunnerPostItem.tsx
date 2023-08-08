@@ -1,9 +1,9 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import Avatar from '@/components/common/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import { RunnerPost } from '@/types/runnerPost';
-import Label from '@/components/common/Label';
+import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import eyeIcon from '@/assets/eye-icon.svg';
 import chattingIcon from '@/assets/chatting-icon.svg';

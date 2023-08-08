@@ -1,6 +1,6 @@
-import ListFilter from '@/components/ListFilter';
+import ListFilter from '@/components/ListFilter/ListFilter';
 import ProfileRunnerPostItem from '@/components/Profile/ProfileRunnerPostItem/ProfileRunnerPostItem';
-import Avatar from '@/components/common/Avatar';
+import Avatar from '@/components/common/Avatar/Avatar';
 import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
