@@ -4,12 +4,9 @@ import TextArea from '@/components/Textarea';
 import Button from '@/components/common/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import SelectSupportModal from '@/components/SelectSupportModal';
-import SelectedSupporter from '@/components/SelectedSupporter';
 import { BATON_BASE_URL } from '@/constants';
-import { SupporterCard } from '@/types/supporterCard';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 
@@ -22,21 +19,6 @@ const RunnerPostCreatePage = () => {
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
   const [deadline, setDeadline] = useState<string>('');
   const [contents, setContents] = useState<string>('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedSupporter, setSelectedSupporter] = useState<SupporterCard | null>(null);
-
-  useEffect(() => {
-    const handleEsc = (event: any) => {
-      if (event.keyCode === 27) {
-        setIsModalOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-
-    return () => {
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, []);
 
   const pushTag = (newTag: string) => {
     if (newTag.length > 15) return alert('태그명은 15자 이내로 입력해주세요.');
@@ -88,19 +70,6 @@ const RunnerPostCreatePage = () => {
     goBack();
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const handleSelectButton = (selectedSupporter: SupporterCard) => {
-    setSelectedSupporter(selectedSupporter);
-    setIsModalOpen(false);
-  };
-
   const goToNextForm = () => {
     try {
       validateInputs();
@@ -146,7 +115,6 @@ const RunnerPostCreatePage = () => {
       pullRequestUrl,
       deadline,
       contents,
-      supporterId: selectedSupporter ? selectedSupporter?.supporterId : 0,
     };
 
     try {
@@ -194,35 +162,6 @@ const RunnerPostCreatePage = () => {
               <S.DeadlineTime type="time" onChange={changeDeadlineTime} />
             </S.DeadlineContainer>
           </S.InputContainer>
-          {selectedSupporter ? (
-            <S.SelectedSupporter>
-              <SelectedSupporter {...selectedSupporter} />
-              <Button
-                type="button"
-                width="120px"
-                height="45px"
-                colorTheme="GRAY"
-                fontSize="14px"
-                fontWeight={700}
-                onClick={openModal}
-              >
-                다른 서포터 선택
-              </Button>
-            </S.SelectedSupporter>
-          ) : (
-            <Button
-              type="button"
-              width="300px"
-              height="105px"
-              colorTheme="WHITE"
-              fontSize="14px"
-              fontWeight={700}
-              onClick={openModal}
-            >
-              서포터 선택
-            </Button>
-          )}
-
           <TextArea
             inputTextState={contents}
             width="1200px"
@@ -242,8 +181,6 @@ const RunnerPostCreatePage = () => {
           </S.ButtonContainer>
         </S.Form>
       </S.FormContainer>
-
-      {isModalOpen && <SelectSupportModal closeModal={closeModal} handleSelectButton={handleSelectButton} />}
     </Layout>
   );
 };

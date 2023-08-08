@@ -3,6 +3,7 @@ export type ReviewStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'DONE';
 export interface GetRunnerPostResponse {
   data: RunnerPost[];
 }
+
 export interface RunnerPost {
   runnerPostId: number;
   title: string;
@@ -43,5 +44,4 @@ export interface CreateRunnerPostRequest {
   pullRequestUrl: string;
   deadline: string;
   contents: string;
-  supporterId: number;
 }
