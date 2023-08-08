@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -68,7 +67,6 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
                 () -> assertThat(actual.getPullRequestUrl()).isEqualTo(new PullRequestUrl(PULL_REQUEST_URL)),
                 () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(DEADLINE)),
                 () -> assertThat(actual.getWatchedCount()).isEqualTo(new WatchedCount(0)),
-                () -> assertThat(actual.getChattingCount()).isEqualTo(new ChattingCount(0)),
                 () -> assertThat(actual.getRunner()).isEqualTo(runner)
         );
     }

@@ -2,15 +2,13 @@ package touch.baton.domain.tag;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.Grade;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 
@@ -35,8 +33,6 @@ class RunnerPostTagsTest {
                 .imageUrl(new ImageUrl("김석호"))
                 .build();
         Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(member)
                 .build();
         final RunnerPost runnerpost = RunnerPost.newInstance("리뷰해주세요.", "제발요.", "https://github.com/cookienc", LocalDateTime.of(2099, 12, 12, 0, 0), runner);

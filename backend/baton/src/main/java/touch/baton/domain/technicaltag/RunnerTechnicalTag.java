@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.runner.Runner;
 import touch.baton.domain.tag.exception.SupporterTechnicalTagDomainException;
 
 import java.util.Objects;
@@ -21,43 +21,43 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
-public class SupporterTechnicalTag {
+public class RunnerTechnicalTag {
 
     @GeneratedValue(strategy = IDENTITY)
     @Id
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "supporter_id",
+    @JoinColumn(name = "runner_id",
             nullable = false,
-            foreignKey = @ForeignKey(name = "fk_supporter_technical_tag_to_supporter"))
-    private Supporter supporter;
+            foreignKey = @ForeignKey(name = "fk_runner_technical_tag_to_runner"))
+    private Runner runner;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "technical_tag_id",
             nullable = false,
-            foreignKey = @ForeignKey(name = "fk_supporter_technical_tag_to_technical_tag"))
+            foreignKey = @ForeignKey(name = "fk_runner_technical_tag_to_technical_tag"))
     private TechnicalTag technicalTag;
 
     @Builder
-    private SupporterTechnicalTag(final Supporter supporter, final TechnicalTag technicalTag) {
-        this(null, supporter, technicalTag);
+    private RunnerTechnicalTag(final Runner runner, final TechnicalTag technicalTag) {
+        this(null, runner, technicalTag);
     }
 
-    private SupporterTechnicalTag(final Long id, final Supporter supporter, final TechnicalTag technicalTag) {
-        validateNotNull(supporter, technicalTag);
+    private RunnerTechnicalTag(final Long id, final Runner runner, final TechnicalTag technicalTag) {
+        validateNotNull(runner, technicalTag);
         this.id = id;
-        this.supporter = supporter;
+        this.runner = runner;
         this.technicalTag = technicalTag;
     }
 
-    private void validateNotNull(final Supporter supporter, final TechnicalTag technicalTag) {
-        if (Objects.isNull(supporter)) {
-            throw new SupporterTechnicalTagDomainException("SupporterTechnicalTag 의 supporter 는 null 일 수 없습니다.");
+    private void validateNotNull(final Runner runner, final TechnicalTag technicalTag) {
+        if (Objects.isNull(runner)) {
+            throw new SupporterTechnicalTagDomainException("RunnerTechnicalTag 의 runner 는 null 일 수 없습니다.");
         }
 
         if (Objects.isNull(technicalTag)) {
-            throw new SupporterTechnicalTagDomainException("SupporterTechnicalTag 의 technicalTag 는 null 일 수 없습니다.");
+            throw new SupporterTechnicalTagDomainException("RunnerTechnicalTag 의 technicalTag 는 null 일 수 없습니다.");
         }
     }
 }

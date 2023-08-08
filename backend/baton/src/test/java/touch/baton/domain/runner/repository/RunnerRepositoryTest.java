@@ -5,16 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.common.vo.Grade;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 
 import java.util.Optional;
@@ -30,8 +28,6 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
     private static final GithubUrl githubUrl = new GithubUrl("github.com/hyena0608");
     private static final Company company = new Company("우아한형제들");
     private static final ImageUrl imageUrl = new ImageUrl("김석호");
-    private static final TotalRating totalRating = new TotalRating(100);
-    private static final Grade grade = Grade.BARE_FOOT;
 
     @Autowired
     private RunnerRepository runnerRepository;
@@ -54,8 +50,6 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
         memberRepository.save(member);
 
         runner = Runner.builder()
-                .totalRating(totalRating)
-                .grade(grade)
                 .member(member)
                 .build();
     }
