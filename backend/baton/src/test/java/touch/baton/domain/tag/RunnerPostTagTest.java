@@ -5,18 +5,16 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -24,9 +22,7 @@ import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
-import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
@@ -61,16 +57,11 @@ class RunnerPostTagTest {
                 .build();
 
         private final Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(runnerMember)
                 .build();
 
         private final Supporter supporter = Supporter.builder()
                 .reviewCount(new ReviewCount(10))
-                .starCount(new StarCount(10))
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(supporterMember)
                 .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();

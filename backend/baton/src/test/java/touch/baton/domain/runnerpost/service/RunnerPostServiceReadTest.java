@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.common.vo.ChattingCount;
 import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
@@ -64,8 +62,6 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         memberRepository.save(member);
 
         final Runner runner = Runner.builder()
-                .totalRating(new TotalRating(100))
-                .grade(Grade.BARE_FOOT)
                 .member(member)
                 .build();
         runnerRepository.save(runner);

@@ -3,14 +3,10 @@ package touch.baton.domain.technicaltag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.Grade;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.domain.tag.exception.SupporterTechnicalTagDomainException;
-import touch.baton.domain.tag.exception.TagDomainException;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
@@ -32,9 +28,6 @@ class SupporterTechnicalTagTest {
 
         private final Supporter supporter = SupporterFixture.create(
                 new ReviewCount(0),
-                new StarCount(0),
-                new TotalRating(10),
-                Grade.BARE_FOOT,
                 member,
                 new ArrayList<>());
 

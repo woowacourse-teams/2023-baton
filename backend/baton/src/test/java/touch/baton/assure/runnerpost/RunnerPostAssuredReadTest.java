@@ -3,7 +3,6 @@ package touch.baton.assure.runnerpost;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.domain.common.vo.Grade;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
@@ -20,7 +19,6 @@ import java.util.Collections;
 import static touch.baton.fixture.vo.ChattingCountFixture.chattingCount;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
-import static touch.baton.fixture.vo.TotalRatingFixture.totalRating;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -30,7 +28,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member memberHyena = memberRepository.save(MemberFixture.createHyena());
-        final Runner runnerHyena = runnerRepository.save(RunnerFixture.create(totalRating(0), Grade.BARE_FOOT, introduction("안녕하세요"), memberHyena));
+        final Runner runnerHyena = runnerRepository.save(RunnerFixture.create(introduction("안녕하세요"), memberHyena));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerHyena, deadline(LocalDateTime.now().plusHours(100))));
 
         RunnerPostAssuredSupport

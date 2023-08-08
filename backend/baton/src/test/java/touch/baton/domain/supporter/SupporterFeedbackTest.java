@@ -4,15 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.Grade;
-import touch.baton.domain.common.vo.TotalRating;
 import touch.baton.domain.feedback.exception.SupporterFeedbackException;
 import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.supporter.vo.StarCount;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -46,9 +43,6 @@ class SupporterFeedbackTest {
         @BeforeEach
         void setUp() {
             supporter = SupporterFixture.create(new ReviewCount(0),
-                    new StarCount(0),
-                    new TotalRating(0),
-                    Grade.BARE_FOOT,
                     MemberFixture.createEthan(),
                     new ArrayList<>());
 
