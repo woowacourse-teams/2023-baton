@@ -53,7 +53,6 @@ public class RunnerPostService {
             }
 
             final Tag presentTag = maybeTag.get();
-            presentTag.increaseCount();
             toSaveTags.add(presentTag);
         }
 
@@ -102,7 +101,6 @@ public class RunnerPostService {
             }
 
             final Tag presentTag = maybeTag.get();
-            presentTag.increaseCount();
             toSaveTags.add(presentTag);
         }
 
@@ -136,11 +134,6 @@ public class RunnerPostService {
             throw new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
         }
 
-        runnerPostTagRepository.joinTagByRunnerPostId(runnerPostId)
-                .stream()
-                .map(RunnerPostTag::getTag)
-                .forEach(Tag::decreaseCount);
-
         runnerPostRepository.deleteById(runnerPostId);
     }
 
@@ -160,7 +153,6 @@ public class RunnerPostService {
         final List<touch.baton.domain.tag.Tag> presentTags = presentRunnerPostTags.stream()
                 .map(RunnerPostTag::getTag)
                 .toList();
-        presentTags.forEach(Tag::decreaseCount);
 
         // TODO: 새로운 tag 로 교체 메소드 분리
         final List<RunnerPostTag> removedRunnerPostTags = new ArrayList<>(presentRunnerPostTags);
@@ -170,7 +162,6 @@ public class RunnerPostService {
                     .findFirst();
             if (existRunnerPostTag.isPresent()) {
                 removedRunnerPostTags.remove(existRunnerPostTag.get());
-                existRunnerPostTag.get().getTag().increaseCount();
             }
             if (existRunnerPostTag.isEmpty()) {
                 // TODO: tag 찾기 메소드 분리
@@ -184,7 +175,6 @@ public class RunnerPostService {
                     runnerPost.appendRunnerPostTag(newRunnerPostTag);
                 }
                 if (tag.isPresent()) {
-                    tag.get().increaseCount();
                     final RunnerPostTag newRunnerPostTag = runnerPostTagRepository.save(RunnerPostTag.builder()
                             .runnerPost(runnerPost)
                             .tag(tag.get())
