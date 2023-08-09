@@ -1,9 +1,7 @@
 name: frontend_cd
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
     branches:
       - deploy/FE
 
@@ -16,7 +14,6 @@ permissions:
 
 jobs:
   build-and-upload:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -44,7 +41,7 @@ jobs:
 
   deploy:
     needs: build-and-upload
-    runs-on: [self-hosted, Linux, ARM64, deploy]
+    runs-on: [self-hosted, Linux, ARM64]
 
     steps:
       - name: Remove previous version app
