@@ -5,10 +5,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.exception.TagDomainException;
-import touch.baton.domain.tag.vo.TagCount;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class TagTest {
 
@@ -21,7 +20,6 @@ class TagTest {
         void success() {
             assertThatCode(() -> Tag.builder()
                     .tagName(new TagName("자바"))
-                    .tagCount(new TagCount(0))
                     .build()
             ).doesNotThrowAnyException();
         }
@@ -31,51 +29,9 @@ class TagTest {
         void fail_if_tagName_is_null() {
             assertThatThrownBy(() -> Tag.builder()
                     .tagName(null)
-                    .tagCount(new TagCount(0))
                     .build()
             ).isInstanceOf(TagDomainException.class)
                     .hasMessage("Tag 의 tagName 은 null 일 수 없습니다.");
         }
-
-        @DisplayName("tag count 가 null 이 들어갈 경우 예외가 발생한다.")
-        @Test
-        void fail_if_tagCount_is_null() {
-            assertThatThrownBy(() -> Tag.builder()
-                    .tagName(new TagName("자바"))
-                    .tagCount(null)
-                    .build()
-            ).isInstanceOf(TagDomainException.class)
-                    .hasMessage("Tag 의 tagCount 는 null 일 수 없습니다.");
-        }
-    }
-
-    @DisplayName("기본 count 를 가진 tag 를 생성할 수 있다.")
-    @Test
-    void createDefaultTag() {
-        // given
-        final String tagName = "Java";
-        final Tag tag = Tag.newInstance(tagName);
-
-        // when, then
-        assertAll(
-                () -> assertThat(tag.getTagName()).isEqualTo(new TagName(tagName)),
-                () -> assertThat(tag.getTagCount()).isEqualTo(new TagCount(1))
-        );
-    }
-
-    @DisplayName("Tag 의 count는 1개씩 증가한다.")
-    @Test
-    void increaseCount() {
-        // given
-        final Tag tag = Tag.newInstance("Java");
-
-        // when
-        tag.increaseCount();
-
-        // then
-        assertAll(
-                () -> assertThat(tag.getTagName()).isEqualTo(new TagName("Java")),
-                () -> assertThat(tag.getTagCount()).isEqualTo(new TagCount(2))
-        );
     }
 }

@@ -23,7 +23,6 @@ import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagCount;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -72,7 +71,6 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
 
         final Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
-                .tagCount(new TagCount(1))
                 .build();
         tagRepository.save(tag);
 
