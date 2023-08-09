@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.exception.TagDomainException;
-import touch.baton.domain.tag.vo.TagCount;
 
 import java.util.Objects;
 
@@ -28,44 +27,27 @@ public class Tag {
     @Embedded
     private TagName tagName;
 
-    @Embedded
-    private TagCount tagCount;
-
     @Builder
-    private Tag(final TagName tagName, final TagCount tagCount) {
-        this(null, tagName, tagCount);
+    private Tag(final TagName tagName) {
+        this(null, tagName);
     }
 
-    private Tag(final Long id, final TagName tagName, final TagCount tagCount) {
-        validateNotNull(tagName, tagCount);
+    private Tag(final Long id, final TagName tagName) {
+        validateNotNull(tagName);
         this.id = id;
         this.tagName = tagName;
-        this.tagCount = tagCount;
     }
 
-    private void validateNotNull(final TagName tagName, final TagCount tagCount) {
+    private void validateNotNull(final TagName tagName) {
         if (Objects.isNull(tagName)) {
             throw new TagDomainException("Tag 의 tagName 은 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(tagCount)) {
-            throw new TagDomainException("Tag 의 tagCount 는 null 일 수 없습니다.");
         }
     }
 
     public static Tag newInstance(final String tagName) {
         return Tag.builder()
                 .tagName(new TagName(tagName))
-                .tagCount(TagCount.init())
                 .build();
-    }
-
-    public void increaseCount() {
-        this.tagCount = tagCount.increase();
-    }
-
-    public void decreaseCount() {
-        this.tagCount = tagCount.decrease();
     }
 
     public boolean isSameTagName(final String tagName) {
