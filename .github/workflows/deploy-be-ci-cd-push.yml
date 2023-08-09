@@ -2,11 +2,11 @@ name: All deploy CI + CD on push
 
 on:
   push:
-    branches: [ "deploy" ]
+    branches: [ "deploy/BE" ]
 
 jobs:
-  deploy-ci-be:
-    runs-on: ubuntu-latest
+  deploy-ci:
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
@@ -45,23 +45,8 @@ jobs:
       - name: Docker Hub Push
         run: docker push 2023batondeploy/2023-baton-deploy
 
-  deploy-ci-fe:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: 의존성을 설치한다
-        run: npm install
-
-      - name: 테스트를 수행한다
-        run: npm run test
-
-  deploy-cd-be:
-    needs: deploy-ci-be
+  deploy-cd:
+    needs: deploy-ci
     runs-on: [self-hosted, Linux, ARM64, deploy]
 
     steps:
