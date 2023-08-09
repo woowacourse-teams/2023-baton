@@ -62,4 +62,4 @@ jobs:
 
       - name: Docker Compose
         run: |
-          sudo docker run --name spring-baton -p 8080:8080 2023batondeploy/2023-baton-deploy:latest 1>> build.log 2>> error.log &
+          sudo docker run --name spring-baton -p 8080:8080 -e TZ=Asia/Seoul 2023batondeploy/2023-baton-deploy:latest 1>> build.log 2>> error.log &
