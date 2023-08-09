@@ -160,15 +160,13 @@ const RunnerPostCreatePage = () => {
 
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
-            <S.DeadlineContainer>
-              <S.Deadline
-                type="datetime-local"
-                value={deadline}
-                max={getDatetime(addDays(nowDate, 365))}
-                min={getDatetime(nowDate)}
-                onChange={changeDeadline}
-              />
-            </S.DeadlineContainer>
+            <S.Deadline
+              type="datetime-local"
+              value={deadline}
+              max={getDatetime(addDays(nowDate, 365))}
+              min={getDatetime(nowDate)}
+              onChange={changeDeadline}
+            />
           </S.InputContainer>
           <TextArea
             inputTextState={contents}
@@ -239,13 +237,9 @@ const S = {
     font-weight: 500px;
   `,
 
-  DeadlineContainer: styled.div`
-    display: flex;
-
-    gap: 20px;
-  `,
-
   Deadline: styled.input`
+    gap: 10px;
+
     &:focus {
       outline: 0;
     }
