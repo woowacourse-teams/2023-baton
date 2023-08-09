@@ -35,6 +35,7 @@ public abstract class RunnerFixture {
         final Runner runner = Runner.builder()
                 .introduction(introduction)
                 .member(member)
+                .runnerTechnicalTags(new RunnerTechnicalTags(new ArrayList<>()))
                 .build();
 
         final List<RunnerTechnicalTag> runnerTechnicalTags = technicalTags.stream()

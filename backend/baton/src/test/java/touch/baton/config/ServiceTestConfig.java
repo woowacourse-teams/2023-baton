@@ -8,6 +8,7 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
+import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 
 public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
@@ -31,4 +32,7 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
     protected SupporterFeedbackRepository supporterFeedbackRepository;
+
+    @Autowired
+    protected TechnicalTagRepository technicalTagRepository;
 }
