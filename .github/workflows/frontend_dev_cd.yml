@@ -27,12 +27,14 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
 
+      - name: Setup environment variables
+        run: |
+          echo "BASE_URL=${{ secrets.REACT_APP_DEV_BASE_URL }}" >> .env
+
       - name: Install Dependancies
         run: npm install
 
-      - name: Build App (Setup Environment Variables)
-        env:
-          BASE_URL: ${{ secrets.REACT_APP_DEV_BASE_URL }}
+      - name: Build App
         run: npm run build
 
       - name: Upload frontend build file to artifact
