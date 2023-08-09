@@ -3,6 +3,12 @@ package touch.baton.fixture.domain;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
+import touch.baton.domain.technicaltag.RunnerTechnicalTag;
+import touch.baton.domain.technicaltag.RunnerTechnicalTags;
+import touch.baton.domain.technicaltag.TechnicalTag;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 
@@ -17,10 +23,36 @@ public abstract class RunnerFixture {
         return Runner.builder()
                 .introduction(introduction)
                 .member(member)
+                .runnerTechnicalTags(new RunnerTechnicalTags(new ArrayList<>()))
                 .build();
+    }
+
+    public static Runner create(final Introduction introduction,
+                                final Member member,
+                                final List<TechnicalTag> technicalTags
+    ) {
+
+        final Runner runner = Runner.builder()
+                .introduction(introduction)
+                .member(member)
+                .build();
+
+        final List<RunnerTechnicalTag> runnerTechnicalTags = technicalTags.stream()
+                .map(technicalTag -> RunnerTechnicalTag.builder()
+                        .runner(runner)
+                        .technicalTag(technicalTag)
+                        .build())
+                .toList();
+
+        runner.addAllRunnerTechnicalTags(runnerTechnicalTags);
+        return runner;
     }
 
     public static Runner createRunner(final Member member) {
         return create(introduction("안녕하세요."), member);
+    }
+
+    public static Runner createRunner(final Member member, final List<TechnicalTag> technicalTags) {
+        return create(introduction("안녕하세요."), member, technicalTags);
     }
 }
