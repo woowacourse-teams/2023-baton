@@ -22,8 +22,15 @@ public class RunnerPostAssuredSupport {
 
         private ExtractableResponse<Response> response;
 
+        private String accessToken;
+
+        public RunnerPostClientRequestBuilder 토큰으로_로그인한다(final String accessToken) {
+            this.accessToken = accessToken;
+            return this;
+        }
+
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값);
+            response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값, accessToken);
             return this;
         }
 
