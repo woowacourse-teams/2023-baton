@@ -1,7 +1,7 @@
 import { ReviewStatus } from '@/types/runnerPost';
 
 export const BATON_BASE_URL =
-  process.env.NODE_ENV === 'development' ? 'http://15.164.179.87:8080/api/v1' : process.env.REACT_APP_BASE_URL;
+  process.env.NODE_ENV === 'development' ? 'http://15.164.179.87/api/v1' : process.env.REACT_APP_BASE_URL;
 
 export const REVIEW_STATUS_LABEL_TEXT: { [key in ReviewStatus]: string } = {
   NOT_STARTED: '리뷰 대기중',
