@@ -23,13 +23,14 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.TagCountFixture.tagCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @MockMvcTest(value = RunnerPostController.class)
@@ -44,7 +45,7 @@ class RunnerPostReadApiTest extends RestdocsConfig {
         // given
         final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena());
         final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
-        final Tag javaTag = TagFixture.create(tagName("자바"), tagCount(10));
+        final Tag javaTag = TagFixture.create(tagName("자바"));
         final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline, List.of(javaTag));
         final RunnerPost spyRunnerPost = spy(runnerPost);
 

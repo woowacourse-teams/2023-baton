@@ -22,7 +22,6 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
-import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 
 import java.time.LocalDateTime;
@@ -79,7 +78,6 @@ class RunnerPostTagTest {
 
         private Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
-                .tagCount(new TagCount(0))
                 .build();
 
         @DisplayName("성공한다.")

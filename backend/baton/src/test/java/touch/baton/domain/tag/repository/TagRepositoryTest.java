@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagCount;
 
 import java.util.Optional;
 
@@ -24,7 +23,6 @@ class TagRepositoryTest extends RepositoryTestConfig {
         final String newTagName = "Java";
         final Tag newTag = Tag.builder()
                 .tagName(new TagName(newTagName))
-                .tagCount(new TagCount(0))
                 .build();
         final Tag expected = tagRepository.save(newTag);
 

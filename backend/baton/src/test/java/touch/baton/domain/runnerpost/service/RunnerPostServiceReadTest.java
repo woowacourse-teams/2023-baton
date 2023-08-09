@@ -24,7 +24,6 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagCount;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -81,7 +80,6 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
 
         final Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
-                .tagCount(new TagCount(1))
                 .build();
         tagRepository.save(tag);
 
