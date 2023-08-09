@@ -30,7 +30,9 @@ jobs:
       - name: Install Dependancies
         run: npm install
 
-      - name: Build App
+      - name: Build App (Setup Environment Variables)
+        env:
+          BASE_URL: ${{ secrets.REACT_APP_DEV_BASE_URL }}
         run: npm run build
 
       - name: Upload frontend build file to artifact
