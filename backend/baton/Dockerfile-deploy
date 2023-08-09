@@ -2,6 +2,10 @@ FROM arm64v8/amazoncorretto:17
 
 WORKDIR /app
 
+ENV TZ=Asia/Seoul
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 COPY ./build/libs/baton-0.0.1-SNAPSHOT.jar /app/baton.jar
 
 CMD ["java", "-jar", "-Dspring.profiles.active=deploy", "baton.jar"]
