@@ -19,6 +19,21 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get(final String uri,
+                                                    final String pathParamName,
+                                                    final Long id,
+                                                    final String accessToken
+    ) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .when().log().ifValidationFails()
+                .pathParam(pathParamName, id)
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> get(final String uri, final String pathParamName, final Long id) {
         return RestAssured
                 .given().log().ifValidationFails()
@@ -32,7 +47,7 @@ public class AssuredSupport {
     public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .header("authorization", "Bearer " + accessToken)
+                .auth().preemptive().oauth2(accessToken)
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
