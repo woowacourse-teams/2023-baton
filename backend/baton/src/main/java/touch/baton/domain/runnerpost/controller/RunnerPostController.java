@@ -57,7 +57,7 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}")
-    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
+    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthRunnerPrincipal(required = false) final Runner runner,
                                                                         @PathVariable final Long runnerPostId
     ) {
         final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
@@ -72,7 +72,7 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}/test")
-    public ResponseEntity<RunnerPostResponse.DetailVersionTest> readByRunnerPostIdVersionTest(@AuthRunnerPrincipal final Runner runner,
+    public ResponseEntity<RunnerPostResponse.DetailVersionTest> readByRunnerPostIdVersionTest(@AuthRunnerPrincipal(required = false) final Runner runner,
                                                                                               @PathVariable final Long runnerPostId
     ) {
         final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
