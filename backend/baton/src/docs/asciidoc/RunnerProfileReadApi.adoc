@@ -10,9 +10,9 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-== *로그인된 사용자 프로필 조회*
+== *러너 본인 프로필 조회*
 
-=== *로그인된 사용자 프로필 조회 조회 API*
+=== *러너 본인 프로필 조회 API*
 
 ==== *Http Request*
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/http-request.adoc[]
