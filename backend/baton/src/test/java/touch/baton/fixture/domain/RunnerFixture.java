@@ -45,28 +45,6 @@ public abstract class RunnerFixture {
 
     public static Runner createRunner(final Introduction introduction,
                                       final Member member,
-                                      final List<TechnicalTag> technicalTags
-    ) {
-
-        final Runner runner = Runner.builder()
-                .introduction(introduction)
-                .member(member)
-                .runnerTechnicalTags(new RunnerTechnicalTags(new ArrayList<>()))
-                .build();
-
-        final List<RunnerTechnicalTag> runnerTechnicalTags = technicalTags.stream()
-                .map(technicalTag -> RunnerTechnicalTag.builder()
-                        .runner(runner)
-                        .technicalTag(technicalTag)
-                        .build())
-                .toList();
-
-        runner.addAllRunnerTechnicalTags(runnerTechnicalTags);
-        return runner;
-    }
-
-    public static Runner createRunner(final Introduction introduction,
-                                      final Member member,
                                       final RunnerTechnicalTags runnerTechnicalTags
     ) {
         return Runner.builder()
