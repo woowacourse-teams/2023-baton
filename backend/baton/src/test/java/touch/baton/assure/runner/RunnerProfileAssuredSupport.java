@@ -17,8 +17,8 @@ public class RunnerProfileAssuredSupport {
 
         private ExtractableResponse<Response> response;
 
-        public RunnerProfileClientRequestBuilder 러너_피드백을_상세_조회한다(final Long runnerId) {
-            response = AssuredSupport.get("/api/v1/profile/runner/{runnerId}", "runnerId", runnerId);
+        public RunnerProfileClientRequestBuilder 러너_피드백을_상세_조회한다(final Long 러너_식별자) {
+            response = AssuredSupport.get("/api/v1/profile/runner/{runnerId}", "runnerId", 러너_식별자);
             return this;
         }
 
