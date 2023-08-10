@@ -2,18 +2,18 @@ package touch.baton.fixture.domain;
 
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
+import touch.baton.domain.member.vo.SocialId;
 
 import static touch.baton.fixture.vo.CompanyFixture.company;
-import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 import static touch.baton.fixture.vo.GithubUrlFixture.githubUrl;
 import static touch.baton.fixture.vo.ImageUrlFixture.imageUrl;
 import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
+import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
 public abstract class MemberFixture {
 
@@ -72,6 +72,16 @@ public abstract class MemberFixture {
                 memberName("주디"),
                 socialId("judySocialId"),
                 oauthId("oauth_judy"),
+                githubUrl("https://github.com/"),
+                company("우아한테크코스 5기 백엔드"),
+                imageUrl("https://"));
+    }
+
+    public static Member createWithSocialId(final String socialId) {
+        return create(
+                memberName("디투"),
+                socialId(socialId),
+                oauthId("oauth_ditoo"),
                 githubUrl("https://github.com/"),
                 company("우아한테크코스 5기 백엔드"),
                 imageUrl("https://"));

@@ -1,9 +1,10 @@
 package touch.baton.document.profile.supporter.read;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import touch.baton.config.MockMvcTest;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.controller.SupporterProfileController;
@@ -18,9 +19,7 @@ import java.util.List;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.spy;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -30,11 +29,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@MockMvcTest(SupporterProfileController.class)
+@WebMvcTest(SupporterProfileController.class)
 class SupporterProfileReadApiTest extends RestdocsConfig {
 
     @MockBean
-    protected SupporterService supporterService;
+    private SupporterService supporterService;
+
+    @BeforeEach
+    void setUp() {
+        final SupporterProfileController supporterProfileController = new SupporterProfileController(supporterService);
+        restdocsSetUp(supporterProfileController);
+    }
 
     @DisplayName("서포터 프로필 조회 API")
     @Test

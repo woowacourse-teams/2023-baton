@@ -8,7 +8,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import touch.baton.config.MockMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import touch.baton.config.ArgumentResolverConfig;
+import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipalArgumentResolver;
+import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipalArgumentResolver;
+import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 
 import java.time.LocalDateTime;
 
@@ -16,7 +22,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-@MockMvcTest(value = ConverterConfig.class)
+@WebMvcTest(controllers = ConverterConfig.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
+        ArgumentResolverConfig.class,
+        AuthRunnerPrincipalArgumentResolver.class,
+        AuthSupporterPrincipalArgumentResolver.class,
+        AuthMemberPrincipalArgumentResolver.class
+}))
 class ConverterConfigTest {
 
     @Autowired
