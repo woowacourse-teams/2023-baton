@@ -6,6 +6,7 @@ import touch.baton.domain.runner.Runner;
 import java.util.List;
 
 public record RunnerProfileResponse() {
+
     public record Detail(Long runnerId,
                          String name,
                          String imageUrl,
@@ -30,5 +31,4 @@ public record RunnerProfileResponse() {
                     tagNames);
         }
     }
-
 }
