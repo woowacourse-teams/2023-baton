@@ -22,6 +22,7 @@ import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTags;
+import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
 
         final Runner runner = Runner.builder()
                 .member(saveMember)
+                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
         final Runner saveRunner = runnerRepository.saveAndFlush(runner);
 

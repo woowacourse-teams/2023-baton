@@ -29,4 +29,11 @@ public class RunnerProfileController {
                 .toList();
         return ResponseEntity.ok(new RunnerMyProfileResponse(me, runnerPosts));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<RunnerResponse.MyProfile> readMyProfileByToken(@AuthRunnerPrincipal Runner runner) {
+        final RunnerResponse.MyProfile response = RunnerResponse.MyProfile.from(runner);
+
+        return ResponseEntity.ok(response);
+    }
 }
