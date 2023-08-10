@@ -20,7 +20,7 @@ oauth:
     scope: ${OAUTH_GITHUB_SCOPE}
 
 cors:
-  allowed-origin: http://localhost:8080
+  allowed-origin: http://localhost:3000
 
 jwt:
   token:
