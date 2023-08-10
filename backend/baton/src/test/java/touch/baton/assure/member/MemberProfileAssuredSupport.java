@@ -18,14 +18,22 @@ public class MemberProfileAssuredSupport {
         return new MemberClientRequestBuilder();
     }
 
-    public static LoginMemberInfoResponse 로그인_한_맴버_프로필_응답(final Member 맴버) {
+    public static LoginMemberInfoResponse 로그인한_사용자_프로필_응답(final Member 맴버) {
         return LoginMemberInfoResponse.from(맴버);
     }
+
     public static class MemberClientRequestBuilder {
 
         private ExtractableResponse<Response> response;
 
-        public MemberClientRequestBuilder 로그인_유저_프로필을_액세스_토큰으로_조회한다(final String accessToken) {
+        private String accessToken;
+
+        public MemberClientRequestBuilder 로그인_한다(final String 토큰) {
+            accessToken = 토큰;
+            return this;
+        }
+
+        public MemberClientRequestBuilder 사용자_본인_프로필을_가지고_있는_토큰으로_조회한다() {
             response = AssuredSupport.get("api/v1/profile/me", accessToken);
             return this;
         }
@@ -43,7 +51,7 @@ public class MemberProfileAssuredSupport {
             this.response = response;
         }
 
-        public void 맴버_로그인_프로필_조회_성공을_검증한다(final LoginMemberInfoResponse 맴버_로그인_프로필_응답) {
+        public void 로그인한_사용자_프로필_조회_성공을_검증한다(final LoginMemberInfoResponse 맴버_로그인_프로필_응답) {
             final LoginMemberInfoResponse actual = this.response.as(LoginMemberInfoResponse.class);
 
             assertSoftly(softly -> {

@@ -14,7 +14,6 @@ import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
 @RestController
 public class MemberProfileController {
 
-    // TODO: 2023/08/09 테스트 코드 작성
     @GetMapping("/me")
     ResponseEntity<LoginMemberInfoResponse> readLoginMemberInfo(@AuthMemberPrincipal final Member member) {
         return ResponseEntity.ok(LoginMemberInfoResponse.from(member));

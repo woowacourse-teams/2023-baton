@@ -34,6 +34,7 @@ class SupporterProfileReadApiTest extends RestdocsConfig {
 
     @MockBean
     private SupporterService supporterService;
+
     @BeforeEach
     void setUp() {
         final SupporterProfileController supporterProfileController = new SupporterProfileController(supporterService);

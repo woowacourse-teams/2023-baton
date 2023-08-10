@@ -57,7 +57,7 @@ public class MemberLoginProfileReadApiTest extends RestdocsConfig {
                 .thenReturn(Optional.ofNullable(member));
 
         // then
-        mockMvc.perform(get("/api/v1/profile/me").header("Authorization", "Bearer " + token))
+        mockMvc.perform(get("/api/v1/profile/me").header(AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isOk())
                 .andDo(restDocs.document(
                         requestHeaders(headerWithName(AUTHORIZATION).description("Bearer JWT")),
