@@ -1,0 +1,24 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: investment
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+== *로그인된 사용자 프로필 조회*
+
+=== *로그인된 사용자 프로필 조회 조회 API*
+
+==== *Http Request*
+include::{snippets}/../../build/generated-snippets/runner-profile-read-test/read-runner-profile/http-request.adoc[]
+
+==== *Http Response*
+include::{snippets}/../../build/generated-snippets/runner-profile-read-test/read-runner-profile/http-response.adoc[]
+
+==== *Http Response Fields*
+include::{snippets}/../../build/generated-snippets/runner-profile-read-test/read-runner-profile/response-fields.adoc[]
