@@ -5,12 +5,28 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { MyPageRunnerPost } from '@/types/myPage';
 import React from 'react';
 import styled from 'styled-components';
+import eyeIcon from '@/assets/eye-icon.svg';
+import chattingIcon from '@/assets/chatting-icon.svg';
 
 interface Props extends MyPageRunnerPost {}
 
-const MyPageRunnerPostItem = ({ runnerPostId, title, deadline, reviewStatus, tags }: Props) => {
-  const handleClickFeedbackButton = () => {
-    alert('준비중인 기능입니다');
+const MyPageRunnerPostItem = ({
+  runnerPostId,
+  title,
+  deadline,
+  reviewStatus,
+  tags,
+  watchedCount,
+  applicantCount,
+}: Props) => {
+  const handleClickSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    alert('준비중인 서포터 선택 기능입니다');
+  };
+
+  const handleClickFeedbackButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    alert('준비중인 후기 작성 기능입니다');
   };
 
   const { goToRunnerPostPage } = usePageRouter();
@@ -36,15 +52,22 @@ const MyPageRunnerPostItem = ({ runnerPostId, title, deadline, reviewStatus, tag
         </S.TagContainer>
       </S.LeftSideContainer>
       <S.RightSideContainer>
+        <S.ChatViewContainer>
+          <S.statisticsContainer>
+            <S.statisticsImage src={eyeIcon} />
+            <S.statisticsText>{watchedCount}</S.statisticsText>
+            <S.statisticsImage src={chattingIcon} />
+            <S.statisticsText>{applicantCount}</S.statisticsText>
+          </S.statisticsContainer>
+        </S.ChatViewContainer>
+        {reviewStatus === 'NOT_STARTED' ? (
+          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+            서포터 선택하기
+          </Button>
+        ) : null}
         {reviewStatus === 'DONE' ? (
-          <Button
-            colorTheme="WHITE"
-            fontWeight={700}
-            width={'180px'}
-            height={'40px'}
-            onClick={handleClickFeedbackButton}
-          >
-            피드백 작성
+          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
+            후기 작성
           </Button>
         ) : null}
       </S.RightSideContainer>
@@ -110,5 +133,37 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: end;
+    gap: 15px;
+  `,
+
+  ChatViewContainer: styled.div`
+    display: flex;
+    justify-content: end;
+
+    gap: 10px;
+
+    font-size: 12px;
+  `,
+
+  statisticsContainer: styled.div`
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-bottom: auto;
+
+    & > p {
+      color: #a4a4a4;
+    }
+  `,
+
+  statisticsImage: styled.img`
+    width: 20px;
+
+    margin-left: 8px;
+  `,
+
+  statisticsText: styled.p`
+    font-size: 14px;
   `,
 };
