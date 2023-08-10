@@ -1,6 +1,4 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -23,15 +21,6 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '/public/index.html'),
-    }),
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
-    new webpack.EnvironmentPlugin(['REACT_APP_BASE_URL']),
-  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, '../src'),
