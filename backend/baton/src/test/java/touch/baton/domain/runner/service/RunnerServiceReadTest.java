@@ -25,7 +25,7 @@ class RunnerServiceReadTest extends ServiceTestConfig {
         runnerService = new RunnerService(runnerRepository);
     }
 
-    @DisplayName("러너를 멤버와 함께 조회한다.")
+    @DisplayName("러너를 사용자와 함께 조회한다.")
     @Test
     void readRunnerWithMember() {
         // given

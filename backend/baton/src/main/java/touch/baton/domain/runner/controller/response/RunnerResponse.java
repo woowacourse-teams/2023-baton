@@ -2,6 +2,8 @@ package touch.baton.domain.runner.controller.response;
 
 import touch.baton.domain.runner.Runner;
 
+import java.util.List;
+
 public record RunnerResponse() {
 
     public record Detail(Long runnerId,
@@ -43,6 +45,32 @@ public record RunnerResponse() {
                     runner.getMember().getGithubUrl().getValue(),
                     runner.getIntroduction().getValue()
             );
+        }
+    }
+
+    public record MyProfile(String name,
+                            String company,
+                            String imageUrl,
+                            String githubUrl,
+                            String introduction,
+                            List<String> technicalTags
+    ) {
+
+        public static MyProfile from(final Runner runner) {
+            return new MyProfile(
+                    runner.getMember().getMemberName().getValue(),
+                    runner.getMember().getCompany().getValue(),
+                    runner.getMember().getImageUrl().getValue(),
+                    runner.getMember().getGithubUrl().getValue(),
+                    runner.getIntroduction().getValue(),
+                    convertRunnerTechnicalTags(runner)
+            );
+        }
+
+        private static List<String> convertRunnerTechnicalTags(final Runner runner) {
+            return runner.getRunnerTechnicalTags().getRunnerTechnicalTags().stream()
+                    .map(runnerTechnicalTag -> runnerTechnicalTag.getTechnicalTag().getTagName().getValue())
+                    .toList();
         }
     }
 }

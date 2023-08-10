@@ -14,7 +14,9 @@ import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
+import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,6 +53,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
 
         runner = Runner.builder()
                 .member(member)
+                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
     }
 

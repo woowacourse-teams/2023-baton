@@ -26,6 +26,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
+import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
 
         final Runner runner = Runner.builder()
                 .member(saveMember)
+                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
         final Runner saveRunner = runnerRepository.saveAndFlush(runner);
 
@@ -118,7 +120,9 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
 
         final Runner runner = Runner.builder()
                 .member(saveMember)
+                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
+
         final Runner saveRunner = runnerRepository.saveAndFlush(runner);
 
         final LocalDateTime deadline = LocalDateTime.now();

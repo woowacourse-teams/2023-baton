@@ -44,9 +44,9 @@ public class Runner extends BaseEntity {
     private RunnerTechnicalTags runnerTechnicalTags;
 
     @Builder
-    private Runner( final Introduction introduction,
+    private Runner(final Introduction introduction,
                    final Member member,
-                    final RunnerTechnicalTags runnerTechnicalTags
+                   final RunnerTechnicalTags runnerTechnicalTags
     ) {
         this(null, introduction, member, runnerTechnicalTags);
     }
@@ -56,16 +56,20 @@ public class Runner extends BaseEntity {
                    final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
-        validateNotNull(member);
+        validateNotNull(member, runnerTechnicalTags);
         this.id = id;
         this.introduction = introduction;
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
     }
 
-    private void validateNotNull(final Member member) {
+    private void validateNotNull(final Member member, final RunnerTechnicalTags runnerTechnicalTags) {
         if (Objects.isNull(member)) {
             throw new RunnerDomainException("Runner 의 member 는 null 일 수 없습니다.");
+        }
+
+        if (Objects.isNull(runnerTechnicalTags)) {
+            throw new RunnerDomainException("Runner 의 runnerTechnicalTags 는 null 일 수 없습니다.");
         }
     }
 

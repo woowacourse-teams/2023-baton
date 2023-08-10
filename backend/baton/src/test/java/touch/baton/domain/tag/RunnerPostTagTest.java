@@ -23,6 +23,7 @@ import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
+import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ class RunnerPostTagTest {
 
         private final Runner runner = Runner.builder()
                 .member(runnerMember)
+                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
 
         private final Supporter supporter = Supporter.builder()

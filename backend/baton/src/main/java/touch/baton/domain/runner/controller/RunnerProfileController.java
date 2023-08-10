@@ -34,6 +34,13 @@ public class RunnerProfileController {
         return ResponseEntity.ok(new RunnerMyProfileResponse(me, runnerPosts));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<RunnerResponse.MyProfile> readMyProfileByToken(@AuthRunnerPrincipal Runner runner) {
+        final RunnerResponse.MyProfile response = RunnerResponse.MyProfile.from(runner);
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{runnerId}")
     public ResponseEntity<RunnerProfileResponse.Detail> readRunnerProfile(@PathVariable Long runnerId) {
         final Runner runner = runnerService.readRunnerById(runnerId);

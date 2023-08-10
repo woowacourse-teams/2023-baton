@@ -11,8 +11,10 @@ import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,6 +36,7 @@ class RunnerPostTagsTest {
                 .build();
         Runner runner = Runner.builder()
                 .member(member)
+                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
         final RunnerPost runnerpost = RunnerPost.newInstance("리뷰해주세요.", "제발요.", "https://github.com/cookienc", LocalDateTime.of(2099, 12, 12, 0, 0), runner);
 
