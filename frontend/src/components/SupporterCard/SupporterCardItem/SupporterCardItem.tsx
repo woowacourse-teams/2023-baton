@@ -2,8 +2,12 @@ import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
+import { BATON_BASE_URL } from '@/constants';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import { useToken } from '@/hooks/useToken';
 import { Candidate } from '@/types/supporterCandidate';
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 interface Props {
@@ -11,6 +15,11 @@ interface Props {
 }
 
 const SupporterCardItem = ({ supporter }: Props) => {
+  const { runnerPostId } = useParams();
+
+  const { getToken } = useToken();
+  const { goToMyPage } = usePageRouter();
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const openModal = () => {
@@ -19,6 +28,26 @@ const SupporterCardItem = ({ supporter }: Props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const selectSupporter = () => {
+    const token = getToken()?.value;
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/supporters`, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}` },
+      body: JSON.stringify({ supporterId: supporter.supporterId }),
+    })
+      .then(() => {
+        alert('서포터 선택을 완료했습니다');
+      })
+      .catch((error) => {
+        alert(error);
+      })
+      .finally(() => {
+        goToMyPage();
+      });
   };
 
   return (
@@ -59,7 +88,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
         <ConfirmModal
           contents={`정말 ${supporter.name}님을 서포터로 선택하시겠습니까?`}
           closeModal={closeModal}
-          handleClickConfirmButton={() => {}}
+          handleClickConfirmButton={selectSupporter}
         />
       )}
     </S.SupporterCardItemContainer>
