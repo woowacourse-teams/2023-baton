@@ -1,11 +1,13 @@
 package touch.baton.config.converter;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.time.format.DateTimeFormatter;
@@ -24,14 +26,24 @@ public class ConverterConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public Jackson2ObjectMapperBuilderCustomizer localDateTimeConverter() {
-        return jacksonObjectMapperBuilder -> {
-            jacksonObjectMapperBuilder.timeZone(KOREA_TIME_ZONE);
-            jacksonObjectMapperBuilder.simpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
+    public MappingJackson2HttpMessageConverter jackson2HttpMessageConverter() {
+        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+        converter.setObjectMapper(jacksonBuilder().build());
+        return converter;
+    }
 
-            final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT);
-            jacksonObjectMapperBuilder.serializers(new LocalDateTimeSerializer(formatter));
-            jacksonObjectMapperBuilder.deserializers(new LocalDateTimeDeserializer(formatter));
-        };
+    @Bean
+    public Jackson2ObjectMapperBuilder jacksonBuilder() {
+        final Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+
+        builder.timeZone(KOREA_TIME_ZONE);
+        builder.simpleDateFormat(DEFAULT_DATE_TIME_FORMAT);
+
+        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT);
+        builder.serializers(new LocalDateTimeSerializer(formatter));
+        builder.deserializers(new LocalDateTimeDeserializer(formatter));
+        builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        return builder;
     }
 }
