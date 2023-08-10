@@ -13,7 +13,7 @@ import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.ArrayList;
 
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
@@ -45,7 +45,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
                         ReviewStatus.NOT_STARTED,
                         true,
                         RunnerResponse.Detail.from(러너_헤나),
-                        Collections.emptyList()
+                        new ArrayList<>()
                 ));
     }
 }
