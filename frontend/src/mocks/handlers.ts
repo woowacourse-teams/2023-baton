@@ -3,6 +3,7 @@ import runnerPostList from './data/runnerPostList.json';
 import runnerPostDetails from './data/runnerPostDetails.json';
 import supporterCardList from './data/supporterCardList.json';
 import runnerProfile from './data/runnerProfile.json';
+import supporterCandidate from './data/supporterCandidate.json';
 
 export const handlers = [
   rest.post('*/posts/runner/test', async (req, res, ctx) => {
@@ -46,5 +47,9 @@ export const handlers = [
 
   rest.get('*/profile/runner', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+  }),
+
+  rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 ];
