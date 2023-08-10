@@ -19,10 +19,8 @@ public enum ClientErrorCode {
 
     NAME_IS_NULL(HttpStatus.BAD_REQUEST, "MB001", "사용자의 이름을 입력해주세요."),
     COMPANY_IS_NULL(HttpStatus.BAD_REQUEST, "MB002", "사용자의 회사 정보를 입력해주세요."),
-    SUPPORTER_INTRODUCTION_IS_NULL(HttpStatus.BAD_REQUEST, "MB003", "서포터 소개를 입력해주세요."),
-    SUPPORTER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB004", "서포터 기술 태그 목록을 빈 값이라도 입력해주세요."),
-    RUNNER_INTRODUCTION_IS_NULL(HttpStatus.BAD_REQUEST, "MB005", "러너 소개를 입력해주세요."),
-    RUNNER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB007", "러너 기술 태그 목록을 빈 값이라도 입력해주세요."),
+    SUPPORTER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB003", "서포터 기술 태그 목록을 빈 값이라도 입력해주세요."),
+    RUNNER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB004", "러너 기술 태그 목록을 빈 값이라도 입력해주세요."),
 
     OAUTH_REQUEST_URL_PROVIDER_IS_WRONG(HttpStatus.UNAUTHORIZED, "OA001", "redirect 할 url 이 조회되지 않는 잘못된 소셜 타입입니다."),
     OAUTH_INFORMATION_CLIENT_IS_WRONG(HttpStatus.UNAUTHORIZED, "OA002", " 소셜 계정 정보를 조회할 수 없는 잘못된 소셜 타입입니다."),

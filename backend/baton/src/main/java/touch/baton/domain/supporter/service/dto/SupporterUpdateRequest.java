@@ -10,7 +10,6 @@ public record SupporterUpdateRequest(@ValidNotNull(clientErrorCode = NAME_IS_NUL
                                      String name,
                                      @ValidNotNull(clientErrorCode = COMPANY_IS_NULL)
                                      String company,
-                                     @ValidNotNull(clientErrorCode = SUPPORTER_INTRODUCTION_IS_NULL)
                                      String introduction,
                                      @ValidNotNull(clientErrorCode = SUPPORTER_TECHNICAL_TAGS_ARE_NULL)
                                      List<String> technicalTags) {

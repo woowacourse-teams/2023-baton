@@ -85,8 +85,8 @@ public class SupporterProfileAssuredSupport {
             final ErrorResponse actual = this.response.as(ErrorResponse.class);
 
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getErrorCode());
-                softly.assertThat(actual.getErrorCode()).isEqualTo(clientErrorCode.getErrorCode());
+                softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getHttpStatus().value());
+                softly.assertThat(actual.errorCode()).isEqualTo(clientErrorCode.getErrorCode());
             });
         }
     }
