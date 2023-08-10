@@ -1,6 +1,8 @@
 import ListFilter from '@/components/ListFilter/ListFilter';
 import MyPageRunnerPostList from '@/components/MyPage/MyPageRunnerPostList/MyPageRunnerPostList';
+import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
+import Button from '@/components/common/Button/Button';
 import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
@@ -9,6 +11,7 @@ import { ReviewStatus } from '@/types/runnerPost';
 import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import githubIcon from '@/assets/github-icon.svg';
 
 type ReviewPostOptions = SelectOption<ReviewStatus>[];
 
@@ -106,10 +109,15 @@ const MyPage = () => {
             width="100px"
             height="100px"
           />
-          <S.IntroduceContainer>
+          <S.InfoDetailContainer>
             <S.Name>{runnerProfile?.name}</S.Name>
-            <S.Introduce>{runnerProfile?.introduction}</S.Introduce>
-          </S.IntroduceContainer>
+            <S.Company>{runnerProfile?.company}</S.Company>
+            <S.TechLabel>
+              {runnerProfile?.technicalTags.map((tag) => (
+                <TechLabel tag={tag} />
+              ))}
+            </S.TechLabel>
+          </S.InfoDetailContainer>
         </S.InfoContainer>
         <S.ButtonContainer>
           <S.RunnerSupporterButton $isSelected={isRunner}>러너</S.RunnerSupporterButton>
@@ -118,13 +126,22 @@ const MyPage = () => {
           </S.RunnerSupporterButton>
         </S.ButtonContainer>
       </S.ProfileContainer>
+
+      <S.IntroductionContainer>
+        <S.Introduction>{runnerProfile?.introduction}</S.Introduction>
+        <Button width="127px" height="43px" colorTheme="BLACK" fontWeight={700}>
+          <S.Anchor href={runnerProfile?.githubUrl} target="_blank">
+            <img src={githubIcon} />
+            <S.GoToGitHub>Github</S.GoToGitHub>
+          </S.Anchor>
+        </Button>
+      </S.IntroductionContainer>
+
       <S.PostsContainer>
         <S.FilterWrapper>
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
-        <S.ListContainer>
-          <MyPageRunnerPostList filterList={filterList} />
-        </S.ListContainer>
+        <MyPageRunnerPostList filterList={filterList} />
       </S.PostsContainer>
     </Layout>
   );
@@ -134,24 +151,24 @@ export default MyPage;
 
 const S = {
   ProfileContainer: styled.div`
-    padding: 50px;
-    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 50px 0;
   `,
 
   InfoContainer: styled.div`
     display: flex;
     align-items: center;
-    gap: 20px;
 
-    height: 175px;
+    gap: 20px;
   `,
 
-  IntroduceContainer: styled.div`
+  InfoDetailContainer: styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    width: 300px;
   `,
 
   Name: styled.div`
@@ -159,17 +176,18 @@ const S = {
     font-weight: 700;
   `,
 
-  Introduce: styled.div`
-    font-size: 20px;
-
-    white-space: no-wrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  Company: styled.div`
+    font-size: 18px;
+  `,
+  TechLabel: styled.div`
+    display: flex;
+    gap: 8px;
   `,
 
   ButtonContainer: styled.div`
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 10px;
   `,
 
   RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
@@ -177,7 +195,7 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    width: 220px;
+    width: 95px;
     height: 38px;
     border-radius: 18px;
     border: 1px solid ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
@@ -187,16 +205,37 @@ const S = {
     color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
   `,
 
+  IntroductionContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0 10px;
+    margin-bottom: 50px;
+
+    border-left: 3px solid var(--gray-600);
+  `,
+
+  Introduction: styled.div`
+    width: 700px;
+
+    font-size: 18px;
+
+    white-space: no-wrap;
+  `,
+
+  Anchor: styled.a`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  `,
+
+  GoToGitHub: styled.p``,
+
   PostsContainer: styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-  `,
-
-  ListContainer: styled.ul`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
   `,
 
   FilterWrapper: styled.div`

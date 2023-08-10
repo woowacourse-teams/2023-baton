@@ -45,8 +45,8 @@ export const handlers = [
     return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
   }),
 
-  rest.get('*/profile/runner', async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+  rest.get('*/profile/runner/me', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunner));
   }),
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
