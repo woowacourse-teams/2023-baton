@@ -17,6 +17,10 @@ public abstract class RunnerFixture {
     private RunnerFixture() {
     }
 
+    public static Runner createRunner(final Member member) {
+        return createRunner(introduction("안녕하세요."), member, new RunnerTechnicalTags(new ArrayList<>()));
+    }
+
     public static Runner createRunner(final Member member, final List<TechnicalTag> technicalTags) {
         final Runner runner = createRunner(introduction("안녕하세요."), member);
 
@@ -31,9 +35,7 @@ public abstract class RunnerFixture {
         return runner;
     }
 
-    public static Runner createRunner(final Introduction introduction,
-                                      final Member member
-    ) {
+    public static Runner createRunner(final Introduction introduction, final Member member) {
         return Runner.builder()
                 .introduction(introduction)
                 .member(member)
@@ -61,10 +63,6 @@ public abstract class RunnerFixture {
 
         runner.addAllRunnerTechnicalTags(runnerTechnicalTags);
         return runner;
-    }
-
-    public static Runner createRunner(final Member member) {
-        return createRunner(introduction("안녕하세요."), member, new RunnerTechnicalTags(new ArrayList<>()));
     }
 
     public static Runner createRunner(final Introduction introduction,
