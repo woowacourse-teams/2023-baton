@@ -21,7 +21,7 @@ class RunnerProfileAssuredReadTest extends AssuredTestConfig {
     @Test
     void 러너_본인_프로필을_가지고_있는_토큰으로_조회에_성공한다() {
         final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
-        final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.create(introduction("안녕하세요"), 사용자_헤나));
+        final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 사용자_헤나));
         final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
 
         RunnerProfileAssuredSupport

@@ -18,7 +18,7 @@ public abstract class RunnerFixture {
     }
 
     public static Runner createRunner(final Member member, final List<TechnicalTag> technicalTags) {
-        final Runner runner = create(introduction("안녕하세요."), member);
+        final Runner runner = createRunner(introduction("안녕하세요."), member);
 
         final List<RunnerTechnicalTag> runnerTechnicalTags = technicalTags.stream()
                 .map(technicalTag -> RunnerTechnicalTag.builder()
@@ -31,8 +31,8 @@ public abstract class RunnerFixture {
         return runner;
     }
 
-    public static Runner create(final Introduction introduction,
-                                final Member member
+    public static Runner createRunner(final Introduction introduction,
+                                      final Member member
     ) {
         return Runner.builder()
                 .introduction(introduction)
@@ -41,9 +41,9 @@ public abstract class RunnerFixture {
                 .build();
     }
 
-    public static Runner create(final Introduction introduction,
-                                final Member member,
-                                final List<TechnicalTag> technicalTags
+    public static Runner createRunner(final Introduction introduction,
+                                      final Member member,
+                                      final List<TechnicalTag> technicalTags
     ) {
 
         final Runner runner = Runner.builder()
@@ -64,12 +64,12 @@ public abstract class RunnerFixture {
     }
 
     public static Runner createRunner(final Member member) {
-        return create(introduction("안녕하세요."), member, new RunnerTechnicalTags(new ArrayList<>()));
+        return createRunner(introduction("안녕하세요."), member, new RunnerTechnicalTags(new ArrayList<>()));
     }
 
-    public static Runner create(final Introduction introduction,
-                                final Member member,
-                                final RunnerTechnicalTags runnerTechnicalTags
+    public static Runner createRunner(final Introduction introduction,
+                                      final Member member,
+                                      final RunnerTechnicalTags runnerTechnicalTags
     ) {
         return Runner.builder()
                 .introduction(introduction)
