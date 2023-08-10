@@ -1,10 +1,12 @@
 {
-  "profile": {
-    "name": "도리토스",
-    "imageUrl": "profile.jpg",
-    "githubUrl": "github.com/shb03323",
-    "introduction": "안녕하세요 디투입니다."
-  },
+  "name": "에이든",
+  "company": "한국외국어대학교",
+  "imageUrl": "https://avatars.githubusercontent.com/u/62369936?v=4",
+  "githubUrl": "https://github.com/gyeongza",
+  "introduction": "안녕하세요 프론트엔드 공부중인 비전공자 학생입니다🖥️",
+  "technicalTags": ["javascript", "react", "typescript"],
+  "watchedCount": 34,
+  "applicantCount": 4,
   "runnerPosts": [
     {
       "runnerPostId": 1,

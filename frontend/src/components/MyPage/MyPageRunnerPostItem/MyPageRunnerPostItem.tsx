@@ -2,13 +2,13 @@ import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { ProfileRunnerPost } from '@/types/profile';
+import { MyPageRunnerPost } from '@/types/myPage';
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props extends ProfileRunnerPost {}
+interface Props extends MyPageRunnerPost {}
 
-const ProfileRunnerPostItem = ({ runnerPostId, title, deadline, reviewStatus, tags }: Props) => {
+const MyPageRunnerPostItem = ({ runnerPostId, title, deadline, reviewStatus, tags }: Props) => {
   const handleClickFeedbackButton = () => {
     alert('준비중인 기능입니다');
   };
@@ -52,7 +52,7 @@ const ProfileRunnerPostItem = ({ runnerPostId, title, deadline, reviewStatus, ta
   );
 };
 
-export default ProfileRunnerPostItem;
+export default MyPageRunnerPostItem;
 
 const S = {
   RunnerPostItemContainer: styled.li`

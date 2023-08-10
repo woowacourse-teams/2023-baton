@@ -1,10 +1,10 @@
 import ListFilter from '@/components/ListFilter/ListFilter';
-import ProfileRunnerPostItem from '@/components/Profile/ProfileRunnerPostItem/ProfileRunnerPostItem';
+import MyPageRunnerPostItem from '@/components/MyPage/MyPageRunnerPostItem/MyPageRunnerPostItem';
 import Avatar from '@/components/common/Avatar/Avatar';
 import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetRunnerProfileResponse } from '@/types/profile';
+import { GetRunnerProfileResponse } from '@/types/myPage';
 import { ReviewStatus } from '@/types/runnerPost';
 import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
@@ -37,11 +37,11 @@ const MyPage = () => {
 
   const [isRunner, setIsRunner] = useState(true);
 
-  const { getToken } = useToken();
+  const token =
+    'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXRvbiIsImlhdCI6MTY5MTY3MjUwNCwiZXhwIjoxNjk0MjY0NTA0LCJzb2NpYWxJZCI6Imd5ZW9uZ3phIn0.CWUC0Q9Qlw4oRC_CNm-aVKNNGYYUKuVplz16WdreFC8';
 
   const getRunnerProfile = async () => {
     try {
-      const token = getToken()?.value;
       if (!token) throw new Error('토큰이 존재하지 않습니다');
 
       const response = await fetch(`${BATON_BASE_URL}/profile/runner`, {
@@ -102,13 +102,13 @@ const MyPage = () => {
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
-            imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
-            width={'100px'}
-            height={'100px'}
+            imageUrl={runnerProfile?.imageUrl || 'https://via.placeholder.com/150'}
+            width="100px"
+            height="100px"
           />
           <S.IntroduceContainer>
-            <S.Name>{runnerProfile?.profile.name}</S.Name>
-            <S.Introduce>{runnerProfile?.profile.introduction}</S.Introduce>
+            <S.Name>{runnerProfile?.name}</S.Name>
+            <S.Introduce>{runnerProfile?.introduction}</S.Introduce>
           </S.IntroduceContainer>
         </S.InfoContainer>
         <S.ButtonContainer>
@@ -124,7 +124,7 @@ const MyPage = () => {
         </S.FilterWrapper>
         <S.ListContainer>
           {filterList()?.map((item) => (
-            <ProfileRunnerPostItem key={item.runnerPostId} {...item} />
+            <MyPageRunnerPostItem key={item.runnerPostId} {...item} />
           ))}
         </S.ListContainer>
       </S.PostsContainer>
