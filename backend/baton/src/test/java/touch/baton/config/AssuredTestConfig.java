@@ -46,11 +46,6 @@ public abstract class AssuredTestConfig {
     @BeforeEach
     void assuredTestSetUp(@LocalServerPort int port) {
         RestAssured.port = port;
-
-        memberRepository.deleteAll();
-        runnerRepository.deleteAll();
-        runnerPostRepository.deleteAll();
-        supporterRepository.deleteAll();
     }
 
     public String login(final String socialId) {
