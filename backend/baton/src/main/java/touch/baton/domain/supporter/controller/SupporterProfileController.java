@@ -33,6 +33,13 @@ public class SupporterProfileController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<SupporterResponse.MyProfile> readMyProfileByToken(@AuthSupporterPrincipal Supporter supporter) {
+        final SupporterResponse.MyProfile response = SupporterResponse.MyProfile.from(supporter);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PatchMapping("/me")
     public ResponseEntity<Void> updateProfile(@AuthSupporterPrincipal final Supporter supporter,
                                               @RequestBody @Valid final SupporterUpdateRequest request) {
