@@ -20,16 +20,15 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.CompanyFixture.company;
 import static touch.baton.fixture.vo.GithubUrlFixture.githubUrl;
@@ -78,18 +77,20 @@ public class SupporterProfileUpdateApiTest extends RestdocsConfig {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(requestBody))
                 .andExpect(status().isNoContent())
+                .andExpect(header().string("Location", "/api/v1/profile/supporter/me"))
                 .andDo(restDocs.document(
                         requestHeaders(
                                 headerWithName(AUTHORIZATION).description("Bearer JWT"),
                                 headerWithName(CONTENT_TYPE).description("application/json")
-                                ),
+                        ),
                         requestFields(
                                 fieldWithPath("name").type(STRING).description("변경할 이름"),
                                 fieldWithPath("company").type(STRING).description("변경할 소속"),
                                 fieldWithPath("introduction").type(STRING).description("변경할 소개글"),
                                 fieldWithPath("technicalTags.[]").type(ARRAY).description("변경할 기술 태그 목록")
-                        )
-                ))
+                        ),
+                        responseHeaders(headerWithName(LOCATION).description("redirect uri"))
+                        ))
                 .andDo(print());
     }
 }

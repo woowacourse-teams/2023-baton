@@ -34,6 +34,6 @@ public class SupporterProfileController {
     public ResponseEntity<Void> updateProfile(@AuthSupporterPrincipal final Supporter supporter,
                                               @RequestBody @Valid final SupporterUpdateRequest request) {
         supporterService.updateSupporter(supporter, request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().header("Location", "/api/v1/profile/supporter/me").build();
     }
 }

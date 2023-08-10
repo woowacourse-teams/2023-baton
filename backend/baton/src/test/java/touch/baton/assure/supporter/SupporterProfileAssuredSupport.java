@@ -10,7 +10,6 @@ import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.controller.response.SupporterResponse;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -77,8 +76,11 @@ public class SupporterProfileAssuredSupport {
         }
 
         public void 서포터_본인_프로필_수정_성공을_검증한다(final HttpStatus HTTP_STATUS) {
-            assertThat(response.statusCode())
-                    .isEqualTo(HTTP_STATUS.value());
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
+                softly.assertThat(response.header("Location")).isNotNull();
+            });
+
         }
 
         public void 서포터_본인_프로필_수정_실패를_검증한다(final ClientErrorCode clientErrorCode) {
