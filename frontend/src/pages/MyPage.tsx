@@ -1,10 +1,10 @@
 import ListFilter from '@/components/ListFilter/ListFilter';
-import MyPageRunnerPostItem from '@/components/MyPage/MyPageRunnerPostItem/MyPageRunnerPostItem';
+import MyPageRunnerPostList from '@/components/MyPage/MyPageRunnerPostList/MyPageRunnerPostList';
 import Avatar from '@/components/common/Avatar/Avatar';
 import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetRunnerProfileResponse } from '@/types/myPage';
+import { GetRunnerMyPageResponse, MyPageRunnerPost } from '@/types/myPage';
 import { ReviewStatus } from '@/types/runnerPost';
 import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
@@ -31,7 +31,7 @@ const reviewPostOptions: ReviewPostOptions = [
 ];
 
 const MyPage = () => {
-  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
+  const [runnerProfile, setRunnerProfile] = useState<GetRunnerMyPageResponse | null>(null);
 
   const [postOptions, setPostOptions] = useState<ReviewPostOptions>(reviewPostOptions);
 
@@ -44,7 +44,7 @@ const MyPage = () => {
     try {
       if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-      const response = await fetch(`${BATON_BASE_URL}/profile/runner`, {
+      const response = await fetch(`${BATON_BASE_URL}/profile/runner/me`, {
         method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -64,6 +64,7 @@ const MyPage = () => {
   useEffect(() => {
     const fetchRunnerPost = async () => {
       const result = await getRunnerProfile();
+
       setRunnerProfile(result);
     };
 
@@ -83,11 +84,10 @@ const MyPage = () => {
   };
 
   const filterList = () => {
-    const posts = runnerProfile?.runnerPosts;
-    if (!posts) return;
+    const posts = runnerProfile?.runnerPosts || [];
 
     const selectedOption = postOptions.filter((option) => option.selected)[0];
-    if (!selectedOption) return;
+    if (!selectedOption) return [];
 
     const filteredPosts = posts.filter((post) => post.reviewStatus === selectedOption.value);
     return filteredPosts;
@@ -123,9 +123,7 @@ const MyPage = () => {
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
         <S.ListContainer>
-          {filterList()?.map((item) => (
-            <MyPageRunnerPostItem key={item.runnerPostId} {...item} />
-          ))}
+          <MyPageRunnerPostList filterList={filterList} />
         </S.ListContainer>
       </S.PostsContainer>
     </Layout>
