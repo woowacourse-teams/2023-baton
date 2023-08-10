@@ -17,15 +17,13 @@ import static touch.baton.domain.common.exception.ClientErrorCode.*;
 @SuppressWarnings("NonAsciiCharacters")
 public class SupporterProfileAssuredUpdateTest extends AssuredTestConfig {
 
-    private final String 디투_소셜_id = "ditooSocialId";
-    private Member 사용자_디투;
-    private Supporter 서포터_디투;
     private String 디투_액세스_토큰;
 
     @BeforeEach
     void setUp() {
-        사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(디투_소셜_id));
-        서포터_디투 = supporterRepository.save(SupporterFixture.create(사용자_디투));
+        final String 디투_소셜_id = "ditooSocialId";
+        final Member 사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(디투_소셜_id));
+        final Supporter 서포터_디투 = supporterRepository.save(SupporterFixture.create(사용자_디투));
         디투_액세스_토큰 = login(디투_소셜_id);
     }
 
