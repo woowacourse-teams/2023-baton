@@ -6,7 +6,7 @@ export interface GetRunnerMyPageResponse {
   imageUrl: string;
   githubUrl: string;
   introduction: string;
-  technicalLabels: string[];
+  technicalTags: string[];
   runnerPosts: MyPageRunnerPost[];
 }
 
