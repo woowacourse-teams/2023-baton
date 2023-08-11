@@ -33,13 +33,13 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
     protected TagRepository tagRepository;
 
     @Autowired
-    protected RunnerTechnicalTagRepository runnerTechnicalTagRepository;
-
-    @Autowired
     protected SupporterFeedbackRepository supporterFeedbackRepository;
 
     @Autowired
     protected TechnicalTagRepository technicalTagRepository;
+
+    @Autowired
+    protected RunnerTechnicalTagRepository runnerTechnicalTagRepository;
 
     @Autowired
     protected SupporterTechnicalTagRepository supporterTechnicalTagRepository;
