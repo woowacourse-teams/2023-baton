@@ -1,14 +1,8 @@
 {
-  "name": "에이든",
-  "company": "한국외국어대학교",
-  "imageUrl": "https://avatars.githubusercontent.com/u/62369936?v=4",
-  "githubUrl": "https://github.com/gyeongza",
-  "introduction": "안녕하세요 프론트엔드 공부중인 비전공자 학생입니다🖥️",
-  "technicalTags": ["javascript", "react", "typescript"],
-  "runnerPosts": [
+  "data": [
     {
       "runnerPostId": 1,
-      "title": "제목",
+      "title": "끝난 리뷰입니다.",
       "deadline": "마감기한",
       "tags": ["java", "JAVA"],
       "reviewStatus": "DONE",
@@ -17,7 +11,7 @@
     },
     {
       "runnerPostId": 2,
-      "title": "제목2",
+      "title": "서포터를 선택해야하는 리뷰",
       "deadline": "마감기한2",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
@@ -26,7 +20,7 @@
     },
     {
       "runnerPostId": 3,
-      "title": "제목3",
+      "title": "서포터를 선택해야하는 리뷰2",
       "deadline": "마감기한3",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
@@ -35,7 +29,7 @@
     },
     {
       "runnerPostId": 4,
-      "title": "진행중이에요.",
+      "title": "서포터가 이 리뷰를 진행중이에요.",
       "deadline": "마감기한3",
       "tags": ["java", "자바"],
       "reviewStatus": "IN_PROGRESS",

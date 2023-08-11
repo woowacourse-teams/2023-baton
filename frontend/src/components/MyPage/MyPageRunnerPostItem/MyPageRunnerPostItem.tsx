@@ -6,7 +6,7 @@ import { MyPageRunnerPost } from '@/types/myPage';
 import React from 'react';
 import styled from 'styled-components';
 import eyeIcon from '@/assets/eye-icon.svg';
-import chattingIcon from '@/assets/chatting-icon.svg';
+import applicantIcon from '@/assets/applicant-icon.svg';
 
 interface Props extends MyPageRunnerPost {}
 
@@ -56,7 +56,7 @@ const MyPageRunnerPostItem = ({
           <S.statisticsContainer>
             <S.statisticsImage src={eyeIcon} />
             <S.statisticsText>{watchedCount}</S.statisticsText>
-            <S.statisticsImage src={chattingIcon} />
+            <S.statisticsImage src={applicantIcon} />
             <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
