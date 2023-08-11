@@ -82,7 +82,6 @@ class SupporterTest {
     @Test
     void read_supporterTechnicalTags() {
         // given
-
         final Supporter supporter = Supporter.builder()
                 .reviewCount(new ReviewCount(10))
                 .member(member)
