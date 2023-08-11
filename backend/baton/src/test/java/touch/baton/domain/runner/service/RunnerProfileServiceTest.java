@@ -17,11 +17,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RunnerProfileServiceTest extends ServiceTestConfig {
 
-    private RunnerProfileService runnerProfileService;
+    private RunnerService runnerService;
 
     @BeforeEach
     void setUp() {
-        runnerProfileService = new RunnerProfileService(runnerTechnicalTagRepository, technicalTagRepository);
+        runnerService = new RunnerService(runnerRepository, runnerTechnicalTagRepository, technicalTagRepository);
     }
 
     @DisplayName("Runner 의 프로필을 수정한다.")
@@ -33,7 +33,7 @@ class RunnerProfileServiceTest extends ServiceTestConfig {
         final RunnerUpdateRequest runnerUpdateRequest = new RunnerUpdateRequest("변경된 이름", "변경된 회사", "변경된 자기소개", List.of("changedTag1", "changedTag2"));
 
         // when
-        runnerProfileService.updateRunnerProfile(runnerJudy, runnerUpdateRequest);
+        runnerService.updateRunnerProfile(runnerJudy, runnerUpdateRequest);
 
         // then
         assertAll(

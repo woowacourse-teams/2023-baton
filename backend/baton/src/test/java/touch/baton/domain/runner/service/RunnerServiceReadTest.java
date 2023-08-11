@@ -22,7 +22,7 @@ class RunnerServiceReadTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerService = new RunnerService(runnerRepository);
+        runnerService = new RunnerService(runnerRepository, runnerTechnicalTagRepository, technicalTagRepository);
     }
 
     @DisplayName("러너를 사용자와 함께 조회한다.")

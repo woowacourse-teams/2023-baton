@@ -9,7 +9,6 @@ import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.RunnerProfileController;
-import touch.baton.domain.runner.service.RunnerProfileService;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.technicaltag.TechnicalTag;
@@ -48,12 +47,9 @@ class RunnerProfileReadApiTest extends RestdocsConfig {
     @MockBean
     private RunnerService runnerService;
 
-    @MockBean
-    RunnerProfileService runnerProfileService;
-
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerProfileController(runnerPostService, runnerService, runnerProfileService));
+        restdocsSetUp(new RunnerProfileController(runnerPostService, runnerService));
     }
 
     @DisplayName("러너 본인 프로필 조회 API")

@@ -17,7 +17,6 @@ import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
-import touch.baton.domain.runner.service.RunnerProfileService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 
@@ -31,7 +30,6 @@ public class RunnerProfileController {
 
     private final RunnerPostService runnerPostService;
     private final RunnerService runnerService;
-    private final RunnerProfileService runnerProfileService;
 
     @GetMapping
     public ResponseEntity<RunnerMyProfileResponse> readMyProfile(@AuthRunnerPrincipal final Runner runner) {
@@ -52,7 +50,7 @@ public class RunnerProfileController {
     @PatchMapping("/me")
     public ResponseEntity<Void> updateMyProfile(@AuthRunnerPrincipal final Runner runner,
                                                 @RequestBody @Valid final RunnerUpdateRequest runnerUpdateRequest){
-        runnerProfileService.updateRunnerProfile(runner, runnerUpdateRequest);
+        runnerService.updateRunnerProfile(runner, runnerUpdateRequest);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/profile/runner/me").build().toUri();
         return ResponseEntity.noContent().location(redirectUri).build();
     }
