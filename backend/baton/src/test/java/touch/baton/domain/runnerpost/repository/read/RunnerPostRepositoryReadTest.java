@@ -1,24 +1,25 @@
 package touch.baton.domain.runnerpost.repository.read;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
-import touch.baton.domain.tag.repository.TagRepository;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.RunnerPostTagsFixture;
+import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
@@ -37,28 +38,22 @@ import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private RunnerRepository runnerRepository;
-
-    @Autowired
     private RunnerPostRepository runnerPostRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private RunnerPostTagRepository runnerPostTagRepository;
 
     @Autowired
-    private RunnerPostTagRepository runnerPostTagRepository;
+    private EntityManager entityManager;
 
     @DisplayName("RunnerPost 식별자로 RunnerPostTag 목록을 조회할 때 Tag 가 있으면 조회된다.")
     @Test
     void findRunnerPostTagsById_exist() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
-        memberRepository.save(ditoo);
+        entityManager.persist(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
-        runnerRepository.save(runner);
+        entityManager.persist(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 contents("제 코드의 내용은 이렇습니다."),
@@ -72,9 +67,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         runnerPostRepository.save(runnerPost);
 
         final Tag java = TagFixture.createJava();
-        tagRepository.save(java);
+        entityManager.persist(java);
         final Tag spring = TagFixture.createSpring();
-        tagRepository.save(spring);
+        entityManager.persist(spring);
         final RunnerPostTag javaRunnerPostTag = RunnerPostTagFixture.create(runnerPost, java);
         final RunnerPostTag springRunnerPostTag = RunnerPostTagFixture.create(runnerPost, spring);
 
@@ -92,9 +87,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
     void findByRunnerId() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
-        memberRepository.save(ditoo);
+        entityManager.persist(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
-        runnerRepository.save(runner);
+        entityManager.persist(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 contents("제 코드의 내용은 이렇습니다."),
@@ -119,9 +114,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
     void findAllByOrderByCreatedAt() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
-        memberRepository.save(ditoo);
+        entityManager.persist(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
-        runnerRepository.save(runner);
+        entityManager.persist(runner);
 
         final RunnerPost previousRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 contents("제 코드의 내용은 이렇습니다."),
@@ -147,6 +142,53 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
         // when
         final List<RunnerPost> actual = runnerPostRepository.findAllByOrderByCreatedAtDesc();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actual).hasSize(2);
+            softly.assertThat(actual.get(0)).isEqualTo(nextRunnerPost);
+            softly.assertThat(actual.get(1)).isEqualTo(previousRunnerPost);
+        });
+    }
+
+    @DisplayName("Supporter 와 ReviewStatus 로 최신순으로 RunnerPost 를 조회한다")
+    @Test
+    void findBySupporterAndReviewStatusOrderByCreatedAtDesc() {
+        // given
+        final Member ditoo = MemberFixture.createDitoo();
+        entityManager.persist(ditoo);
+        final Runner runner = RunnerFixture.createRunner(ditoo);
+        entityManager.persist(runner);
+        final Member targetMember = MemberFixture.createEthan();
+        entityManager.persist(targetMember);
+        final Supporter targetSupporter = SupporterFixture.create(targetMember);
+        entityManager.persist(targetSupporter);
+        final ReviewStatus reviewStatus = NOT_STARTED;
+
+        final RunnerPost previousRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
+                contents("제 코드의 내용은 이렇습니다."),
+                pullRequestUrl("https://"),
+                deadline(LocalDateTime.now().plusHours(10)),
+                watchedCount(0),
+                reviewStatus,
+                runner,
+                targetSupporter,
+                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+        runnerPostRepository.save(previousRunnerPost);
+
+        final RunnerPost nextRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
+                contents("제 코드의 내용은 이렇습니다."),
+                pullRequestUrl("https://"),
+                deadline(LocalDateTime.now().plusHours(10)),
+                watchedCount(0),
+                reviewStatus,
+                runner,
+                targetSupporter,
+                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+        runnerPostRepository.save(nextRunnerPost);
+
+        // when
+        final List<RunnerPost> actual = runnerPostRepository.findBySupporterAndReviewStatusOrderByCreatedAtDesc(targetSupporter, reviewStatus);
 
         // then
         assertSoftly(softly -> {
