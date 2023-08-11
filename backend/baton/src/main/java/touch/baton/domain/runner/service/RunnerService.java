@@ -11,13 +11,13 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.exception.RunnerBusinessException;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
-import touch.baton.domain.tag.repository.RunnerTechnicalTagRepository;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
 import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -30,7 +30,7 @@ public class RunnerService {
 
     public Runner readRunnerById(final Long runnerId) {
         return runnerRepository.joinMemberByRunnerId(runnerId)
-                .orElseThrow(() -> new RunnerBusinessException("Runner가 존재하지 않습니다."));
+                .orElseThrow(() -> new RunnerBusinessException("Runner 가 존재하지 않습니다."));
     }
 
     @Transactional
@@ -38,25 +38,40 @@ public class RunnerService {
         runner.updateMemberName(new MemberName(runnerUpdateRequest.name()));
         runner.updateCompany(new Company(runnerUpdateRequest.company()));
         runner.updateIntroduction(new Introduction(runnerUpdateRequest.introduction()));
-        runner.updateRunnerTechnicalTags(convertToRunnerTechnicalTags(runner, runnerUpdateRequest));
+        updateTechnicalTags(runner, runnerUpdateRequest);
     }
 
-    private List<RunnerTechnicalTag> convertToRunnerTechnicalTags(final Runner runner, final RunnerUpdateRequest runnerUpdateRequest) {
+    private void updateTechnicalTags(final Runner runner, final RunnerUpdateRequest runnerUpdateRequest) {
+        runnerTechnicalTagRepository.deleteByRunner(runner);
+        createRunnerTechnicalTags(runner, runnerUpdateRequest);
+    }
+
+    private List<RunnerTechnicalTag> createRunnerTechnicalTags(final Runner runner, final RunnerUpdateRequest runnerUpdateRequest) {
         return runnerUpdateRequest.technicalTags().stream()
-                .map(tagName -> {
-                    TechnicalTag technicalTag = TechnicalTag.builder()
-                            .tagName(new TagName(tagName))
-                            .build();
+                .map(tagName -> createRunnerTechnicalTag(runner, new TagName(tagName)))
+                .toList();
+    }
 
-                    technicalTagRepository.save(technicalTag);
+    private RunnerTechnicalTag createRunnerTechnicalTag(final Runner runner, final TagName tagName) {
+        final TechnicalTag technicalTag = findTechnicalTagIfExistElseCreate(tagName);
+        return createRunnerTechnicalTagAndSave(runner, technicalTag);
+    }
 
-                    RunnerTechnicalTag runnerTechnicalTag = RunnerTechnicalTag.builder()
-                            .runner(runner)
-                            .technicalTag(technicalTag)
-                            .build();
-                    runnerTechnicalTagRepository.save(runnerTechnicalTag);
-                    return runnerTechnicalTag;
-                })
-                .collect(Collectors.toList());
+    private TechnicalTag findTechnicalTagIfExistElseCreate(final TagName tagName) {
+        final Optional<TechnicalTag> maybeTechnicalTag = technicalTagRepository.findByTagName(tagName);
+        return maybeTechnicalTag.orElseGet(
+                () -> technicalTagRepository.save(TechnicalTag.builder()
+                        .tagName(tagName)
+                        .build())
+        );
+    }
+
+    private RunnerTechnicalTag createRunnerTechnicalTagAndSave(final Runner runner, final TechnicalTag technicalTag) {
+        RunnerTechnicalTag runnerTechnicalTag = RunnerTechnicalTag.builder()
+                .runner(runner)
+                .technicalTag(technicalTag)
+                .build();
+        runnerTechnicalTagRepository.save(runnerTechnicalTag);
+        return runnerTechnicalTag;
     }
 }

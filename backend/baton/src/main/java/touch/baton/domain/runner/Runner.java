@@ -89,10 +89,6 @@ public class Runner extends BaseEntity {
         this.member.updateCompany(company);
     }
 
-    public void updateRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags){
-        this.runnerTechnicalTags.update(runnerTechnicalTags);
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

@@ -26,13 +26,4 @@ public class RunnerTechnicalTags {
     public void addAll(final List<RunnerTechnicalTag> runnerTechnicalTags) {
         this.runnerTechnicalTags.addAll(runnerTechnicalTags);
     }
-
-    public void clear(){
-        this.runnerTechnicalTags.clear();
-    }
-
-    public void update(final List<RunnerTechnicalTag> runnerTechnicalTags){
-        clear();
-        addAll(runnerTechnicalTags);
-    }
 }
