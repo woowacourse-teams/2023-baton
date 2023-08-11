@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
@@ -74,21 +76,43 @@ public class Supporter extends BaseEntity {
                                  final Member member,
                                  final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        if (Objects.isNull(reviewCount)) {
-            throw new SupporterDomainException("Supporter 의 reviewCount 는 null 일 수 없습니다.");
-        }
+        validateReviewCountNotNull(reviewCount);
+        validateMemberNotNull(member);
+        validateSupporterTechnicalTagsNotNull(supporterTechnicalTags);
+    }
 
-        if (Objects.isNull(member)) {
-            throw new SupporterDomainException("Supporter 의 member 는 null 일 수 없습니다.");
-        }
-
+    private void validateSupporterTechnicalTagsNotNull(final SupporterTechnicalTags supporterTechnicalTags) {
         if (Objects.isNull(supporterTechnicalTags)) {
             throw new SupporterDomainException("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
         }
     }
 
+    private void validateMemberNotNull(final Member member) {
+        if (Objects.isNull(member)) {
+            throw new SupporterDomainException("Supporter 의 member 는 null 일 수 없습니다.");
+        }
+    }
+
+    private void validateReviewCountNotNull(final ReviewCount reviewCount) {
+        if (Objects.isNull(reviewCount)) {
+            throw new SupporterDomainException("Supporter 의 reviewCount 는 null 일 수 없습니다.");
+        }
+    }
+
     public void addAllSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {
         this.supporterTechnicalTags.addAll(supporterTechnicalTags);
+    }
+
+    public void updateMemberName(final MemberName memberName) {
+        this.member.updateMemberName(memberName);
+    }
+
+    public void updateCompany(final Company company) {
+        this.member.updateCompany(company);
+    }
+
+    public void updateIntroduction(final Introduction introduction) {
+        this.introduction = introduction;
     }
 
     @Override

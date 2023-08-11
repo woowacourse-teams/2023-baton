@@ -84,28 +84,57 @@ public class Member extends BaseEntity {
                                  final Company company,
                                  final ImageUrl imageUrl
     ) {
-        if (Objects.isNull(memberName)) {
-            throw new MemberDomainException("Member 의 name 은 null 일 수 없습니다.");
-        }
+        validateMemberNameNotNull(memberName);
+        validateSocialIdNotNull(socialId);
+        validateOauthIdNotNull(oauthId);
+        validateGithubUrlNotNull(githubUrl);
+        validateCompanyNotNull(company);
+        validateImageUrlNotNull(imageUrl);
+    }
 
-        if (Objects.isNull(socialId)) {
-            throw new MemberDomainException("Member 의 socialId 은 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(oauthId)) {
-            throw new MemberDomainException("Member 의 oauthId 는 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(githubUrl)) {
-            throw new MemberDomainException("Member 의 githubUrl 은 null 일 수 없습니다.");
-        }
-
-        if (Objects.isNull(company)) {
-            throw new MemberDomainException("Member 의 company 는 null 일 수 없습니다.");
-        }
-
+    private void validateImageUrlNotNull(final ImageUrl imageUrl) {
         if (Objects.isNull(imageUrl)) {
             throw new MemberDomainException("Member 의 imageUrl 은 null 일 수 없습니다.");
         }
+    }
+
+    private void validateCompanyNotNull(final Company company) {
+        if (Objects.isNull(company)) {
+            throw new MemberDomainException("Member 의 company 는 null 일 수 없습니다.");
+        }
+    }
+
+    private void validateGithubUrlNotNull(final GithubUrl githubUrl) {
+        if (Objects.isNull(githubUrl)) {
+            throw new MemberDomainException("Member 의 githubUrl 은 null 일 수 없습니다.");
+        }
+    }
+
+    private void validateOauthIdNotNull(final OauthId oauthId) {
+        if (Objects.isNull(oauthId)) {
+            throw new MemberDomainException("Member 의 oauthId 는 null 일 수 없습니다.");
+        }
+    }
+
+    private void validateSocialIdNotNull(final SocialId socialId) {
+        if (Objects.isNull(socialId)) {
+            throw new MemberDomainException("Member 의 socialId 은 null 일 수 없습니다.");
+        }
+    }
+
+    private void validateMemberNameNotNull(final MemberName memberName) {
+        if (Objects.isNull(memberName)) {
+            throw new MemberDomainException("Member 의 name 은 null 일 수 없습니다.");
+        }
+    }
+
+    public void updateMemberName(final MemberName memberName) {
+        validateMemberNameNotNull(memberName);
+        this.memberName = memberName;
+    }
+
+    public void updateCompany(final Company company) {
+        validateCompanyNotNull(company);
+        this.company = company;
     }
 }
