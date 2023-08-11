@@ -4,5 +4,6 @@ public enum ReviewStatus {
 
     NOT_STARTED,
     IN_PROGRESS,
-    DONE
+    DONE,
+    OVERDUE
 }
