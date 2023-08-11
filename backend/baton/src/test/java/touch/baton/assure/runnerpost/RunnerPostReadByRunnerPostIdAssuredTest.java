@@ -20,7 +20,7 @@ import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerPostAssuredReadTest extends AssuredTestConfig {
+class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {

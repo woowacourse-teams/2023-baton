@@ -9,55 +9,56 @@ import touch.baton.domain.runner.controller.response.RunnerResponse;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class RunnerProfileAssuredSupport {
+@SuppressWarnings("NonAsciiCharacters")
+public class RunnerAssuredSupport {
 
-    private RunnerProfileAssuredSupport() {
+    private RunnerAssuredSupport() {
     }
 
-    public static RunnerProfileClientRequestBuilder 클라이언트_요청() {
-        return new RunnerProfileClientRequestBuilder();
+    public static RunnerClientRequestBuilder 클라이언트_요청() {
+        return new RunnerClientRequestBuilder();
     }
 
     public static RunnerResponse.MyProfile 러너_본인_프로필_응답(final Runner 러너) {
         return RunnerResponse.MyProfile.from(러너);
     }
 
-    public static class RunnerProfileClientRequestBuilder {
+    public static class RunnerClientRequestBuilder {
 
         private ExtractableResponse<Response> response;
 
         private String accessToken;
 
-        public RunnerProfileClientRequestBuilder 토큰으로_로그인한다(final String 토큰) {
+        public RunnerClientRequestBuilder 토큰으로_로그인한다(final String 토큰) {
             this.accessToken = 토큰;
             return this;
         }
 
-        public RunnerProfileClientRequestBuilder 러너_본인_프로필을_가지고_있는_토큰으로_조회한다() {
+        public RunnerClientRequestBuilder 러너_본인_프로필을_가지고_있는_토큰으로_조회한다() {
             response = AssuredSupport.get("/api/v1/profile/runner/me", accessToken);
             return this;
         }
 
-        public RunnerProfileClientRequestBuilder 러너_피드백을_상세_조회한다(final Long 러너_식별자) {
+        public RunnerClientRequestBuilder 러너_프로필을_상세_조회한다(final Long 러너_식별자) {
             response = AssuredSupport.get("/api/v1/profile/runner/{runnerId}", "runnerId", 러너_식별자);
             return this;
         }
 
-        public RunnerProfileServerResponseBuilder 서버_응답() {
-            return new RunnerProfileServerResponseBuilder(response);
+        public RunnerServerResponseBuilder 서버_응답() {
+            return new RunnerServerResponseBuilder(response);
         }
     }
 
-    public static class RunnerProfileServerResponseBuilder {
+    public static class RunnerServerResponseBuilder {
 
         private final ExtractableResponse<Response> response;
 
-        public RunnerProfileServerResponseBuilder(final ExtractableResponse<Response> response) {
+        public RunnerServerResponseBuilder(final ExtractableResponse<Response> response) {
             this.response = response;
         }
 
-        public static RunnerProfileClientRequestBuilder 클라이언트_요청() {
-            return new RunnerProfileClientRequestBuilder();
+        public static RunnerClientRequestBuilder 클라이언트_요청() {
+            return new RunnerClientRequestBuilder();
         }
 
         public void 러너_본인_프로필_조회_성공을_검증한다(final RunnerResponse.MyProfile 러너_본인_프로필_응답) {

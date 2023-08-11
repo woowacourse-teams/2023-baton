@@ -24,7 +24,7 @@ import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 
 @SuppressWarnings("NonAsciiCharacters")
-class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
+class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
 
     // TODO: 2023/08/03 로그인 기능 테스트 추가
     @Disabled

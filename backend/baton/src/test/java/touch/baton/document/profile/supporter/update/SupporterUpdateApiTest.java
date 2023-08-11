@@ -38,7 +38,7 @@ import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
 @WebMvcTest(SupporterProfileController.class)
-public class SupporterProfileUpdateApiTest extends RestdocsConfig {
+public class SupporterUpdateApiTest extends RestdocsConfig {
 
     @MockBean
     private SupporterService supporterService;

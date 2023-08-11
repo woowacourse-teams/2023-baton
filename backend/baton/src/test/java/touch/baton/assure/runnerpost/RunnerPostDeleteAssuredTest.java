@@ -23,7 +23,8 @@ import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
-class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
+@SuppressWarnings("NonAsciiCharacters")
+class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
     @Disabled
     @Test

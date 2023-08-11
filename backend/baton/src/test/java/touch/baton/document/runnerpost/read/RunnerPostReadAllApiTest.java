@@ -24,9 +24,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -35,7 +33,7 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostController.class)
-class RunnerPostReadApiTest extends RestdocsConfig {
+class RunnerPostReadAllApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
