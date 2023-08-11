@@ -25,13 +25,5 @@ module.exports = merge(common, {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '/public/index.html'),
-    }),
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
-    new webpack.EnvironmentPlugin(['REACT_APP_BASE_URL']),
-  ],
+  plugins: [new webpack.EnvironmentPlugin(['REACT_APP_BASE_URL'])],
 });

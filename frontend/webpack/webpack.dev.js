@@ -21,12 +21,4 @@ module.exports = merge(common, {
       '/api': 'http://localhost:8080',
     },
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '/public/index.html'),
-    }),
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
-  ],
 });
