@@ -34,6 +34,7 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -168,7 +169,7 @@ public class RunnerPost extends BaseEntity {
                 .runner(runner)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .watchedCount(WatchedCount.zero())
-                .reviewStatus(ReviewStatus.NOT_STARTED)
+                .reviewStatus(NOT_STARTED)
                 .build();
     }
 
@@ -197,7 +198,18 @@ public class RunnerPost extends BaseEntity {
     }
 
     public void assignSupporter(final Supporter supporter) {
+        if (Objects.nonNull(this.supporter)) {
+            throw new RunnerPostDomainException("러너 게시글에 이미 서포터가 할당되어 있습니다.");
+        }
+        if (reviewStatus.isNotSameAsNotStarted()) {
+            throw new RunnerPostDomainException("러너 게시글은 이미 시작 중이거나 완료 되었습니다.");
+        }
+        if (deadline.isEnd()) {
+            throw new RunnerPostDomainException("러너 게시글은 이미 마감 기한이 종료되었습니다.");
+        }
+
         this.supporter = supporter;
+        this.reviewStatus = IN_PROGRESS;
     }
 
     public void increaseWatchedCount() {
