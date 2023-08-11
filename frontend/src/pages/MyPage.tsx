@@ -5,7 +5,7 @@ import Button from '@/components/common/Button/Button';
 import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetMyPagePost, GetMyPageProfileResponse } from '@/types/myPage';
+import { GetMyPagePost, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
 import { ReviewStatus } from '@/types/runnerPost';
 import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
@@ -13,34 +13,69 @@ import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 
-type ReviewPostOptions = SelectOption<ReviewStatus>[];
+export type PostOptions = SelectOption<ReviewStatus>[];
 
-const reviewPostOptions: ReviewPostOptions = [
-  {
-    value: 'NOT_STARTED',
-    label: '대기중인 리뷰',
-    selected: true,
-  },
-  {
-    value: 'IN_PROGRESS',
-    label: '진행중인 리뷰',
-    selected: false,
-  },
-  {
-    value: 'DONE',
-    label: '완료된 리뷰',
-    selected: false,
-  },
-];
+const createPostOptions = (labels: string[]): PostOptions => {
+  return [
+    {
+      value: 'NOT_STARTED',
+      label: labels[0],
+      selected: true,
+    },
+    {
+      value: 'IN_PROGRESS',
+      label: labels[1],
+      selected: false,
+    },
+    {
+      value: 'DONE',
+      label: labels[2],
+      selected: false,
+    },
+  ];
+};
+
+const runnerPostLabels = ['대기중인 리뷰', '진행중인 리뷰', '완료된 리뷰'];
+const supporterPostLabels = ['신청한 리뷰', '진행중인 리뷰', '완료된 리뷰'];
+
+export const RUNNER_POST_OPTIONS = createPostOptions(runnerPostLabels);
+export const SUPPORTER_POST_OPTIONS = createPostOptions(supporterPostLabels);
 
 const MyPage = () => {
-  const [runnerProfile, setRunnerProfile] = useState<GetMyPageProfileResponse | null>(null);
-  const [supporterProfile, setSupporterProfile] = useState<GetMyPageProfileResponse | null>(null);
-  const [runnerPostList, setRunnerPostList] = useState<GetMyPagePost | null>(null);
-  const [supporterPostList, setSupporterPostList] = useState<GetMyPagePost | null>(null);
-  const [postOptions, setPostOptions] = useState<ReviewPostOptions>(reviewPostOptions);
+  const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
+  const [myPagePostList, setMyPagePostList] = useState<GetMyPagePost | null>(null);
+  const [postOptions, setPostOptions] = useState<PostOptions>(RUNNER_POST_OPTIONS);
   const [isRunner, setIsRunner] = useState(true);
-  const [isSupporter, setIsSupporter] = useState(false);
+
+  useEffect(() => {
+    if (isRunner) {
+      setPostOptions(RUNNER_POST_OPTIONS);
+    } else setPostOptions(SUPPORTER_POST_OPTIONS);
+  }, [isRunner]);
+
+  useEffect(() => {
+    if (isRunner) {
+      const fetchRunnerMyPage = async () => {
+        const profileResult = await getRunnerProfile();
+        const postResult = await getRunnerPostList();
+
+        setMyPageProfile(profileResult);
+        setMyPagePostList(postResult);
+      };
+
+      fetchRunnerMyPage();
+    } else {
+      const fetchSupporterMyPage = async () => {
+        const profileResult = await getSupporterProfile();
+        const postResult = await getSupporterPostList();
+
+        setMyPageProfile(profileResult);
+        setMyPagePostList(postResult);
+      };
+
+      fetchSupporterMyPage();
+    }
+  }, [isRunner]);
 
   const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXRvbiIsImlhdCI6MTY5MTY3MjUwNCwiZXhwIjoxNjk0MjY0NTA0LCJzb2NpYWxJZCI6Imd5ZW9uZ3phIn0.CWUC0Q9Qlw4oRC_CNm-aVKNNGYYUKuVplz16WdreFC8';
@@ -97,30 +132,6 @@ const MyPage = () => {
     return data;
   };
 
-  useEffect(() => {
-    const fetchRunnerMyPage = async () => {
-      const profileResult = await getRunnerProfile();
-      const postResult = await getRunnerPostList();
-
-      setRunnerProfile(profileResult);
-      setRunnerPostList(postResult);
-    };
-
-    fetchRunnerMyPage();
-  }, []);
-
-  useEffect(() => {
-    const fetchSupporterMyPage = async () => {
-      const profileResult = await getSupporterProfile();
-      const postResult = await getSupporterPostList();
-
-      setSupporterProfile(profileResult);
-      setSupporterPostList(postResult);
-    };
-
-    fetchSupporterMyPage();
-  }, []);
-
   const selectOptions = (value: string | number) => {
     const selectedOptionIndex = postOptions.findIndex((option) => option.value === value);
     if (selectedOptionIndex === -1) return;
@@ -133,19 +144,19 @@ const MyPage = () => {
     setPostOptions(newOptions);
   };
 
-  const filterList = () => {
-    const RunnerPosts = runnerPostList?.data || [];
+  const filterList = (postList: GetMyPagePost | null, options: PostOptions) => {
+    const posts = postList?.data || [];
 
-    const selectedOption = postOptions.filter((option) => option.selected)[0];
+    const selectedOption = options.filter((option) => option.selected)[0];
     if (!selectedOption) return [];
 
-    const filteredPosts = RunnerPosts.filter((post) => post.reviewStatus === selectedOption.value);
+    const filteredPosts = posts.filter((post) => post.reviewStatus === selectedOption.value);
+
     return filteredPosts;
   };
 
   const handleClickSupporterButton = () => {
     setIsRunner(!isRunner);
-    setIsSupporter(!isSupporter);
   };
 
   return (
@@ -153,21 +164,17 @@ const MyPage = () => {
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
-            imageUrl={
-              isRunner
-                ? runnerProfile?.imageUrl || 'https://via.placeholder.com/150'
-                : supporterProfile?.imageUrl || 'https://via.placeholder.com/150'
-            }
+            imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
             width="100px"
             height="100px"
           />
           <S.InfoDetailContainer>
-            <S.Name>{isRunner ? runnerProfile?.name : supporterProfile?.name}</S.Name>
-            <S.Company>{isRunner ? runnerProfile?.company : supporterProfile?.company}</S.Company>
+            <S.Name>{myPageProfile?.name}</S.Name>
+            <S.Company>{myPageProfile?.company}</S.Company>
             <S.TechLabel>
-              {isRunner
-                ? runnerProfile?.technicalTags.map((tag) => <TechLabel key={tag} tag={tag} />)
-                : supporterProfile?.technicalTags.map((tag) => <TechLabel key={tag} tag={tag} />)}
+              {myPageProfile?.technicalTags.map((tag) => (
+                <TechLabel key={tag} tag={tag} />
+              ))}
             </S.TechLabel>
           </S.InfoDetailContainer>
         </S.InfoContainer>
@@ -182,9 +189,9 @@ const MyPage = () => {
       </S.ProfileContainer>
 
       <S.IntroductionContainer>
-        <S.Introduction>{runnerProfile?.introduction}</S.Introduction>
+        <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
         <Button width="127px" height="43px" colorTheme="BLACK" fontWeight={700}>
-          <S.Anchor href={runnerProfile?.githubUrl} target="_blank">
+          <S.Anchor href={myPageProfile?.githubUrl} target="_blank">
             <img src={githubIcon} />
             <S.GoToGitHub>Github</S.GoToGitHub>
           </S.Anchor>
@@ -195,7 +202,7 @@ const MyPage = () => {
         <S.FilterWrapper>
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
-        {isRunner ? <MyPagePostList filterList={filterList} /> : <MyPagePostList filterList={filterList} />}
+        <MyPagePostList filterList={() => filterList(myPagePostList, postOptions)} isRunner={isRunner} />
       </S.PostsContainer>
     </Layout>
   );

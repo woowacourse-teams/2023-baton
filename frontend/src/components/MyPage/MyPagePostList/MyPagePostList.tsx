@@ -1,19 +1,20 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import MyPageRunnerPostItem from '../MyPagePostItem/MyPagePostItem';
 import { MyPagePost } from '@/types/myPage';
+import MyPagePostItem from '../MyPagePostItem/MyPagePostItem';
 
 interface Props {
   filterList: () => MyPagePost[];
+  isRunner: boolean;
 }
 
-const MyPagePostList = ({ filterList }: Props) => {
+const MyPagePostList = ({ filterList, isRunner }: Props) => {
   if (filterList().length === 0) return <p>게시글 정보가 없습니다.</p>;
 
   return (
     <S.RunnerPostWrapper>
       {filterList()?.map((item: MyPagePost) => (
-        <MyPageRunnerPostItem key={item.runnerPostId} {...item} />
+        <MyPagePostItem key={item.runnerPostId} {...item} isRunner={isRunner} />
       ))}
     </S.RunnerPostWrapper>
   );
