@@ -80,6 +80,7 @@ public class AssuredSupport {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
+                .when().log().ifValidationFails()
                 .pathParam(pathParamName, id)
                 .when().log().ifValidationFails()
                 .get(uri)
