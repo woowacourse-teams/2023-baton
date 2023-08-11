@@ -276,4 +276,72 @@ class RunnerPostTest {
         // then
         assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
     }
+
+    @DisplayName("Supporter 할당")
+    @Nested
+    class AssignSupporter {
+
+        @DisplayName("RunnerPost 내부의 Supporter 가 null 이며 ReviewStatus 가 NOT_STARTED 가 아니어야 하며 Deadline 이 끝나지 않은 경우 성공한다.")
+        @Test
+        void success_supporter_is_null_and_deadline_is_not_end() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("JPA 정복"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(null)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // then
+            assertThatCode(() -> runnerPost.assignSupporter(supporter))
+                    .doesNotThrowAnyException();
+        }
+
+        @DisplayName("RunnerPost 내부의 Supporter 가 null 이 아닐 때 예외가 발생한다.")
+        @Test
+        void fail_supporter_is_not_null() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("JPA 정복"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // then
+            assertThatThrownBy(() -> runnerPost.assignSupporter(supporter))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        @DisplayName("RunnerPost 의 마감 기한이 이미 끝났을 때 예외가 발생한다.")
+        @Test
+        void fail_deadline_is_already_end() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("JPA 정복"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now().minusDays(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // then
+            assertThatThrownBy(() -> runnerPost.assignSupporter(supporter))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+    }
 }
