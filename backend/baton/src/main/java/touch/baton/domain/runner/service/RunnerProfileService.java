@@ -9,9 +9,9 @@ import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.tag.repository.RunnerTechnicalTagRepository;
-import touch.baton.domain.tag.repository.TechnicalTagRepository;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 
 import java.util.Arrays;
 import java.util.List;

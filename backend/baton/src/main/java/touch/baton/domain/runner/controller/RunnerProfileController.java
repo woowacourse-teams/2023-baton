@@ -30,6 +30,7 @@ public class RunnerProfileController {
 
     private final RunnerPostService runnerPostService;
     private final RunnerService runnerService;
+    private final RunnerProfileService runnerProfileService;
 
     @GetMapping
     public ResponseEntity<RunnerMyProfileResponse> readMyProfile(@AuthRunnerPrincipal final Runner runner) {
