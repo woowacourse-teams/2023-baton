@@ -8,9 +8,20 @@ import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
 import { MyPagePost } from '@/types/myPage';
 
-interface Props extends MyPagePost {}
+interface Props extends MyPagePost {
+  isRunner?: boolean;
+}
 
-const MyPagePostItem = ({ runnerPostId, title, deadline, reviewStatus, tags, watchedCount, applicantCount }: Props) => {
+const MyPagePostItem = ({
+  runnerPostId,
+  title,
+  deadline,
+  reviewStatus,
+  tags,
+  watchedCount,
+  applicantCount,
+  isRunner,
+}: Props) => {
   const handleClickSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     alert('준비중인 서포터 선택 기능입니다');
@@ -52,21 +63,33 @@ const MyPagePostItem = ({ runnerPostId, title, deadline, reviewStatus, tags, wat
             <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
-        {reviewStatus === 'NOT_STARTED' ? (
+        {isRunner ? (
+          reviewStatus === 'NOT_STARTED' ? (
+            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+              서포터 선택하기
+            </Button>
+          ) : reviewStatus === 'IN_PROGRESS' ? (
+            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+              코드 보러가기
+            </Button>
+          ) : (
+            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
+              서포터 후기 작성
+            </Button>
+          )
+        ) : reviewStatus === 'NOT_STARTED' ? (
           <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
-            서포터 선택하기
+            제안 취소하기
           </Button>
-        ) : null}
-        {reviewStatus === 'IN_PROGRESS' ? (
+        ) : reviewStatus === 'IN_PROGRESS' ? (
           <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
             코드 보러가기
           </Button>
-        ) : null}
-        {reviewStatus === 'DONE' ? (
+        ) : (
           <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
-            후기 작성
+            러너 후기 작성
           </Button>
-        ) : null}
+        )}
       </S.RightSideContainer>
     </S.RunnerPostItemContainer>
   );
@@ -88,12 +111,6 @@ const S = {
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
-
-    /* &:hover {
-      transition: all 0.3s ease;
-      transform: scale(1.015);
-      outline: 1.5px solid var(--baton-red);
-    } */
   `,
 
   PostTitle: styled.p`
