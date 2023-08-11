@@ -23,6 +23,7 @@ public class ConverterConfig implements WebMvcConfigurer {
     public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new StringDateToLocalDateTimeConverter(DEFAULT_DATE_TIME_FORMAT, KOREA_TIME_ZONE));
         registry.addConverter(new OauthTypeConverter());
+        registry.addConverter(new ReviewStatusConverter());
     }
 
     @Bean
