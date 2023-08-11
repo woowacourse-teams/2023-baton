@@ -5,12 +5,16 @@ import touch.baton.domain.common.exception.validator.ValidNotNull;
 
 import java.util.List;
 
-public record RunnerUpdateRequest(@ValidNotNull(clientErrorCode = ClientErrorCode.NAME_IS_NULL)
-                                   String name,
-                                  @ValidNotNull(clientErrorCode = ClientErrorCode.COMPANY_IS_NULL)
-                                   String company,
+import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_TECHNICAL_TAGS_ARE_NULL;
+
+public record RunnerUpdateRequest(@ValidNotNull(clientErrorCode = NAME_IS_NULL)
+                                  String name,
+                                  @ValidNotNull(clientErrorCode = COMPANY_IS_NULL)
+                                  String company,
                                   String introduction,
-                                  @ValidNotNull(clientErrorCode = ClientErrorCode.RUNNER_TECHNICAL_TAGS_ARE_NULL)
-                                   List<String> technicalTags
+                                  @ValidNotNull(clientErrorCode = RUNNER_TECHNICAL_TAGS_ARE_NULL)
+                                  List<String> technicalTags
 ) {
 }
