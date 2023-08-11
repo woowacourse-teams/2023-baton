@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.controller.response.SupporterResponse;
 import touch.baton.domain.supporter.service.SupporterService;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
+
+import java.net.URI;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile/supporter")
@@ -34,6 +37,7 @@ public class SupporterProfileController {
     public ResponseEntity<Void> updateProfile(@AuthSupporterPrincipal final Supporter supporter,
                                               @RequestBody @Valid final SupporterUpdateRequest request) {
         supporterService.updateSupporter(supporter, request);
-        return ResponseEntity.noContent().header("Location", "/api/v1/profile/supporter/me").build();
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/profile/supporter/me").build().toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
     }
 }
