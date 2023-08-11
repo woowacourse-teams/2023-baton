@@ -26,7 +26,7 @@ class SupporterServiceTest extends ServiceTestConfig {
         supporterService = new SupporterService(supporterRepository, technicalTagRepository, supporterTechnicalTagRepository);
     }
 
-    @DisplayName("Supporter 식별자 값으로 Member 패치 조인하여 Supporte 를 조회한다.")
+    @DisplayName("Supporter 식별자 값으로 Member 패치 조인하여 Supporter 를 조회한다.")
     @Test
     void readBySupporterId() {
         // given
