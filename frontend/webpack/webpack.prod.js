@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = merge(common, {
   mode: 'production',
@@ -23,4 +24,5 @@ module.exports = merge(common, {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
   },
+  plugins: [new webpack.EnvironmentPlugin(['REACT_APP_BASE_URL'])],
 });

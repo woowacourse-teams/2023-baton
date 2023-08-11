@@ -7,7 +7,7 @@
       "tags": ["react", "리액트", "자바스크립트"],
       "runnerProfile": { "name": "리액트초보", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -17,7 +17,7 @@
       "tags": ["java", "자바", "스프링", "spring"],
       "runnerProfile": { "name": "devPark", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -27,7 +27,7 @@
       "tags": ["react", "리액트", "자바스크립트", "nodejs"],
       "runnerProfile": { "name": "webDev_J", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "IN_PROGRESS"
     },
     {
@@ -37,7 +37,7 @@
       "tags": ["java", "자바", "스프링", "spring", "JPA"],
       "runnerProfile": { "name": "javaMaster_P", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -47,7 +47,7 @@
       "tags": ["자바스크립트", "nodejs", "expressjs"],
       "runnerProfile": { "name": "backendDev_B", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "DONE"
     },
     {
@@ -57,7 +57,7 @@
       "tags": ["자바스크립트"],
       "runnerProfile": { "name": "algoKing_K", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -67,7 +67,7 @@
       "tags": ["자바스크립트", "nodejs", "vuejs"],
       "runnerProfile": { "name": "fullStack_Y", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -77,7 +77,7 @@
       "tags": ["java", "자바", "스프링", "spring", "hibernate"],
       "runnerProfile": { "name": "springGuru_G", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -87,7 +87,7 @@
       "tags": ["자바스크립트"],
       "runnerProfile": { "name": "gameDev_L", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     },
     {
@@ -97,7 +97,7 @@
       "tags": ["java", "자바"],
       "runnerProfile": { "name": "javaNovice_N", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "DONE"
     },
     {
@@ -107,7 +107,7 @@
       "tags": ["react", "리액트", "자바스크립트", "react native"],
       "runnerProfile": { "name": "mobileDev_M", "imageUrl": "https://via.placeholder.com/150" },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "IN_PROGRESS"
     },
     {
@@ -120,7 +120,7 @@
         "imageUrl": "https://via.placeholder.com/150"
       },
       "watchedCount": 34,
-      "chattingCount": 4,
+      "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
     }
   ]
