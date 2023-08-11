@@ -89,6 +89,26 @@ public record RunnerPostResponse() {
         }
     }
 
+    public record LoginedSupporter(Long runnerPostId,
+                                   String title,
+                                   LocalDateTime deadline,
+                                   List<String> tags,
+                                   int watchedCount,
+                                   int applicantCount
+
+    ) {
+        public static LoginedSupporter from(final RunnerPost runnerPost, final int applicantCount) {
+            return new LoginedSupporter(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getWatchedCount().getValue(),
+                    applicantCount
+            );
+        }
+    }
+
     public record Mine(Long runnerPostId,
                        String title,
                        LocalDateTime deadline,

@@ -10,4 +10,11 @@ public record RunnerPostReadResponses() {
             return new NoFiltering(data);
         }
     }
+
+    public record LoginedSupporter(List<RunnerPostResponse.LoginedSupporter> data) {
+
+        public static LoginedSupporter from(final List<RunnerPostResponse.LoginedSupporter> data) {
+            return new LoginedSupporter(data);
+        }
+    }
 }
