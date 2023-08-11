@@ -15,6 +15,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -194,5 +195,9 @@ public class RunnerPostService {
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
         return runnerPostRepository.findByRunnerId(runnerId);
+    }
+
+    public List<RunnerPost> readRunnerPostBySupporterAndReviewStatus(final Supporter supporter, final ReviewStatus reviewStatus) {
+        return runnerPostRepository.findBySupporterAndReviewStatusOrderByCreatedAtDesc(supporter, reviewStatus);
     }
 }
