@@ -152,19 +152,5 @@ class SupporterTest {
             // then
             assertThat(supporter.getIntroduction()).isEqualTo(updatedIntroduction);
         }
-
-        @DisplayName("서포터 기술 태그 목록 수정에 성공한다.")
-        @Test
-        void supporterTechnicalTags_success() {
-            // given
-            final TechnicalTag updatedTechnicalTag = TechnicalTagFixture.createSpring();
-            final SupporterTechnicalTag updatedSupporterTechnicalTag = SupporterTechnicalTagFixture.create(supporter, updatedTechnicalTag);
-
-            // when
-            supporter.updateSupporterTechnicalTags(List.of(updatedSupporterTechnicalTag));
-
-            // then
-            assertThat(supporter.getSupporterTechnicalTags().getSupporterTechnicalTags()).containsExactly(updatedSupporterTechnicalTag);
-        }
     }
 }

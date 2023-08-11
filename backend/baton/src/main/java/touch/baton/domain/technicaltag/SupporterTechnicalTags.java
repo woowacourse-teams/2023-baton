@@ -26,9 +26,4 @@ public class SupporterTechnicalTags {
     public void addAll(final List<SupporterTechnicalTag> supporterTechnicalTags) {
         this.supporterTechnicalTags.addAll(supporterTechnicalTags);
     }
-
-    public void updateAll(final List<SupporterTechnicalTag> supporterTechnicalTags) {
-        this.supporterTechnicalTags.clear();
-        this.supporterTechnicalTags.addAll(supporterTechnicalTags);
-    }
 }

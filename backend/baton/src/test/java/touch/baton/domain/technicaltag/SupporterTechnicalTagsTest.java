@@ -39,20 +39,4 @@ class SupporterTechnicalTagsTest {
         // then
         assertThat(supporterTechnicalTags.getSupporterTechnicalTags()).containsExactly(supporterTechnicalTag);
     }
-
-    @DisplayName("전체 업데이트 테스트")
-    @Test
-    void updateAll() {
-        // given
-        final SupporterTechnicalTags supporterTechnicalTags = new SupporterTechnicalTags();
-        supporterTechnicalTags.getSupporterTechnicalTags().add(supporterTechnicalTag);
-        final TechnicalTag updatedTechnicalTag = TechnicalTagFixture.createReact();
-        final SupporterTechnicalTag updatedSupporterTechnicalTag = SupporterTechnicalTagFixture.create(supporter, updatedTechnicalTag);
-
-        // when
-        supporterTechnicalTags.updateAll(List.of(updatedSupporterTechnicalTag));
-
-        // then
-        assertThat(supporterTechnicalTags.getSupporterTechnicalTags()).containsExactly(updatedSupporterTechnicalTag);
-    }
 }

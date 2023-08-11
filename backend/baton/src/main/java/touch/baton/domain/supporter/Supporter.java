@@ -115,10 +115,6 @@ public class Supporter extends BaseEntity {
         this.introduction = introduction;
     }
 
-    public void updateSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {
-        this.supporterTechnicalTags.updateAll(supporterTechnicalTags);
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

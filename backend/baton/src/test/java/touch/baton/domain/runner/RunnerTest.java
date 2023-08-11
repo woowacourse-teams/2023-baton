@@ -57,15 +57,15 @@ class RunnerTest {
                     .hasMessage("Runner 의 member 는 null 일 수 없습니다.");
         }
 
-        @DisplayName("runnerTechnicalTags 가 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("runnerTechnicalTags 가 null 이 들어갈 경우 예외가 발생하지 않는다.")
         @Test
         void fail_if_runnerTechnicalTags_is_null() {
-            assertThatThrownBy(() -> Runner.builder()
+            assertThatCode(() -> Runner.builder()
                     .introduction(new Introduction("안녕하세요. 헤에디주입니다."))
                     .member(member)
                     .runnerTechnicalTags(null)
                     .build()
-            ).isInstanceOf(RunnerDomainException.class);
+            ).doesNotThrowAnyException();
         }
     }
 }

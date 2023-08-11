@@ -42,10 +42,9 @@ public class SupporterService {
         supporter.updateMemberName(new MemberName(supporterUpdateRequest.name()));
         supporter.updateCompany(new Company(supporterUpdateRequest.company()));
         supporter.updateIntroduction(new Introduction(supporterUpdateRequest.introduction()));
-        final List<SupporterTechnicalTag> supporterTechnicalTags = supporterUpdateRequest.technicalTags().stream()
-                .map(tagName -> createSupporterTechnicalTag(supporter, new TagName(tagName)))
-                .toList();
-        supporter.updateSupporterTechnicalTags(supporterTechnicalTags);
+        supporterTechnicalTagRepository.deleteBySupporter(supporter);
+        supporterUpdateRequest.technicalTags()
+                .forEach(tagName -> createSupporterTechnicalTag(supporter, new TagName(tagName)));
     }
 
     private SupporterTechnicalTag createSupporterTechnicalTag(final Supporter supporter, final TagName tagName) {
