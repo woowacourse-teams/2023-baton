@@ -6,7 +6,7 @@ import Layout from '@/layout/Layout';
 import PostTagList from '@/components/PostTagList/PostTagList';
 import Avatar from '@/components/common/Avatar/Avatar';
 import eyeIcon from '@/assets/eye-icon.svg';
-import chattingIcon from '@/assets/chatting-icon.svg';
+import applicantIcon from '@/assets/applicant-icon.svg';
 import Button from '@/components/common/Button/Button';
 import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
 import Label from '@/components/common/Label/Label';
@@ -131,8 +131,8 @@ const RunnerPostPage = () => {
                   <S.statisticsContainer>
                     <S.statisticsImage src={eyeIcon} />
                     <S.statisticsText>{runnerPost.watchedCount}</S.statisticsText>
-                    <S.statisticsImage src={chattingIcon} />
-                    <S.statisticsText>{runnerPost.chattingCount}</S.statisticsText>
+                    <S.statisticsImage src={applicantIcon} />
+                    <S.statisticsText>{runnerPost.applicantCount}</S.statisticsText>
                   </S.statisticsContainer>
                 </S.InformationContainer>
               </S.PostTitleContainer>

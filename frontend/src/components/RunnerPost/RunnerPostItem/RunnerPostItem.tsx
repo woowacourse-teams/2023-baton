@@ -6,10 +6,10 @@ import { RunnerPost } from '@/types/runnerPost';
 import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import eyeIcon from '@/assets/eye-icon.svg';
-import chattingIcon from '@/assets/chatting-icon.svg';
+import applicantIcon from '@/assets/applicant-icon.svg';
 
 const RunnerPostItem = ({
-  runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, chattingCount, reviewStatus },
+  runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, applicantCount, reviewStatus },
 }: {
   runnerPostData: RunnerPost;
 }) => {
@@ -44,8 +44,8 @@ const RunnerPostItem = ({
           <S.statisticsContainer>
             <S.statisticsImage src={eyeIcon} />
             <S.statisticsText>{watchedCount}</S.statisticsText>
-            <S.statisticsImage src={chattingIcon} />
-            <S.statisticsText>{chattingCount}</S.statisticsText>
+            <S.statisticsImage src={applicantIcon} />
+            <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
       </S.RightSideContainer>

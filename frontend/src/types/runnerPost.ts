@@ -11,7 +11,7 @@ export interface RunnerPost {
   tags: string[];
   runnerProfile: RunnerProfile;
   watchedCount: number;
-  chattingCount: number;
+  applicantCount: number;
   reviewStatus: ReviewStatus;
 }
 
