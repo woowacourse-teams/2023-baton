@@ -41,16 +41,32 @@ const ProfileEditPage = () => {
   const isLoading = isRunner ? !!runnerProfile : !!supporterProfile;
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === ' ') {
+      e.target.value = '';
+    }
+
+    if (e.target.value.slice(-2) === '  ') {
+      e.target.value = e.target.value.slice(0, -1);
+    }
+
     setName(e.target.value);
   };
 
   const handleChangeCompany = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === ' ') {
+      e.target.value = '';
+    }
+
+    if (e.target.value.slice(-2) === '  ') {
+      e.target.value = e.target.value.slice(0, -1);
+    }
+
     setCompany(e.target.value);
   };
 
   const handleChangeIntroduction = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const newString = e.target.value.replace(`\n\n\n`, `\n\n`);
-    setIntroduction(newString);
+    const newIntroduction = e.target.value.replace(`\n\n\n`, `\n\n`);
+    setIntroduction(newIntroduction);
   };
 
   const popTag = (tag: TechnicsType) => {
@@ -242,7 +258,7 @@ const ProfileEditPage = () => {
                 <InputBox
                   value={name ?? undefined}
                   inputTextState={name ?? ''}
-                  maxLength={30}
+                  maxLength={10}
                   maxLengthFontSize="12px"
                   handleInputTextState={handleChangeName}
                   placeholder="이름을 입력하세요"
@@ -255,7 +271,7 @@ const ProfileEditPage = () => {
                 <InputBox
                   value={company ?? undefined}
                   inputTextState={company ?? ''}
-                  maxLength={30}
+                  maxLength={20}
                   maxLengthFontSize="12px"
                   handleInputTextState={handleChangeCompany}
                   placeholder="소속을 입력하세요"
