@@ -92,42 +92,41 @@ public class Member extends BaseEntity {
         validateImageUrlNotNull(imageUrl);
     }
 
-    private static void validateImageUrlNotNull(final ImageUrl imageUrl) {
+    private void validateImageUrlNotNull(final ImageUrl imageUrl) {
         if (Objects.isNull(imageUrl)) {
             throw new MemberDomainException("Member 의 imageUrl 은 null 일 수 없습니다.");
         }
     }
 
-    private static void validateCompanyNotNull(final Company company) {
+    private void validateCompanyNotNull(final Company company) {
         if (Objects.isNull(company)) {
             throw new MemberDomainException("Member 의 company 는 null 일 수 없습니다.");
         }
     }
 
-    private static void validateGithubUrlNotNull(final GithubUrl githubUrl) {
+    private void validateGithubUrlNotNull(final GithubUrl githubUrl) {
         if (Objects.isNull(githubUrl)) {
             throw new MemberDomainException("Member 의 githubUrl 은 null 일 수 없습니다.");
         }
     }
 
-    private static void validateOauthIdNotNull(final OauthId oauthId) {
+    private void validateOauthIdNotNull(final OauthId oauthId) {
         if (Objects.isNull(oauthId)) {
             throw new MemberDomainException("Member 의 oauthId 는 null 일 수 없습니다.");
         }
     }
 
-    private static void validateSocialIdNotNull(final SocialId socialId) {
+    private void validateSocialIdNotNull(final SocialId socialId) {
         if (Objects.isNull(socialId)) {
             throw new MemberDomainException("Member 의 socialId 은 null 일 수 없습니다.");
         }
     }
 
-    private static void validateMemberNameNotNull(final MemberName memberName) {
+    private void validateMemberNameNotNull(final MemberName memberName) {
         if (Objects.isNull(memberName)) {
             throw new MemberDomainException("Member 의 name 은 null 일 수 없습니다.");
         }
     }
-
 
     public void updateMemberName(final MemberName memberName) {
         validateMemberNameNotNull(memberName);
