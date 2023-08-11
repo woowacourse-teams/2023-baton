@@ -10,6 +10,7 @@ import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
@@ -25,6 +26,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
 public class Runner extends BaseEntity {
