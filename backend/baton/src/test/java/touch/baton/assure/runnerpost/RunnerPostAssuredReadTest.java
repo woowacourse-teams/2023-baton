@@ -25,7 +25,7 @@ class RunnerPostAssuredReadTest extends AssuredTestConfig {
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
-        final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.create(introduction("안녕하세요"), 사용자_헤나));
+        final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 사용자_헤나));
         final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(LocalDateTime.now().plusHours(100))));
         final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
 

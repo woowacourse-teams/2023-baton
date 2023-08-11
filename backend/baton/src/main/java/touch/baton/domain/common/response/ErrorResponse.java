@@ -1,7 +1,6 @@
 package touch.baton.domain.common.response;
 
 import lombok.Getter;
-import touch.baton.domain.common.exception.BaseException;
 import touch.baton.domain.common.exception.ClientRequestException;
 
 @Getter

@@ -17,33 +17,12 @@ public abstract class RunnerFixture {
     private RunnerFixture() {
     }
 
-    public static Runner create(final Introduction introduction,
-                                final Member member
-    ) {
-        return Runner.builder()
-                .introduction(introduction)
-                .member(member)
-                .runnerTechnicalTags(new RunnerTechnicalTags(new ArrayList<>()))
-                .build();
-    }
-
-    public static Runner create(final Introduction introduction,
-                                final Member member,
-                                final RunnerTechnicalTags runnerTechnicalTags
-    ) {
-        return Runner.builder()
-                .introduction(introduction)
-                .member(member)
-                .runnerTechnicalTags(runnerTechnicalTags)
-                .build();
-    }
-
     public static Runner createRunner(final Member member) {
-        return create(introduction("안녕하세요."), member, new RunnerTechnicalTags(new ArrayList<>()));
+        return createRunner(introduction("안녕하세요."), member, new RunnerTechnicalTags(new ArrayList<>()));
     }
 
     public static Runner createRunner(final Member member, final List<TechnicalTag> technicalTags) {
-        final Runner runner = create(introduction("안녕하세요."), member);
+        final Runner runner = createRunner(introduction("안녕하세요."), member);
 
         final List<RunnerTechnicalTag> runnerTechnicalTags = technicalTags.stream()
                 .map(technicalTag -> RunnerTechnicalTag.builder()
@@ -52,10 +31,26 @@ public abstract class RunnerFixture {
                         .build())
                 .toList();
 
+        runner.addAllRunnerTechnicalTags(runnerTechnicalTags);
+        return runner;
+    }
+
+    public static Runner createRunner(final Introduction introduction, final Member member) {
         return Runner.builder()
-                .runnerTechnicalTags(new RunnerTechnicalTags(runnerTechnicalTags))
-                .introduction(runner.getIntroduction())
-                .member(runner.getMember())
+                .introduction(introduction)
+                .member(member)
+                .runnerTechnicalTags(new RunnerTechnicalTags(new ArrayList<>()))
+                .build();
+    }
+
+    public static Runner createRunner(final Introduction introduction,
+                                      final Member member,
+                                      final RunnerTechnicalTags runnerTechnicalTags
+    ) {
+        return Runner.builder()
+                .introduction(introduction)
+                .member(member)
+                .runnerTechnicalTags(runnerTechnicalTags)
                 .build();
     }
 }
