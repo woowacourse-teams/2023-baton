@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import CreationResultPage from './pages/CreationResultPage';
 import MyPage from './pages/MyPage';
 import GithubCallbackPage from './pages/GithubCallbackPage';
+import ProfileEditPage from './pages/ProfileEditPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -18,6 +19,7 @@ export const ROUTER_PATH = {
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RESULT: '/result',
+  PROFILE_EDIT: '/profile-edit',
   GITHUB_CALLBACK: '/oauth/github/callback', // Authorization callback URL?
 };
 
@@ -49,6 +51,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.MY_PAGE,
           element: <MyPage />,
+        },
+        {
+          path: ROUTER_PATH.PROFILE_EDIT,
+          element: <ProfileEditPage />,
         },
         { path: ROUTER_PATH.GITHUB_CALLBACK, element: <GithubCallbackPage /> },
       ],
