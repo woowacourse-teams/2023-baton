@@ -1,37 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
-import { BATON_BASE_URL } from '@/constants/index';
 import { GetRunnerPostResponse } from '@/types/runnerPost';
+import { getRequest } from '@/api/fetch';
 
 const RunnerPostList = () => {
   const [runnerPostList, setRunnerPostList] = useState<GetRunnerPostResponse | null>(null);
 
-  const getRunnerPost = async () => {
-    try {
-      const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
-        method: 'GET',
-      });
-
-      if (!response.ok) {
-        throw new Error(`네트워크 에러 코드: ${response.status}`);
-      }
-
-      const runnerPostList = await response.json();
-
-      return runnerPostList;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    const fetchRunnerPost = async () => {
-      const result = await getRunnerPost();
+    const getRunnerPost = async () => {
+      const result = await getRequest<GetRunnerPostResponse>('/posts/runner/test');
+
       setRunnerPostList(result);
     };
 
-    fetchRunnerPost();
+    getRunnerPost();
   }, []);
 
   return (
