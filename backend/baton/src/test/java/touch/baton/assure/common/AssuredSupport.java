@@ -54,6 +54,20 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get(final String uri,
+                                                    final String accessToken,
+                                                    final String queryParamName,
+                                                    final String queryParamValue) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .queryParam(queryParamName, queryParamValue)
+                .when().log().ifValidationFails()
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
 
     public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object params) {
         return RestAssured

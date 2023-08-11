@@ -41,7 +41,10 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
 
         // when, then
         SupporterFeedbackAssuredSupport
-                .클라이언트_요청().서포터_피드백을_등록한다(request)
-                .서버_응답().서포터_피드백_등록_성공을_검증한다(new HttpStatusAndLocationHeader(CREATED, "/api/v1/feedback/supporter"));
+                .클라이언트_요청()
+                .서포터_피드백을_등록한다(request)
+
+                .서버_응답()
+                .서포터_피드백_등록_성공을_검증한다(new HttpStatusAndLocationHeader(CREATED, "/api/v1/feedback/supporter"));
     }
 }
