@@ -1,13 +1,34 @@
-import { Candidate } from '@/types/supporterCandidate';
-import React from 'react';
+import { Candidate, GetSupporterCandidateResponse } from '@/types/supporterCandidate';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import SupporterCardItem from '../SupporterCardItem/SupporterCardItem';
+import { useParams } from 'react-router-dom';
+import { useToken } from '@/hooks/useToken';
+import { getRequest } from '@/api/fetch';
 
-interface Props {
-  supporterList: Candidate[];
-}
+const SupporterCardList = () => {
+  const { runnerPostId } = useParams();
 
-const SupporterCardList = ({ supporterList }: Props) => {
+  const { getToken } = useToken();
+
+  const [supporterList, setSupporterList] = useState<Candidate[]>([]);
+
+  useEffect(() => {
+    const getSupporterList = async () => {
+      const token = getToken()?.value;
+      if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+      const result = await getRequest<GetSupporterCandidateResponse>(
+        `/posts/runner/${runnerPostId}/supporters`,
+        `Bearer ${token}`,
+      );
+
+      setSupporterList(result.data);
+    };
+
+    getSupporterList();
+  }, []);
+
   return (
     <S.SupporterCardListContainer>
       {supporterList.map((supporter) => (

@@ -1,3 +1,4 @@
+import { patchRequest } from '@/api/fetch';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
@@ -34,30 +35,25 @@ const SupporterCardItem = ({ supporter }: Props) => {
     const token = getToken()?.value;
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-    fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/supporters`, {
-      method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ supporterId: supporter.supporterId }),
-    })
-      .then(() => {
-        alert('서포터 선택을 완료했습니다');
-      })
-      .catch((error) => {
-        alert(error);
-      })
-      .finally(() => {
-        goToMyPage();
-      });
+    try {
+      patchRequest(
+        `/posts/runner/${runnerPostId}/supporters`,
+        `Bearer ${token}`,
+        JSON.stringify({ supporterId: supporter.supporterId }),
+      );
+
+      alert('서포터 선택을 완료했습니다');
+    } catch (error) {
+      alert(`서포터 선택에 실패했습니다 ${error instanceof Error ? error.message : ''}`);
+    }
+
+    goToMyPage();
   };
 
   return (
     <S.SupporterCardItemContainer>
       <S.ProfileContainer>
-        <Avatar
-          imageUrl={supporter.imageUrl || 'https://api.iconify.design/material-symbols:account-circle.svg'}
-          width={'80px'}
-          height={'80px'}
-        />
+        <Avatar imageUrl={supporter.imageUrl} width={'80px'} height={'80px'} />
         <S.InfoContainer>
           <S.Name>{supporter.name}</S.Name>
           <S.Company>{supporter.company}</S.Company>
