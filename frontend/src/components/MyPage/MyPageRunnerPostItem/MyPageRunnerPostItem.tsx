@@ -65,6 +65,11 @@ const MyPageRunnerPostItem = ({
             서포터 선택하기
           </Button>
         ) : null}
+        {reviewStatus === 'IN_PROGRESS' ? (
+          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+            코드 보러가기
+          </Button>
+        ) : null}
         {reviewStatus === 'DONE' ? (
           <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
             후기 작성
@@ -92,11 +97,11 @@ const S = {
 
     cursor: pointer;
 
-    &:hover {
+    /* &:hover {
       transition: all 0.3s ease;
       transform: scale(1.015);
       outline: 1.5px solid var(--baton-red);
-    }
+    } */
   `,
 
   PostTitle: styled.p`
@@ -134,6 +139,12 @@ const S = {
     flex-direction: column;
     justify-content: end;
     gap: 15px;
+
+    & button:hover {
+      transition: all 0.3s ease;
+      background-color: var(--baton-red);
+      color: var(--white-color);
+    }
   `,
 
   ChatViewContainer: styled.div`
