@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.RunnerProfileController;
+import touch.baton.domain.runner.service.RunnerProfileService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
@@ -36,9 +37,12 @@ class RunnerProfileReadApiTest extends RestdocsConfig {
     @MockBean
     RunnerPostService runnerPostService;
 
+    @MockBean
+    RunnerProfileService runnerProfileService;
+
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerProfileController(runnerPostService));
+        restdocsSetUp(new RunnerProfileController(runnerPostService, runnerProfileService));
     }
 
     @DisplayName("러너 본인 프로필 조회 API")
