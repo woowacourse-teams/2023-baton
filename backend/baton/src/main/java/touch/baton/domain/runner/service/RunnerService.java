@@ -38,16 +38,16 @@ public class RunnerService {
         runner.updateMemberName(new MemberName(runnerUpdateRequest.name()));
         runner.updateCompany(new Company(runnerUpdateRequest.company()));
         runner.updateIntroduction(new Introduction(runnerUpdateRequest.introduction()));
-        updateTechnicalTags(runner, runnerUpdateRequest);
+        updateTechnicalTags(runner, runnerUpdateRequest.technicalTags());
     }
 
-    private void updateTechnicalTags(final Runner runner, final RunnerUpdateRequest runnerUpdateRequest) {
+    private void updateTechnicalTags(final Runner runner, final List<String> technicalTags) {
         runnerTechnicalTagRepository.deleteByRunner(runner);
-        createRunnerTechnicalTags(runner, runnerUpdateRequest);
+        createRunnerTechnicalTags(runner, technicalTags);
     }
 
-    private List<RunnerTechnicalTag> createRunnerTechnicalTags(final Runner runner, final RunnerUpdateRequest runnerUpdateRequest) {
-        return runnerUpdateRequest.technicalTags().stream()
+    private List<RunnerTechnicalTag> createRunnerTechnicalTags(final Runner runner, final List<String> technicalTags) {
+        return technicalTags.stream()
                 .map(tagName -> createRunnerTechnicalTag(runner, new TagName(tagName)))
                 .toList();
     }
