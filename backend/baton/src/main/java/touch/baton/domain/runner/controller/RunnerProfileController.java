@@ -50,7 +50,7 @@ public class RunnerProfileController {
 
     @PatchMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateMyProfile(@AuthRunnerPrincipal final Runner runner, @RequestBody RunnerProfileUpdateRequest runnerProfileUpdateRequest){
+    public void updateMyProfile(@AuthRunnerPrincipal final Runner runner, @RequestBody final RunnerProfileUpdateRequest runnerProfileUpdateRequest){
         runnerProfileService.updateRunnerProfile(runner, runnerProfileUpdateRequest);
     }
 

@@ -14,9 +14,12 @@ import lombok.Setter;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.runner.exception.RunnerDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
+import touch.baton.domain.technicaltag.TechnicalTag;
 
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +29,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
 public class Runner extends BaseEntity {
@@ -73,6 +75,22 @@ public class Runner extends BaseEntity {
 
     public void addAllRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags) {
         this.runnerTechnicalTags.addAll(runnerTechnicalTags);
+    }
+
+    public void updateIntroduction(final Introduction introduction) {
+        this.introduction = introduction;
+    }
+
+    public void updateMemberName(final MemberName memberName){
+        this.member.updateMemberName(memberName);
+    }
+
+    public void updateCompany(final Company company){
+        this.member.updateCompany(company);
+    }
+
+    public void updateRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags){
+        this.runnerTechnicalTags.update(runnerTechnicalTags);
     }
 
     @Override

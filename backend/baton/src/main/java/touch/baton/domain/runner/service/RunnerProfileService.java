@@ -27,10 +27,10 @@ public class RunnerProfileService {
     private final TechnicalTagRepository technicalTagRepository;
 
     public void updateRunnerProfile(Runner runner, RunnerProfileUpdateRequest runnerProfileUpdateRequest) {
-        runner.getMember().setMemberName(new MemberName(runnerProfileUpdateRequest.name()));
-        runner.getMember().setCompany(new Company(runnerProfileUpdateRequest.company()));
-        runner.setIntroduction(new Introduction(runnerProfileUpdateRequest.introduction()));
-        runner.getRunnerTechnicalTags().update(convertToRunnerTechnicalTags(runner, runnerProfileUpdateRequest));
+        runner.updateMemberName(new MemberName(runnerProfileUpdateRequest.name()));
+        runner.updateCompany(new Company(runnerProfileUpdateRequest.company()));
+        runner.updateIntroduction(new Introduction(runnerProfileUpdateRequest.introduction()));
+        runner.updateRunnerTechnicalTags(convertToRunnerTechnicalTags(runner, runnerProfileUpdateRequest));
     }
 
     private List<RunnerTechnicalTag> convertToRunnerTechnicalTags(final Runner runner, final RunnerProfileUpdateRequest runnerProfileUpdateRequest) {

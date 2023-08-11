@@ -23,7 +23,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
 @Getter
-@Setter
 @NoArgsConstructor(access = PROTECTED)
 @Entity
 public class Member extends BaseEntity {
