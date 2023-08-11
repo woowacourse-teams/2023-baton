@@ -41,9 +41,9 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Autowired
     private RunnerPostRepository runnerPostRepository;
 
-    @DisplayName("서포터와 연관된 러너 게시글을 조인하여 조회한다.")
+    @DisplayName("러너 게시글 식별자값으로 서포터가 지원한 수를 count 한다.")
     @Test
-    void findBySupporterIdAndRunnerPostReviewStatusOrderByCreatedAtDesc() {
+    void countByRunnerPostIdIn() {
         // given
         final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
@@ -51,23 +51,39 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
         final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
-        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100)));
-        final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
+        final RunnerPost savedRunnerPostOne = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+        final RunnerPost savedRunnerPostTwo = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+        final RunnerPost savedRunnerPostThree = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+        final RunnerPost savedRunnerPostFour = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
 
-        savedRunnerPost.assignSupporter(savedSupporterHyena);
+        savedRunnerPostOne.assignSupporter(savedSupporterHyena);
+        savedRunnerPostTwo.assignSupporter(savedSupporterHyena);
+        savedRunnerPostThree.assignSupporter(savedSupporterHyena);
+        savedRunnerPostFour.assignSupporter(savedSupporterHyena);
 
-        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPost.builder()
-                .runnerPost(savedRunnerPost)
-                .supporter(savedSupporterHyena)
-                .message(new Message("안녕하세요. 서포터 헤나입니다."))
-                .build();
-        supporterRunnerPostRepository.save(supporterRunnerPost);
+        supporterRunnerPostRepository.save(createSupporterRunnerPost(savedSupporterHyena, savedRunnerPostOne));
+        supporterRunnerPostRepository.save(createSupporterRunnerPost(savedSupporterHyena, savedRunnerPostTwo));
+        supporterRunnerPostRepository.save(createSupporterRunnerPost(savedSupporterHyena, savedRunnerPostThree));
+        supporterRunnerPostRepository.save(createSupporterRunnerPost(savedSupporterHyena, savedRunnerPostFour));
 
         // when
-        final List<Long> runnerPostIds = List.of(savedRunnerPost.getId());
+        final List<Long> runnerPostIds = List.of(
+                savedRunnerPostOne.getId(),
+                savedRunnerPostTwo.getId(),
+                savedRunnerPostThree.getId(),
+                savedRunnerPostFour.getId()
+        );
         final List<Integer> foundRunnerPostsApplicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
 
         // then
-        assertThat(foundRunnerPostsApplicantCounts).containsExactly(1);
+        assertThat(foundRunnerPostsApplicantCounts).containsExactly(1, 1, 1, 1);
+    }
+
+    private SupporterRunnerPost createSupporterRunnerPost(final Supporter supporter, final RunnerPost runnerPost) {
+        return SupporterRunnerPost.builder()
+                .runnerPost(runnerPost)
+                .supporter(supporter)
+                .message(new Message("안녕하세요. 서포터 헤나입니다."))
+                .build();
     }
 }
