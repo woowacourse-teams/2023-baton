@@ -167,7 +167,11 @@ const S = {
     font-size: 16px;
     line-height: 26px;
 
-    overflow: scroll;
+    overflow-y: scroll;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   `,
 
   ButtonContainer: styled.div`
