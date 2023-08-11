@@ -1,0 +1,20 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+= Baton-API
+
+== *사용자 API*
+include::MemberLoginProfileReadApi.adoc[]
+
+== *러너 API*
+include::RunnerProfileReadApi.adoc[]
+
+== *서포터 API*
+include::SupporterProfileUpdateApi.adoc[]
