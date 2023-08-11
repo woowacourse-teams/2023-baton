@@ -1,7 +1,7 @@
 ifndef::snippets[]
 :snippets: ../../../build/generated-snippets
 endif::[]
-:doctype: investment
+:doctype: book
 :icons: font
 :source-highlighter: highlight.js
 :toc: left
@@ -10,21 +10,21 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-== *서포터 프로필 수정*
+=== *서포터 프로필 수정*
 
-=== *서포터 프로필 수정 API*
+==== *서포터 프로필 수정 API*
 
-==== *Http Request*
+===== *Http Request*
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/http-request.adoc[]
 
-==== *Http Request Headers*
+===== *Http Request Headers*
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/request-headers.adoc[]
 
-==== *Http Request Body*
+===== *Http Request Body*
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/request-body.adoc[]
 
-==== *Http Response*
+===== *Http Response*
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/http-response.adoc[]
 
-==== *Http Response Headers*
+===== *Http Response Headers*
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/response-headers.adoc[]
