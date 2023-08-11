@@ -54,19 +54,16 @@ public class Runner extends BaseEntity {
                    final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
-        validateNotNull(member, runnerTechnicalTags);
+        validateMemberNotNull(member);
         this.id = id;
         this.introduction = introduction;
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
     }
 
-    private void validateNotNull(final Member member, final RunnerTechnicalTags runnerTechnicalTags) {
+    private void validateMemberNotNull(final Member member) {
         if (Objects.isNull(member)) {
             throw new RunnerDomainException("Runner 의 member 는 null 일 수 없습니다.");
-        }
-        if (Objects.isNull(runnerTechnicalTags)) {
-            throw new RunnerDomainException("Runner 의 runnerTechnicalTags 는 null 일 수 없습니다.");
         }
     }
 
