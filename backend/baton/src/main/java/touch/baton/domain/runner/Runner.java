@@ -10,7 +10,6 @@ import jakarta.persistence.OneToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
@@ -19,7 +18,6 @@ import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.runner.exception.RunnerDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
-import touch.baton.domain.technicaltag.TechnicalTag;
 
 import java.util.List;
 import java.util.Objects;
@@ -81,11 +79,11 @@ public class Runner extends BaseEntity {
         this.introduction = introduction;
     }
 
-    public void updateMemberName(final MemberName memberName){
+    public void updateMemberName(final MemberName memberName) {
         this.member.updateMemberName(memberName);
     }
 
-    public void updateCompany(final Company company){
+    public void updateCompany(final Company company) {
         this.member.updateCompany(company);
     }
 

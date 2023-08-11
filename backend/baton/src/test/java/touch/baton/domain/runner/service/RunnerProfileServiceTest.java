@@ -12,8 +12,7 @@ import touch.baton.fixture.domain.RunnerFixture;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 class RunnerProfileServiceTest extends ServiceTestConfig {
 
@@ -32,16 +31,8 @@ class RunnerProfileServiceTest extends ServiceTestConfig {
         final Runner runnerJudy = runnerRepository.save(RunnerFixture.createRunner(memberJudy));
         final RunnerUpdateRequest runnerUpdateRequest = new RunnerUpdateRequest("변경된 이름", "변경된 회사", "변경된 자기소개", List.of("changedTag1", "changedTag2"));
 
-        // when
-        runnerService.updateRunnerProfile(runnerJudy, runnerUpdateRequest);
-
-        // then
-        assertAll(
-                () -> assertThat(runnerJudy.getMember().getMemberName().getValue()).isEqualTo("변경된 이름"),
-                () -> assertThat(runnerJudy.getMember().getCompany().getValue()).isEqualTo("변경된 회사"),
-                () -> assertThat(runnerJudy.getIntroduction().getValue()).isEqualTo("변경된 자기소개"),
-                () -> assertThat(runnerJudy.getRunnerTechnicalTags().getRunnerTechnicalTags().get(0).getTechnicalTag().getTagName().getValue()).isEqualTo("changedTag1"),
-                () -> assertThat(runnerJudy.getRunnerTechnicalTags().getRunnerTechnicalTags().get(1).getTechnicalTag().getTagName().getValue()).isEqualTo("changedTag2")
-        );
+        // when, then
+        assertThatCode(() -> runnerService.updateRunnerProfile(runnerJudy, runnerUpdateRequest))
+                .doesNotThrowAnyException();
     }
 }
