@@ -3,6 +3,7 @@ package touch.baton.assure.runnerpost;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,9 @@ public class RunnerPostAssuredSupport {
     }
 
     public static PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터가_리뷰_완료한_러너_게시글_응답(final Pageable 페이징_정보,
-                                                                                                     final List<RunnerPostResponse.ReferencedBySupporter> 서포터가_연관된_러너_게시글_목록
+                                                                                               final List<RunnerPostResponse.ReferencedBySupporter> 서포터가_연관된_러너_게시글_목록
     ) {
-        final PageImpl<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_연관된_러너_게시글 = new PageImpl<>(서포터가_연관된_러너_게시글_목록, 페이징_정보, 1);
+        final Page<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_연관된_러너_게시글 = new PageImpl<>(서포터가_연관된_러너_게시글_목록, 페이징_정보, 1);
         final PageResponse<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_연관된_러너_게시글_응답 = PageResponse.from(페이징된_서포터가_연관된_러너_게시글);
 
         return 페이징된_서포터가_연관된_러너_게시글_응답;
@@ -107,6 +108,7 @@ public class RunnerPostAssuredSupport {
             });
 
             assertSoftly(softly -> {
+                        softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
                         softly.assertThat(actual.data()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.data());
                         softly.assertThat(actual.pageInfo().isFirst()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().isFirst());
                         softly.assertThat(actual.pageInfo().isLast()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().isLast());

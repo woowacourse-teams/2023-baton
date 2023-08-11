@@ -138,14 +138,14 @@ public class RunnerPostController {
 
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
-            @PageableDefault(size = 10, page = 0, sort = "createdAt", direction = DESC) Pageable pageable,
+            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
             @RequestParam("supporterId") final Long supporterId,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
         final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
         final List<Integer> applicantCounts = collectApplicantCounts(pageRunnerPosts);
-        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, applicantCounts.size())
+        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
                 .mapToObj(index -> {
                     final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
                     final Integer applicantCount = applicantCounts.get(index);
@@ -153,7 +153,7 @@ public class RunnerPostController {
                     return RunnerPostResponse.ReferencedBySupporter.from(foundRunnerPost, applicantCount);
                 }).toList();
 
-        final PageImpl<RunnerPostResponse.ReferencedBySupporter> pageResponse
+        final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));

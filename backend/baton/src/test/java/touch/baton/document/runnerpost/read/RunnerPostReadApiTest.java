@@ -109,8 +109,8 @@ class RunnerPostReadApiTest extends RestdocsConfig {
         when(spyRunnerPost.getId()).thenReturn(1L);
 
         final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
-        final PageRequest pageable = PageRequest.of(10, 10);
-        final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageable, runnerPosts.size());
+        final PageRequest pageOne = PageRequest.of(1, 10);
+        final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
         when(runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
         when(runnerPostService.readCountsByRunnerPostIds(anyList()))
@@ -120,8 +120,8 @@ class RunnerPostReadApiTest extends RestdocsConfig {
         mockMvc.perform(get("/api/v1/posts/runner/search")
                         .characterEncoding(UTF_8)
                         .accept(APPLICATION_JSON)
-                        .queryParam("size", String.valueOf(pageable.getPageSize()))
-                        .queryParam("page", String.valueOf(pageable.getPageNumber()))
+                        .queryParam("size", String.valueOf(pageOne.getPageSize()))
+                        .queryParam("page", String.valueOf(pageOne.getPageNumber()))
                         .queryParam("supporterId", String.valueOf(spySupporterHyena.getId()))
                         .queryParam("reviewStatus", ReviewStatus.IN_PROGRESS.name()))
                 .andExpect(status().isOk())
