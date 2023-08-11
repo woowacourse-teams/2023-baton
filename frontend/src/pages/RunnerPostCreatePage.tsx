@@ -9,15 +9,18 @@ import { styled } from 'styled-components';
 import { BATON_BASE_URL } from '@/constants';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
+import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/utils/date';
 
 const RunnerPostCreatePage = () => {
+  const nowDate = new Date();
+
   const { goBack, goToCreationResultPage } = usePageRouter();
   const { getToken } = useToken();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
-  const [deadline, setDeadline] = useState<string>('');
+  const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 1)));
   const [contents, setContents] = useState<string>('');
 
   const pushTag = (newTag: string) => {
@@ -46,18 +49,19 @@ const RunnerPostCreatePage = () => {
     setPullRequestUrl(e.target.value);
   };
 
-  const changeDeadlineDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newDate = e.target.value;
-    const time = deadline.split('T')[1] ?? '';
-    const newDeadline = `${newDate}T${time}`;
-    setDeadline(newDeadline);
-  };
+  const changeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const datetime = new Date(e.target.value);
 
-  const changeDeadlineTime = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTime = e.target.value;
-    const date = deadline.split('T')[0] ?? '';
-    const newDeadline = `${date}T${newTime}`;
-    setDeadline(newDeadline);
+    if (isPastTime(datetime)) {
+      const newDeadline = getDatetime(addHours(nowDate, 1));
+      setDeadline(newDeadline);
+
+      alert('최소한 현재보다 1시간 이후의 시간을 입력해주세요');
+
+      return;
+    }
+
+    setDeadline(e.target.value);
   };
 
   const changeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -84,8 +88,7 @@ const RunnerPostCreatePage = () => {
     if (!title) throw new Error('제목을 입력해주세요');
     if (!pullRequestUrl) throw new Error('PR주소를 입력해주세요');
 
-    const isDeadlineValidate = deadline.split('T').every((item) => item && item.length > 1);
-    if (!isDeadlineValidate) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
+    if (!deadline) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
   };
 
   const postRunnerForm = async (data: CreateRunnerPostRequest) => {
@@ -157,10 +160,13 @@ const RunnerPostCreatePage = () => {
 
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
-            <S.DeadlineContainer>
-              <S.DeadlineDate type="date" onChange={changeDeadlineDate} />
-              <S.DeadlineTime type="time" onChange={changeDeadlineTime} />
-            </S.DeadlineContainer>
+            <S.Deadline
+              type="datetime-local"
+              value={deadline}
+              max={getDatetime(addDays(nowDate, 365))}
+              min={getDatetime(nowDate)}
+              onChange={changeDeadline}
+            />
           </S.InputContainer>
           <TextArea
             inputTextState={contents}
@@ -231,20 +237,8 @@ const S = {
     font-weight: 500px;
   `,
 
-  DeadlineContainer: styled.div`
-    display: flex;
-
-    gap: 20px;
-  `,
-
-  DeadlineDate: styled.input`
-    &:focus {
-      outline: 0;
-    }
-  `,
-
-  DeadlineTime: styled.input`
-    margin-right: 40px;
+  Deadline: styled.input`
+    gap: 10px;
 
     &:focus {
       outline: 0;
