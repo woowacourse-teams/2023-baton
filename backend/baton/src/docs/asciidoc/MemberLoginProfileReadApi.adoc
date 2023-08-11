@@ -12,7 +12,7 @@ endif::[]
 
 == *로그인된 사용자 프로필 조회*
 
-=== *로그인된 사용자 프로필 조회 조회 API*
+=== *로그인된 사용자 프로필 조회 API*
 
 ==== *Http Request*
 include::{snippets}/../../build/generated-snippets/member-login-profile-read-api-test/read-login-member-by-access-token/http-request.adoc[]
