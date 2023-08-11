@@ -1,26 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
-import { BATON_BASE_URL } from '@/constants/index';
-import MyPageRunnerPostItem from '../MyPageRunnerPostItem/MyPageRunnerPostItem';
-import { MyPageRunnerPost } from '@/types/myPage';
+import MyPageRunnerPostItem from '../MyPagePostItem/MyPagePostItem';
+import { MyPagePost } from '@/types/myPage';
 
 interface Props {
-  filterList: () => MyPageRunnerPost[];
+  filterList: () => MyPagePost[];
 }
 
-const MyPageRunnerPostList = ({ filterList }: Props) => {
+const MyPagePostList = ({ filterList }: Props) => {
   if (filterList().length === 0) return <p>게시글 정보가 없습니다.</p>;
 
   return (
     <S.RunnerPostWrapper>
-      {filterList()?.map((item: MyPageRunnerPost) => (
+      {filterList()?.map((item: MyPagePost) => (
         <MyPageRunnerPostItem key={item.runnerPostId} {...item} />
       ))}
     </S.RunnerPostWrapper>
   );
 };
 
-export default MyPageRunnerPostList;
+export default MyPagePostList;
 
 const S = {
   RunnerPostWrapper: styled.ul`

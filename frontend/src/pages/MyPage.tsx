@@ -1,17 +1,17 @@
 import ListFilter from '@/components/ListFilter/ListFilter';
-import MyPageRunnerPostList from '@/components/MyPage/MyPageRunnerPostList/MyPageRunnerPostList';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetRunnerMyPageResponse, MyPageRunnerPost } from '@/types/myPage';
+import { GetMyPagePost, GetMyPageProfileResponse } from '@/types/myPage';
 import { ReviewStatus } from '@/types/runnerPost';
 import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
+import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 
 type ReviewPostOptions = SelectOption<ReviewStatus>[];
 
@@ -34,44 +34,91 @@ const reviewPostOptions: ReviewPostOptions = [
 ];
 
 const MyPage = () => {
-  const [runnerProfile, setRunnerProfile] = useState<GetRunnerMyPageResponse | null>(null);
-
+  const [runnerProfile, setRunnerProfile] = useState<GetMyPageProfileResponse | null>(null);
+  const [supporterProfile, setSupporterProfile] = useState<GetMyPageProfileResponse | null>(null);
+  const [runnerPostList, setRunnerPostList] = useState<GetMyPagePost | null>(null);
+  const [supporterPostList, setSupporterPostList] = useState<GetMyPagePost | null>(null);
   const [postOptions, setPostOptions] = useState<ReviewPostOptions>(reviewPostOptions);
-
   const [isRunner, setIsRunner] = useState(true);
+  const [isSupporter, setIsSupporter] = useState(false);
 
   const token =
     'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXRvbiIsImlhdCI6MTY5MTY3MjUwNCwiZXhwIjoxNjk0MjY0NTA0LCJzb2NpYWxJZCI6Imd5ZW9uZ3phIn0.CWUC0Q9Qlw4oRC_CNm-aVKNNGYYUKuVplz16WdreFC8';
 
   const getRunnerProfile = async () => {
-    try {
-      if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-      const response = await fetch(`${BATON_BASE_URL}/profile/runner/me`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      });
+    const response = await fetch(`${BATON_BASE_URL}/profile/runner/me`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+    const data = await response.json();
 
-      const supporterCardList = await response.json();
+    return data;
+  };
 
-      return supporterCardList;
-    } catch (error) {
-      console.error(error);
-    }
+  const getRunnerPostList = async () => {
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/me/runner`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+
+    return data;
+  };
+
+  const getSupporterProfile = async () => {
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    const response = await fetch(`${BATON_BASE_URL}/profile/supporter/me`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+
+    return data;
+  };
+
+  const getSupporterPostList = async () => {
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    const response = await fetch(`${BATON_BASE_URL}/posts/runner/me/supporter`, {
+      method: 'GET',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const data = await response.json();
+
+    return data;
   };
 
   useEffect(() => {
-    const fetchRunnerPost = async () => {
-      const result = await getRunnerProfile();
+    const fetchRunnerMyPage = async () => {
+      const profileResult = await getRunnerProfile();
+      const postResult = await getRunnerPostList();
 
-      setRunnerProfile(result);
+      setRunnerProfile(profileResult);
+      setRunnerPostList(postResult);
     };
 
-    fetchRunnerPost();
+    fetchRunnerMyPage();
+  }, []);
+
+  useEffect(() => {
+    const fetchSupporterMyPage = async () => {
+      const profileResult = await getSupporterProfile();
+      const postResult = await getSupporterPostList();
+
+      setSupporterProfile(profileResult);
+      setSupporterPostList(postResult);
+    };
+
+    fetchSupporterMyPage();
   }, []);
 
   const selectOptions = (value: string | number) => {
@@ -87,17 +134,18 @@ const MyPage = () => {
   };
 
   const filterList = () => {
-    const posts = runnerProfile?.runnerPosts || [];
+    const RunnerPosts = runnerPostList?.data || [];
 
     const selectedOption = postOptions.filter((option) => option.selected)[0];
     if (!selectedOption) return [];
 
-    const filteredPosts = posts.filter((post) => post.reviewStatus === selectedOption.value);
+    const filteredPosts = RunnerPosts.filter((post) => post.reviewStatus === selectedOption.value);
     return filteredPosts;
   };
 
   const handleClickSupporterButton = () => {
-    alert('준비중인 기능입니다');
+    setIsRunner(!isRunner);
+    setIsSupporter(!isSupporter);
   };
 
   return (
@@ -105,22 +153,28 @@ const MyPage = () => {
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
-            imageUrl={runnerProfile?.imageUrl || 'https://via.placeholder.com/150'}
+            imageUrl={
+              isRunner
+                ? runnerProfile?.imageUrl || 'https://via.placeholder.com/150'
+                : supporterProfile?.imageUrl || 'https://via.placeholder.com/150'
+            }
             width="100px"
             height="100px"
           />
           <S.InfoDetailContainer>
-            <S.Name>{runnerProfile?.name}</S.Name>
-            <S.Company>{runnerProfile?.company}</S.Company>
+            <S.Name>{isRunner ? runnerProfile?.name : supporterProfile?.name}</S.Name>
+            <S.Company>{isRunner ? runnerProfile?.company : supporterProfile?.company}</S.Company>
             <S.TechLabel>
-              {runnerProfile?.technicalTags.map((tag) => (
-                <TechLabel tag={tag} />
-              ))}
+              {isRunner
+                ? runnerProfile?.technicalTags.map((tag) => <TechLabel key={tag} tag={tag} />)
+                : supporterProfile?.technicalTags.map((tag) => <TechLabel key={tag} tag={tag} />)}
             </S.TechLabel>
           </S.InfoDetailContainer>
         </S.InfoContainer>
         <S.ButtonContainer>
-          <S.RunnerSupporterButton $isSelected={isRunner}>러너</S.RunnerSupporterButton>
+          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
+            러너
+          </S.RunnerSupporterButton>
           <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
             서포터
           </S.RunnerSupporterButton>
@@ -141,7 +195,7 @@ const MyPage = () => {
         <S.FilterWrapper>
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
-        <MyPageRunnerPostList filterList={filterList} />
+        {isRunner ? <MyPagePostList filterList={filterList} /> : <MyPagePostList filterList={filterList} />}
       </S.PostsContainer>
     </Layout>
   );

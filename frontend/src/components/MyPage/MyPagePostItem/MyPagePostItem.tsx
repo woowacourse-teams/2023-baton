@@ -2,23 +2,15 @@ import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { MyPageRunnerPost } from '@/types/myPage';
 import React from 'react';
 import styled from 'styled-components';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
+import { MyPagePost } from '@/types/myPage';
 
-interface Props extends MyPageRunnerPost {}
+interface Props extends MyPagePost {}
 
-const MyPageRunnerPostItem = ({
-  runnerPostId,
-  title,
-  deadline,
-  reviewStatus,
-  tags,
-  watchedCount,
-  applicantCount,
-}: Props) => {
+const MyPagePostItem = ({ runnerPostId, title, deadline, reviewStatus, tags, watchedCount, applicantCount }: Props) => {
   const handleClickSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     alert('준비중인 서포터 선택 기능입니다');
@@ -80,7 +72,7 @@ const MyPageRunnerPostItem = ({
   );
 };
 
-export default MyPageRunnerPostItem;
+export default MyPagePostItem;
 
 const S = {
   RunnerPostItemContainer: styled.li`

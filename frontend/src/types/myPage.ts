@@ -1,16 +1,19 @@
 import { ReviewStatus } from './runnerPost';
 
-export interface GetRunnerMyPageResponse {
+export interface GetMyPageProfileResponse {
   name: string;
   company: string;
   imageUrl: string;
   githubUrl: string;
   introduction: string;
   technicalTags: string[];
-  runnerPosts: MyPageRunnerPost[];
 }
 
-export interface MyPageRunnerPost {
+export interface GetMyPagePost {
+  data: MyPagePost[];
+}
+
+export interface MyPagePost {
   runnerPostId: number;
   title: string;
   deadline: string;
@@ -18,5 +21,4 @@ export interface MyPageRunnerPost {
   watchedCount: number;
   applicantCount: number;
   reviewStatus: ReviewStatus;
-  // 러너 마이페이지 게시글 api 나오면 수정 요망
 }
