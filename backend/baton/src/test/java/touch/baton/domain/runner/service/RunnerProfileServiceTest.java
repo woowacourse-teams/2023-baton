@@ -6,8 +6,11 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
+import touch.baton.domain.runner.service.dto.RunnerProfileUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,10 +30,10 @@ class RunnerProfileServiceTest extends ServiceTestConfig {
         // given
         final Member memberJudy = memberRepository.save(MemberFixture.createJudy());
         final Runner runnerJudy = runnerRepository.save(RunnerFixture.createRunner(memberJudy));
-        final RunnerProfileRequest runnerProfileRequest = new RunnerProfileRequest("변경된 이름", "변경된 회사", "변경된 자기소개", new String[]{"changedTag1", "changedTag2"});
+        final RunnerProfileUpdateRequest runnerProfileUpdateRequest = new RunnerProfileUpdateRequest("변경된 이름", "변경된 회사", "변경된 자기소개", List.of("changedTag1", "changedTag2"));
 
         // when
-        runnerProfileService.updateRunnerProfile(runnerJudy, runnerProfileRequest);
+        runnerProfileService.updateRunnerProfile(runnerJudy, runnerProfileUpdateRequest);
 
         // then
         assertAll(

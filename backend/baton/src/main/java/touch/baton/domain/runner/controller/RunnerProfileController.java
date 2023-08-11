@@ -16,7 +16,7 @@ import touch.baton.domain.runner.controller.response.RunnerMyProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runner.service.RunnerService;
-import touch.baton.domain.runner.service.RunnerProfileRequest;
+import touch.baton.domain.runner.service.dto.RunnerProfileUpdateRequest;
 import touch.baton.domain.runner.service.RunnerProfileService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
@@ -50,8 +50,8 @@ public class RunnerProfileController {
 
     @PatchMapping("/me")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateMyProfile(@AuthRunnerPrincipal final Runner runner, @RequestBody RunnerProfileRequest runnerProfileRequest){
-        runnerProfileService.updateRunnerProfile(runner, runnerProfileRequest);
+    public void updateMyProfile(@AuthRunnerPrincipal final Runner runner, @RequestBody RunnerProfileUpdateRequest runnerProfileUpdateRequest){
+        runnerProfileService.updateRunnerProfile(runner, runnerProfileUpdateRequest);
     }
 
     @GetMapping("/{runnerId}")
