@@ -8,13 +8,12 @@ import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.service.dto.RunnerProfileUpdateRequest;
+import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 import touch.baton.domain.tag.repository.RunnerTechnicalTagRepository;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,15 +25,15 @@ public class RunnerProfileService {
     private final RunnerTechnicalTagRepository runnerTechnicalTagRepository;
     private final TechnicalTagRepository technicalTagRepository;
 
-    public void updateRunnerProfile(Runner runner, RunnerProfileUpdateRequest runnerProfileUpdateRequest) {
-        runner.updateMemberName(new MemberName(runnerProfileUpdateRequest.name()));
-        runner.updateCompany(new Company(runnerProfileUpdateRequest.company()));
-        runner.updateIntroduction(new Introduction(runnerProfileUpdateRequest.introduction()));
-        runner.updateRunnerTechnicalTags(convertToRunnerTechnicalTags(runner, runnerProfileUpdateRequest));
+    public void updateRunnerProfile(Runner runner, RunnerUpdateRequest runnerUpdateRequest) {
+        runner.updateMemberName(new MemberName(runnerUpdateRequest.name()));
+        runner.updateCompany(new Company(runnerUpdateRequest.company()));
+        runner.updateIntroduction(new Introduction(runnerUpdateRequest.introduction()));
+        runner.updateRunnerTechnicalTags(convertToRunnerTechnicalTags(runner, runnerUpdateRequest));
     }
 
-    private List<RunnerTechnicalTag> convertToRunnerTechnicalTags(final Runner runner, final RunnerProfileUpdateRequest runnerProfileUpdateRequest) {
-        return runnerProfileUpdateRequest.technicalTags().stream()
+    private List<RunnerTechnicalTag> convertToRunnerTechnicalTags(final Runner runner, final RunnerUpdateRequest runnerUpdateRequest) {
+        return runnerUpdateRequest.technicalTags().stream()
                 .map(tagName -> {
                     TechnicalTag technicalTag = TechnicalTag.builder()
                             .tagName(new TagName(tagName))

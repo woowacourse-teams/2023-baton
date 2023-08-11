@@ -1,26 +1,27 @@
 package touch.baton.domain.runner.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.response.RunnerMyProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runner.service.RunnerService;
-import touch.baton.domain.runner.service.dto.RunnerProfileUpdateRequest;
+import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 import touch.baton.domain.runner.service.RunnerProfileService;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -49,9 +50,11 @@ public class RunnerProfileController {
     }
 
     @PatchMapping("/me")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateMyProfile(@AuthRunnerPrincipal final Runner runner, @RequestBody final RunnerProfileUpdateRequest runnerProfileUpdateRequest){
-        runnerProfileService.updateRunnerProfile(runner, runnerProfileUpdateRequest);
+    public ResponseEntity<Void> updateMyProfile(@AuthRunnerPrincipal final Runner runner,
+                                                @RequestBody @Valid final RunnerUpdateRequest runnerUpdateRequest){
+        runnerProfileService.updateRunnerProfile(runner, runnerUpdateRequest);
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/profile/runner/me").build().toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
     }
 
     @GetMapping("/{runnerId}")
