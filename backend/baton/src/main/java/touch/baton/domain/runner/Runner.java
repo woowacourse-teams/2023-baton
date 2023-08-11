@@ -14,8 +14,10 @@ import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.exception.RunnerDomainException;
+import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
 
+import java.util.List;
 import java.util.Objects;
 
 import static jakarta.persistence.FetchType.LAZY;
@@ -65,6 +67,10 @@ public class Runner extends BaseEntity {
         if (Objects.isNull(member)) {
             throw new RunnerDomainException("Runner 의 member 는 null 일 수 없습니다.");
         }
+    }
+
+    public void addAllRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags) {
+        this.runnerTechnicalTags.addAll(runnerTechnicalTags);
     }
 
     @Override

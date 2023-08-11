@@ -31,7 +31,7 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         final Member member = MemberFixture.createHyena();
         memberRepository.save(member);
 
-        final Runner runner = RunnerFixture.create(introduction("hello"), member);
+        final Runner runner = RunnerFixture.createRunner(introduction("hello"), member);
         runnerRepository.save(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
