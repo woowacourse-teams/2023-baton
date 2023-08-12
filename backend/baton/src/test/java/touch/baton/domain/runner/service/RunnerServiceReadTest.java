@@ -37,7 +37,7 @@ class RunnerServiceReadTest extends ServiceTestConfig {
         final Runner expectedRunner = runnerRepository.save(RunnerFixture.createRunner(expectedMember, technicalTags));
 
         // when
-        final Runner actualRunner = runnerService.readRunnerById(expectedRunner.getId());
+        final Runner actualRunner = runnerService.readByRunnerId(expectedRunner.getId());
 
         // then
         final Member actualMember = actualRunner.getMember();
