@@ -7,7 +7,6 @@ import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.member.exception.MemberDomainException;
 import touch.baton.domain.member.vo.Company;
