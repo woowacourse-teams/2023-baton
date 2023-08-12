@@ -1,32 +1,36 @@
-package touch.baton.document.profile.supporter.update;
+package touch.baton.document.runnerpost.read;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.runner.Runner;
+import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.controller.RunnerPostController;
+import touch.baton.domain.runnerpost.service.RunnerPostService;
+import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.controller.SupporterProfileController;
-import touch.baton.domain.supporter.service.SupporterService;
-import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,24 +41,22 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(SupporterProfileController.class)
-public class SupporterProfileUpdateApiTest extends RestdocsConfig {
+@WebMvcTest(RunnerPostController.class)
+public class RunnerPostUpdateSupporterCancelationApiTest extends RestdocsConfig {
 
     @MockBean
-    private SupporterService supporterService;
+    private RunnerPostService runnerPostService;
 
     @BeforeEach
     void setUp() {
-        final SupporterProfileController supporterProfileController = new SupporterProfileController(supporterService);
-        restdocsSetUp(supporterProfileController);
+        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
+        restdocsSetUp(runnerPostController);
     }
 
-    @DisplayName("서포터 프로필 수정 API")
+    @DisplayName("러너 게시글에 리뷰 제안한 서포터가 리뷰 제안 철회 API")
     @Test
-    void updateSupporterProfile() throws Exception {
+    void updateSupporterCancelRunnerPost() throws Exception {
         // given
-        final SupporterUpdateRequest request = new SupporterUpdateRequest("디투랜드", "우아한테크코스", "안녕하세요. 디투입니다.", List.of("java", "python"));
-        final String requestBody = objectMapper.writeValueAsString(request);
         final String socialId = "ditooSocialId";
         final Member member = MemberFixture.create(
                 memberName("디투"),
@@ -67,27 +69,27 @@ public class SupporterProfileUpdateApiTest extends RestdocsConfig {
         final Supporter supporter = SupporterFixture.create(member);
         final String token = getAccessTokenBySocialId(socialId);
 
+        final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena());
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, supporter, new Deadline(LocalDateTime.now().plusHours(10)));
+        final RunnerPost spyRunnerPost = spy(runnerPost);
+
         // when
+        when(spyRunnerPost.getId()).thenReturn(1L);
         when(oauthSupporterRepository.joinByMemberSocialId(any()))
                 .thenReturn(Optional.ofNullable(supporter));
+        runnerPostService.deleteSupporterRunnerPost(any(), eq(1L));
 
         // then
-        mockMvc.perform(patch("/api/v1/profile/supporter/me")
-                        .header(AUTHORIZATION, "Bearer " + token)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .content(requestBody))
+        mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/cancelation", 1L)
+                        .header(AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isNoContent())
-                .andExpect(header().string("Location", "/api/v1/profile/supporter/me"))
+                .andExpect(header().string("Location", "/api/v1/posts/runner/1"))
                 .andDo(restDocs.document(
                         requestHeaders(
-                                headerWithName(AUTHORIZATION).description("Bearer JWT"),
-                                headerWithName(CONTENT_TYPE).description("application/json")
+                                headerWithName(AUTHORIZATION).description("Bearer JWT")
                         ),
-                        requestFields(
-                                fieldWithPath("name").type(STRING).description("변경할 이름"),
-                                fieldWithPath("company").type(STRING).description("변경할 소속"),
-                                fieldWithPath("introduction").type(STRING).description("변경할 소개글"),
-                                fieldWithPath("technicalTags.[]").type(ARRAY).description("변경할 기술 태그 목록")
+                        pathParameters(
+                                parameterWithName("runnerPostId").description("러너 게시글 식별자값")
                         ),
                         responseHeaders(headerWithName(LOCATION).description("redirect uri"))
                 ))
