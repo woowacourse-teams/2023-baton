@@ -17,6 +17,7 @@ import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
+import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
@@ -36,6 +37,7 @@ public class RunnerPostService {
     private final RunnerPostTagRepository runnerPostTagRepository;
     private final TagRepository tagRepository;
     private final SupporterRepository supporterRepository;
+    private final SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Transactional
     public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
@@ -194,5 +196,9 @@ public class RunnerPostService {
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
         return runnerPostRepository.findByRunnerId(runnerId);
+    }
+
+    public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
+        supporterRunnerPostRepository.deleteBySupporterAndRunnerPostId(supporter, runnerPostId);
     }
 }

@@ -12,11 +12,15 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.supporter.SupporterRunnerPost;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagsFixture;
+import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,7 +49,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
+        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository, supporterRunnerPostRepository);
     }
 
     @DisplayName("Runner Post 수정에 성공한다.")
@@ -90,5 +94,30 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
                         .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                         .toList()
         ).containsExactly(TAG, OTHER_TAG);
+    }
+
+    @DisplayName("Supporter 의 RunnerPost 제안을 철회하는데 성공한다")
+    @Test
+    void deleteBySupporterAndRunnerPostId() {
+        // given
+        final Member reviewerMember = MemberFixture.createDitoo();
+        memberRepository.save(reviewerMember);
+        final Supporter reviewerSupporter = SupporterFixture.create(reviewerMember);
+        supporterRepository.save(reviewerSupporter);
+
+        final Member revieweeMember = MemberFixture.createJudy();
+        memberRepository.save(revieweeMember);
+        final Runner revieweeRunner = RunnerFixture.createRunner(revieweeMember);
+        runnerRepository.save(revieweeRunner);
+        final RunnerPost runnerPost = RunnerPostFixture.create(revieweeRunner, reviewerSupporter, new Deadline(LocalDateTime.now().plusHours(100)));
+        runnerPostRepository.save(runnerPost);
+        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(reviewerSupporter, runnerPost);
+        supporterRunnerPostRepository.save(supporterRunnerPost);
+
+        // when
+        runnerPostService.deleteSupporterRunnerPost(reviewerSupporter, runnerPost.getId());
+
+        // then
+        assertThat(supporterRunnerPostRepository.findById(supporterRunnerPost.getId())).isNotPresent();
     }
 }
