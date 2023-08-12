@@ -9,6 +9,7 @@ import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostAssuredSupport {
 
     private RunnerPostAssuredSupport() {
