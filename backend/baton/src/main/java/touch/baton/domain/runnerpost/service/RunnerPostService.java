@@ -134,6 +134,10 @@ public class RunnerPostService {
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
     }
 
+    public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Long runnerPostId) {
+        return supporterRunnerPostRepository.readAllByRunnerPostId(runnerPostId);
+    }
+
     @Transactional
     public void increaseWatchedCount(final RunnerPost runnerPost) {
         runnerPost.increaseWatchedCount();
