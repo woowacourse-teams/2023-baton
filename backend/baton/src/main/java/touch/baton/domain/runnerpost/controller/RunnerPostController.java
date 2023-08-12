@@ -125,4 +125,15 @@ public class RunnerPostController {
 
         return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
     }
+
+//    @GetMapping("/me/supporter")
+//    public ResponseEntity<RunnerPostReadResponses.LoginedSupporter> readRunnerPostsBySupporterAndReviewStatus(
+//            @AuthSupporterPrincipal final Supporter supporter,
+//            @PathParam("reviewStatus") final ReviewStatus reviewStatus
+//    ) {
+//
+//        final List<RunnerPostResponse.LoginedSupporter> responses =
+//                runnerPostService.readRunnerPostBySupporterAndReviewStatus(supporter, reviewStatus).stream()
+//                        .map(runnerPost -> RunnerPostResponse.LoginedSupporter.from(runnerPost));
+//    }
 }
