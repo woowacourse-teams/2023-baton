@@ -28,13 +28,13 @@ public class RunnerService {
     private final RunnerTechnicalTagRepository runnerTechnicalTagRepository;
     private final TechnicalTagRepository technicalTagRepository;
 
-    public Runner readRunnerById(final Long runnerId) {
+    public Runner readByRunnerId(final Long runnerId) {
         return runnerRepository.joinMemberByRunnerId(runnerId)
                 .orElseThrow(() -> new RunnerBusinessException("Runner 가 존재하지 않습니다."));
     }
 
     @Transactional
-    public void updateRunnerProfile(Runner runner, RunnerUpdateRequest runnerUpdateRequest) {
+    public void updateRunner(Runner runner, RunnerUpdateRequest runnerUpdateRequest) {
         runner.updateMemberName(new MemberName(runnerUpdateRequest.name()));
         runner.updateCompany(new Company(runnerUpdateRequest.company()));
         runner.updateIntroduction(new Introduction(runnerUpdateRequest.introduction()));
@@ -58,8 +58,7 @@ public class RunnerService {
     }
 
     private TechnicalTag findTechnicalTagIfExistElseCreate(final TagName tagName) {
-        final Optional<TechnicalTag> maybeTechnicalTag = technicalTagRepository.findByTagName(tagName);
-        return maybeTechnicalTag.orElseGet(
+        return technicalTagRepository.findByTagName(tagName).orElseGet(
                 () -> technicalTagRepository.save(TechnicalTag.builder()
                         .tagName(tagName)
                         .build())
@@ -71,7 +70,6 @@ public class RunnerService {
                 .runner(runner)
                 .technicalTag(technicalTag)
                 .build();
-        runnerTechnicalTagRepository.save(runnerTechnicalTag);
-        return runnerTechnicalTag;
+        return runnerTechnicalTagRepository.save(runnerTechnicalTag);
     }
 }

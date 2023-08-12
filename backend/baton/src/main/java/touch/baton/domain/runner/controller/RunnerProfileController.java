@@ -4,8 +4,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,15 +49,15 @@ public class RunnerProfileController {
 
     @PatchMapping("/me")
     public ResponseEntity<Void> updateMyProfile(@AuthRunnerPrincipal final Runner runner,
-                                                @RequestBody @Valid final RunnerUpdateRequest runnerUpdateRequest){
-        runnerService.updateRunnerProfile(runner, runnerUpdateRequest);
+                                                @RequestBody @Valid final RunnerUpdateRequest runnerUpdateRequest) {
+        runnerService.updateRunner(runner, runnerUpdateRequest);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/profile/runner/me").build().toUri();
         return ResponseEntity.noContent().location(redirectUri).build();
     }
 
     @GetMapping("/{runnerId}")
     public ResponseEntity<RunnerProfileResponse.Detail> readRunnerProfile(@PathVariable Long runnerId) {
-        final Runner runner = runnerService.readRunnerById(runnerId);
+        final Runner runner = runnerService.readByRunnerId(runnerId);
         return ResponseEntity.ok(RunnerProfileResponse.Detail.from(runner));
     }
 }
