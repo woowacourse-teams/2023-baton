@@ -76,7 +76,7 @@ public class Runner extends BaseEntity {
     }
 
     public void updateIntroduction(final Introduction introduction) {
-        this.introduction = introduction;
+        this.introduction.updateIntroduction(introduction.getValue());
     }
 
     public void updateMemberName(final MemberName memberName) {
