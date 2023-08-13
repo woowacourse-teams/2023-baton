@@ -52,7 +52,7 @@ public class RunnerAssuredSupport {
             return new RunnerServerResponseBuilder(response);
         }
 
-        public RunnerProfileClientRequestBuilder 러너_본인_프로필을_수정한다(final RunnerUpdateRequest 러너_업데이트_요청) {
+        public RunnerClientRequestBuilder 러너_본인_프로필을_수정한다(final RunnerUpdateRequest 러너_업데이트_요청) {
             response = AssuredSupport.patch("/api/v1/profile/runner/me", accessToken, 러너_업데이트_요청);
             return this;
         }

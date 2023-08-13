@@ -37,9 +37,5 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
                                                       @Param("supporterId") final Long supporterId,
                                                       @Param("reviewStatus") final ReviewStatus reviewStatus);
 
-    List<RunnerPost> readBySupporterId(Long supporterId);
-
-    Optional<RunnerPost> readByTitle(Title title);
-
     List<RunnerPost> findBySupporterAndReviewStatusOrderByCreatedAtDesc(final Supporter supporter, final ReviewStatus reviewStatus);
 }

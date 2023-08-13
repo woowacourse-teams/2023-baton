@@ -42,6 +42,9 @@ import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostServiceReadTest extends ServiceTestConfig {
 

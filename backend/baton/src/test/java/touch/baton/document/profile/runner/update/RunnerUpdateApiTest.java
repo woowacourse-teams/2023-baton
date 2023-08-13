@@ -13,7 +13,6 @@ import touch.baton.domain.runner.controller.RunnerProfileController;
 import touch.baton.domain.runner.service.RunnerService;
 import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.supporter.controller.SupporterProfileController;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 
@@ -22,12 +21,8 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -38,7 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RunnerProfileController.class)
-public class RunnerProfileUpdateApiTest extends RestdocsConfig {
+public class RunnerUpdateApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerService runnerService;

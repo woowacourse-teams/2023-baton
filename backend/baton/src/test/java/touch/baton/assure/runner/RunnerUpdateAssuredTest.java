@@ -12,12 +12,10 @@ import touch.baton.fixture.domain.RunnerFixture;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_TECHNICAL_TAGS_ARE_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class RunnerProfileAssuredUpdateTest extends AssuredTestConfig {
+public class RunnerUpdateAssuredTest extends AssuredTestConfig {
 
     private String 디투_액세스_토큰;
 
@@ -35,7 +33,7 @@ public class RunnerProfileAssuredUpdateTest extends AssuredTestConfig {
     void 러너_정보를_수정한다() {
         final RunnerUpdateRequest 러너_업데이트_요청 = new RunnerUpdateRequest("업데이트된 이름", "업데이트된 소속", "업데이트된 자기소개", List.of("Java", "React"));
 
-        RunnerProfileAssuredSupport
+        RunnerAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
@@ -48,7 +46,7 @@ public class RunnerProfileAssuredUpdateTest extends AssuredTestConfig {
     void 러너_정보_수정_시에_이름이_없으면_예외가_발생한다() {
         final RunnerUpdateRequest 러너_업데이트_요청 = new RunnerUpdateRequest(null, "업데이트된 소속", "업데이트된 자기소개", List.of("Java", "React"));
 
-        RunnerProfileAssuredSupport
+        RunnerAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
@@ -61,7 +59,7 @@ public class RunnerProfileAssuredUpdateTest extends AssuredTestConfig {
     void 서포터_정보_수정_시에_소속이_없으면_예외가_발생한다() {
         final RunnerUpdateRequest 러너_업데이트_요청 = new RunnerUpdateRequest("업데이트된 이름", null, "업데이트된 자기소개", List.of("Java", "React"));
 
-        RunnerProfileAssuredSupport
+        RunnerAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
@@ -74,7 +72,7 @@ public class RunnerProfileAssuredUpdateTest extends AssuredTestConfig {
     void 러너_정보_수정_시에_소개글이_없어도_된다() {
         final RunnerUpdateRequest 러너_업데이트_요청 = new RunnerUpdateRequest("업데이트된 이름", "업데이트된 소속", null, List.of("Java", "React"));
 
-        RunnerProfileAssuredSupport
+        RunnerAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
@@ -87,7 +85,7 @@ public class RunnerProfileAssuredUpdateTest extends AssuredTestConfig {
     void 러너_정보_수정_시에_기술_태그가_없으면_예외가_발생한다() {
         final RunnerUpdateRequest 러너_업데이트_요청 = new RunnerUpdateRequest("업데이트된 이름", "업데이트된 소속", "업데이트된 자기소개", null);
 
-        RunnerProfileAssuredSupport
+        RunnerAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)

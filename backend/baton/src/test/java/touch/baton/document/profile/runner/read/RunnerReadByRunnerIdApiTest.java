@@ -57,7 +57,7 @@ public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
 
         // when
         when(spyRunner.getId()).thenReturn(1L);
-        when(runnerService.readRunnerById(anyLong())).thenReturn(spyRunner);
+        when(runnerService.readByRunnerId(anyLong())).thenReturn(spyRunner);
 
         // then
         mockMvc.perform(get("/api/v1/profile/runner/{runnerId}", 1L))
