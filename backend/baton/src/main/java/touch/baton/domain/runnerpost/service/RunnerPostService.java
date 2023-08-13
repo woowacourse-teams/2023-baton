@@ -12,7 +12,6 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.runnerpost.repository.SupporterRunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;

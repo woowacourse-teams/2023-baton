@@ -70,7 +70,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
         final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
         applySupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
-        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(applySupporter, targetRunnerPost));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(targetRunnerPost, applySupporter));
     }
 
     @DisplayName("Runner Post 수정에 성공한다.")

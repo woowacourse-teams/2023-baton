@@ -16,7 +16,6 @@ import touch.baton.config.converter.ConverterConfig;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.runnerpost.repository.SupporterRunnerPostRepository;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
 import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
@@ -49,9 +48,6 @@ public abstract class AssuredTestConfig {
 
     @Autowired
     protected TechnicalTagRepository technicalTagRepository;
-
-    @Autowired
-    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @MockBean
     private JwtDecoder jwtDecoder;

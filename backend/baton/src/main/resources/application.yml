@@ -7,6 +7,13 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: create
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        one-indexed-parameters: true
+
 logging:
   level:
     org.hibernate.SQL: debug

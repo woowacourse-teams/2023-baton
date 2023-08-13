@@ -11,6 +11,7 @@ import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
+import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -51,7 +52,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
         final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
         final Supporter supporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
-        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(supporter, runner));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runner, supporter));
 
         // when, then
         assertAll(
