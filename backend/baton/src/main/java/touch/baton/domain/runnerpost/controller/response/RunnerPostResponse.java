@@ -119,8 +119,8 @@ public record RunnerPostResponse() {
                                         String title,
                                         LocalDateTime deadline,
                                         List<String> tags,
-                                        Integer watchedCount,
-                                        Integer applicantCount,
+                                        int watchedCount,
+                                        int applicantCount,
                                         String reviewStatus
     ) {
 
