@@ -38,18 +38,22 @@ class RunnerPostReadWithGuestAssuredTest extends AssuredTestConfig {
         러너_게시글에_서포터를_할당한다(서포터_헤나, 러너_에단의_게시글);
         서포터를_러너_게시글에_저장한다(서포터_헤나, 러너_에단의_게시글);
 
+        // FIXME: 2023/08/13 러너 게시글 리뷰 완료 요청 기능 구현시 아래 ReviewStatus.DONE 테스트를 수정해야한다.
+        러너_에단의_게시글.updateReviewStatus(ReviewStatus.DONE);
+        runnerPostRepository.save(러너_에단의_게시글);
+
         final String 헤나_액세스_토큰 = login(서포터_헤나.getMember().getSocialId().getValue());
 
-        final PageRequest 페이징_정보 = PageRequest.of(0, 10);
+        final PageRequest 페이징_정보 = PageRequest.of(1, 10);
         final RunnerPostResponse.ReferencedBySupporter 서포터가_리뷰_완료한_러너_게시글_응답
-                = RunnerPostResponse.ReferencedBySupporter.from(러너_에단의_게시글, 1);
+                = RunnerPostResponse.ReferencedBySupporter.of(러너_에단의_게시글, 1);
         final PageResponse<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_리뷰_완료한_러너_게시글_응답
                 = 서포터가_리뷰_완료한_러너_게시글_응답(페이징_정보, List.of(서포터가_리뷰_완료한_러너_게시글_응답));
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(헤나_액세스_토큰)
-                .서포터와_연관된_러너_게시글_페이징을_조회한다(서포터_헤나.getId(), ReviewStatus.IN_PROGRESS, 페이징_정보)
+                .서포터와_연관된_러너_게시글_페이징을_조회한다(서포터_헤나.getId(), ReviewStatus.DONE, 페이징_정보)
 
                 .서버_응답()
                 .서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(페이징된_서포터가_리뷰_완료한_러너_게시글_응답);
