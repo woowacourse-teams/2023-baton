@@ -211,4 +211,9 @@ public class RunnerPostService {
     public List<Integer> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
         return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
     }
+
+    @Transactional
+    public void updateRunnerPostReviewStatusDone(final Long runnerPostId, final Supporter supporter) {
+        // FIXME: 2023/08/13 서비스 코드가 비었어요.
+    }
 }
