@@ -175,7 +175,7 @@ public class RunnerPostController {
         runnerPostService.updateRunnerPostAppliedSupporter(runner, runnerPostId, request);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
-                .path("{runnerPostId}")
+                .path("/{runnerPostId}")
                 .buildAndExpand(runnerPostId)
                 .toUri();
         return ResponseEntity.noContent().location(redirectUri).build();
