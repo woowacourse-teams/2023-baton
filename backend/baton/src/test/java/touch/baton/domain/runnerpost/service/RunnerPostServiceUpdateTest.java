@@ -45,7 +45,13 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
+        runnerPostService = new RunnerPostService(
+                runnerPostRepository,
+                runnerPostTagRepository,
+                tagRepository,
+                supporterRepository,
+                supporterRunnerPostRepository
+        );
     }
 
     @DisplayName("Runner Post 수정에 성공한다.")
