@@ -84,6 +84,47 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
         final Page<RunnerPost> pageTwoRunnerPosts
                 = runnerPostRepository.findBySupporterIdAndReviewStatus(pageTwo, savedSupporterHyena.getId(), ReviewStatus.DONE);
 
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(pageOneRunnerPosts.getContent()).containsExactly(savedRunnerPostOne, savedRunnerPostTwo);
+            softly.assertThat(pageTwoRunnerPosts.getContent()).containsExactly(savedRunnerPostThree);
+        });
+    }
+
+    @DisplayName("join 한 SupporterRunnerPost의 Supporter 외래키가 Supporter 식별자값과 같고, ReviewStatus 로 연관된 RunnerPost 를 페이징하여 조회한다.")
+    @Test
+    void joinSupporterRunnerPostBySupporterIdAndReviewStatus() {
+        // given
+        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
+        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+        final Member savedMemberJudy = memberRepository.save(MemberFixture.createJudy());
+        final Runner savedRunnerJudy = runnerRepository.save(RunnerFixture.createRunner(savedMemberJudy));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Supporter savedApplicantHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        final RunnerPost runnerPostOne = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost savedRunnerPostOne = runnerPostRepository.save(runnerPostOne);
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(savedRunnerPostOne, savedApplicantHyena));
+        final RunnerPost runnerPostTwo = RunnerPostFixture.create(savedRunnerEthan, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost savedRunnerPostTwo = runnerPostRepository.save(runnerPostTwo);
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(savedRunnerPostTwo, savedApplicantHyena));
+        final RunnerPost runnerPostThree = RunnerPostFixture.create(savedRunnerJudy, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost savedRunnerPostThree = runnerPostRepository.save(runnerPostThree);
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(savedRunnerPostThree, savedApplicantHyena));
+
+        // when
+        final PageRequest pageOne = PageRequest.of(0, 2);
+        final PageRequest pageTwo = PageRequest.of(1, 2);
+
+        final Page<RunnerPost> pageOneRunnerPosts
+                = runnerPostRepository.joinSupporterRunnerPostBySupporterIdAndReviewStatus(pageOne, savedApplicantHyena.getId(), ReviewStatus.NOT_STARTED);
+        final Page<RunnerPost> pageTwoRunnerPosts
+                = runnerPostRepository.joinSupporterRunnerPostBySupporterIdAndReviewStatus(pageTwo, savedApplicantHyena.getId(), ReviewStatus.NOT_STARTED);
+
+        // then
         assertSoftly(softly -> {
             softly.assertThat(pageOneRunnerPosts.getContent()).containsExactly(savedRunnerPostOne, savedRunnerPostTwo);
             softly.assertThat(pageTwoRunnerPosts.getContent()).containsExactly(savedRunnerPostThree);

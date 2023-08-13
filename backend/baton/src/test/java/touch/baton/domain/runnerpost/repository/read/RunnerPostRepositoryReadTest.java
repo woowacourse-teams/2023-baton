@@ -9,8 +9,6 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
@@ -19,7 +17,6 @@ import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.RunnerPostTagsFixture;
-import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
@@ -142,53 +139,6 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
         // when
         final List<RunnerPost> actual = runnerPostRepository.findAllByOrderByCreatedAtDesc();
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(actual).hasSize(2);
-            softly.assertThat(actual.get(0)).isEqualTo(nextRunnerPost);
-            softly.assertThat(actual.get(1)).isEqualTo(previousRunnerPost);
-        });
-    }
-
-    @DisplayName("Supporter 와 ReviewStatus 로 최신순으로 RunnerPost 를 조회한다")
-    @Test
-    void findBySupporterAndReviewStatusOrderByCreatedAtDesc() {
-        // given
-        final Member ditoo = MemberFixture.createDitoo();
-        entityManager.persist(ditoo);
-        final Runner runner = RunnerFixture.createRunner(ditoo);
-        entityManager.persist(runner);
-        final Member targetMember = MemberFixture.createEthan();
-        entityManager.persist(targetMember);
-        final Supporter targetSupporter = SupporterFixture.create(targetMember);
-        entityManager.persist(targetSupporter);
-        final ReviewStatus reviewStatus = NOT_STARTED;
-
-        final RunnerPost previousRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
-                contents("제 코드의 내용은 이렇습니다."),
-                pullRequestUrl("https://"),
-                deadline(LocalDateTime.now().plusHours(10)),
-                watchedCount(0),
-                reviewStatus,
-                runner,
-                targetSupporter,
-                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
-        runnerPostRepository.save(previousRunnerPost);
-
-        final RunnerPost nextRunnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
-                contents("제 코드의 내용은 이렇습니다."),
-                pullRequestUrl("https://"),
-                deadline(LocalDateTime.now().plusHours(10)),
-                watchedCount(0),
-                reviewStatus,
-                runner,
-                targetSupporter,
-                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
-        runnerPostRepository.save(nextRunnerPost);
-
-        // when
-        final List<RunnerPost> actual = runnerPostRepository.findBySupporterAndReviewStatusOrderByCreatedAtDesc(targetSupporter, reviewStatus);
 
         // then
         assertSoftly(softly -> {

@@ -56,14 +56,24 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .when().log().ifValidationFails()
+                .accept(APPLICATION_JSON_VALUE)
+                .queryParams(queryParams)
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> get(final String uri,
                                                     final String accessToken,
-                                                    final String queryParamName,
-                                                    final String queryParamValue) {
+                                                    final Map<String, Object> queryParams) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .queryParam(queryParamName, queryParamValue)
+                .queryParams(queryParams)
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
@@ -79,17 +89,6 @@ public class AssuredSupport {
                 .body(params)
                 .when().log().ifValidationFails()
                 .patch(uri)
-                .then().log().ifError()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
-        return RestAssured
-                .given().log().ifValidationFails()
-                .when().log().ifValidationFails()
-                .accept(APPLICATION_JSON_VALUE)
-                .queryParams(queryParams)
-                .get(uri)
                 .then().log().ifError()
                 .extract();
     }

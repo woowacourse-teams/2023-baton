@@ -145,42 +145,6 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         });
     }
 
-    @DisplayName("Supporter 와 ReviewStatus 로 RunnerPost 를 최신순으로 조회한다.")
-    @Test
-    void readRunnerPostBySupporterAndReviewStatus() {
-        // given
-        final Member ditoo = MemberFixture.createDitoo();
-        memberRepository.save(ditoo);
-        final Runner runner = RunnerFixture.createRunner(ditoo);
-        runnerRepository.save(runner);
-
-        final Member loginedMember = MemberFixture.createJudy();
-        memberRepository.save(loginedMember);
-        final Supporter loginedSupporter = SupporterFixture.create(loginedMember);
-        supporterRepository.save(loginedSupporter);
-
-        final ReviewStatus reviewStatus = NOT_STARTED;
-
-        final RunnerPost runnerPost1 = RunnerPostFixture.create(runner, loginedSupporter, new Deadline(LocalDateTime.now().plusHours(100)), reviewStatus);
-        final RunnerPost firstSavedRunnerPost = runnerPostRepository.save(runnerPost1);
-        final RunnerPost runnerPost2 = RunnerPostFixture.create(runner, loginedSupporter, new Deadline(LocalDateTime.now().plusHours(10)), reviewStatus);
-        final RunnerPost secondSavedRunnerPost = runnerPostRepository.save(runnerPost2);
-        final RunnerPost runnerPost3 = RunnerPostFixture.create(runner, loginedSupporter, new Deadline(LocalDateTime.now().plusHours(20)), reviewStatus);
-        final RunnerPost thirdSavedRunnerPost = runnerPostRepository.save(runnerPost3);
-        final List<RunnerPost> expected = List.of(thirdSavedRunnerPost, secondSavedRunnerPost, firstSavedRunnerPost);
-
-        // when
-        final List<RunnerPost> actual = runnerPostService.readRunnerPostBySupporterAndReviewStatus(loginedSupporter, reviewStatus);
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(expected).hasSameSizeAs(actual);
-            softly.assertThat(expected.get(0)).isEqualTo(actual.get(0));
-            softly.assertThat(expected.get(1)).isEqualTo(actual.get(1));
-            softly.assertThat(expected.get(2)).isEqualTo(actual.get(2));
-        });
-    }
-
     @DisplayName("Supporter 외래키와 ReviewStatus 로 러너 게시글을 조회한다.")
     @Test
     void readRunnerPostsBySupporterIdAndReviewStatus() {

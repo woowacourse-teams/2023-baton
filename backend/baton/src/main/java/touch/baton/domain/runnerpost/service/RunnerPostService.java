@@ -201,14 +201,13 @@ public class RunnerPostService {
         return runnerPostRepository.findByRunnerId(runnerId);
     }
 
-    public List<RunnerPost> readRunnerPostBySupporterAndReviewStatus(final Supporter supporter, final ReviewStatus reviewStatus) {
-        return runnerPostRepository.findBySupporterAndReviewStatusOrderByCreatedAtDesc(supporter, reviewStatus);
-    }
-
     public Page<RunnerPost> readRunnerPostsBySupporterIdAndReviewStatus(final Pageable pageable,
                                                                         final Long supporterId,
                                                                         final ReviewStatus reviewStatus
     ) {
+        if (reviewStatus.isSameAsNotStarted()) {
+            return runnerPostRepository.joinSupporterRunnerPostBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
+        }
         return runnerPostRepository.findBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
     }
 

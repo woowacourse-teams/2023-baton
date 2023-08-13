@@ -28,7 +28,8 @@ import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.MessageFixture.message;
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 
-class RunnerPostReadWithGuestAssuredTest extends AssuredTestConfig {
+@SuppressWarnings("NonAsciiCharacters")
+class RunnerPostReadWithSupporterIdAndReviewStatusAssuredTest extends AssuredTestConfig {
 
     @Test
     void 서포터가_리뷰_완료한_러너_게시글_페이징_조회에_성공한다() {

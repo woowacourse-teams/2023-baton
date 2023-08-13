@@ -1,6 +1,7 @@
 package touch.baton.domain.runnerpost.controller;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
+import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
@@ -28,6 +30,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.supporter.Supporter;
 
 import java.net.URI;
 import java.util.List;
@@ -159,6 +162,29 @@ public class RunnerPostController {
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
+    @GetMapping("/me/supporter")
+    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsBySupporterAndReviewStatus(
+            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @AuthSupporterPrincipal final Supporter supporter,
+            @PathParam("reviewStatus") final ReviewStatus reviewStatus
+    ) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporter.getId(), reviewStatus);
+        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
+        final List<Integer> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
+                .mapToObj(index -> {
+                    final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
+                    final Integer applicantCount = applicantCounts.get(index);
+
+                    return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
+                }).toList();
+
+        final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
     private List<Integer> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
         final List<Long> runnerPostIds = pageRunnerPosts.stream()
                 .map(RunnerPost::getId)
@@ -166,15 +192,4 @@ public class RunnerPostController {
 
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
     }
-
-//    @GetMapping("/me/supporter")
-//    public ResponseEntity<RunnerPostReadResponses.LoginedSupporter> readRunnerPostsBySupporterAndReviewStatus(
-//            @AuthSupporterPrincipal final Supporter supporter,
-//            @PathParam("reviewStatus") final ReviewStatus reviewStatus
-//    ) {
-//
-//        final List<RunnerPostResponse.LoginedSupporter> responses =
-//                runnerPostService.readRunnerPostBySupporterAndReviewStatus(supporter, reviewStatus).stream()
-//                        .map(runnerPost -> RunnerPostResponse.LoginedSupporter.from(runnerPost));
-//    }
 }
