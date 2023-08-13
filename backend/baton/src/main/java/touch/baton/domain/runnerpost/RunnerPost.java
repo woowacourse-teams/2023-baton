@@ -199,19 +199,22 @@ public class RunnerPost extends BaseEntity {
 
     public void updateReviewStatus(final ReviewStatus other) {
         if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(IN_PROGRESS)) {
-            throw new RunnerPostDomainException("ReviewStatus 는 NOT_STARTED 에서 IN_PROGRESS 로 수정될 수 없습니다.");
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 NOT_STARTED 에서 IN_PROGRESS 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
         }
         if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(DONE)) {
-            throw new RunnerPostDomainException("ReviewStatus 는 NOT_STARTED 에서 DONE 로 수정될 수 없습니다.");
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 NOT_STARTED 에서 DONE 으로 리뷰 상태 정책을 원인으로 실패하였습니다.");
         }
         if (this.reviewStatus.isSame(DONE) && other.isSame(NOT_STARTED)) {
-            throw new RunnerPostDomainException("ReviewStatus 는 DONE 에서 NOT_STARTED 로 수정될 수 없습니다.");
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 NOT_STARTED 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
         }
         if (this.reviewStatus.isSame(DONE) && other.isSame(IN_PROGRESS)) {
-            throw new RunnerPostDomainException("ReviewStatus 는 DONE 에서 IN_PROGRESS 로 수정될 수 없습니다.");
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 IN_PROGRESS 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(DONE) && other.isSame(OVERDUE)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 OVERDUE 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
         }
         if (this.reviewStatus.isSame(other)) {
-            throw new RunnerPostDomainException("ReviewStatus 는 같은 값으로 수정될 수 없습니다.");
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 같은 ReviewStatus 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
         }
 
         this.reviewStatus = other;
@@ -219,13 +222,16 @@ public class RunnerPost extends BaseEntity {
 
     public void assignSupporter(final Supporter supporter) {
         if (Objects.nonNull(this.supporter)) {
-            throw new RunnerPostDomainException("러너 게시글에 이미 서포터가 할당되어 있습니다.");
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 RunnerPost 에 이미 다른 Supporter 가 할당되어 있는 것을 원인으로 실패하였습니다.");
+        }
+        if (reviewStatus.isSame(OVERDUE)) {
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 ReviewStatus 가 OVERDUE 상태가 원인으로 실패하였습니다.");
         }
         if (reviewStatus.isNotSameAsNotStarted()) {
-            throw new RunnerPostDomainException("러너 게시글은 이미 시작 중이거나 완료 되었습니다.");
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 ReviewStatus 가 NOT_STARTED 상태가 아닌 것을 원인으로 실패하였습니다.");
         }
         if (deadline.isEnd()) {
-            throw new RunnerPostDomainException("러너 게시글은 이미 마감 기한이 종료되었습니다.");
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 ReviewStatus 의 Deadline 이 현재 시간보다 과거인 것을 원인으로 실패하였습니다.");
         }
 
         this.supporter = supporter;

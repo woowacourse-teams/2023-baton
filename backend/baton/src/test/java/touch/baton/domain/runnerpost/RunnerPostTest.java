@@ -286,7 +286,7 @@ class RunnerPostTest {
     @Nested
     class AssignSupporter {
 
-        @DisplayName("RunnerPost 내부의 Supporter 가 null 이며 ReviewStatus 가 NOT_STARTED 가 아니어야 하며 Deadline 이 끝나지 않은 경우 성공한다.")
+        @DisplayName("RunnerPost 내부의 Supporter 가 null 이며 ReviewStatus 가 NOT_STARTED 이어야 하며 Deadline 이 끝나지 않은 경우 성공한다.")
         @Test
         void success_supporter_is_null_and_deadline_is_not_end() {
             // given
