@@ -89,13 +89,12 @@ public class RunnerPostController {
     public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthRunnerPrincipal(required = false) final Runner runner,
                                                                         @PathVariable final Long runnerPostId
     ) {
-        final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
-        runnerPostService.increaseWatchedCount(runnerPost);
+        final RunnerPost foundRunnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
+        final int applicantCount = runnerPostService.readCountByRunnerPostId(foundRunnerPost.getId());
 
-        final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.of(
-                runnerPost,
-                runnerPost.getRunner().equals(runner)
-        );
+        runnerPostService.increaseWatchedCount(foundRunnerPost);
+        final RunnerPostResponse.Detail response
+                = RunnerPostResponse.Detail.of(foundRunnerPost, foundRunnerPost.isNotOwner(runner), applicantCount);
 
         return ResponseEntity.ok(response);
     }
