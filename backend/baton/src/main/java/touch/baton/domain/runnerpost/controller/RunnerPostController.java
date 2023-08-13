@@ -150,7 +150,7 @@ public class RunnerPostController {
                     final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
                     final Integer applicantCount = applicantCounts.get(index);
 
-                    return RunnerPostResponse.ReferencedBySupporter.from(foundRunnerPost, applicantCount);
+                    return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
                 }).toList();
 
         final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
