@@ -14,5 +14,6 @@ public record RunnerUpdateRequest(@ValidNotNull(clientErrorCode = NAME_IS_NULL)
                                   String company,
                                   String introduction,
                                   @ValidNotNull(clientErrorCode = RUNNER_TECHNICAL_TAGS_ARE_NULL)
-                                  List<String> technicalTags) {
+                                  List<String> technicalTags
+) {
 }
