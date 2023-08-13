@@ -28,15 +28,15 @@ export default Toast;
 
 const fadeIn = keyframes`
   0% {
-    transform: translate(0 ,100%);
+    transform: translate(-50%, 150%);
   }
 
   8%, 92% {
-    transform: translate(0, 0);
+    transform: translate(-50%, 50%);
   }
 
   100% {
-    transform: translate(0, 120%);
+    transform: translate(-50%, 170%);
   }
 `;
 
@@ -48,8 +48,9 @@ const S = {
     display: flex;
     align-items: center;
     gap: 15px;
-    bottom: 5%;
-    left: 40%;
+    bottom: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 999;
 
     width: 380px;
