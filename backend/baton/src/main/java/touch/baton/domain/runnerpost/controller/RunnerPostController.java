@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -108,7 +109,7 @@ public class RunnerPostController {
     @PutMapping("/{runnerPostId}")
     public ResponseEntity<Void> update(@AuthRunnerPrincipal Runner runner,
                                        @PathVariable final Long runnerPostId,
-                                       @Valid @RequestBody final RunnerPostUpdateRequest request
+                                       @Valid @RequestBody final RunnerPostUpdateRequest.Post request
     ) {
         final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, runner, request);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
@@ -165,5 +166,18 @@ public class RunnerPostController {
                 .toList();
 
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
+    }
+
+    @PatchMapping("/{runnerPostId}/supporters")
+    public ResponseEntity<Void> updateRunnerPostSupporter(@AuthRunnerPrincipal final Runner runner,
+                                                          @PathVariable final Long runnerPostId,
+                                                          @Valid @RequestBody final RunnerPostUpdateRequest.AppliedSupporter request) {
+        runnerPostService.updateRunnerPostAppliedSupporter(runner, runnerPostId, request);
+
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("{runnerPostId}")
+                .buildAndExpand(runnerPostId)
+                .toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
     }
 }

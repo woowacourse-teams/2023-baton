@@ -12,6 +12,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.repository.SupporterRunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
@@ -143,7 +144,7 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest request) {
+    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest.Post request) {
         // TODO: 메소드 분리
         // FIXME: 2023/08/03 주인 확인 로직 넣기
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
@@ -210,5 +211,47 @@ public class RunnerPostService {
 
     public List<Integer> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
         return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+    }
+
+    @Transactional
+    public void updateRunnerPostAppliedSupporter(final Runner runner,
+                                                 final Long runnerPostId,
+                                                 final RunnerPostUpdateRequest.AppliedSupporter request
+    ) {
+        final Supporter foundApplySupporter = findApplySupporter(runnerPostId, request);
+        final RunnerPost foundRunnerPost = findRunnerPostOfOwner(runner, runnerPostId);
+
+        startReview(foundRunnerPost, foundApplySupporter);
+    }
+
+    private Supporter findApplySupporter(final Long runnerPostId, final RunnerPostUpdateRequest.AppliedSupporter request) {
+        final Supporter foundSupporter = supporterRepository.findById(request.supporterId())
+                .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
+
+        if (isApplySupporter(runnerPostId, foundSupporter)) {
+            throw new RunnerPostBusinessException("RunnerPost 에 리뷰를 제안한 서포터가 아닙니다.");
+        }
+
+        return foundSupporter;
+    }
+
+    private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
+        return !supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
+    }
+
+    private RunnerPost findRunnerPostOfOwner(final Runner runner, final Long runnerPostId) {
+        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+
+        if (!Objects.equals(foundRunnerPost.getRunner().getId(), runner.getId())) {
+            throw new RunnerPostBusinessException("RunnerPost 의 글쓴이와 다른 사용자입니다.");
+        }
+
+        return foundRunnerPost;
+    }
+
+    private void startReview(final RunnerPost foundRunnerPost, final Supporter foundSupporter) {
+        foundRunnerPost.assignSupporter(foundSupporter);
+        foundRunnerPost.startReview();
     }
 }

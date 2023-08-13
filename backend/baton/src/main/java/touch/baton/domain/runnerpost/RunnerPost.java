@@ -265,4 +265,8 @@ public class RunnerPost extends BaseEntity {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public void startReview() {
+        this.reviewStatus = ReviewStatus.IN_PROGRESS;
+    }
 }

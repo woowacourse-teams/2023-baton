@@ -57,6 +57,17 @@ public class AssuredSupport {
     }
 
 
+    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .when().log().ifValidationFails()
+                .accept(APPLICATION_JSON_VALUE)
+                .queryParams(queryParams)
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object params) {
         return RestAssured
                 .given().log().ifValidationFails()
@@ -69,13 +80,21 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
+    public static ExtractableResponse<Response> patch(final String uri,
+                                                      final String pathParamName,
+                                                      final Long id,
+                                                      final Object requestBody,
+                                                      final String accessToken
+    ) {
         return RestAssured
                 .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .body(requestBody)
                 .when().log().ifValidationFails()
-                .accept(APPLICATION_JSON_VALUE)
-                .queryParams(queryParams)
-                .get(uri)
+                .pathParam(pathParamName, id)
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(requestBody)
+                .patch(uri)
                 .then().log().ifError()
                 .extract();
     }
