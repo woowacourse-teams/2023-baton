@@ -91,7 +91,9 @@ public class RunnerPostUpdateSupporterCancelationApiTest extends RestdocsConfig 
                         pathParameters(
                                 parameterWithName("runnerPostId").description("러너 게시글 식별자값")
                         ),
-                        responseHeaders(headerWithName(LOCATION).description("redirect uri"))
+                        responseHeaders(
+                                headerWithName(LOCATION).description("redirect uri")
+                        )
                 ))
                 .andDo(print());
     }
