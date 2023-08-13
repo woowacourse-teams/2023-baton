@@ -1,0 +1,24 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+=== *러너 게시글 수정*
+
+==== *서포터 리뷰 완료 수정 API*
+
+===== *Http Request*
+include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-review-status-done/http-request.adoc[]
+
+===== *Http Request Headers*
+include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-review-status-done/request-headers.adoc[]
+
+===== *Http Response Headers*
+include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-review-status-done/response-headers.adoc[]

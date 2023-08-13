@@ -7,7 +7,6 @@ import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -16,6 +15,8 @@ import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
+
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
@@ -26,8 +27,7 @@ public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
         final Member 사용자_에단 = memberRepository.save(MemberFixture.createEthan());
         final Runner 러너_에단 = runnerRepository.save(RunnerFixture.createRunner(사용자_에단));
 
-        final RunnerPost 에단_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_에단,
-                new Deadline(LocalDateTime.now().plusDays(10))));
+        final RunnerPost 에단_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_에단, deadline(LocalDateTime.now().plusDays(10))));
 
         final String 디투_소셜_아이디 = "hongSile";
         final Member 사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(디투_소셜_아이디));

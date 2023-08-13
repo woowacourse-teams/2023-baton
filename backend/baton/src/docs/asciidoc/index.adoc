@@ -18,3 +18,4 @@ include::RunnerProfileReadApi.adoc[]
 
 == *[ 서포터 ]*
 include::SupporterProfileUpdateApi.adoc[]
+include::RunnerPostUpdateApi.adoc[]
