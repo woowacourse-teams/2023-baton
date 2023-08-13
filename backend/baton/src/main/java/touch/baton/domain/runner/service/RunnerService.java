@@ -17,7 +17,6 @@ import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
 import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -58,11 +57,12 @@ public class RunnerService {
     }
 
     private TechnicalTag findTechnicalTagIfExistElseCreate(final TagName tagName) {
-        return technicalTagRepository.findByTagName(tagName).orElseGet(
-                () -> technicalTagRepository.save(TechnicalTag.builder()
-                        .tagName(tagName)
-                        .build())
-        );
+        return technicalTagRepository.findByTagName(tagName)
+                .orElseGet(() -> technicalTagRepository.save(
+                        TechnicalTag.builder()
+                                .tagName(tagName)
+                                .build())
+                );
     }
 
     private RunnerTechnicalTag createRunnerTechnicalTagAndSave(final Runner runner, final TechnicalTag technicalTag) {
