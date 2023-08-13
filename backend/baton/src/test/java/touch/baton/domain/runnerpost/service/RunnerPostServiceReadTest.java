@@ -158,7 +158,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         savedRunnerPost.assignSupporter(savedSupporterHyena);
 
         // when
-        final PageRequest pageable = PageRequest.of(0, 10);
+        final PageRequest pageable = PageRequest.of(1, 10);
         final Page<RunnerPost> pageRunnerPosts
                 = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), ReviewStatus.IN_PROGRESS);
 

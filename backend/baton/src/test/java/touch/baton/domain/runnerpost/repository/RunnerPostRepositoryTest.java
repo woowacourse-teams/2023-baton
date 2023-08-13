@@ -41,9 +41,9 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
     @Autowired
     private RunnerPostRepository runnerPostRepository;
 
-    @DisplayName("서포터와 연관된 러너 게시글을 조인하여 조회한다.")
+    @DisplayName("Supporter 식별자값과 ReviewStatus 로 연관된 RunnerPost 를 페이징하여 조회한다.")
     @Test
-    void findBySupporterIdAndRunnerPostReviewStatusOrderByCreatedAtDesc() {
+    void findBySupporterIdAndReviewStatus() {
         // given
         final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
@@ -57,7 +57,7 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
         savedRunnerPost.assignSupporter(savedSupporterHyena);
 
         // when
-        final PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(desc("createdAt")));
+        final PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(desc("createdAt")));
         final Page<RunnerPost> pageRunnerPost
                 = runnerPostRepository.findBySupporterIdAndReviewStatus(pageRequest, savedSupporterHyena.getId(), ReviewStatus.IN_PROGRESS);
 
