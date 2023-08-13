@@ -8,7 +8,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
@@ -25,16 +24,13 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -43,17 +39,14 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static touch.baton.fixture.vo.CompanyFixture.company;
+import static touch.baton.fixture.domain.TechnicalTagFixture.createJava;
+import static touch.baton.fixture.domain.TechnicalTagFixture.createSpring;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.GithubUrlFixture.githubUrl;
-import static touch.baton.fixture.vo.ImageUrlFixture.imageUrl;
-import static touch.baton.fixture.vo.MemberNameFixture.memberName;
-import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
-import static touch.baton.fixture.vo.SocialIdFixture.socialId;
+import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostController.class)
-public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
+public class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
@@ -64,33 +57,22 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
         restdocsSetUp(runnerPostController);
     }
 
-    @DisplayName("로그인한 서포터가 참여한 러너 게시글 페이징 조회 API")
+    @DisplayName("서포터와 연관된 러너 게시글 페이징 조회 API")
     @Test
-    void readRunnerPostsByLoginedSupporterAndReviewStatus() throws Exception {
+    void readReferencedBySupporter() throws Exception {
         // given
         final Runner runnerJudy = RunnerFixture.createRunner(MemberFixture.createJudy());
-        final String socialId = "ditooSocialId";
-        final Member loginedMember = MemberFixture.create(
-                memberName("디투"),
-                socialId(socialId),
-                oauthId("abcd"),
-                githubUrl("naver.com"),
-                company("우아한테크코스"),
-                imageUrl("profile.jpg")
-        );
-        final Supporter loginedSupporter = SupporterFixture.create(loginedMember);
-        final String token = getAccessTokenBySocialId(socialId);
+        final Supporter supporterHyena = SupporterFixture.create(reviewCount(10), MemberFixture.createHyena(), List.of(createJava(), createSpring()));
 
         final Tag javaTag = TagFixture.create(tagName("자바"));
         final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
         final RunnerPost runnerPost = RunnerPostFixture.create(runnerJudy, deadline, List.of(javaTag));
-        runnerPost.assignSupporter(loginedSupporter);
+        runnerPost.assignSupporter(supporterHyena);
 
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
-        final Supporter spyLoginedSupporter = spy(loginedSupporter);
-        when(oauthSupporterRepository.joinByMemberSocialId(any()))
-                .thenReturn(Optional.ofNullable(spyLoginedSupporter));
+        final Supporter spySupporterHyena = spy(supporterHyena);
+        when(spySupporterHyena.getId()).thenReturn(1L);
         when(spyRunnerPost.getId()).thenReturn(1L);
 
         final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
@@ -102,20 +84,20 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
                 .thenReturn(List.of(1));
 
         // then
-        mockMvc.perform(get("/api/v1/posts/runner/me/supporter")
-                        .header(AUTHORIZATION, "Bearer " + token)
+        mockMvc.perform(get("/api/v1/posts/runner/search")
+                        .characterEncoding(UTF_8)
+                        .accept(APPLICATION_JSON)
                         .queryParam("size", String.valueOf(pageOne.getPageSize()))
                         .queryParam("page", String.valueOf(pageOne.getPageNumber()))
+                        .queryParam("supporterId", String.valueOf(spySupporterHyena.getId()))
                         .queryParam("reviewStatus", ReviewStatus.IN_PROGRESS.name()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
-                        requestHeaders(
-                                headerWithName(AUTHORIZATION).description("Bearer JWT")
-                        ),
                         queryParameters(
                                 parameterWithName("size").description("페이지 사이즈"),
                                 parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("supporterId").description("서포터 식별자값"),
                                 parameterWithName("reviewStatus").description("리뷰 상태")
                         ),
                         responseFields(

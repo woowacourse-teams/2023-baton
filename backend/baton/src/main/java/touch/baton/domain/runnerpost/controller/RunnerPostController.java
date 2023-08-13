@@ -163,7 +163,7 @@ public class RunnerPostController {
     }
 
     @GetMapping("/me/supporter")
-    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsBySupporterAndReviewStatus(
+    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
             @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
             @AuthSupporterPrincipal final Supporter supporter,
             @PathParam("reviewStatus") final ReviewStatus reviewStatus
