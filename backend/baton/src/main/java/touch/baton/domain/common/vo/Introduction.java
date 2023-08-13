@@ -28,14 +28,7 @@ public class Introduction {
         this.value = value;
     }
 
-    public void updateIntroduction(String value) {
-        this.value = defaultIntroductionIfNull(value);
-    }
-
-    private String defaultIntroductionIfNull(final String value) {
-        if (Objects.isNull(value)) {
-            return this.value;
-        }
-        return value;
+    public static String getDefaultValue() {
+        return DEFAULT_VALUE;
     }
 }

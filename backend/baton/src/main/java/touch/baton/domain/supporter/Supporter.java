@@ -112,7 +112,14 @@ public class Supporter extends BaseEntity {
     }
 
     public void updateIntroduction(final Introduction introduction) {
-        this.introduction = introduction;
+        this.introduction = defaultIntroductionIfNull(introduction);
+    }
+
+    private Introduction defaultIntroductionIfNull(final Introduction introduction) {
+        if (Objects.isNull(introduction.getValue())) {
+            return new Introduction(introduction.getDefaultValue());
+        }
+        return introduction;
     }
 
     @Override

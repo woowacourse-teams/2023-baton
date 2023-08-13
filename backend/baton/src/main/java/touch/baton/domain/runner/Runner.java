@@ -76,7 +76,14 @@ public class Runner extends BaseEntity {
     }
 
     public void updateIntroduction(final Introduction introduction) {
-        this.introduction.updateIntroduction(introduction.getValue());
+        this.introduction = defaultIntroductionIfNull(introduction);
+    }
+
+    private Introduction defaultIntroductionIfNull(final Introduction introduction) {
+        if (Objects.isNull(introduction.getValue())) {
+            return new Introduction(introduction.getDefaultValue());
+        }
+        return introduction;
     }
 
     public void updateMemberName(final MemberName memberName) {
