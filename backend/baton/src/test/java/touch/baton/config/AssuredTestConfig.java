@@ -17,15 +17,15 @@ import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
+import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
 import java.util.UUID;
 
 import static org.mockito.BDDMockito.when;
 
-@Import({JpaConfig.class, ConverterConfig.class})
+@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
