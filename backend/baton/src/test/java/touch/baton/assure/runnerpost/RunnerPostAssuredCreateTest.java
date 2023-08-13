@@ -47,9 +47,10 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
                 .생성한_러너_게시글의_식별자값을_반환한다();
 
 
-        final RunnerPostResponse.Detail 리뷰가_시작되지_않은_에단의_러너_게시글_Detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_에단, 러너_게시글_생성_요청, NOT_STARTED, 에단의_러너_게시글_식별자값);
+        final RunnerPostResponse.Detail 리뷰가_시작되지_않은_에단의_러너_게시글_Detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_에단, 러너_게시글_생성_요청, NOT_STARTED, 에단의_러너_게시글_식별자값, 1);
         RunnerPostAssuredSupport
                 .클라이언트_요청()
+                .토큰으로_로그인한다(에단_로그인_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(에단의_러너_게시글_식별자값)
 
                 .서버_응답()
@@ -58,7 +59,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
         RunnerPostAssuredCreateSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(헤나_로그인_토큰)
-                .서포터가_러너_게시글에_리뷰를_신청한다(에단의_러너_게시글_식별자값)
+                .서포터가_러너_게시글에_리뷰를_신청한다(에단의_러너_게시글_식별자값, "안녕하세요. 서포터 헤나입니다.")
 
                 .서버_응답()
                 .서포터가_러너_게시글에_리뷰_신청_성공을_검증한다(에단의_러너_게시글_식별자값);
@@ -91,7 +92,8 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
     private RunnerPostResponse.Detail 러너_게시글_Detail_응답을_생성한다(final Runner 러너,
                                                              final RunnerPostCreateRequest 러너_게시글_생성_요청,
                                                              final ReviewStatus 리뷰_상태,
-                                                             final Long 러너_게시글_식별자값
+                                                             final Long 러너_게시글_식별자값,
+                                                             final int 조회수
     ) {
         return 러너_게시글_Detail_응답(
                 러너_게시글_식별자값,
@@ -99,7 +101,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
                 러너_게시글_생성_요청.contents(),
                 러너_게시글_생성_요청.pullRequestUrl(),
                 러너_게시글_생성_요청.deadline(),
-                0,
+                조회수,
                 리뷰_상태,
                 true,
                 러너,

@@ -33,12 +33,17 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> post(final String uri, final String accessToken, final Map<String, Object> pathVariables) {
+    public static ExtractableResponse<Response> post(final String uri,
+                                                     final String accessToken,
+                                                     final Map<String, Object> pathVariables,
+                                                     final Object requestBody
+    ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .contentType(APPLICATION_JSON_VALUE)
                 .auth().preemptive().oauth2(accessToken)
                 .when().log().ifValidationFails()
+                .body(requestBody)
                 .pathParams(pathVariables)
                 .post(uri)
                 .then().log().ifError()

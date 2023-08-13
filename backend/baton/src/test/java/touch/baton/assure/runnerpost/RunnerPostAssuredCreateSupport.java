@@ -3,8 +3,8 @@ package touch.baton.assure.runnerpost;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 
 import java.time.LocalDateTime;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 public class RunnerPostAssuredCreateSupport {
 
@@ -43,12 +44,16 @@ public class RunnerPostAssuredCreateSupport {
         }
 
         public RunnerPostClientRequestBuilder 러너가_러너_게시글을_작성한다(final RunnerPostCreateRequest request) {
-            response = AssuredSupport.post("/api/v1/posts", accessToken, request);
+            response = AssuredSupport.post("/api/v1/posts/runner", accessToken, request);
             return this;
         }
 
-        public RunnerPostClientRequestBuilder 서포터가_러너_게시글에_리뷰를_신청한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.post("/api/v1/posts/{runnerPostId}/applicant", accessToken, Map.of("runnerPostId", 러너_게시글_식별자값));
+        public RunnerPostClientRequestBuilder 서포터가_러너_게시글에_리뷰를_신청한다(final Long 러너_게시글_식별자값, final String 리뷰_지원_메시지) {
+            response = AssuredSupport.post("/api/v1/posts/runner/{runnerPostId}/applicant",
+                    accessToken,
+                    Map.of("runnerPostId", 러너_게시글_식별자값),
+                    new RunnerPostApplicantCreateRequest(리뷰_지원_메시지)
+            );
             return this;
         }
 
@@ -66,29 +71,25 @@ public class RunnerPostAssuredCreateSupport {
         }
 
         public RunnerPostServerResponseBuilder 러너_게시글_생성_성공을_검증한다() {
-            final ResponseEntity<Void> actual = this.response.as(ResponseEntity.class);
-
             assertSoftly(softly -> {
-                softly.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+                softly.assertThat(response.header(LOCATION)).startsWith("/api/v1/posts/runner/");
             });
 
             return this;
         }
 
         public RunnerPostServerResponseBuilder 서포터가_러너_게시글에_리뷰_신청_성공을_검증한다(final Long 러너_게시글_식별자값) {
-            final ResponseEntity<Void> actual = this.response.as(ResponseEntity.class);
-
             assertSoftly(softly -> {
-                softly.assertThat(actual.getStatusCode()).isEqualTo(HttpStatus.CREATED.value());
-                softly.assertThat(actual.getHeaders().getLocation().getPath()).isEqualTo("/api/v1/posts/runner/" + 러너_게시글_식별자값);
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
+                softly.assertThat(response.header(LOCATION)).startsWith("/api/v1/posts/runner/" + 러너_게시글_식별자값);
             });
 
             return this;
         }
 
         public Long 생성한_러너_게시글의_식별자값을_반환한다() {
-            final ResponseEntity responseEntity = this.response.as(ResponseEntity.class);
-            final String savedRunnerPostId = responseEntity.getHeaders().getLocation().getPath().replaceFirst("/api/v1/posts/", "");
+            final String savedRunnerPostId = this.response.header(LOCATION).replaceFirst("/api/v1/posts/runner/", "");
 
             return Long.parseLong(savedRunnerPostId);
         }
