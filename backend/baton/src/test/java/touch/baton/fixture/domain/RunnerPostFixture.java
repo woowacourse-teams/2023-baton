@@ -110,6 +110,20 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
+    public static RunnerPost create(final Runner runner, final Supporter supporter, final ReviewStatus reviewStatus) {
+        return RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .contents(new Contents("테스트 내용"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(DeadlineFixture.deadline(LocalDateTime.now().plusHours(100)))
+                .watchedCount(new WatchedCount(0))
+                .runner(runner)
+                .supporter(supporter)
+                .reviewStatus(reviewStatus)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+    }
+
     public static RunnerPost create(final Runner runner, final Supporter supporter, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
