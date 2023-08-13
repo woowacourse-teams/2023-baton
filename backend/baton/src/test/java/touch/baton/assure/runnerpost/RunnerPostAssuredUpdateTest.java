@@ -14,6 +14,7 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 
@@ -34,6 +35,8 @@ public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
         final Member 사용자_에단 = memberRepository.save(MemberFixture.createEthan());
         final Supporter 서포터_에단 = supporterRepository.save(SupporterFixture.create(사용자_에단));
 
+        서포터가_리뷰_게시글에_리뷰_제안을_한다(서포터_에단, 디투_게시글);
+
         final RunnerPostUpdateRequest.AppliedSupporter 서포터_선택_요청_정보 = new RunnerPostUpdateRequest.AppliedSupporter(서포터_에단.getId());
 
         // when, then
@@ -44,5 +47,9 @@ public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
 
                 .서버_응답()
                 .러너_게시글에_서포터가_성공적으로_선택되었는지_확인한다(new HttpStatusAndLocationHeader(HttpStatus.NO_CONTENT, "/api/v1/posts/runner"));
+    }
+
+    private void 서포터가_리뷰_게시글에_리뷰_제안을_한다(final Supporter 지원한_서포터, final RunnerPost 지원할_게시글) {
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(지원한_서포터, 지원할_게시글));
     }
 }
