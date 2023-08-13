@@ -171,4 +171,43 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
         );
     }
+
+    @DisplayName("RunnerPost 식별자값으로 Supporter 지원자수를 count 한다.")
+    @Test
+    void readCountByRunnerPostId() {
+        // given
+        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
+        savedRunnerPost.assignSupporter(savedSupporterHyena);
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
+
+        // when
+        final int foundApplicantCount = runnerPostService.readCountByRunnerPostId(savedRunnerPost.getId());
+
+        // then
+        assertThat(foundApplicantCount).isEqualTo(1);
+    }
+
+    @DisplayName("RunnerPost 식별자값으로 찾은 Supporter 지원자가 아무도 없을 경우 count 로 0을 반환한다.")
+    @Test
+    void readCountByRunnerPostId_is_null_then_return_zero() {
+        // given
+        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
+
+        // when
+        final int foundApplicantCount = runnerPostService.readCountByRunnerPostId(savedRunnerPost.getId());
+
+        // then1
+        assertThat(foundApplicantCount).isZero();
+    }
 }

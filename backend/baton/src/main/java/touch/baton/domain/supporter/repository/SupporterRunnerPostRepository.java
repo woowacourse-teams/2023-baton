@@ -18,6 +18,14 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
         """)
     List<Integer> countByRunnerPostIdIn(@Param("runnerPostIds") final List<Long> runnerPostIds);
 
+    @Query("""
+        select count(1)
+        from SupporterRunnerPost srp
+        group by srp.runnerPost.id
+        having srp.runnerPost.id = :runnerPostId
+        """)
+    Optional<Integer> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
+
     Optional<SupporterRunnerPost> findBySupporterIdAndRunnerPostId(@Param("supporterId") final Long supporterId,
                                                                    @Param("runnerPostId") final Long runnerPostId);
 }

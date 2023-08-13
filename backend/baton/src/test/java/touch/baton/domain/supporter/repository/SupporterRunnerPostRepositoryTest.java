@@ -20,6 +20,7 @@ import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,6 +43,35 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     private RunnerPostRepository runnerPostRepository;
 
     @DisplayName("러너 게시글 식별자값으로 서포터가 지원한 수를 count 한다.")
+    @Test
+    void countByRunnerPostId() {
+        // given
+        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
+        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        savedRunnerPost.assignSupporter(savedSupporterHyena);
+        supporterRunnerPostRepository.save(createSupporterRunnerPost(savedSupporterHyena, savedRunnerPost));
+
+        // when
+        final Optional<Integer> maybeApplicantCount = supporterRunnerPostRepository.countByRunnerPostId(savedRunnerPost.getId());
+
+        // then
+        assertThat(maybeApplicantCount).contains(1);
+    }
+
+    private SupporterRunnerPost createSupporterRunnerPost(final Supporter supporter, final RunnerPost runnerPost) {
+        return SupporterRunnerPost.builder()
+                .runnerPost(runnerPost)
+                .supporter(supporter)
+                .message(new Message("안녕하세요. 서포터 헤나입니다."))
+                .build();
+    }
+
+    @DisplayName("러너 게시글 식별자값 목록으로 서포터가 지원한 수 목록을 count 한다.")
     @Test
     void countByRunnerPostIdIn() {
         // given
@@ -77,13 +107,5 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
 
         // then
         assertThat(foundRunnerPostsApplicantCounts).containsExactly(1, 1, 1, 1);
-    }
-
-    private SupporterRunnerPost createSupporterRunnerPost(final Supporter supporter, final RunnerPost runnerPost) {
-        return SupporterRunnerPost.builder()
-                .runnerPost(runnerPost)
-                .supporter(supporter)
-                .message(new Message("안녕하세요. 서포터 헤나입니다."))
-                .build();
     }
 }
