@@ -220,7 +220,7 @@ public class RunnerPostService {
         final Supporter foundApplySupporter = findApplySupporter(runnerPostId, request);
         final RunnerPost foundRunnerPost = findRunnerPostOfOwner(runner, runnerPostId);
 
-        startReview(foundRunnerPost, foundApplySupporter);
+        foundRunnerPost.assignSupporter(foundApplySupporter);
     }
 
     private Supporter findApplySupporter(final Long runnerPostId, final RunnerPostUpdateRequest.AppliedSupporter request) {
@@ -247,10 +247,5 @@ public class RunnerPostService {
         }
 
         return foundRunnerPost;
-    }
-
-    private void startReview(final RunnerPost foundRunnerPost, final Supporter foundSupporter) {
-        foundRunnerPost.assignSupporter(foundSupporter);
-        foundRunnerPost.startReview();
     }
 }
