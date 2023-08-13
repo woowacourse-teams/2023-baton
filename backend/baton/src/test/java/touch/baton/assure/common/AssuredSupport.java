@@ -21,6 +21,30 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> post(final String uri, final String accessToken, final Object body) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .contentType(APPLICATION_JSON_VALUE)
+                .auth().preemptive().oauth2(accessToken)
+                .body(body)
+                .when().log().ifValidationFails()
+                .post(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> post(final String uri, final String accessToken, final Map<String, Object> pathVariables) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .contentType(APPLICATION_JSON_VALUE)
+                .auth().preemptive().oauth2(accessToken)
+                .when().log().ifValidationFails()
+                .pathParams(pathVariables)
+                .post(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> get(final String uri,
                                                     final String pathParamName,
                                                     final Long id,
