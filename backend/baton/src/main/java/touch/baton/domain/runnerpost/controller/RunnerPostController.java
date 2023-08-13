@@ -99,7 +99,7 @@ public class RunnerPostController {
     }
 
     @PutMapping("/{runnerPostId}")
-    public ResponseEntity<Void> update(@AuthRunnerPrincipal Runner runner,
+    public ResponseEntity<Void> update(@AuthRunnerPrincipal final Runner runner,
                                        @PathVariable final Long runnerPostId,
                                        @Valid @RequestBody final RunnerPostUpdateRequest request
     ) {
@@ -130,10 +130,9 @@ public class RunnerPostController {
     }
 
     @PatchMapping("/{runnerPostId}/cancelation")
-    public ResponseEntity<Void> updateSupporterCancelRunnerPost(
-            @AuthSupporterPrincipal final Supporter supporter,
-            @PathVariable final Long runnerPostId
-            ) {
+    public ResponseEntity<Void> updateSupporterCancelRunnerPost(@AuthSupporterPrincipal final Supporter supporter,
+                                                                @PathVariable final Long runnerPostId
+    ) {
         runnerPostService.deleteSupporterRunnerPost(supporter, runnerPostId);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{runnerPostId}")

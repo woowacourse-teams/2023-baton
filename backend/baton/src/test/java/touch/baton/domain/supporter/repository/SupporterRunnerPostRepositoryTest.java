@@ -20,6 +20,7 @@ import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
 
@@ -29,7 +30,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Autowired
     private EntityManager entityManager;
 
-    @DisplayName("서포터의_러너_게시글_제안을_철회하는데_성공한다")
+    @DisplayName("서포터의_러너_게시글_리뷰_제안을_철회하는데_성공한다")
     @Test
     void deleteBySupporterAndRunnerPostId() {
         // given
@@ -49,10 +50,37 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
         entityManager.persist(deletedSupporterRunnerPost);
 
         // when
-        supporterRunnerPostRepository.deleteBySupporterAndRunnerPostId(reviewerSupporter, runnerPost.getId());
+        final int deleteCount = supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(reviewerSupporter.getId(), runnerPost.getId());
         entityManager.flush();
 
         // then
-        assertThat(supporterRunnerPostRepository.findById(deletedSupporterRunnerPost.getId())).isNotPresent();
+        assertSoftly(softly -> {
+            softly.assertThat(deleteCount).isEqualTo(1);
+            softly.assertThat(supporterRunnerPostRepository.findById(deletedSupporterRunnerPost.getId())).isNotPresent();
+        });
+    }
+
+    @DisplayName("서포터의_러너_게시글_리뷰_제안을_철회하는데_리뷰_제안을_한적이_없으면_실패한다")
+    @Test
+    void deleteBySupporterAndRunnerPostId_fail() {
+        // given
+        final Member reviewerMember = MemberFixture.createDitoo();
+        entityManager.persist(reviewerMember);
+        final Supporter reviewerSupporter = SupporterFixture.create(reviewerMember);
+        entityManager.persist(reviewerSupporter);
+
+        final Member revieweeMember = MemberFixture.createJudy();
+        entityManager.persist(revieweeMember);
+        final Runner revieweeRunner = RunnerFixture.createRunner(revieweeMember);
+        entityManager.persist(revieweeRunner);
+        final RunnerPost runnerPost = RunnerPostFixture.create(revieweeRunner, reviewerSupporter, new Deadline(LocalDateTime.now().plusHours(100)));
+        entityManager.persist(runnerPost);
+
+        // when
+        final int deleteCount = supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(reviewerSupporter.getId(), runnerPost.getId());
+        entityManager.flush();
+
+        // then
+        assertThat(deleteCount).isZero();
     }
 }

@@ -15,7 +15,6 @@ import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
@@ -34,8 +33,7 @@ public class SupporterRunnerPostDeleteAssuredTest extends AssuredTestConfig {
         final SupporterRunnerPost 서포터의_리뷰_제안 = 서포터가_러너_게시글에_리뷰_제안한다(로그인한_서포터, 리뷰_받을_게시글);
 
         final String 응답_헤더_이름 = LOCATION;
-        final String 응답_헤더_값 = "api/v1/posts/runner/" + 서포터의_리뷰_제안.getId();
-        final Optional<SupporterRunnerPost> 삭제된_서포터의_리뷰_제안 = supporterRunnerPostRepository.findById(서포터의_리뷰_제안.getId());
+        final String 응답_헤더_값 = "/api/v1/posts/runner/" + 리뷰_받을_게시글.getId();
 
         SupporterRunnerPostAssuredSupport
                 .클라이언트_요청()
@@ -43,7 +41,7 @@ public class SupporterRunnerPostDeleteAssuredTest extends AssuredTestConfig {
                 .서포터가_리뷰_제안을_취소한다(리뷰_받을_게시글.getId())
 
                 .서버_응답()
-                .서포터의_리뷰_제안_철회를_검증한다(NO_CONTENT, 응답_헤더_이름, 응답_헤더_값, 삭제된_서포터의_리뷰_제안);
+                .서포터의_리뷰_제안_철회를_검증한다(NO_CONTENT, 응답_헤더_이름, 응답_헤더_값, supporterRunnerPostRepository.existsById(서포터의_리뷰_제안.getId()));
     }
 
     private Supporter 로그인한_서포터를_저장한다(final String 소셜_id) {

@@ -4,5 +4,9 @@ public enum ReviewStatus {
 
     NOT_STARTED,
     IN_PROGRESS,
-    DONE
+    DONE;
+
+    public boolean isNotStarted() {
+        return this == NOT_STARTED;
+    }
 }

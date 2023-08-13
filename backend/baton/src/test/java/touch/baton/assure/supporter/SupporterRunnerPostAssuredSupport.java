@@ -4,9 +4,6 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -32,7 +29,7 @@ public class SupporterRunnerPostAssuredSupport {
         }
 
         public SupporterRunnerPostClientRequestBuilder 서포터가_리뷰_제안을_취소한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/cancelation/", "runnerPostId", 러너_게시글_식별자값, accessToken);
+            response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/cancelation", "runnerPostId", 러너_게시글_식별자값, accessToken);
             return this;
         }
 
@@ -52,12 +49,12 @@ public class SupporterRunnerPostAssuredSupport {
         public void 서포터의_리뷰_제안_철회를_검증한다(final HttpStatus HTTP_STATUS,
                                         final String 응답_헤더_이름,
                                         final String 응답_헤더_값,
-                                        final Optional<SupporterRunnerPost> 삭제된_서포터의_리뷰_제안
+                                        final boolean 삭제된_서포터의_리뷰_제안_존재_여부
         ) {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
                 softly.assertThat(response.header(응답_헤더_이름)).isEqualTo(응답_헤더_값);
-                softly.assertThat(삭제된_서포터의_리뷰_제안.isEmpty()).isTrue();
+                softly.assertThat(삭제된_서포터의_리뷰_제안_존재_여부).isFalse();
             });
         }
     }

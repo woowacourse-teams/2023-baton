@@ -3,6 +3,7 @@ package touch.baton.domain.runnerpost.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import touch.baton.domain.common.exception.ClientRequestException;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -198,7 +201,16 @@ public class RunnerPostService {
         return runnerPostRepository.findByRunnerId(runnerId);
     }
 
+    @Transactional
     public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
-        supporterRunnerPostRepository.deleteBySupporterAndRunnerPostId(supporter, runnerPostId);
+        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new ClientRequestException(RUNNER_POST_NOT_FOUND));
+        if (!runnerPost.isReviewStatusNotStarted()) {
+            throw new ClientRequestException(CANNOT_CANCEL_SUPPORTER_RUNNER_POST);
+        }
+        final int deleteCount = supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
+        if (deleteCount == 0) {
+            throw new ClientRequestException(SUPPORT_RUNNER_POST_NOT_FOUND);
+        }
     }
 }
