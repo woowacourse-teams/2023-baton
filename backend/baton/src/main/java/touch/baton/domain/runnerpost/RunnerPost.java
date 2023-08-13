@@ -197,6 +197,26 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
     }
 
+    public void updateReviewStatus(final ReviewStatus other) {
+        if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(IN_PROGRESS)) {
+            throw new RunnerPostDomainException("ReviewStatus 는 NOT_STARTED 에서 IN_PROGRESS 로 수정될 수 없습니다.");
+        }
+        if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(DONE)) {
+            throw new RunnerPostDomainException("ReviewStatus 는 NOT_STARTED 에서 DONE 로 수정될 수 없습니다.");
+        }
+        if (this.reviewStatus.isSame(DONE) && other.isSame(NOT_STARTED)) {
+            throw new RunnerPostDomainException("ReviewStatus 는 DONE 에서 NOT_STARTED 로 수정될 수 없습니다.");
+        }
+        if (this.reviewStatus.isSame(DONE) && other.isSame(IN_PROGRESS)) {
+            throw new RunnerPostDomainException("ReviewStatus 는 DONE 에서 IN_PROGRESS 로 수정될 수 없습니다.");
+        }
+        if (this.reviewStatus.isSame(other)) {
+            throw new RunnerPostDomainException("ReviewStatus 는 같은 값으로 수정될 수 없습니다.");
+        }
+
+        this.reviewStatus = other;
+    }
+
     public void assignSupporter(final Supporter supporter) {
         if (Objects.nonNull(this.supporter)) {
             throw new RunnerPostDomainException("러너 게시글에 이미 서포터가 할당되어 있습니다.");
