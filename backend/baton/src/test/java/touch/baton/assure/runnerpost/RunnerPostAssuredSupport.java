@@ -9,6 +9,7 @@ import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostAssuredSupport {
 
     private RunnerPostAssuredSupport() {
@@ -71,8 +72,11 @@ public class RunnerPostAssuredSupport {
         }
 
         public void 러너_게시글_삭제_성공을_검증한다(final HttpStatus HTTP_STATUS) {
-            assertThat(response.statusCode())
-                    .isEqualTo(HTTP_STATUS.value());
+            assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
+        }
+
+        public void 러너_게시글_삭제_실패를_검증한다(final HttpStatus HTTP_STATUS) {
+            assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
         }
     }
 }
