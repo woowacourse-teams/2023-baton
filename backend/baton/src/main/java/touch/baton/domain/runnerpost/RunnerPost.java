@@ -253,6 +253,10 @@ public class RunnerPost extends BaseEntity {
         return !supporter.equals(targetSupporter);
     }
 
+    public void startReview() {
+        this.reviewStatus = ReviewStatus.IN_PROGRESS;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -264,9 +268,5 @@ public class RunnerPost extends BaseEntity {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    public void startReview() {
-        this.reviewStatus = ReviewStatus.IN_PROGRESS;
     }
 }
