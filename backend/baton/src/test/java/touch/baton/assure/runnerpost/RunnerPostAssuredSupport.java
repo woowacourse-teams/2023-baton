@@ -25,6 +25,7 @@ import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResp
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -213,10 +214,9 @@ public class RunnerPostAssuredSupport {
 
             assertThat(actual).hasSize(서포터_러너_게시글_응답.data().size());
 
-            for (int i = 0; i < actual.size(); i++) {
+            IntStream.range(0, actual.size()).forEach(i -> {
                 SupporterRunnerPostResponse.Detail actualItem = actual.get(i);
                 SupporterRunnerPostResponse.Detail expectedItem = 서포터_러너_게시글_응답.data().get(i);
-
                 assertSoftly(softly -> {
                     softly.assertThat(actualItem.supporterId()).isEqualTo(expectedItem.supporterId());
                     softly.assertThat(actualItem.name()).isEqualTo(expectedItem.name());
@@ -226,7 +226,7 @@ public class RunnerPostAssuredSupport {
                     softly.assertThat(actualItem.message()).isEqualTo(expectedItem.message());
                     softly.assertThat(actualItem.technicalTags()).isEqualTo(expectedItem.technicalTags());
                 });
-            }
+            });
         }
 
         public void 서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터와_연관된_러너_게시글_페이징_응답) {
