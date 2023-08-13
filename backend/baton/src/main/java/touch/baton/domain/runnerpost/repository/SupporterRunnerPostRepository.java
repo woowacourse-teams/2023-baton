@@ -5,5 +5,5 @@ import touch.baton.domain.supporter.SupporterRunnerPost;
 
 public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRunnerPost, Long> {
 
-    boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, Long id);
+    boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
 }
