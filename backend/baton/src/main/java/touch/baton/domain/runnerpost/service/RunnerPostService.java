@@ -243,7 +243,7 @@ public class RunnerPostService {
         final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
-        if (!Objects.equals(foundRunnerPost.getRunner().getId(), runner.getId())) {
+        if (foundRunnerPost.isNotOwner(runner)) {
             throw new RunnerPostBusinessException("RunnerPost 의 글쓴이와 다른 사용자입니다.");
         }
 
