@@ -47,28 +47,33 @@ public class RunnerPostService {
         final RunnerPost runnerPost = toDomain(runner, request);
         runnerPostRepository.save(runnerPost);
 
-        List<Tag> toSaveTags = new ArrayList<>();
-        for (final String tagName : request.tags()) {
-            final Optional<Tag> maybeTag = tagRepository.findByTagName(new TagName(tagName));
+        final List<Tag> tags = findTagsAfterSave(request.tags());
 
-            if (maybeTag.isEmpty()) {
-                final Tag savedTag = tagRepository.save(Tag.newInstance(tagName));
-                toSaveTags.add(savedTag);
-                continue;
-            }
-
-            final Tag presentTag = maybeTag.get();
-            toSaveTags.add(presentTag);
-        }
-
-        final List<RunnerPostTag> postTags = toSaveTags.stream()
+        final List<RunnerPostTag> runnerPostTags = tags.stream()
                 .map(tag -> RunnerPostTag.builder()
                         .tag(tag)
                         .runnerPost(runnerPost).build())
                 .toList();
 
-        runnerPost.addAllRunnerPostTags(postTags);
+        runnerPost.addAllRunnerPostTags(runnerPostTags);
         return runnerPost.getId();
+    }
+
+    private List<Tag> findTagsAfterSave(final List<String> tagNames) {
+        final List<Tag> tags = new ArrayList<>();
+        for (String tagName : tagNames) {
+            tagRepository.findByTagName(new TagName(tagName))
+                    .ifPresentOrElse(tags::add, addTagAfterSave(tags, tagName));
+        }
+
+        return tags;
+    }
+
+    private Runnable addTagAfterSave(final List<Tag> tags, final String tagName) {
+        return () -> {
+            final Tag savedTag = tagRepository.save(Tag.newInstance(tagName));
+            tags.add(savedTag);
+        };
     }
 
     private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
