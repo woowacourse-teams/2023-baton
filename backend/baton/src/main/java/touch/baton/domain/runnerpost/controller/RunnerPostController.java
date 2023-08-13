@@ -26,7 +26,6 @@ import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
@@ -144,22 +143,40 @@ public class RunnerPostController {
     }
 
     @GetMapping
-    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPosts() {
-        final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
-                .map(RunnerPostResponse.Simple::from)
-                .toList();
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readAllRunnerPosts(pageable);
+        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
+        final List<Integer> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
+                .mapToObj(index -> {
+                    final RunnerPost runnerPost = foundRunnerPosts.get(index);
+                    Integer applicantCount = calculateApplicantCount(applicantCounts, index);
 
-        return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
+                    return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
+                }).toList();
+
+        final Page<RunnerPostResponse.Simple> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPostsVersionTest() {
-        final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
-                .map(RunnerPostResponse.Simple::from)
-                .toList();
+    private Integer calculateApplicantCount(final List<Integer> applicantCounts, final int index) {
+        if (applicantCounts.size() == 0) {
+            return 0;
+        }
 
-        return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
+        return applicantCounts.get(index);
     }
+
+//    @GetMapping("/test")
+//    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPostsVersionTest() {
+//        final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
+//                .map(RunnerPostResponse.Simple::from)
+//                .toList();
+//
+//        return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
+//    }
 
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(

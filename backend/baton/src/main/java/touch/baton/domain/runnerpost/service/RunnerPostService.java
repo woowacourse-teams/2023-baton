@@ -230,8 +230,8 @@ public class RunnerPostService {
         return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
     }
 
-    public List<RunnerPost> readAllRunnerPosts() {
-        return runnerPostRepository.findAllByOrderByCreatedAtDesc();
+    public Page<RunnerPost> readAllRunnerPosts(final Pageable pageable) {
+        return runnerPostRepository.findAll(pageable);
     }
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
