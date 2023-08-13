@@ -120,11 +120,11 @@ public record RunnerPostResponse() {
                                         LocalDateTime deadline,
                                         List<String> tags,
                                         int watchedCount,
-                                        int applicantCount,
+                                        long applicantCount,
                                         String reviewStatus
     ) {
 
-        public static ReferencedBySupporter of(final RunnerPost runnerPost, Integer applicantCount) {
+        public static ReferencedBySupporter of(final RunnerPost runnerPost, final int applicantCount) {
             return new ReferencedBySupporter(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),

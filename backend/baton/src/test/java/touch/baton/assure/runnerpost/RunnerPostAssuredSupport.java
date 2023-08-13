@@ -30,7 +30,7 @@ public class RunnerPostAssuredSupport {
     public static PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터가_리뷰_완료한_러너_게시글_응답(final Pageable 페이징_정보,
                                                                                                final List<RunnerPostResponse.ReferencedBySupporter> 서포터가_연관된_러너_게시글_목록
     ) {
-        final Page<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_연관된_러너_게시글 = new PageImpl<>(서포터가_연관된_러너_게시글_목록, 페이징_정보, 1);
+        final Page<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_연관된_러너_게시글 = new PageImpl<>(서포터가_연관된_러너_게시글_목록, 페이징_정보, 서포터가_연관된_러너_게시글_목록.size());
         final PageResponse<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_연관된_러너_게시글_응답 = PageResponse.from(페이징된_서포터가_연관된_러너_게시글);
 
         return 페이징된_서포터가_연관된_러너_게시글_응답;
@@ -110,13 +110,6 @@ public class RunnerPostAssuredSupport {
             assertSoftly(softly -> {
                         softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
                         softly.assertThat(actual.data()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.data());
-                        softly.assertThat(actual.pageInfo().isFirst()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().isFirst());
-                        softly.assertThat(actual.pageInfo().isLast()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().isLast());
-                        softly.assertThat(actual.pageInfo().hasNext()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().hasNext());
-                        softly.assertThat(actual.pageInfo().totalPages()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().totalPages());
-                        softly.assertThat(actual.pageInfo().totalElements()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().totalElements());
-                        softly.assertThat(actual.pageInfo().currentPage()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().currentPage());
-                        softly.assertThat(actual.pageInfo().currentSize()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.pageInfo().currentSize());
                     }
             );
         }

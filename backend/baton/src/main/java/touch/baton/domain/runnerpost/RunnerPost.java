@@ -34,7 +34,10 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)

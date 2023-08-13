@@ -32,6 +32,7 @@ import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -157,8 +158,10 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
         savedRunnerPost.assignSupporter(savedSupporterHyena);
 
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
+
         // when
-        final PageRequest pageable = PageRequest.of(1, 10);
+        final PageRequest pageable = PageRequest.of(0, 10);
         final Page<RunnerPost> pageRunnerPosts
                 = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), ReviewStatus.IN_PROGRESS);
 
