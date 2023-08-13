@@ -114,6 +114,24 @@ public class RunnerPost extends BaseEntity {
         this.runnerPostTags = runnerPostTags;
     }
 
+    public static RunnerPost newInstance(final String title,
+                                         final String contents,
+                                         final String pullRequestUrl,
+                                         final LocalDateTime deadline,
+                                         final Runner runner
+    ) {
+        return RunnerPost.builder()
+                .title(new Title(title))
+                .contents(new Contents(contents))
+                .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
+                .deadline(new Deadline(deadline))
+                .runner(runner)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .watchedCount(WatchedCount.zero())
+                .reviewStatus(NOT_STARTED)
+                .build();
+    }
+
     private void validateNotNull(final Title title,
                                  final Contents contents,
                                  final PullRequestUrl pullRequestUrl,
@@ -154,24 +172,6 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostDomainException("RunnerPost 의 runnerPostTags 는 null 일 수 없습니다.");
         }
-    }
-
-    public static RunnerPost newInstance(final String title,
-                                         final String contents,
-                                         final String pullRequestUrl,
-                                         final LocalDateTime deadline,
-                                         final Runner runner
-    ) {
-        return RunnerPost.builder()
-                .title(new Title(title))
-                .contents(new Contents(contents))
-                .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
-                .deadline(new Deadline(deadline))
-                .runner(runner)
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .watchedCount(WatchedCount.zero())
-                .reviewStatus(NOT_STARTED)
-                .build();
     }
 
     public void addAllRunnerPostTags(final List<RunnerPostTag> postTags) {

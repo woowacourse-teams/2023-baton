@@ -6,9 +6,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
-import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
 

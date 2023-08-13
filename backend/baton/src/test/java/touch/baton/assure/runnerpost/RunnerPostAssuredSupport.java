@@ -16,6 +16,8 @@ import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.time.LocalDateTime;

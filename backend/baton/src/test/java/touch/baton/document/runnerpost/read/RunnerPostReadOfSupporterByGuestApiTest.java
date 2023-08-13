@@ -35,7 +35,6 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -48,6 +47,7 @@ import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -136,6 +136,7 @@ class RunnerPostReadApiTest extends RestdocsConfig {
                         requestHeaders(
                                 headerWithName(AUTHORIZATION).description("Bearer JWT")
                         ),
+                        pathParameters(parameterWithName("runnerPostId").description("러너 게시글 식별자(id)")),
                         responseFields(
                                 fieldWithPath("data.[].supporterId").type(NUMBER).description("서포터 러너 게시글 서포터의 식별자값(id)"),
                                 fieldWithPath("data.[].name").type(STRING).description("서포터 러너 게시글의 서포터의 이름"),

@@ -78,7 +78,7 @@ class RunnerPostTagTest {
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
 
-        private Tag tag = Tag.builder()
+        private final Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
                 .build();
 

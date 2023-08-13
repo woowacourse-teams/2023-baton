@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static touch.baton.fixture.domain.MessageFixture.message;
 import static java.time.LocalDateTime.now;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Detail_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.클라이언트_요청;

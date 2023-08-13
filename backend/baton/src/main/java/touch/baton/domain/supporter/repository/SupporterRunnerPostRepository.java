@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRunnerPost, Long> {
-
+    
     @Query("""
             select count(1)
             from SupporterRunnerPost srp

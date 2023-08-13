@@ -12,7 +12,9 @@ import touch.baton.fixture.domain.SupporterFixture;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static touch.baton.domain.common.exception.ClientErrorCode.*;
+import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_TECHNICAL_TAGS_ARE_NULL;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class SupporterUpdateAssuredTest extends AssuredTestConfig {

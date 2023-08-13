@@ -1,11 +1,9 @@
 package touch.baton.domain.runner.controller.response;
 
-import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 
 import java.util.List;
-import java.util.Objects;
 
 public record RunnerProfileResponse() {
 
