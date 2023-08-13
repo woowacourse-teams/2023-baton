@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.converter.OauthTypeConverter;
+import touch.baton.config.converter.ReviewStatusConverter;
 import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipalArgumentResolver;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipalArgumentResolver;
 import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipalArgumentResolver;
@@ -34,9 +36,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
 @ExtendWith(RestDocumentationExtension.class)
 @Import({RestDocsResultConfig.class, ConverterConfig.class})
@@ -81,9 +81,14 @@ public abstract class RestdocsConfig {
 
         final FormattingConversionService formattingConversionService = new FormattingConversionService();
         formattingConversionService.addConverter(new OauthTypeConverter());
+        formattingConversionService.addConverter(new ReviewStatusConverter());
 
         this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .setCustomArgumentResolvers(authMemberPrincipalArgumentResolver, authRunnerPrincipalArgumentResolver, authSupporterPrincipalArgumentResolver)
+                .setCustomArgumentResolvers(
+                        authMemberPrincipalArgumentResolver,
+                        authRunnerPrincipalArgumentResolver,
+                        authSupporterPrincipalArgumentResolver,
+                        new PageableHandlerMethodArgumentResolver())
                 .apply(documentationConfiguration(restDocumentation))
                 .setConversionService(formattingConversionService)
                 .setMessageConverters(jackson2HttpMessageConverter)

@@ -3,6 +3,8 @@ package touch.baton.domain.runnerpost.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.TagName;
@@ -30,15 +32,16 @@ import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 
 class RunnerPostServiceReadTest extends ServiceTestConfig {
 
@@ -46,7 +49,13 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
+        runnerPostService = new RunnerPostService(
+                runnerPostRepository,
+                runnerPostTagRepository,
+                tagRepository,
+                supporterRepository,
+                supporterRunnerPostRepository
+        );
     }
 
     @DisplayName("RunnerPost 식별자로 RunnerPost 를 조회한다.")
@@ -69,7 +78,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .build();
         runnerRepository.save(runner);
 
-        final LocalDateTime deadline = LocalDateTime.now();
+        final LocalDateTime deadline = now();
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("제 코드 리뷰 좀 해주세요!!"))
                 .contents(new Contents("제 코드는 클린코드가 맞을까요?"))
@@ -120,7 +129,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         memberRepository.save(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
         runnerRepository.save(runner);
-        final RunnerPost expected = RunnerPostFixture.create(runner, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost expected = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
         runnerPostRepository.save(expected);
 
         // when
@@ -167,5 +176,33 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
             softly.assertThat(expected.get(1)).isEqualTo(actual.get(1));
             softly.assertThat(expected.get(2)).isEqualTo(actual.get(2));
         });
+    }
+
+    @DisplayName("Supporter 외래키와 ReviewStatus 로 러너 게시글을 조회한다.")
+    @Test
+    void readRunnerPostsBySupporterIdAndReviewStatus() {
+        // given
+        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
+        savedRunnerPost.assignSupporter(savedSupporterHyena);
+
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
+
+        // when
+        final PageRequest pageable = PageRequest.of(0, 10);
+        final Page<RunnerPost> pageRunnerPosts
+                = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), ReviewStatus.IN_PROGRESS);
+
+        // then
+        assertAll(
+                () -> assertThat(pageRunnerPosts.getPageable()).isEqualTo(pageable),
+                () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
+        );
     }
 }

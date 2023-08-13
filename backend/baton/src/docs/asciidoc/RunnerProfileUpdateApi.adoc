@@ -1,0 +1,30 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: investment
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 2
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+== *러너 프로필 수정*
+
+=== *러너 프로필 수정 API*
+
+==== *Http Request*
+include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/http-request.adoc[]
+
+==== *Http Request Headers*
+include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/request-headers.adoc[]
+
+==== *Http Request Body*
+include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/request-body.adoc[]
+
+==== *Http Response*
+include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/http-response.adoc[]
+
+==== *Http Response Headers*
+include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/response-headers.adoc[]

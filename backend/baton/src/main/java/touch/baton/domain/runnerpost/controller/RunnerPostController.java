@@ -2,6 +2,10 @@ package touch.baton.domain.runnerpost.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -21,9 +27,13 @@ import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.IntStream;
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts/runner")
@@ -124,6 +134,37 @@ public class RunnerPostController {
                 .toList();
 
         return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
+            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @RequestParam("supporterId") final Long supporterId,
+            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
+    ) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
+        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
+        final List<Integer> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
+                .mapToObj(index -> {
+                    final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
+                    final Integer applicantCount = applicantCounts.get(index);
+
+                    return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
+                }).toList();
+
+        final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
+    private List<Integer> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
+        final List<Long> runnerPostIds = pageRunnerPosts.stream()
+                .map(RunnerPost::getId)
+                .toList();
+
+        return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
     }
 
 //    @GetMapping("/me/supporter")

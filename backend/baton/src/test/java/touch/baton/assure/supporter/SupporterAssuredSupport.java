@@ -80,7 +80,6 @@ public class SupporterAssuredSupport {
                 softly.assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
                 softly.assertThat(response.header("Location")).isNotNull();
             });
-
         }
 
         public void 서포터_본인_프로필_수정_실패를_검증한다(final ClientErrorCode clientErrorCode) {

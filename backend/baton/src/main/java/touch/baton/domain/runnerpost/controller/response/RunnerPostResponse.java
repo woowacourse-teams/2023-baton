@@ -134,4 +134,26 @@ public record RunnerPostResponse() {
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .toList();
     }
+
+    public record ReferencedBySupporter(Long runnerPostId,
+                                        String title,
+                                        LocalDateTime deadline,
+                                        List<String> tags,
+                                        int watchedCount,
+                                        long applicantCount,
+                                        String reviewStatus
+    ) {
+
+        public static ReferencedBySupporter of(final RunnerPost runnerPost, final int applicantCount) {
+            return new ReferencedBySupporter(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getWatchedCount().getValue(),
+                    applicantCount,
+                    runnerPost.getReviewStatus().name()
+            );
+        }
+    }
 }

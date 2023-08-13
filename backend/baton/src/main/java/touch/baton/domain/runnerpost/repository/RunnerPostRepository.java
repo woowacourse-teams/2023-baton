@@ -1,5 +1,7 @@
 package touch.baton.domain.runnerpost.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -23,7 +25,21 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
 
     List<RunnerPost> findAllByOrderByCreatedAtDesc();
 
-    List<RunnerPost> findByRunnerId(final Long runnerId);
+    List<RunnerPost> findByRunnerId(Long runnerId);
+
+    @Query(countQuery = """
+            select count(1)
+            from RunnerPost rp
+            where rp.supporter.id = :supporterId
+            and rp.reviewStatus = :reviewStatus
+            """)
+    Page<RunnerPost> findBySupporterIdAndReviewStatus(final Pageable pageable,
+                                                      @Param("supporterId") final Long supporterId,
+                                                      @Param("reviewStatus") final ReviewStatus reviewStatus);
+
+    List<RunnerPost> readBySupporterId(Long supporterId);
+
+    Optional<RunnerPost> readByTitle(Title title);
 
     List<RunnerPost> findBySupporterAndReviewStatusOrderByCreatedAtDesc(final Supporter supporter, final ReviewStatus reviewStatus);
 }
