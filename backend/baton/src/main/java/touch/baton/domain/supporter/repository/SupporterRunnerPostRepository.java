@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import touch.baton.domain.supporter.SupporterRunnerPost;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRunnerPost, Long> {
 
@@ -16,4 +17,7 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
         having srp.runnerPost.id in (:runnerPostIds)
         """)
     List<Integer> countByRunnerPostIdIn(@Param("runnerPostIds") final List<Long> runnerPostIds);
+
+    Optional<SupporterRunnerPost> findBySupporterIdAndRunnerPostId(@Param("supporterId") final Long supporterId,
+                                                                   @Param("runnerPostId") final Long runnerPostId);
 }
