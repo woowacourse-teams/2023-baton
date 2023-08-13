@@ -169,7 +169,7 @@ public class RunnerPostController {
     }
 
     @PatchMapping("/{runnerPostId}/supporters")
-    public ResponseEntity<Void> updateRunnerPostSupporter(@AuthRunnerPrincipal final Runner runner,
+    public ResponseEntity<Void> updateRunnerPostAppliedSupporter(@AuthRunnerPrincipal final Runner runner,
                                                           @PathVariable final Long runnerPostId,
                                                           @Valid @RequestBody final RunnerPostUpdateRequest.AppliedSupporter request) {
         runnerPostService.updateRunnerPostAppliedSupporter(runner, runnerPostId, request);
