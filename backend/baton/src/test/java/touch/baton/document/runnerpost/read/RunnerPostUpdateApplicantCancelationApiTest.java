@@ -31,7 +31,6 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.CompanyFixture.company;
@@ -42,7 +41,7 @@ import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
 @WebMvcTest(RunnerPostController.class)
-public class RunnerPostUpdateSupporterCancelationApiTest extends RestdocsConfig {
+public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
@@ -94,7 +93,6 @@ public class RunnerPostUpdateSupporterCancelationApiTest extends RestdocsConfig 
                         responseHeaders(
                                 headerWithName(LOCATION).description("redirect uri")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 }
