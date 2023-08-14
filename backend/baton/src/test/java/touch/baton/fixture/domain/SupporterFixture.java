@@ -29,7 +29,7 @@ public abstract class SupporterFixture {
     public static Supporter create(final ReviewCount reviewCount,
                                    final Member member,
                                    final SupporterTechnicalTags supporterTechnicalTags
-                                   ) {
+    ) {
         return Supporter.builder()
                 .reviewCount(reviewCount)
                 .member(member)
@@ -42,7 +42,7 @@ public abstract class SupporterFixture {
                                    final Member member,
                                    final List<TechnicalTag> technicalTags
     ) {
-        final Supporter supporter =  Supporter.builder()
+        final Supporter supporter = Supporter.builder()
                 .reviewCount(reviewCount)
                 .member(member)
                 .introduction(new Introduction("안녕하세요. 서포터입니다."))

@@ -15,16 +15,21 @@ endif::[]
 ==== *서포터 프로필 수정 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/http-request.adoc[]
 
 ===== *Http Request Headers*
+
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/request-headers.adoc[]
 
 ===== *Http Request Body*
+
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/request-body.adoc[]
 
 ===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/http-response.adoc[]
 
 ===== *Http Response Headers*
+
 include::{snippets}/../../build/generated-snippets/supporter-profile-update-api-test/update-supporter-profile/response-headers.adoc[]

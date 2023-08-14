@@ -17,7 +17,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class TagName {
 
     @Column(name = "name", nullable = false, unique = true)
-    private String  value;
+    private String value;
 
     public TagName(final String value) {
         validateNotNull(value);

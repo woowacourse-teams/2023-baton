@@ -97,8 +97,8 @@ class SupporterTest {
 
         // then
         assertSoftly(softly -> {
-           softly.assertThat(actual).hasSize(1);
-           softly.assertThat(actual.get(0)).isEqualTo(supporterTechnicalTag);
+            softly.assertThat(actual).hasSize(1);
+            softly.assertThat(actual.get(0)).isEqualTo(supporterTechnicalTag);
         });
     }
 

@@ -10,7 +10,7 @@ public abstract class RunnerPostTagsFixture {
     private RunnerPostTagsFixture() {
     }
 
-    public static RunnerPostTags runnerPostTags(final List<RunnerPostTag> runnerPostTags){
+    public static RunnerPostTags runnerPostTags(final List<RunnerPostTag> runnerPostTags) {
         return new RunnerPostTags(runnerPostTags);
     }
 }
