@@ -23,4 +23,4 @@ export const createPostOptions = (value: ReviewStatus[], labels: string[]) => {
 };
 
 export const runnerPostOptions = createPostOptions(REVIEW_STATUS, RUNNER_POST_OPTIONS);
-export const supportPostOptions = createPostOptions(REVIEW_STATUS, SUPPORTER_POST_OPTIONS);
+export const supporterPostOptions = createPostOptions(REVIEW_STATUS, SUPPORTER_POST_OPTIONS);

@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { getRequest } from '@/api/fetch';
-import { PostOptions, runnerPostOptions, supportPostOptions } from '@/utils/postOption';
+import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
@@ -22,9 +22,7 @@ const MyPage = () => {
   const { getToken } = useToken();
 
   useEffect(() => {
-    if (isRunner) {
-      setPostOptions(runnerPostOptions);
-    } else setPostOptions(supportPostOptions);
+    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
   }, [isRunner]);
 
   useEffect(() => {
