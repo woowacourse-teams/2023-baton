@@ -214,7 +214,12 @@ public class RunnerPostService {
 
     @Transactional
     public void updateRunnerPostReviewStatusDone(final Long runnerPostId, final Supporter supporter) {
-        final RunnerPost foundRunnerPost = findInProgressRunnerPost(runnerPostId);
+        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("해당 식별자의 러너 게시글이 존재하지 않습니다."));
+
+        if (Objects.isNull(foundRunnerPost.getSupporter())) {
+            throw new RunnerPostBusinessException("아직 서포터가 배정이 안 된 게시글 입니다.");
+        }
 
         if (foundRunnerPost.isDifferentSupporter(supporter)) {
             throw new RunnerPostBusinessException("다른 사람이 리뷰 중인 게시글의 상태를 변경할 수 없습니다.");
@@ -223,14 +228,4 @@ public class RunnerPostService {
         foundRunnerPost.finishReview();
     }
 
-    private RunnerPost findInProgressRunnerPost(final Long runnerPostId) {
-        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
-                .orElseThrow(() -> new RunnerPostBusinessException("해당 식별자의 러너 게시글이 존재하지 않습니다."));
-
-        if (Objects.isNull(foundRunnerPost.getSupporter())) {
-            throw new RunnerPostBusinessException("아직 서포터가 배정이 안 된 게시글 입니다.");
-        }
-
-        return foundRunnerPost;
-    }
 }
