@@ -4,6 +4,12 @@ import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.vo.Introduction;
+import touch.baton.domain.member.Member;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.GithubUrl;
+import touch.baton.domain.member.vo.ImageUrl;
+import touch.baton.domain.member.vo.MemberName;
+import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 import touch.baton.domain.oauth.repository.OauthRunnerRepository;
@@ -29,8 +35,15 @@ public class AuthRunnerPrincipalArgumentResolver extends UserPrincipalArgumentRe
     protected Object getGuest() {
         return Runner.builder()
                 .introduction(new Introduction("게스트"))
-                .member(null)
-                .build();
+                .member(Member.builder()
+                        .memberName(new MemberName("게스트"))
+                        .socialId(new SocialId("guestSocialId"))
+                        .oauthId(new OauthId("guestOauthId"))
+                        .githubUrl(new GithubUrl("guestGithubUrl"))
+                        .company(new Company("guestCompany"))
+                        .imageUrl(new ImageUrl("guestImageUrl"))
+                        .build()
+                );
     }
 
     @Override

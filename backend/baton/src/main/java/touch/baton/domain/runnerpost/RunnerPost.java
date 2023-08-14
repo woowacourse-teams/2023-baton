@@ -34,6 +34,10 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -168,7 +172,7 @@ public class RunnerPost extends BaseEntity {
                 .runner(runner)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .watchedCount(WatchedCount.zero())
-                .reviewStatus(ReviewStatus.NOT_STARTED)
+                .reviewStatus(NOT_STARTED)
                 .build();
     }
 
@@ -196,8 +200,45 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
     }
 
+    public void updateReviewStatus(final ReviewStatus other) {
+        if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(IN_PROGRESS)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 NOT_STARTED 에서 IN_PROGRESS 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(DONE)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 NOT_STARTED 에서 DONE 으로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(DONE) && other.isSame(NOT_STARTED)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 NOT_STARTED 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(DONE) && other.isSame(IN_PROGRESS)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 IN_PROGRESS 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(DONE) && other.isSame(OVERDUE)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 OVERDUE 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(other)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 같은 ReviewStatus 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+
+        this.reviewStatus = other;
+    }
+
     public void assignSupporter(final Supporter supporter) {
+        if (Objects.nonNull(this.supporter)) {
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 RunnerPost 에 이미 다른 Supporter 가 할당되어 있는 것을 원인으로 실패하였습니다.");
+        }
+        if (reviewStatus.isSame(OVERDUE)) {
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 ReviewStatus 가 OVERDUE 상태가 원인으로 실패하였습니다.");
+        }
+        if (reviewStatus.isNotSameAsNotStarted()) {
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 ReviewStatus 가 NOT_STARTED 상태가 아닌 것을 원인으로 실패하였습니다.");
+        }
+        if (deadline.isEnd()) {
+            throw new RunnerPostDomainException("Supporter 를 할당하던 도중 ReviewStatus 의 Deadline 이 현재 시간보다 과거인 것을 원인으로 실패하였습니다.");
+        }
+
         this.supporter = supporter;
+        this.reviewStatus = IN_PROGRESS;
     }
 
     public void increaseWatchedCount() {

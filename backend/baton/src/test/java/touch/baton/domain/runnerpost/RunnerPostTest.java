@@ -3,6 +3,9 @@ package touch.baton.domain.runnerpost;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -28,7 +31,9 @@ import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -275,5 +280,213 @@ class RunnerPostTest {
 
         // then
         assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
+    }
+
+    @DisplayName("Supporter 할당")
+    @Nested
+    class AssignSupporter {
+
+        @DisplayName("RunnerPost 내부의 Supporter 가 null 이며 ReviewStatus 가 NOT_STARTED 이어야 하며 Deadline 이 끝나지 않은 경우 성공한다.")
+        @Test
+        void success_supporter_is_null_and_deadline_is_not_end() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("JPA 정복"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(null)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // then
+            assertThatCode(() -> runnerPost.assignSupporter(supporter))
+                    .doesNotThrowAnyException();
+        }
+
+        @DisplayName("RunnerPost 내부의 Supporter 가 null 이 아닐 때 예외가 발생한다.")
+        @Test
+        void fail_supporter_is_not_null() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("JPA 정복"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // then
+            assertThatThrownBy(() -> runnerPost.assignSupporter(supporter))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        @DisplayName("RunnerPost 의 마감 기한이 이미 끝났을 때 예외가 발생한다.")
+        @Test
+        void fail_deadline_is_already_end() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("JPA 정복"))
+                    .contents(new Contents("김영한 짱짱맨"))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now().minusDays(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // then
+            assertThatThrownBy(() -> runnerPost.assignSupporter(supporter))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+    }
+
+    @DisplayName("RunnerPost ReviewStatus 수정")
+    @Nested
+    class UpdateReviewStatus {
+
+        @DisplayName("IN_PROGRESS 에서 DONE 으로 수정 성공한다.")
+        @Test
+        void success_IN_PROGRESS__to_DONE() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.IN_PROGRESS)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // when
+            runnerPost.updateReviewStatus(ReviewStatus.DONE);
+
+            // then
+            assertThat(runnerPost.getReviewStatus()).isEqualTo(ReviewStatus.DONE);
+        }
+
+        @DisplayName("NOT_STARTED 에서 IN_PROGRESS 으로 수정 실패한다.")
+        @Test
+        void fail_NOT_STARTED__to_IN_PROGRESS() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // when & then
+            assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.IN_PROGRESS))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        @DisplayName("NOT_STARTED 에서 DONE 으로 수정 실패한다.")
+        @Test
+        void fail_NOT_STARTED__to_DONE() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.DONE)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // when & then
+            assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.DONE))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        @DisplayName("DONE 에서 NOT_STARTED 으로 수정 실패한다.")
+        @Test
+        void fail_DONE_to_NOT_STARTED() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.DONE)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // when & then
+            assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.NOT_STARTED))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        @DisplayName("DONE 에서 IN_PROGRESS 으로 수정 실패한다.")
+        @Test
+        void fail_DONE_to_IN_PROGRESS() {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.DONE)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // when & then
+            assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.IN_PROGRESS))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        @DisplayName("같은 ReviewStatus 로 수정할 경우 실패한다.")
+        @ParameterizedTest
+        @MethodSource("reviewStatusDummy")
+        void fail_same_to_same(final ReviewStatus reviewStatus) {
+            // given
+            final RunnerPost runnerPost = RunnerPost.builder()
+                    .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                    .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(reviewStatus)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build();
+
+            // when & then
+            assertThatThrownBy(() -> runnerPost.updateReviewStatus(reviewStatus))
+                    .isInstanceOf(RunnerPostDomainException.class);
+        }
+
+        private static Stream<Arguments> reviewStatusDummy() {
+            return Arrays.stream(ReviewStatus.values())
+                    .map(Arguments::arguments);
+        }
+
     }
 }

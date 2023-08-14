@@ -35,7 +35,13 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository);
+        runnerPostService = new RunnerPostService(
+                runnerPostRepository,
+                runnerPostTagRepository,
+                tagRepository,
+                supporterRepository,
+                supporterRunnerPostRepository
+        );
     }
 
     @Disabled

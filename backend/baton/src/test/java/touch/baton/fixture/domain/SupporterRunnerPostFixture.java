@@ -10,11 +10,11 @@ public abstract class SupporterRunnerPostFixture {
     private SupporterRunnerPostFixture() {
     }
 
-    public static SupporterRunnerPost create(final Supporter supporter, final RunnerPost runnerPost) {
+    public static SupporterRunnerPost create(final RunnerPost runnerPost, final Supporter supporter) {
         return SupporterRunnerPost.builder()
-                .supporter(supporter)
                 .runnerPost(runnerPost)
-                .message(new Message("안녕하세요"))
+                .supporter(supporter)
+                .message(new Message("안녕하세요. 테스트용 서포터입니다."))
                 .build();
     }
 }
