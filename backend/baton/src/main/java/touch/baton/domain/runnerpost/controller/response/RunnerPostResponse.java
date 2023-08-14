@@ -126,7 +126,7 @@ public record RunnerPostResponse() {
                                         String reviewStatus
     ) {
 
-        public static ReferencedBySupporter of(final RunnerPost runnerPost, final int applicantCount) {
+        public static ReferencedBySupporter of(final RunnerPost runnerPost, final long applicantCount) {
             return new ReferencedBySupporter(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),

@@ -147,7 +147,7 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest request) {
+    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest.Default request) {
         // TODO: 메소드 분리
         // FIXME: 2023/08/03 주인 확인 로직 넣기
         final RunnerPost runnerPost = getRunnerPostOrThrowException(runnerPostId);
@@ -198,15 +198,18 @@ public class RunnerPostService {
 
     private RunnerPost getRunnerPostOrThrowException(final Long runnerPostId) {
         return runnerPostRepository.findById(runnerPostId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId를 다시 확인해주세요"));
+                .orElseThrow(() -> new RunnerPostBusinessException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId 를 다시 확인해주세요"));
     }
 
     @Transactional
-    public SupporterRunnerPost createRunnerPostApplicant(final Supporter supporter, final RunnerPostApplicantCreateRequest request, final Long runnerPostId) {
+    public Long createRunnerPostApplicant(final Supporter supporter,
+                                          final RunnerPostApplicantCreateRequest request,
+                                          final Long runnerPostId
+    ) {
         final RunnerPost foundRunnerPost = getRunnerPostOrThrowException(runnerPostId);
-        final Optional<SupporterRunnerPost> maybeApplicant = supporterRunnerPostRepository.findBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
-        if (maybeApplicant.isPresent()) {
-            throw new RunnerPostDomainException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
+        final boolean isApplicantHistoryExist = supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, supporter.getId());
+        if (isApplicantHistoryExist) {
+            throw new RunnerPostBusinessException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
         }
 
         final SupporterRunnerPost runnerPostApplicant = SupporterRunnerPost.builder()
@@ -215,7 +218,7 @@ public class RunnerPostService {
                 .message(new Message(request.message()))
                 .build();
 
-        return supporterRunnerPostRepository.save(runnerPostApplicant);
+        return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
     }
 
     public List<RunnerPost> readAllRunnerPosts() {
@@ -233,11 +236,42 @@ public class RunnerPostService {
         return runnerPostRepository.findBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
     }
 
-    public List<Integer> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
+    public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
         return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
     }
 
-    public int readCountByRunnerPostId(final Long runnerPostId) {
-        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0);
+    @Transactional
+    public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
+        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("존재하지 않는 RunnerPost 입니다."));
+        if (!runnerPost.isReviewStatusNotStarted()) {
+            throw new RunnerPostBusinessException("이미 진행 중인 러너 게시글의 서포터 지원은 철회할 수 없습니다.");
+        }
+        supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
     }
+
+    @Transactional
+    public void updateRunnerPostAppliedSupporter(final Runner runner,
+                                                 final Long runnerPostId,
+                                                 final RunnerPostUpdateRequest.SelectSupporter request
+    ) {
+        final Supporter foundApplySupporter = supporterRepository.findById(request.supporterId())
+                .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
+        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+
+        if (isApplySupporter(runnerPostId, foundApplySupporter)) {
+            throw new RunnerPostBusinessException("게시글에 리뷰를 제안한 서포터가 아닙니다.");
+        }
+        if (foundRunnerPost.isNotOwner(runner)) {
+            throw new RunnerPostBusinessException("RunnerPost 의 글쓴이와 다른 사용자입니다.");
+        }
+
+        foundRunnerPost.assignSupporter(foundApplySupporter);
+    }
+
+    private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
+        return !supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
+    }
+
 }

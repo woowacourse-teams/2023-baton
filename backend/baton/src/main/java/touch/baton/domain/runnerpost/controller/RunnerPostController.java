@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -30,6 +31,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.SupporterRunnerPost;
 
@@ -75,11 +77,11 @@ public class RunnerPostController {
                                                           @PathVariable final Long runnerPostId,
                                                           @RequestBody @Valid final RunnerPostApplicantCreateRequest request
     ) {
-        final SupporterRunnerPost savedRunnerPostApplicant = runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
+        runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{runnerPostId}")
-                .buildAndExpand(savedRunnerPostApplicant.getRunnerPost().getId())
+                .buildAndExpand(runnerPostId)
                 .toUri();
 
         return ResponseEntity.created(redirectUri).build();
@@ -124,9 +126,9 @@ public class RunnerPostController {
     }
 
     @PutMapping("/{runnerPostId}")
-    public ResponseEntity<Void> update(@AuthRunnerPrincipal Runner runner,
+    public ResponseEntity<Void> update(@AuthRunnerPrincipal final Runner runner,
                                        @PathVariable final Long runnerPostId,
-                                       @Valid @RequestBody final RunnerPostUpdateRequest request
+                                       @Valid @RequestBody final RunnerPostUpdateRequest.Default request
     ) {
         final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, runner, request);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
@@ -162,11 +164,11 @@ public class RunnerPostController {
     ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
         final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
-        final List<Integer> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
         final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
                 .mapToObj(index -> {
                     final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
-                    final Integer applicantCount = applicantCounts.get(index);
+                    final long applicantCount = applicantCounts.get(index);
 
                     return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
                 }).toList();
@@ -177,11 +179,37 @@ public class RunnerPostController {
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
-    private List<Integer> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
+    private List<Long> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
         final List<Long> runnerPostIds = pageRunnerPosts.stream()
                 .map(RunnerPost::getId)
                 .toList();
 
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
+    }
+
+    @PatchMapping("/{runnerPostId}/cancelation")
+    public ResponseEntity<Void> updateSupporterCancelRunnerPost(@AuthSupporterPrincipal final Supporter supporter,
+                                                                @PathVariable final Long runnerPostId
+    ) {
+        runnerPostService.deleteSupporterRunnerPost(supporter, runnerPostId);
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{runnerPostId}")
+                .buildAndExpand(runnerPostId)
+                .toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
+    }
+
+    @PatchMapping("/{runnerPostId}/supporters")
+    public ResponseEntity<Void> updateRunnerPostAppliedSupporter(@AuthRunnerPrincipal final Runner runner,
+                                                                 @PathVariable final Long runnerPostId,
+                                                                 @Valid @RequestBody final RunnerPostUpdateRequest.SelectSupporter request
+    ) {
+        runnerPostService.updateRunnerPostAppliedSupporter(runner, runnerPostId, request);
+
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{runnerPostId}")
+                .buildAndExpand(runnerPostId)
+                .toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
     }
 }

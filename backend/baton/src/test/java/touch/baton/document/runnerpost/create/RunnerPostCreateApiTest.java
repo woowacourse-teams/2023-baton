@@ -13,14 +13,20 @@ import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.supporter.Supporter;
+<<<<<<< HEAD
 import touch.baton.domain.supporter.SupporterRunnerPost;
+=======
+>>>>>>> origin/dev/BE
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
+<<<<<<< HEAD
 import touch.baton.fixture.vo.MessageFixture;
+=======
+>>>>>>> origin/dev/BE
 
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +62,8 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerPostController(runnerPostService));
+        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
+        restdocsSetUp(runnerPostController);
     }
 
     @DisplayName("Supporter 가 RunnerPost 에 리뷰를 지원한다.")
@@ -73,14 +80,8 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
         when(spyRunnerPost.getId()).thenReturn(1L);
-
-        final SupporterRunnerPost runnerPostApplicant = SupporterRunnerPost.builder()
-                .runnerPost(runnerPost)
-                .supporter(supporterHyena)
-                .message(MessageFixture.message("안녕하세요. 서포터 헤나입니다."))
-                .build();
         when(runnerPostService.createRunnerPostApplicant(any(), any(), any()))
-                .thenReturn(runnerPostApplicant);
+                .thenReturn(1L);
 
         when(oauthSupporterRepository.joinByMemberSocialId(any()))
                 .thenReturn(Optional.ofNullable(supporterHyena));
@@ -95,7 +96,7 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string(LOCATION, "/api/v1/posts/runner/"))
+                .andExpect(header().string(LOCATION, "/api/v1/posts/runner/" + spyRunnerPost.getId()))
                 .andDo(restDocs.document(
                         requestHeaders(
                                 headerWithName(AUTHORIZATION).description("Bearer JWT"),
