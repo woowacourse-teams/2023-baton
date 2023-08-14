@@ -14,8 +14,8 @@ public class AssuredSupport {
         return RestAssured
                 .given().log().ifValidationFails()
                 .contentType(APPLICATION_JSON_VALUE)
-                .when().log().ifValidationFails()
                 .body(params)
+                .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()
                 .extract();
@@ -24,10 +24,10 @@ public class AssuredSupport {
     public static ExtractableResponse<Response> post(final String uri, final String accessToken, final Object body) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .contentType(APPLICATION_JSON_VALUE)
                 .auth().preemptive().oauth2(accessToken)
-                .when().log().ifValidationFails()
+                .contentType(APPLICATION_JSON_VALUE)
                 .body(body)
+                .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()
                 .extract();
@@ -40,11 +40,11 @@ public class AssuredSupport {
     ) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .contentType(APPLICATION_JSON_VALUE)
                 .auth().preemptive().oauth2(accessToken)
-                .when().log().ifValidationFails()
+                .contentType(APPLICATION_JSON_VALUE)
                 .pathParams(pathVariables)
                 .body(requestBody)
+                .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()
                 .extract();
