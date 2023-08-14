@@ -30,22 +30,26 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/rea
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-referenced-by-supporter/response-fields.adoc[]
 
-
 === *러너 게시글 상세 조회*
 
 ==== *러너 게시글 단건 상세 조회 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-by-runner-post-id/http-request.adoc[]
 
 ===== *Http Request Headers
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-by-runner-post-id/request-headers.adoc[]
 
 ===== *Http Request Path Parameters*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-by-runner-post-id/path-parameters.adoc[]
 
 ===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-by-runner-post-id/http-response.adoc[]
 
 ===== *Http Response Fields*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-by-runner-post-id/response-fields.adoc[]
