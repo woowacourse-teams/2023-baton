@@ -16,4 +16,6 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
         having srp.runnerPost.id in (:runnerPostIds)
         """)
     List<Integer> countByRunnerPostIdIn(@Param("runnerPostIds") final List<Long> runnerPostIds);
+
+    boolean existsByRunnerPostId(final Long runnerPostId);
 }
