@@ -2,10 +2,9 @@ import ListFilter from '@/components/ListFilter/ListFilter';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetMyPagePost, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
+import { GetMyPagePostResponse, GetMyPageProfileResponse } from '@/types/myPage';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
@@ -15,7 +14,7 @@ import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/po
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
-  const [myPagePostList, setMyPagePostList] = useState<GetMyPagePost | null>(null);
+  const [myPagePostList, setMyPagePostList] = useState<GetMyPagePostResponse | null>(null);
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
   const [isRunner, setIsRunner] = useState(true);
 
@@ -41,7 +40,7 @@ const MyPage = () => {
     const token = getToken()?.value;
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-    const data = await getRequest<GetMyPageProfileResponse>(`${BATON_BASE_URL}/profile/${role}/me`, `Bearer ${token}`);
+    const data = await getRequest<GetMyPageProfileResponse>(`/profile/${role}/me`, `Bearer ${token}`);
 
     return data;
   };
@@ -51,7 +50,7 @@ const MyPage = () => {
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
     const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
-    const data = await getRequest<GetMyPagePost>(`${BATON_BASE_URL}/posts/${rolePath}`, `Bearer ${token}`);
+    const data = await getRequest<GetMyPagePostResponse>(`/posts/${rolePath}`, `Bearer ${token}`);
 
     return data;
   };
@@ -68,7 +67,7 @@ const MyPage = () => {
     setPostOptions(newOptions);
   };
 
-  const filterList = (postList: GetMyPagePost | null, options: PostOptions) => {
+  const filterList = (postList: GetMyPagePostResponse | null, options: PostOptions) => {
     const posts = postList?.data || [];
 
     const selectedOption = options.filter((option) => option.selected)[0];
