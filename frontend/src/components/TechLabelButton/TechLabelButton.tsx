@@ -39,7 +39,7 @@ const TechLabelButton = ({ tag, $isSelected = true, handleClickTag, isDeleteButt
   };
 
   return (
-    <S.TagSelectButton $isSelected={$isSelected} $color={TECH_COLOR_MAP[tag]} onClick={handleClick}>
+    <S.TagSelectButton type="button" $isSelected={$isSelected} $color={TECH_COLOR_MAP[tag]} onClick={handleClick}>
       {$isSelected ? TECH_ICON_MAP[tag] : TECH_GARY_ICON_MAP[tag]}
       {isDeleteButton ? `${tag} X` : tag}
     </S.TagSelectButton>

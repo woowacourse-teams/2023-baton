@@ -82,6 +82,12 @@ const ProfileEditPage = () => {
     );
   };
 
+  const handleClickSaveButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    isRunner ? saveRunnerProfile() : saveSupporterProfile();
+  };
+
   const saveRunnerProfile = () => {
     if (!isThereModification) return alert('수정된 내용이 없습니다');
 
@@ -242,9 +248,8 @@ const ProfileEditPage = () => {
             <S.SaveButtonWrapper>
               <Button
                 width="100px"
-                type="button"
                 colorTheme={isThereModification ? 'WHITE' : 'GRAY'}
-                onClick={isRunner ? saveRunnerProfile : saveSupporterProfile}
+                onClick={handleClickSaveButton}
                 fontWeight={700}
               >
                 저장
