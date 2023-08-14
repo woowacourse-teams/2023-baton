@@ -49,34 +49,19 @@ class SupporterProfileAssuredReadTest extends AssuredTestConfig {
                 .서포터_마이페이지를_토큰으로_조회한다()
 
                 .서버_응답()
-                .서포터_마이페이지_프로필_조회_성공을_검증한다(new SupporterResponse.MyProfile(
-                        이름(사용자_디투),
-                        이미지_주소(사용자_디투),
-                        깃허브_주소(사용자_디투),
-                        소개(서포터_디투),
-                        소속(사용자_디투),
-                        서포터_기술_스택(서포터_디투)
-                ));
+                .서포터_마이페이지_프로필_조회_성공을_검증한다(응답(서포터_디투));
     }
 
-    private String 이름(final Member 사용자) {
-        return 사용자.getMemberName().getValue();
-    }
-
-    private String 이미지_주소(final Member 사용자) {
-        return 사용자.getImageUrl().getValue();
-    }
-
-    private String 깃허브_주소(final Member 사용자) {
-        return 사용자.getGithubUrl().getValue();
-    }
-
-    private String 소개(final Supporter 서포터) {
-        return 서포터.getIntroduction().getValue();
-    }
-
-    private String 소속(final Member 사용자) {
-        return 사용자.getCompany().getValue();
+    private SupporterResponse.MyProfile 응답(final Supporter 서포터) {
+        final Member 사용자_디투 = 서포터.getMember();
+        return new SupporterResponse.MyProfile(
+                사용자_디투.getMemberName().getValue(),
+                사용자_디투.getImageUrl().getValue(),
+                사용자_디투.getGithubUrl().getValue(),
+                서포터.getIntroduction().getValue(),
+                사용자_디투.getCompany().getValue(),
+                서포터_기술_스택(서포터)
+        );
     }
 
     private List<String> 서포터_기술_스택(final Supporter 서포터) {
