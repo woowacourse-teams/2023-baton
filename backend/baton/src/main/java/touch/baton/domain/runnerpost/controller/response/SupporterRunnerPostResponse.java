@@ -7,17 +7,17 @@ import java.util.List;
 
 public record SupporterRunnerPostResponse() {
 
-    public record All(Long supporterId,
-                      String name,
-                      String company,
-                      int reviewCount,
-                      String imageUrl,
-                      String message,
-                      List<String> technicalTags
+    public record Detail(Long supporterId,
+                         String name,
+                         String company,
+                         int reviewCount,
+                         String imageUrl,
+                         String message,
+                         List<String> technicalTags
     ) {
 
-        public static All from(final SupporterRunnerPost supporterRunnerPost) {
-            return new All(
+        public static Detail from(final SupporterRunnerPost supporterRunnerPost) {
+            return new Detail(
                     supporterRunnerPost.getSupporter().getId(),
                     supporterRunnerPost.getSupporter().getMember().getMemberName().getValue(),
                     supporterRunnerPost.getSupporter().getMember().getCompany().getValue(),

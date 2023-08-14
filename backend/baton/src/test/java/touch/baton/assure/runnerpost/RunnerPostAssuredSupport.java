@@ -21,6 +21,10 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -101,6 +105,11 @@ public class RunnerPostAssuredSupport {
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
             response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값, accessToken);
+            return this;
+        }
+
+        public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_서포터_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
+            response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}/supporters", "runnerPostId", 러너_게시글_식별자값, accessToken);
             return this;
         }
 
@@ -197,6 +206,27 @@ public class RunnerPostAssuredSupport {
                         softly.assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId());
                     }
             );
+        }
+
+        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.All 서포터_러너_게시글_응답) {
+            final List<SupporterRunnerPostResponse.Detail> actual = this.response.as(SupporterRunnerPostResponses.All.class).data();
+
+            assertThat(actual).hasSize(서포터_러너_게시글_응답.data().size());
+
+            for (int i = 0; i < actual.size(); i++) {
+                SupporterRunnerPostResponse.Detail actualItem = actual.get(i);
+                SupporterRunnerPostResponse.Detail expectedItem = 서포터_러너_게시글_응답.data().get(i);
+
+                assertSoftly(softly -> {
+                    softly.assertThat(actualItem.supporterId()).isEqualTo(expectedItem.supporterId());
+                    softly.assertThat(actualItem.name()).isEqualTo(expectedItem.name());
+                    softly.assertThat(actualItem.company()).isEqualTo(expectedItem.company());
+                    softly.assertThat(actualItem.reviewCount()).isEqualTo(expectedItem.reviewCount());
+                    softly.assertThat(actualItem.imageUrl()).isEqualTo(expectedItem.imageUrl());
+                    softly.assertThat(actualItem.message()).isEqualTo(expectedItem.message());
+                    softly.assertThat(actualItem.technicalTags()).isEqualTo(expectedItem.technicalTags());
+                });
+            }
         }
 
         public void 서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터와_연관된_러너_게시글_페이징_응답) {

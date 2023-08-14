@@ -36,7 +36,7 @@ public abstract class AssuredTestConfig {
 
     @Autowired
     protected RunnerRepository runnerRepository;
-
+    
     @Autowired
     protected SupporterRepository supporterRepository;
 
@@ -51,7 +51,7 @@ public abstract class AssuredTestConfig {
 
     @MockBean
     private JwtDecoder jwtDecoder;
-
+    
     @BeforeEach
     void assuredTestSetUp(@LocalServerPort int port) {
         RestAssured.port = port;

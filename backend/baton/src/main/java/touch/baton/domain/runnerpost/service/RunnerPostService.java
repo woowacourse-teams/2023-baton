@@ -134,8 +134,14 @@ public class RunnerPostService {
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
     }
 
-    public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Long runnerPostId) {
-        return supporterRunnerPostRepository.readAllByRunnerPostId(runnerPostId);
+    public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Long runnerId, final Long runnerPostId) {
+        final List<SupporterRunnerPost> supporterRunnerPosts = supporterRunnerPostRepository.readAllByRunnerPostId(runnerPostId);
+        supporterRunnerPosts.stream().
+                filter(supporterRunnerPost -> supporterRunnerPost.getRunnerPost().getRunner().getId() != runnerId)
+                .forEach(supporterRunnerPost -> {
+                    throw new RunnerPostBusinessException("Runner 의 식별자값으로 서포터 러너 게시글을 조회할 수 없습니다.");
+                });
+        return supporterRunnerPosts;
     }
 
     @Transactional
