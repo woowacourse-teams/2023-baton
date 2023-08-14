@@ -18,10 +18,7 @@ const TechTagSelectModal = ({ defaultTags, closeModal, confirmTagSelect }: Props
   const pushTag = (tag: Technic) => {
     if (!SelectedTags) return;
 
-    const newTags = [...SelectedTags, tag].sort((a, b) => {
-      if (a > b) return 1;
-      return -1;
-    });
+    const newTags = [...SelectedTags, tag].sort();
 
     setSelectedTags(newTags);
   };
