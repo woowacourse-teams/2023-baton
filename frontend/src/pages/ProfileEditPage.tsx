@@ -74,12 +74,7 @@ const ProfileEditPage = () => {
     setName(newProfile.name);
     setCompany(newProfile.company);
     setIntroduction(newProfile.introduction);
-    setTechnicalTags(
-      [...newProfile.technicalTags].sort((a, b) => {
-        if (a > b) return 1;
-        return -1;
-      }),
-    );
+    setTechnicalTags([...newProfile.technicalTags].sort());
   };
 
   const handleClickSaveButton = (e: React.MouseEvent<HTMLButtonElement>) => {
