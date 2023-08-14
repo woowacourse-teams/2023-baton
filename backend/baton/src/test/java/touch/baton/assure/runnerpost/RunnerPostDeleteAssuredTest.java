@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.*;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
+class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
     private Runner 러너_디투;
     private String 로그인용_토큰;
@@ -101,7 +101,7 @@ class RunnerPostAssuredDeleteTest extends AssuredTestConfig {
         ));
         final Member 지원자_맴버 = memberRepository.save(MemberFixture.createHyena());
         final Supporter 지원자_서포터 = supporterRepository.save(SupporterFixture.create(지원자_맴버));
-        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(지원자_서포터, 러너_게시글));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(러너_게시글, 지원자_서포터));
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
