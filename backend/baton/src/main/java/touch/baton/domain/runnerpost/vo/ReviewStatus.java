@@ -20,4 +20,8 @@ public enum ReviewStatus {
     public boolean isNotSameAsNotStarted() {
         return this != NOT_STARTED;
     }
+
+    public boolean isNotStarted() {
+        return this == NOT_STARTED;
+    }
 }

@@ -49,7 +49,7 @@ public class SupporterRunnerPost extends BaseEntity {
     private SupporterRunnerPost(final Message message,
                                 final Supporter supporter,
                                 final RunnerPost runnerPost
-    ){
+    ) {
         this(null, message, supporter, runnerPost);
     }
 
@@ -64,7 +64,7 @@ public class SupporterRunnerPost extends BaseEntity {
     private void validateNotNull(final Message message,
                                  final Supporter supporter,
                                  final RunnerPost runnerPost
-    ){
+    ) {
         if (Objects.isNull(message)) {
             throw new RunnerPostDomainException("SupporterRunnerPost 의 message 는 null 일 수 없습니다.");
         }
