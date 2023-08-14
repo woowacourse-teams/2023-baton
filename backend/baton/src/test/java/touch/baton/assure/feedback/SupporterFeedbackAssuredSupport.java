@@ -9,6 +9,7 @@ import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class SupporterFeedbackAssuredSupport {
 
     private SupporterFeedbackAssuredSupport() {

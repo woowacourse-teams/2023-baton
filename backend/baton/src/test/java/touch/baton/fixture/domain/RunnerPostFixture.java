@@ -152,7 +152,11 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final Supporter supporter, final Deadline deadline, final ReviewStatus reviewStatus) {
+    public static RunnerPost create(final Runner runner,
+                                    final Supporter supporter,
+                                    final Deadline deadline,
+                                    final ReviewStatus reviewStatus
+    ) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .contents(new Contents("테스트 내용"))

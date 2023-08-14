@@ -12,17 +12,17 @@ import touch.baton.fixture.domain.TechnicalTagFixture;
 
 import java.util.List;
 
-import static touch.baton.assure.supporter.SupporterProfileAssuredSupport.서포터_프로필_응답;
+import static touch.baton.assure.supporter.SupporterAssuredSupport.서포터_프로필_응답;
 
 @SuppressWarnings("NonAsciiCharacters")
-class SupporterProfileAssuredReadTest extends AssuredTestConfig {
+class SupporterReadBySupporterIdAssuredTest extends AssuredTestConfig {
 
     @Test
     void 서포터_프로필을_조회한다() {
         final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
         final Supporter 서포터_헤나 = supporterRepository.save(SupporterFixture.create(사용자_헤나));
 
-        SupporterProfileAssuredSupport
+        SupporterAssuredSupport
                 .클라이언트_요청()
                 .서포터_프로필을_서포터_식별자값으로_조회한다(서포터_헤나.getId())
 
@@ -43,7 +43,7 @@ class SupporterProfileAssuredReadTest extends AssuredTestConfig {
         final String 서포터_디투_토큰 = login(디투_소셜_아이디);
 
         // when, then
-        SupporterProfileAssuredSupport
+        SupporterAssuredSupport
                 .클라이언트_요청()
                 .로그인_한다(서포터_디투_토큰)
                 .서포터_마이페이지를_토큰으로_조회한다()

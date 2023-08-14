@@ -56,7 +56,7 @@ import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostController.class)
-class RunnerPostReadApiTest extends RestdocsConfig {
+class RunnerPostReadAllApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;

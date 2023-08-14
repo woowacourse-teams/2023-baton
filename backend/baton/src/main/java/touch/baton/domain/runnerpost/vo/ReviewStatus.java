@@ -17,6 +17,10 @@ public enum ReviewStatus {
         return this == reviewStatus;
     }
 
+    public boolean isSameAsNotStarted() {
+        return this == NOT_STARTED;
+    }
+
     public boolean isNotSameAsNotStarted() {
         return this != NOT_STARTED;
     }

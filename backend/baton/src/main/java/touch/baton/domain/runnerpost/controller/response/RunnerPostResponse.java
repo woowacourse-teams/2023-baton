@@ -52,6 +52,7 @@ public record RunnerPostResponse() {
                                     boolean isOwner,
                                     List<String> tags
     ) {
+
         public static DetailVersionTest ofVersionTest(final RunnerPost runnerPost, final boolean isOwner) {
             return new DetailVersionTest(
                     runnerPost.getId(),
@@ -91,13 +92,34 @@ public record RunnerPostResponse() {
         }
     }
 
+    public record LoginedSupporter(Long runnerPostId,
+                                   String title,
+                                   LocalDateTime deadline,
+                                   List<String> tags,
+                                   int watchedCount,
+                                   int applicantCount
+
+    ) {
+
+        public static LoginedSupporter from(final RunnerPost runnerPost, final int applicantCount) {
+            return new LoginedSupporter(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getWatchedCount().getValue(),
+                    applicantCount
+            );
+        }
+    }
+
     public record Mine(Long runnerPostId,
                        String title,
                        LocalDateTime deadline,
                        List<String> tags,
                        String reviewStatus
-
     ) {
+
         public static Mine from(final RunnerPost runnerPost) {
             return new Mine(
                     runnerPost.getId(),

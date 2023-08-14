@@ -30,7 +30,7 @@ import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
 @WebMvcTest(MemberProfileController.class)
-public class MemberLoginProfileReadApiTest extends RestdocsConfig {
+public class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
