@@ -29,8 +29,8 @@ public class AssuredSupport {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .when().log().ifValidationFails()
                 .pathParam(pathParamName, id)
+                .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();
@@ -39,8 +39,8 @@ public class AssuredSupport {
     public static ExtractableResponse<Response> get(final String uri, final String pathParamName, final Long id) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .when().log().ifValidationFails()
                 .pathParam(pathParamName, id)
+                .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();
@@ -98,12 +98,23 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> patch(final String uri, final String pathParamName, final Long id, final String accessToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .pathParam(pathParamName, id)
+                .when().log().ifValidationFails()
+                .patch(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> delete(final String uri, final String pathParamName, final Long id) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .when().log().ifValidationFails()
-                .contentType(APPLICATION_JSON_VALUE)
                 .pathParam(pathParamName, id)
+                .contentType(APPLICATION_JSON_VALUE)
+                .when().log().ifValidationFails()
                 .delete(uri)
                 .then().log().ifError()
                 .extract();

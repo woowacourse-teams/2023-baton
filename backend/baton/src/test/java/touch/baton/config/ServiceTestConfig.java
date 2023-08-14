@@ -28,6 +28,9 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
     protected RunnerPostRepository runnerPostRepository;
 
     @Autowired
+    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
+
+    @Autowired
     protected RunnerPostTagRepository runnerPostTagRepository;
 
     @Autowired
@@ -44,7 +47,4 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
     protected SupporterTechnicalTagRepository supporterTechnicalTagRepository;
-
-    @Autowired
-    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
 }

@@ -21,6 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostAssuredSupport {
 
     private RunnerPostAssuredSupport() {

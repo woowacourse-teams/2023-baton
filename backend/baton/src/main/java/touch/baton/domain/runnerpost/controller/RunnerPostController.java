@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
+import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostReadResponses;
@@ -29,6 +30,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.supporter.Supporter;
 
 import java.net.URI;
 import java.util.List;
@@ -107,7 +109,7 @@ public class RunnerPostController {
     }
 
     @PutMapping("/{runnerPostId}")
-    public ResponseEntity<Void> update(@AuthRunnerPrincipal Runner runner,
+    public ResponseEntity<Void> update(@AuthRunnerPrincipal final Runner runner,
                                        @PathVariable final Long runnerPostId,
                                        @Valid @RequestBody final RunnerPostUpdateRequest.Default request
     ) {
@@ -166,6 +168,18 @@ public class RunnerPostController {
                 .toList();
 
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
+    }
+
+    @PatchMapping("/{runnerPostId}/cancelation")
+    public ResponseEntity<Void> updateSupporterCancelRunnerPost(@AuthSupporterPrincipal final Supporter supporter,
+                                                                @PathVariable final Long runnerPostId
+    ) {
+        runnerPostService.deleteSupporterRunnerPost(supporter, runnerPostId);
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{runnerPostId}")
+                .buildAndExpand(runnerPostId)
+                .toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
     }
 
     @PatchMapping("/{runnerPostId}/supporters")
