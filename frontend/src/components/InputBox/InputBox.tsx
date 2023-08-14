@@ -6,30 +6,27 @@ interface Props extends React.HTMLProps<HTMLInputElement> {
   handleInputTextState: (e: React.ChangeEvent<HTMLInputElement>) => void;
   fontSize?: string | number;
   fontWeight?: string | number;
+  maxLengthFontSize?: string | number;
   autoFocus?: boolean;
 }
 
 const InputBox = ({
   inputTextState,
   maxLength,
-  placeholder,
   width,
   height,
   fontSize,
   fontWeight,
+  maxLengthFontSize,
   autoFocus,
   handleInputTextState,
+  ...rest
 }: Props) => {
   return (
     <S.InputContainer $fontSize={fontSize} $fontWeight={fontWeight} $width={width} $height={height}>
-      <S.InputBox
-        onChange={handleInputTextState}
-        maxLength={maxLength}
-        placeholder={placeholder}
-        autoFocus={autoFocus}
-      />
+      <S.InputBox onChange={handleInputTextState} maxLength={maxLength} autoFocus={autoFocus} {...rest} />
       {maxLength && (
-        <S.InputTextLength>
+        <S.InputTextLength $fontsize={maxLengthFontSize}>
           {inputTextState.length ?? 0} / {maxLength}
         </S.InputTextLength>
       )}
@@ -57,11 +54,11 @@ const S = {
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
   `,
 
-  InputTextLength: styled.div`
+  InputTextLength: styled.div<{ $fontsize?: string | number }>`
     display: flex;
     align-items: center;
 
-    font-size: 18px;
+    font-size: ${({ $fontsize }) => $fontsize || '18px'};
     color: var(--gray-400);
   `,
 

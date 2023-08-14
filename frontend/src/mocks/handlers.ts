@@ -3,6 +3,8 @@ import runnerPostList from './data/runnerPostList.json';
 import runnerPostDetails from './data/runnerPostDetails.json';
 import supporterCardList from './data/supporterCardList.json';
 import runnerProfile from './data/runnerProfile.json';
+import runnerProfileInfo from './data/runnerProfileInfo.json';
+import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
 
 export const handlers = [
@@ -48,6 +50,35 @@ export const handlers = [
   rest.get('*/profile/runner', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
   }),
+
+  rest.get('*/profile/runner/me', async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.delay(500),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(runnerProfileInfo),
+    );
+  }),
+
+  rest.get('*/profile/supporter/me', async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.delay(500),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(supporterProfileInfo),
+    );
+  }),
+
+  rest.patch('*/profile/runner/me', async (req, res, ctx) => {
+    const { name, company, introduction, technicalTags } = await req.json();
+
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+  }),
+
+  rest.patch('*/profile/supporter/me', async (req, res, ctx) => {
+    const { name, company, introduction, technicalTags } = await req.json();
+
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
