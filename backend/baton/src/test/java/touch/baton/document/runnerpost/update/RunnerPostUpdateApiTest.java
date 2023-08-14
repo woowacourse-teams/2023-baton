@@ -30,6 +30,8 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -68,6 +70,7 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
                 .andExpect(status().isNoContent())
                 .andExpect(redirectedUrl("/api/v1/posts/runner/1"))
                 .andDo(restDocs.document(
+                        pathParameters(parameterWithName("runnerPostId").description("러너 게시글 식별자값")),
                         requestHeaders(headerWithName(AUTHORIZATION).description("Bearer JWT"),
                                 headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)),
                         responseHeaders(headerWithName(LOCATION).description("Redirect URI"))
@@ -93,6 +96,7 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
                 .andExpect(status().isNoContent())
                 .andExpect(redirectedUrl("/api/v1/posts/runner/1"))
                 .andDo(restDocs.document(
+                        pathParameters(parameterWithName("runnerPostId").description("러너 게시글 식별자값")),
                         requestHeaders(headerWithName(AUTHORIZATION).description("Bearer TOKEN")),
                         responseHeaders(headerWithName(LOCATION).description("Redirect Uri"))
                 ));

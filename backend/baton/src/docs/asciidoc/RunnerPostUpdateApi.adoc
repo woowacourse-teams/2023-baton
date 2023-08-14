@@ -18,6 +18,10 @@ endif::[]
 
 include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-supporter/http-request.adoc[]
 
+===== *Http Request Path Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-supporter/path-parameters.adoc[]
+
 ===== *Http Request Header*
 
 include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-supporter/request-headers.adoc[]
@@ -31,6 +35,10 @@ include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/u
 ===== *Http Request*
 
 include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-review-status-done/http-request.adoc[]
+
+===== *Http Request Path Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-review-status-done/path-parameters.adoc[]
 
 ===== *Http Request Headers*
 
