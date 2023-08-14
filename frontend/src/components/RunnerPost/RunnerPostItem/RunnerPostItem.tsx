@@ -31,7 +31,7 @@ const RunnerPostItem = ({
         </S.DeadLineContainer>
         <S.TagContainer>
           {tags.map((tag, index) => (
-            <span key={index}>#{tag}</span>
+            <S.Tag key={index}>#{tag}</S.Tag>
           ))}
         </S.TagContainer>
       </S.LeftSideContainer>
@@ -104,6 +104,7 @@ const S = {
       color: var(--gray-600);
     }
   `,
+  Tag: styled.span``,
 
   LeftSideContainer: styled.div``,
   RightSideContainer: styled.div`
