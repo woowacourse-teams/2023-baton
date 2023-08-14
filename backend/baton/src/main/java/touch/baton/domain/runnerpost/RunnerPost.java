@@ -197,6 +197,10 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
     }
 
+    public void finishReview() {
+        updateReviewStatus(DONE);
+    }
+
     public void updateReviewStatus(final ReviewStatus other) {
         if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(IN_PROGRESS)) {
             throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 NOT_STARTED 에서 IN_PROGRESS 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
@@ -212,6 +216,9 @@ public class RunnerPost extends BaseEntity {
         }
         if (this.reviewStatus.isSame(DONE) && other.isSame(OVERDUE)) {
             throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 DONE 에서 OVERDUE 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+        }
+        if (this.reviewStatus.isSame(OVERDUE) && other.isSame(DONE)) {
+            throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 OVERDUE 에서 DONE 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
         }
         if (this.reviewStatus.isSame(other)) {
             throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 같은 ReviewStatus 로 리뷰 상태 정책을 원인으로 실패하였습니다.");

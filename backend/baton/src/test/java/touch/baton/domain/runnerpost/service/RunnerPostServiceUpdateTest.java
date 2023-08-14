@@ -10,6 +10,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
+import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
@@ -31,7 +32,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 import static touch.baton.fixture.vo.ContentsFixture.contents;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
@@ -50,6 +53,8 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     private static Runner runnerPostOwner;
     private static RunnerPost targetRunnerPost;
     private static Supporter applySupporter;
+    private static Runner runner;
+    private static Supporter assignedSupporter;
 
     private RunnerPostService runnerPostService;
 
@@ -71,6 +76,12 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
         applySupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(targetRunnerPost, applySupporter));
+
+        final Member runnerMember = memberRepository.save(MemberFixture.createEthan());
+        runner = runnerRepository.save(RunnerFixture.createRunner(runnerMember));
+
+        final Member supporterMember = memberRepository.save(MemberFixture.createDitoo());
+        assignedSupporter = supporterRepository.save(SupporterFixture.create(supporterMember));
     }
 
     @DisplayName("Runner Post 수정에 성공한다.")
@@ -187,5 +198,68 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(notOwnerRunner, targetRunnerPost.getId(), request))
                 .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("리뷰가 완료되면 서포터는 게시글의 상태를 리뷰 완료로 변경할 수 있다.")
+    @Test
+    void updateRunnerPostReviewStatusDone() {
+        // given
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS));
+
+        // when
+        runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter);
+
+        // then
+        final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.findById(targetRunnerPost.getId());
+        assertThat(maybeRunnerPost).isPresent();
+        final RunnerPost actualRunnerPost = maybeRunnerPost.get();
+        assertThat(actualRunnerPost.getReviewStatus()).isEqualTo(ReviewStatus.DONE);
+    }
+
+    @DisplayName("없는 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
+    @Test
+    void fail_updateRunnerPostReviewStatusDone_if_invalid_runnerPostId() {
+        // given
+        runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS));
+        final Long unsavedRunnerPostId = 100000L;
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(unsavedRunnerPostId, assignedSupporter))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("서포터가 배정 되지 않은 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
+    @Test
+    void fail_updateRunnerPostReviewStatusDone_if_supporter_is_null() {
+        // given
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, null, IN_PROGRESS));
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("다른 서포터가 리뷰 중인 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
+    @Test
+    void fail_updateRunnerPostReviewStatusDone_if_different_supporter_is_assigned() {
+        // given
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS));
+        final Member differentMember = memberRepository.save(MemberFixture.createHyena());
+        final Supporter differentSupporter = supporterRepository.save(SupporterFixture.create(differentMember));
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), differentSupporter))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("만료된 리뷰 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
+    @Test
+    void fail_updateRunnerPostReviewStatusDone_if_reviewStatus_is_overdue() {
+        // given
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, OVERDUE));
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
+                .isInstanceOf(RunnerPostDomainException.class);
     }
 }

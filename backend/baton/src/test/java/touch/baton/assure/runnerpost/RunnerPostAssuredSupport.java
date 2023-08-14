@@ -20,9 +20,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.http.HttpHeaders.LOCATION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.springframework.http.HttpHeaders.LOCATION;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostAssuredSupport {
@@ -98,6 +98,11 @@ public class RunnerPostAssuredSupport {
             );
 
             response = AssuredSupport.get("/api/v1/posts/runner/search", queryParams);
+            return this;
+        }
+
+        public RunnerPostClientRequestBuilder 서포터가_리뷰를_완료하고_리뷰완료_버튼을_누른다(final Long 게시글_식별자) {
+            response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/done", "runnerPostId", 게시글_식별자, accessToken);
             return this;
         }
 
@@ -187,6 +192,14 @@ public class RunnerPostAssuredSupport {
                 softly.assertThat(response.statusCode()).isEqualTo(httpStatusAndLocationHeader.getHttpStatus().value());
                 softly.assertThat(response.header(LOCATION)).contains(httpStatusAndLocationHeader.getLocation());
             });
+        }
+
+        public void 러너_게시글이_성공적으로_리뷰_완료_상태인지_확인한다(final HttpStatusAndLocationHeader httpStatusAndLocationHeader) {
+            assertSoftly(softly -> {
+                        softly.assertThat(response.statusCode()).isEqualTo(httpStatusAndLocationHeader.getHttpStatus().value());
+                        softly.assertThat(response.header(LOCATION)).contains(httpStatusAndLocationHeader.getLocation());
+                    }
+            );
         }
     }
 }

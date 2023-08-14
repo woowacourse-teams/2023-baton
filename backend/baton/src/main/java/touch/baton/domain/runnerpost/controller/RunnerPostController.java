@@ -233,4 +233,17 @@ public class RunnerPostController {
                 .toUri();
         return ResponseEntity.noContent().location(redirectUri).build();
     }
+
+    @PatchMapping("/{runnerPostId}/done")
+    public ResponseEntity<Void> updateRunnerPostReviewStatusDone(@AuthSupporterPrincipal final Supporter supporter,
+                                                                 @PathVariable final Long runnerPostId
+    ) {
+        runnerPostService.updateRunnerPostReviewStatusDone(runnerPostId, supporter);
+
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{runnerPostId}")
+                .buildAndExpand(runnerPostId)
+                .toUri();
+        return ResponseEntity.noContent().location(redirectUri).build();
+    }
 }
