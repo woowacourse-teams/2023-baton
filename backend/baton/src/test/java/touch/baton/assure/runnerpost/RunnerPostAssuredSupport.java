@@ -89,7 +89,7 @@ public class RunnerPostAssuredSupport {
         }
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_삭제한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.delete("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값);
+            response = AssuredSupport.delete("/api/v1/posts/runner/{runnerPostId}", accessToken, "runnerPostId", 러너_게시글_식별자값);
             return this;
         }
 
@@ -147,8 +147,11 @@ public class RunnerPostAssuredSupport {
         }
 
         public void 러너_게시글_삭제_성공을_검증한다(final HttpStatus HTTP_STATUS) {
-            assertThat(response.statusCode())
-                    .isEqualTo(HTTP_STATUS.value());
+            assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
+        }
+
+        public void 러너_게시글_삭제_실패를_검증한다(final HttpStatus HTTP_STATUS) {
+            assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
         }
 
         public void 러너_게시글에_서포터가_성공적으로_선택되었는지_확인한다(final HttpStatusAndLocationHeader httpStatusAndLocationHeader) {
