@@ -3,7 +3,6 @@ package touch.baton.domain.runnerpost.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import touch.baton.domain.common.exception.ClientRequestException;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
@@ -28,8 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -204,13 +201,10 @@ public class RunnerPostService {
     @Transactional
     public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
-                .orElseThrow(() -> new ClientRequestException(RUNNER_POST_NOT_FOUND));
+                .orElseThrow(() -> new RunnerPostBusinessException("존재하지 않는 RunnerPost 입니다."));
         if (!runnerPost.isReviewStatusNotStarted()) {
-            throw new ClientRequestException(CANNOT_CANCEL_SUPPORTER_RUNNER_POST);
+            throw new RunnerPostBusinessException("이미 진행 중인 러너 게시글의 서포터 지원은 철회할 수 없습니다.");
         }
-        final int deleteCount = supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
-        if (deleteCount == 0) {
-            throw new ClientRequestException(SUPPORT_RUNNER_POST_NOT_FOUND);
-        }
+        supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
     }
 }
