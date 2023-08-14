@@ -197,4 +197,14 @@ public class RunnerPostService {
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
         return runnerPostRepository.findByRunnerId(runnerId);
     }
+
+    @Transactional
+    public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
+        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("존재하지 않는 RunnerPost 입니다."));
+        if (!runnerPost.isReviewStatusNotStarted()) {
+            throw new RunnerPostBusinessException("이미 진행 중인 러너 게시글의 서포터 지원은 철회할 수 없습니다.");
+        }
+        supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
+    }
 }
