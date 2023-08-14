@@ -74,6 +74,15 @@ public class RunnerPostAssuredSupport {
         return 페이징된_서포터가_연관된_러너_게시글_응답;
     }
 
+    public static PageResponse<RunnerPostResponse.Simple> 러너_게시글_전체_조회_응답(final Pageable 페이징_정보,
+                                                                          final List<RunnerPostResponse.Simple> 러너_게시글_목록
+    ) {
+        final Page<RunnerPostResponse.Simple> 페이징된_러너_게시글 = new PageImpl<>(러너_게시글_목록, 페이징_정보, 러너_게시글_목록.size());
+        final PageResponse<RunnerPostResponse.Simple> 페이징된_러너_게시글_응답 = PageResponse.from(페이징된_러너_게시글);
+
+        return 페이징된_러너_게시글_응답;
+    }
+
     public static class RunnerPostClientRequestBuilder {
 
         private ExtractableResponse<Response> response;
@@ -107,6 +116,17 @@ public class RunnerPostAssuredSupport {
             );
 
             response = AssuredSupport.get("/api/v1/posts/runner/search", queryParams);
+            return this;
+        }
+
+        public RunnerPostClientRequestBuilder 전체_러너_게시글_페이징을_조회한다(final Pageable 페이징_정보
+        ) {
+            final Map<String, Object> queryParams = Map.of(
+                    "size", 페이징_정보.getPageSize(),
+                    "page", 페이징_정보.getPageNumber()
+            );
+
+            response = AssuredSupport.get("/api/v1/posts/runner", queryParams);
             return this;
         }
 
@@ -169,10 +189,13 @@ public class RunnerPostAssuredSupport {
                         softly.assertThat(actual.applicantCount()).isEqualTo(러너_게시글_응답.applicantCount());
                         softly.assertThat(actual.reviewStatus()).isEqualTo(러너_게시글_응답.reviewStatus());
                         softly.assertThat(actual.tags()).isEqualTo(러너_게시글_응답.tags());
+                        softly.assertThat(actual.deadline()).isEqualToIgnoringSeconds(러너_게시글_응답.deadline());
                         softly.assertThat(actual.runnerProfile().name()).isEqualTo(러너_게시글_응답.runnerProfile().name());
                         softly.assertThat(actual.runnerProfile().company()).isEqualTo(러너_게시글_응답.runnerProfile().company());
                         softly.assertThat(actual.runnerProfile().imageUrl()).isEqualTo(러너_게시글_응답.runnerProfile().imageUrl());
                         softly.assertThat(actual.runnerProfile().runnerId()).isEqualTo(러너_게시글_응답.runnerProfile().runnerId());
+                        softly.assertThat(actual.watchedCount()).isEqualTo(러너_게시글_응답.watchedCount());
+                        softly.assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId());
                     }
             );
         }
@@ -184,6 +207,18 @@ public class RunnerPostAssuredSupport {
             assertSoftly(softly -> {
                         softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
                         softly.assertThat(actual.data()).isEqualTo(서포터와_연관된_러너_게시글_페이징_응답.data());
+                    }
+            );
+        }
+
+        public void 전체_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.Simple> 전체_러너_게시글_페이징_응답) {
+            final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<PageResponse<RunnerPostResponse.Simple>>() {
+
+            });
+
+            assertSoftly(softly -> {
+                        softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                        softly.assertThat(actual.data()).isEqualTo(전체_러너_게시글_페이징_응답.data());
                     }
             );
         }
