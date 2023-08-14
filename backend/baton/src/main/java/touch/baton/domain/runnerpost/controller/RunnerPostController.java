@@ -32,8 +32,6 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
 
 import java.net.URI;
 import java.util.List;
@@ -92,7 +90,7 @@ public class RunnerPostController {
                                                                         @PathVariable final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
-        final int applicantCount = runnerPostService.readCountByRunnerPostId(foundRunnerPost.getId());
+        final long applicantCount = runnerPostService.readCountByRunnerPostId(foundRunnerPost.getId());
 
         runnerPostService.increaseWatchedCount(foundRunnerPost);
         final RunnerPostResponse.Detail response

@@ -40,7 +40,7 @@ public class RunnerPostAssuredSupport {
                                                              final String 풀_리퀘스트,
                                                              final LocalDateTime 마감기한,
                                                              final int 조회수,
-                                                             final int 서포터_지원자수,
+                                                             final long 서포터_지원자수,
                                                              final ReviewStatus 리뷰_상태,
                                                              final boolean 주인_여부,
                                                              final Runner 러너,

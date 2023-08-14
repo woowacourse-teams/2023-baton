@@ -15,14 +15,14 @@ public record RunnerPostResponse() {
                          String pullRequestUrl,
                          LocalDateTime deadline,
                          int watchedCount,
-                         int applicantCount,
+                         long applicantCount,
                          ReviewStatus reviewStatus,
                          boolean isOwner,
                          List<String> tags,
                          RunnerResponse.Detail runnerProfile
     ) {
 
-        public static Detail of(final RunnerPost runnerPost, final boolean isOwner, final int applicantCount) {
+        public static Detail of(final RunnerPost runnerPost, final boolean isOwner, final long applicantCount) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),

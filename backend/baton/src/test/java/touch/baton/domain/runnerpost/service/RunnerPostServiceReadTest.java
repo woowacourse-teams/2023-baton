@@ -188,7 +188,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
 
         // when
-        final int foundApplicantCount = runnerPostService.readCountByRunnerPostId(savedRunnerPost.getId());
+        final long foundApplicantCount = runnerPostService.readCountByRunnerPostId(savedRunnerPost.getId());
 
         // then
         assertThat(foundApplicantCount).isEqualTo(1);
@@ -205,7 +205,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
 
         // when
-        final int foundApplicantCount = runnerPostService.readCountByRunnerPostId(savedRunnerPost.getId());
+        final long foundApplicantCount = runnerPostService.readCountByRunnerPostId(savedRunnerPost.getId());
 
         // then1
         assertThat(foundApplicantCount).isZero();
