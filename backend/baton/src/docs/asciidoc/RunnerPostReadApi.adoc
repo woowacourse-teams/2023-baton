@@ -15,13 +15,17 @@ endif::[]
 ==== *서포터가 연관된 러너 게시글 조회 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-referenced-by-supporter/http-request.adoc[]
 
 ===== *Http Request Query Parameters*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-referenced-by-supporter/query-parameters.adoc[]
 
 ===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-referenced-by-supporter/http-response.adoc[]
 
 ===== *Http Response Fields*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-referenced-by-supporter/response-fields.adoc[]

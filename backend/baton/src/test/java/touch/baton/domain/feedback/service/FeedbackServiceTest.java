@@ -61,7 +61,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
                 .isInstanceOf(FeedbackBusinessException.class)
                 .hasMessage("리뷰 글을 작성한 주인만 글을 작성할 수 있습니다.");
     }
-    
+
     @DisplayName("리뷰를 하지 않은 서포터를 피드백을 할 수 없다.")
     @Test
     void fail_createSupporterFeedback_if_not_review_supporter_runner() {

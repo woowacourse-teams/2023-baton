@@ -38,10 +38,10 @@ public abstract class AssuredTestConfig {
     protected RunnerRepository runnerRepository;
 
     @Autowired
-    protected RunnerPostRepository runnerPostRepository;
+    protected SupporterRepository supporterRepository;
 
     @Autowired
-    protected SupporterRepository supporterRepository;
+    protected RunnerPostRepository runnerPostRepository;
 
     @Autowired
     protected SupporterRunnerPostRepository supporterRunnerPostRepository;

@@ -1,4 +1,4 @@
- package touch.baton.assure.runnerpost;
+package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
