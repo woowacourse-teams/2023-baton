@@ -16,7 +16,7 @@ import touch.baton.fixture.domain.SupporterFixture;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
+class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
 
     @Test
     void 서포터_리뷰완료_후_리뷰상태를_완료로_변경할_수_있다() {
