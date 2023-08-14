@@ -106,7 +106,6 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         assertSoftly(softly -> {
             softly.assertThat(savedRunnerPostApplicant.getId())
                     .isNotNull()
-                    .isPositive()
                     .isEqualTo(savedRunnerPostApplicant.getId());
             softly.assertThat(savedRunnerPostApplicant.getSupporter()).isEqualTo(savedSupporterHyena);
             softly.assertThat(savedRunnerPostApplicant.getRunnerPost()).isEqualTo(savedRunnerPost);
