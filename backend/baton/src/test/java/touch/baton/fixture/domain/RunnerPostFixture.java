@@ -60,6 +60,20 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
+    public static RunnerPost create(final Runner runner, final Deadline deadline, final ReviewStatus reviewStatus) {
+        return RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .contents(new Contents("테스트 내용"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(deadline)
+                .watchedCount(new WatchedCount(0))
+                .reviewStatus(reviewStatus)
+                .runner(runner)
+                .supporter(null)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+    }
+
     public static RunnerPost create(final Runner runner, final Deadline deadline, List<Tag> tags) {
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("테스트 제목"))
@@ -134,6 +148,20 @@ public abstract class RunnerPostFixture {
                 .runner(runner)
                 .supporter(supporter)
                 .reviewStatus(ReviewStatus.NOT_STARTED)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+    }
+
+    public static RunnerPost create(final Runner runner, final Supporter supporter, final Deadline deadline, final ReviewStatus reviewStatus) {
+        return RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .contents(new Contents("테스트 내용"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(deadline)
+                .watchedCount(new WatchedCount(0))
+                .runner(runner)
+                .supporter(supporter)
+                .reviewStatus(reviewStatus)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
     }

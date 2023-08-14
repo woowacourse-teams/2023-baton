@@ -14,14 +14,15 @@ public record RunnerPostResponse() {
                          String contents,
                          String pullRequestUrl,
                          LocalDateTime deadline,
-                         Integer watchedCount,
+                         int watchedCount,
+                         long applicantCount,
                          ReviewStatus reviewStatus,
                          boolean isOwner,
-                         RunnerResponse.Detail runnerProfile,
-                         List<String> tags
+                         List<String> tags,
+                         RunnerResponse.Detail runnerProfile
     ) {
 
-        public static Detail of(final RunnerPost runnerPost, final boolean isOwner) {
+        public static Detail of(final RunnerPost runnerPost, final boolean isOwner, final long applicantCount) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -29,10 +30,11 @@ public record RunnerPostResponse() {
                     runnerPost.getPullRequestUrl().getValue(),
                     runnerPost.getDeadline().getValue(),
                     runnerPost.getWatchedCount().getValue(),
+                    applicantCount,
                     runnerPost.getReviewStatus(),
                     isOwner,
-                    RunnerResponse.Detail.from(runnerPost.getRunner()),
-                    convertToTags(runnerPost)
+                    convertToTags(runnerPost),
+                    RunnerResponse.Detail.from(runnerPost.getRunner())
             );
         }
     }
@@ -124,7 +126,7 @@ public record RunnerPostResponse() {
                                         String reviewStatus
     ) {
 
-        public static ReferencedBySupporter of(final RunnerPost runnerPost, final int applicantCount) {
+        public static ReferencedBySupporter of(final RunnerPost runnerPost, final long applicantCount) {
             return new ReferencedBySupporter(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),

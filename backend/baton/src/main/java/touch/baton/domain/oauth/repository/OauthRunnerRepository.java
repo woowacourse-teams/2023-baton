@@ -11,10 +11,10 @@ import java.util.Optional;
 public interface OauthRunnerRepository extends JpaRepository<Runner, Long> {
 
     @Query("""
-        select r, r.member
-        from Runner r
-        join fetch Member m on m.id = r.member.id
-        where m.socialId = :socialId
-        """)
+            select r, r.member
+            from Runner r
+            join fetch Member m on m.id = r.member.id
+            where m.socialId = :socialId
+            """)
     Optional<Runner> joinByMemberSocialId(@Param("socialId") final SocialId socialId);
 }

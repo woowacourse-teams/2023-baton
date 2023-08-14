@@ -10,29 +10,36 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-== *러너 프로필 조회*
+=== *러너 프로필 조회*
 
-=== *러너 프로필 조회 API*
+==== *러너 프로필 조회 API*
 
-==== *Http Request*
+===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-runner-profile/http-request.adoc[]
 
-==== *Http Response*
+===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-runner-profile/http-response.adoc[]
 
-==== *Http Response Fields*
+===== *Http Response Fields*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-runner-profile/response-fields.adoc[]
 
-=== *러너 마이페이지 프로필 조회 API*
+==== *러너 마이페이지 프로필 조회 API*
 
-==== *Http Request*
+===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/http-request.adoc[]
 
-==== *Http Request Headers*
+===== *Http Request Headers*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/request-headers.adoc[]
 
-==== *Http Response*
+===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/http-response.adoc[]
 
-==== *Http Response Fields*
+===== *Http Response Fields*
+
 include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/response-fields.adoc[]
