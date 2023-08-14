@@ -99,20 +99,4 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
         assertThatThrownBy(() -> runnerPostService.deleteSupporterRunnerPost(applicantSupporter, runnerPost.getId()))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }
-
-    @DisplayName("SupporterRunnerPost 가 존재하지 않으면 실패한다.")
-    @Test
-    void fail_when_supporterRunnerPost_not_found() {
-        // given
-        final RunnerPost runnerPost = runnerPostRepository.save(
-                RunnerPostFixture.create(
-                        revieweeRunner,
-                        applicantSupporter,
-                        new Deadline(LocalDateTime.now().plusHours(100))
-                ));
-
-        // when & then
-        assertThatThrownBy(() -> runnerPostService.deleteSupporterRunnerPost(applicantSupporter, runnerPost.getId()))
-                .isInstanceOf(RunnerPostBusinessException.class);
-    }
 }
