@@ -6,6 +6,7 @@ import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class FutureValidator implements ConstraintValidator<ValidFuture, LocalDateTime> {
 
@@ -18,9 +19,9 @@ public class FutureValidator implements ConstraintValidator<ValidFuture, LocalDa
 
     @Override
     public boolean isValid(final LocalDateTime value, final ConstraintValidatorContext context) {
-        if (value.isBefore(LocalDateTime.now())) {
+        if (Objects.nonNull(value) && value.isBefore(LocalDateTime.now())) {
             throw new ClientRequestException(errorCode);
         }
         return true;
-    }
+
 }
