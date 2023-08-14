@@ -36,7 +36,7 @@ public class RunnerPostReadAssuredTest extends AssuredTestConfig {
         final RunnerPost 러너_에단의_게시글 = 러너_게시글을_등록한다(러너_에단);
         runnerPostRepository.save(러너_에단의_게시글);
 
-        final String 헤나_액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
+        final String 에단_액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
 
         final PageRequest 페이징_정보 = PageRequest.of(1, 10);
         final RunnerPostResponse.Simple 게시글_응답
@@ -46,16 +46,11 @@ public class RunnerPostReadAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(헤나_액세스_토큰)
+                .토큰으로_로그인한다(에단_액세스_토큰)
                 .전체_러너_게시글_페이징을_조회한다(페이징_정보)
 
                 .서버_응답()
                 .전체_러너_게시글_페이징_조회_성공을_검증한다(페이징된_게시글_응답);
-    }
-
-    private RunnerPost 러너_게시글에_서포터를_할당한다(final Supporter 서포터_헤나, final RunnerPost 러너_에단의_게시글) {
-        러너_에단의_게시글.assignSupporter(서포터_헤나);
-        return runnerPostRepository.save(러너_에단의_게시글);
     }
 
     private RunnerPost 러너_게시글을_등록한다(final Runner 러너) {
@@ -67,24 +62,5 @@ public class RunnerPostReadAssuredTest extends AssuredTestConfig {
         final Member 저장된_사용자 = memberRepository.save(member);
 
         return runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 저장된_사용자));
-    }
-
-    private Supporter 서포터_헤나를_저장한다() {
-        final TechnicalTag 자바_기술_태그 = technicalTagRepository.save(createJava());
-        final TechnicalTag 스프링_기술_태그 = technicalTagRepository.save(createSpring());
-        final List<TechnicalTag> 기술_태그_목록 = List.of(자바_기술_태그, 스프링_기술_태그);
-        final Member 저장된_사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
-
-        return supporterRepository.save(SupporterFixture.create(reviewCount(0), 저장된_사용자_헤나, 기술_태그_목록));
-    }
-
-    private SupporterRunnerPost 서포터를_러너_게시글에_저장한다(final Supporter 서포터, final RunnerPost 러너_게시글) {
-        final SupporterRunnerPost 서포터_러너_게시글 = SupporterRunnerPost.builder()
-                .runnerPost(러너_게시글)
-                .supporter(서포터)
-                .message(message("안녕하세요. 서포터 헤나입니다."))
-                .build();
-
-        return supporterRunnerPostRepository.save(서포터_러너_게시글);
     }
 }
