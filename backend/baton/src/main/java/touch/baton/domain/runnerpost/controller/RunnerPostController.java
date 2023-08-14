@@ -109,7 +109,7 @@ public class RunnerPostController {
     @PutMapping("/{runnerPostId}")
     public ResponseEntity<Void> update(@AuthRunnerPrincipal Runner runner,
                                        @PathVariable final Long runnerPostId,
-                                       @Valid @RequestBody final RunnerPostUpdateRequest.Post request
+                                       @Valid @RequestBody final RunnerPostUpdateRequest.Default request
     ) {
         final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, runner, request);
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
@@ -171,7 +171,8 @@ public class RunnerPostController {
     @PatchMapping("/{runnerPostId}/supporters")
     public ResponseEntity<Void> updateRunnerPostAppliedSupporter(@AuthRunnerPrincipal final Runner runner,
                                                                  @PathVariable final Long runnerPostId,
-                                                                 @Valid @RequestBody final RunnerPostUpdateRequest.AppliedSupporter request) {
+                                                                 @Valid @RequestBody final RunnerPostUpdateRequest.SelectSupporter request
+    ) {
         runnerPostService.updateRunnerPostAppliedSupporter(runner, runnerPostId, request);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")

@@ -6,7 +6,6 @@ import io.restassured.response.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
@@ -77,7 +76,7 @@ public class RunnerPostAssuredSupport {
         }
 
         public RunnerPostClientRequestBuilder 러너가_서포터를_선택한다(final Long 게시글_식별자값,
-                                                            final RunnerPostUpdateRequest.AppliedSupporter 서포터_선택_요청_정보
+                                                            final RunnerPostUpdateRequest.SelectSupporter 서포터_선택_요청_정보
         ) {
             response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/supporters",
                     "runnerPostId", 게시글_식별자값,

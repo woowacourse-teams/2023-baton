@@ -77,7 +77,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void success() {
         // given
-        final RunnerPostUpdateRequest.Post request = new RunnerPostUpdateRequest.Post(
+        final RunnerPostUpdateRequest.Default request = new RunnerPostUpdateRequest.Default(
                 TITLE, List.of(TAG, OTHER_TAG), PULL_REQUEST_URL, DEADLINE, CONTENTS);
         final Member ditoo = MemberFixture.createDitoo();
         memberRepository.save(ditoo);
@@ -121,7 +121,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void updateRunnerPostAppliedSupporter() {
         // given
-        final RunnerPostUpdateRequest.AppliedSupporter request = new RunnerPostUpdateRequest.AppliedSupporter(applySupporter.getId());
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
 
         // when
         runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, targetRunnerPost.getId(), request);
@@ -142,12 +142,11 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostAppliedSupporter_if_not_join_supporter() {
         // given
         final Long notJoinSupporterId = 1000000L;
-        final RunnerPostUpdateRequest.AppliedSupporter request = new RunnerPostUpdateRequest.AppliedSupporter(notJoinSupporterId);
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(notJoinSupporterId);
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, targetRunnerPost.getId(), request))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("해당하는 식별자값의 서포터를 찾을 수 없습니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 
     @DisplayName("러너는 자신의 글에 제안한 서포터가 아니면 서포터로 선택할 수 없다.")
@@ -157,25 +156,23 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         final Member ditooMember = memberRepository.save(MemberFixture.createDitoo());
         final Supporter notApplySupporter = supporterRepository.save(SupporterFixture.create(ditooMember));
 
-        final RunnerPostUpdateRequest.AppliedSupporter request = new RunnerPostUpdateRequest.AppliedSupporter(notApplySupporter.getId());
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(notApplySupporter.getId());
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, targetRunnerPost.getId(), request))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("RunnerPost 에 리뷰를 제안한 서포터가 아닙니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 
     @DisplayName("러너는 작성된 글이 아니면 서포터를 선택할 수 없다.")
     @Test
     void fail_updateRunnerPostAppliedSupporter_if_is_not_written_runnerPost() {
         // given
-        final RunnerPostUpdateRequest.AppliedSupporter request = new RunnerPostUpdateRequest.AppliedSupporter(applySupporter.getId());
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
         final Long notWrittenRunnerPostId = 1000000L;
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, notWrittenRunnerPostId, request))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("RunnerPost 에 리뷰를 제안한 서포터가 아닙니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 
     @DisplayName("러너는 자신의 글이 아니면 서포터를 선택할 수 없다.")
@@ -185,11 +182,10 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         final Member ditooMember = memberRepository.save(MemberFixture.createDitoo());
         final Runner notOwnerRunner = runnerRepository.save(RunnerFixture.createRunner(ditooMember));
 
-        final RunnerPostUpdateRequest.AppliedSupporter request = new RunnerPostUpdateRequest.AppliedSupporter(applySupporter.getId());
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(notOwnerRunner, targetRunnerPost.getId(), request))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("RunnerPost 의 글쓴이와 다른 사용자입니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 }

@@ -37,7 +37,7 @@ public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
 
         서포터가_리뷰_게시글에_리뷰_제안을_한다(디투_게시글, 서포터_에단);
 
-        final RunnerPostUpdateRequest.AppliedSupporter 서포터_선택_요청_정보 = new RunnerPostUpdateRequest.AppliedSupporter(서포터_에단.getId());
+        final RunnerPostUpdateRequest.SelectSupporter 서포터_선택_요청_정보 = new RunnerPostUpdateRequest.SelectSupporter(서포터_에단.getId());
 
         // when, then
         RunnerPostAssuredSupport

@@ -52,10 +52,10 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
         final Member ditooMember = MemberFixture.createWithSocialId(ditooSocialId);
         final Runner ditooRunner = RunnerFixture.createRunner(ditooMember);
 
-        final RunnerPostUpdateRequest.AppliedSupporter request = new RunnerPostUpdateRequest.AppliedSupporter(1L);
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(1L);
 
         // when
-        willDoNothing().given(runnerPostService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.AppliedSupporter.class));
+        willDoNothing().given(runnerPostService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
         when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
 
         // then

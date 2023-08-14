@@ -143,7 +143,7 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest.Post request) {
+    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest.Default request) {
         // TODO: 메소드 분리
         // FIXME: 2023/08/03 주인 확인 로직 넣기
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
@@ -215,7 +215,7 @@ public class RunnerPostService {
     @Transactional
     public void updateRunnerPostAppliedSupporter(final Runner runner,
                                                  final Long runnerPostId,
-                                                 final RunnerPostUpdateRequest.AppliedSupporter request
+                                                 final RunnerPostUpdateRequest.SelectSupporter request
     ) {
         final Supporter foundApplySupporter = supporterRepository.findById(request.supporterId())
                 .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
