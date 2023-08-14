@@ -5,6 +5,8 @@ import jakarta.validation.ConstraintValidatorContext;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
 
+import java.util.Objects;
+
 public class MaxLengthValidator implements ConstraintValidator<ValidMaxLength, String> {
 
     private ClientErrorCode errorCode;
@@ -18,7 +20,7 @@ public class MaxLengthValidator implements ConstraintValidator<ValidMaxLength, S
 
     @Override
     public boolean isValid(final String value, final ConstraintValidatorContext context) {
-        if (value.length() > max) {
+        if (Objects.nonNull(value) && value.length() > max) {
             throw new ClientRequestException(errorCode);
         }
         return true;

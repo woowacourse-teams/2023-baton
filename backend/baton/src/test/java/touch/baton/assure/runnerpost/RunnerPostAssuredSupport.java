@@ -8,8 +8,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.HttpStatusAndLocationHeader;
+import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.springframework.http.HttpHeaders.LOCATION;
 
 public class RunnerPostAssuredSupport {
 
@@ -44,6 +48,11 @@ public class RunnerPostAssuredSupport {
 
         public RunnerPostClientRequestBuilder 토큰으로_로그인한다(final String accessToken) {
             this.accessToken = accessToken;
+            return this;
+        }
+
+        public RunnerPostClientRequestBuilder 러너_게시글_등록_요청한다(final RunnerPostCreateRequest 게시글_생성_요청) {
+            response = AssuredSupport.post("/api/v1/posts/runner", 게시글_생성_요청, accessToken);
             return this;
         }
 
@@ -117,6 +126,23 @@ public class RunnerPostAssuredSupport {
         public void 러너_게시글_삭제_성공을_검증한다(final HttpStatus HTTP_STATUS) {
             assertThat(response.statusCode())
                     .isEqualTo(HTTP_STATUS.value());
+        }
+
+        public void 러너_게시글_등록_성공을_검증한다(final HttpStatusAndLocationHeader 게시글_등록_성공_응답) {
+            assertSoftly(softly -> {
+                        softly.assertThat(response.statusCode()).isEqualTo(게시글_등록_성공_응답.getHttpStatus().value());
+                        softly.assertThat(response.header(LOCATION)).contains(게시글_등록_성공_응답.getLocation());
+                    }
+            );
+        }
+
+        public void 러너_게시글_등록_실패를_검증한다(final ErrorResponse 예상_에러_응답) {
+            final ErrorResponse 실제_에러_응답 = response.as(ErrorResponse.class);
+
+            assertSoftly(softly -> {
+                softly.assertThat(실제_에러_응답.errorCode()).isEqualTo(예상_에러_응답.errorCode());
+                softly.assertThat(실제_에러_응답.message()).isEqualTo(예상_에러_응답.message());
+            });
         }
     }
 }
