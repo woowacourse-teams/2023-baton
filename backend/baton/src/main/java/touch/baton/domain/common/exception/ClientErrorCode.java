@@ -12,8 +12,6 @@ public enum ClientErrorCode {
     PAST_DEADLINE(HttpStatus.BAD_REQUEST, "RP006", "마감일은 오늘보다 과거일 수 없습니다."),
     RUNNER_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "RP007", "존재하지 않는 게시물입니다."),
     TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP008", "태그 목록을 빈 값이라도 입력해주세요."),
-    SUPPORT_RUNNER_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "RP009", "존재하지 않는 서포터의 리뷰 제안입니다."),
-    CANNOT_CANCEL_SUPPORTER_RUNNER_POST(HttpStatus.BAD_REQUEST, "RP010", "리뷰 제안을 취소할 수 없는 리뷰 상태입니다."),
 
     REVIEW_TYPE_IS_NULL(HttpStatus.BAD_REQUEST, "FB001", "만족도를 입력해주세요."),
     SUPPORTER_ID_IS_NULL(HttpStatus.BAD_REQUEST, "FB002", "서포터 식별자를 입력해주세요."),
