@@ -169,15 +169,6 @@ public class RunnerPostController {
         return applicantCounts.get(index);
     }
 
-//    @GetMapping("/test")
-//    public ResponseEntity<RunnerPostReadResponses.NoFiltering> readAllRunnerPostsVersionTest() {
-//        final List<RunnerPostResponse.Simple> responses = runnerPostService.readAllRunnerPosts().stream()
-//                .map(RunnerPostResponse.Simple::from)
-//                .toList();
-//
-//        return ResponseEntity.ok(RunnerPostReadResponses.NoFiltering.from(responses));
-//    }
-
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
             @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,

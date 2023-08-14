@@ -87,7 +87,8 @@ public record RunnerPostResponse() {
     ) {
 
         public static Simple from(final RunnerPost runnerPost,
-                                  final int applicantCount) {
+                                  final long applicantCount
+        ) {
             return new Simple(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
