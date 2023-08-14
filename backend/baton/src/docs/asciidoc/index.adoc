@@ -14,11 +14,24 @@ endif::[]
 
 include::MemberLoginProfileReadApi.adoc[]
 
+== *[ 게시글 ]*
+
+include::RunnerPostCreateReadApi.adoc[]
+include::RunnerPostReadApi.adoc[]
+include::RunnerPostUpdateApi.adoc[]
+include::RunnerPostUpdateApplicantCancelationApi.adoc[]
+include::RunnerPostDeleteApi.adoc[]
+
 == *[ 러너 ]*
 
 include::RunnerProfileReadApi.adoc[]
+include::RunnerLoginProfileReadApi.adoc[]
+include::RunnerProfileUpdateApi.adoc[]
 include::RunnerPostCreateApi.adoc[]
 
 == *[ 서포터 ]*
 
+include::SupporterProfileReadApi.adoc[]
+
 include::SupporterProfileUpdateApi.adoc[]
+include::RunnerPostUpdateApi.adoc[]

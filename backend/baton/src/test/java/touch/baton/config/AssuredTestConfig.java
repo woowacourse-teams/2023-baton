@@ -38,19 +38,19 @@ public abstract class AssuredTestConfig {
     protected RunnerRepository runnerRepository;
 
     @Autowired
-    protected RunnerPostRepository runnerPostRepository;
+    protected SupporterRepository supporterRepository;
 
     @Autowired
-    protected SupporterRepository supporterRepository;
+    protected TechnicalTagRepository technicalTagRepository;
+
+    @Autowired
+    protected RunnerPostRepository runnerPostRepository;
 
     @Autowired
     protected SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @MockBean
     private JwtDecoder jwtDecoder;
-
-    @Autowired
-    protected TechnicalTagRepository technicalTagRepository;
 
     @BeforeEach
     void assuredTestSetUp(@LocalServerPort int port) {
