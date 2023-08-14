@@ -69,7 +69,8 @@ public class AssuredSupport {
 
     public static ExtractableResponse<Response> get(final String uri,
                                                     final String accessToken,
-                                                    final Map<String, Object> queryParams) {
+                                                    final Map<String, Object> queryParams
+    ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)

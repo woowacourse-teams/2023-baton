@@ -44,7 +44,8 @@ public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerProfileController(runnerPostService, runnerService));
+        final RunnerProfileController runnerProfileController = new RunnerProfileController(runnerPostService, runnerService);
+        restdocsSetUp(runnerProfileController);
     }
 
     @DisplayName("러너 프로필 상세 조회 API")
