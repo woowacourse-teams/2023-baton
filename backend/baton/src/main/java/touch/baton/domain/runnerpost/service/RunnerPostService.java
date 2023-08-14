@@ -228,7 +228,7 @@ public class RunnerPostService {
                 .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
 
         if (isApplySupporter(runnerPostId, foundSupporter)) {
-            throw new RunnerPostBusinessException("RunnerPost 에 리뷰를 제안한 서포터가 아닙니다.");
+            throw new RunnerPostBusinessException("게시글에 리뷰를 제안한 서포터가 아닙니다.");
         }
 
         return foundSupporter;
