@@ -260,7 +260,6 @@ public class RunnerPostService {
         foundRunnerPost.finishReview();
     }
 
-
     public long readCountByRunnerPostId(final Long runnerPostId) {
         return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0);
     }
