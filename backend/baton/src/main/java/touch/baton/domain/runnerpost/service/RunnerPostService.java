@@ -207,8 +207,8 @@ public class RunnerPostService {
                                                          final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = getRunnerPostOrThrowException(runnerPostId);
-        final Optional<SupporterRunnerPost> maybeApplicant = supporterRunnerPostRepository.findBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
-        if (maybeApplicant.isPresent()) {
+        final boolean isApplicantHistoryExist = supporterRunnerPostRepository.existsBySupporterAndRunnerPostId(supporter, runnerPostId);
+        if (isApplicantHistoryExist) {
             throw new RunnerPostDomainException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
         }
 
