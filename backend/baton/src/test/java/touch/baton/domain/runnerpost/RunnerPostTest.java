@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,11 @@ import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
+import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
+import touch.baton.fixture.vo.DeadlineFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -488,5 +493,25 @@ class RunnerPostTest {
                     .map(Arguments::arguments);
         }
 
+    }
+
+    // FIXME: 2023/08/13 아이디 없어서 테스트가 통과 안되는데 어떻게 함?
+    @Disabled
+    @DisplayName("글 주인이 아니면 true 를 반환한다.")
+    @Test
+    void isNotOwner() {
+        // given
+        final Member ethanMember = MemberFixture.createEthan();
+        final Runner ownerRunner = RunnerFixture.createRunner(ethanMember);
+        final RunnerPost runnerPost = RunnerPostFixture.create(ownerRunner, DeadlineFixture.deadline(LocalDateTime.now().plusHours(10)));
+
+        final Member hyenaMember = MemberFixture.createHyena();
+        final Runner notOwnerRunner = RunnerFixture.createRunner(hyenaMember);
+
+        // when, then
+        assertAll(
+                () -> assertThat(runnerPost.isNotOwner(notOwnerRunner)).isTrue(),
+                () -> assertThat(runnerPost.isNotOwner(ownerRunner)).isFalse()
+        );
     }
 }

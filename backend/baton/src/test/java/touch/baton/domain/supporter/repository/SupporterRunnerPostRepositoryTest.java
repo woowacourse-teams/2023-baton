@@ -18,12 +18,15 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
 
@@ -112,5 +115,31 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(actualOfExist).isTrue();
             softly.assertThat(actualOfNotExist).isFalse();
         });
+    }
+
+    @DisplayName("서포터의 러너 게시글 리뷰 제안을 철회하는데 성공한다")
+    @Test
+    void deleteBySupporterAndRunnerPostId() {
+        // given
+        final Member reviewerMember = memberRepository.save(MemberFixture.createDitoo());
+        final Supporter reviewerSupporter = supporterRepository.save(SupporterFixture.create(reviewerMember));
+
+        final Member revieweeMember = memberRepository.save(MemberFixture.createJudy());
+        final Runner revieweeRunner = runnerRepository.save(RunnerFixture.createRunner(revieweeMember));
+
+        final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
+                revieweeRunner,
+                reviewerSupporter,
+                deadline(LocalDateTime.now().plusHours(100))
+        ));
+
+        final SupporterRunnerPost deletedSupporterRunnerPost = supporterRunnerPostRepository.save(
+                SupporterRunnerPostFixture.create(runnerPost, reviewerSupporter));
+
+        // when
+        supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(reviewerSupporter.getId(), runnerPost.getId());
+
+        // then
+        assertThat(supporterRunnerPostRepository.findById(deletedSupporterRunnerPost.getId())).isNotPresent();
     }
 }
