@@ -146,11 +146,11 @@ public class RunnerPostController {
     public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readAllRunnerPosts(pageable);
         final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
-        final List<Integer> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
         final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
                 .mapToObj(index -> {
                     final RunnerPost runnerPost = foundRunnerPosts.get(index);
-                    Integer applicantCount = calculateApplicantCount(applicantCounts, index);
+                    Long applicantCount = calculateApplicantCount(applicantCounts, index);
 
                     return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
                 }).toList();
@@ -161,9 +161,9 @@ public class RunnerPostController {
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
-    private Integer calculateApplicantCount(final List<Integer> applicantCounts, final int index) {
+    private Long calculateApplicantCount(final List<Long> applicantCounts, final int index) {
         if (applicantCounts.size() == 0) {
-            return 0;
+            return 0L;
         }
 
         return applicantCounts.get(index);
