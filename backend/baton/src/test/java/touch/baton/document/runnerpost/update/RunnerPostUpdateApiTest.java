@@ -11,23 +11,27 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
+import touch.baton.domain.supporter.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.SupporterFixture;
 
 import java.util.Optional;
 
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.apache.http.HttpHeaders.CONTENT_TYPE;
-import static org.apache.http.HttpHeaders.LOCATION;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.any;
-import static org.mockito.BDDMockito.when;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -66,9 +70,35 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
                 .andExpect(status().isNoContent())
                 .andExpect(redirectedUrl("/api/v1/posts/runner/1"))
                 .andDo(restDocs.document(
+                        pathParameters(parameterWithName("runnerPostId").description("러너 게시글 식별자값")),
                         requestHeaders(headerWithName(AUTHORIZATION).description("Bearer JWT"),
                                 headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)),
                         responseHeaders(headerWithName(LOCATION).description("Redirect URI"))
                 )).andDo(print());
+    }
+
+    @DisplayName("서포터 리뷰 완료 API")
+    @Test
+    void updateRunnerPostReviewStatusDone() throws Exception {
+        // given
+        final String ditooSocialId = "hongSile";
+        final Member memberDitoo = MemberFixture.createWithSocialId(ditooSocialId);
+        final Supporter supporter = SupporterFixture.create(memberDitoo);
+        final String accessToken = getAccessTokenBySocialId(ditooSocialId);
+
+        // when
+        willDoNothing().given(runnerPostService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
+        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
+
+        // then
+        mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/done", 1L)
+                        .header(AUTHORIZATION, "Bearer " + accessToken))
+                .andExpect(status().isNoContent())
+                .andExpect(redirectedUrl("/api/v1/posts/runner/1"))
+                .andDo(restDocs.document(
+                        pathParameters(parameterWithName("runnerPostId").description("러너 게시글 식별자값")),
+                        requestHeaders(headerWithName(AUTHORIZATION).description("Bearer TOKEN")),
+                        responseHeaders(headerWithName(LOCATION).description("Redirect Uri"))
+                ));
     }
 }

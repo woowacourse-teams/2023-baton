@@ -32,3 +32,4 @@ include::RunnerProfileUpdateApi.adoc[]
 
 include::SupporterProfileReadApi.adoc[]
 include::SupporterProfileUpdateApi.adoc[]
+include::RunnerPostUpdateApi.adoc[]
