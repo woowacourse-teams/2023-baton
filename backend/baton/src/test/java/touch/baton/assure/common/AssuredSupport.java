@@ -68,7 +68,11 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> patch(final String uri, final String pathParamName, final Long id, final String accessToken) {
+    public static ExtractableResponse<Response> patch(final String uri,
+                                                      final String pathParamName,
+                                                      final Long id,
+                                                      final String accessToken
+    ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
