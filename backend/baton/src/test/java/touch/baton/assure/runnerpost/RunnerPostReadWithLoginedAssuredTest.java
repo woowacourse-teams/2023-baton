@@ -1,4 +1,4 @@
-package touch.baton.assure.runnerpost;
+ package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
@@ -12,25 +12,25 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import static java.time.LocalDateTime.now;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.클라이언트_요청;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerPostAssuredReadTest extends AssuredTestConfig {
+class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
         final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
         final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 사용자_헤나));
-        final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(LocalDateTime.now().plusHours(100))));
+        final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(now().plusHours(100))));
         final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
 
-        RunnerPostAssuredSupport
-                .클라이언트_요청()
+        클라이언트_요청()
                 .토큰으로_로그인한다(로그인용_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(러너_게시글.getId())
 

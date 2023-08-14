@@ -73,5 +73,23 @@ tasks.register('copySecret', Copy) {
 tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	configurations 'asciidoctorExt'
+	sources {
+		include("**/index.adoc")
+	}
+	baseDirFollowsSourceFile()
 	dependsOn test
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file('build/docs/asciidoc')
+	into file('src/main/resources/static/docs')
+}
+
+build {
+	dependsOn copyDocument
 }

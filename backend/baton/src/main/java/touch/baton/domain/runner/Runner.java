@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.runner.exception.RunnerDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
@@ -71,6 +73,25 @@ public class Runner extends BaseEntity {
 
     public void addAllRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags) {
         this.runnerTechnicalTags.addAll(runnerTechnicalTags);
+    }
+
+    public void updateIntroduction(final Introduction introduction) {
+        this.introduction = defaultIntroductionIfNull(introduction);
+    }
+
+    private Introduction defaultIntroductionIfNull(final Introduction introduction) {
+        if (Objects.isNull(introduction.getValue())) {
+            return new Introduction(introduction.getDefaultValue());
+        }
+        return introduction;
+    }
+
+    public void updateMemberName(final MemberName memberName) {
+        this.member.updateMemberName(memberName);
+    }
+
+    public void updateCompany(final Company company) {
+        this.member.updateCompany(company);
     }
 
     @Override

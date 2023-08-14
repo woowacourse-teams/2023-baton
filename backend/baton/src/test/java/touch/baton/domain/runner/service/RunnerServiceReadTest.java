@@ -22,7 +22,7 @@ class RunnerServiceReadTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerService = new RunnerService(runnerRepository);
+        runnerService = new RunnerService(runnerRepository, runnerTechnicalTagRepository, technicalTagRepository);
     }
 
     @DisplayName("러너를 사용자와 함께 조회한다.")
@@ -37,7 +37,7 @@ class RunnerServiceReadTest extends ServiceTestConfig {
         final Runner expectedRunner = runnerRepository.save(RunnerFixture.createRunner(expectedMember, technicalTags));
 
         // when
-        final Runner actualRunner = runnerService.readRunnerById(expectedRunner.getId());
+        final Runner actualRunner = runnerService.readByRunnerId(expectedRunner.getId());
 
         // then
         final Member actualMember = actualRunner.getMember();

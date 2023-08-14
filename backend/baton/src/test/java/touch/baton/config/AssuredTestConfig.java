@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestExecutionListeners;
+import touch.baton.config.converter.ConverterConfig;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
@@ -24,7 +25,7 @@ import java.util.UUID;
 
 import static org.mockito.BDDMockito.when;
 
-@Import(JpaConfig.class)
+@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,6 +42,9 @@ public abstract class AssuredTestConfig {
 
     @Autowired
     protected RunnerPostRepository runnerPostRepository;
+
+    @Autowired
+    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Autowired
     protected SupporterRunnerPostRepository supporterRunnerPostRepository;

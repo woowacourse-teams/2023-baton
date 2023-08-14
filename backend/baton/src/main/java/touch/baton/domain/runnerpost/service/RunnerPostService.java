@@ -1,6 +1,8 @@
 package touch.baton.domain.runnerpost.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.Contents;
@@ -15,6 +17,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
@@ -196,6 +199,17 @@ public class RunnerPostService {
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
         return runnerPostRepository.findByRunnerId(runnerId);
+    }
+
+    public Page<RunnerPost> readRunnerPostsBySupporterIdAndReviewStatus(final Pageable pageable,
+                                                                        final Long supporterId,
+                                                                        final ReviewStatus reviewStatus
+    ) {
+        return runnerPostRepository.findBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
+    }
+
+    public List<Integer> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
+        return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
     }
 
     @Transactional

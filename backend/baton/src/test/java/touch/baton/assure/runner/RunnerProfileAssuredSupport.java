@@ -2,10 +2,14 @@ package touch.baton.assure.runner;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
+import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -46,6 +50,11 @@ public class RunnerProfileAssuredSupport {
         public RunnerProfileServerResponseBuilder 서버_응답() {
             return new RunnerProfileServerResponseBuilder(response);
         }
+
+        public RunnerProfileClientRequestBuilder 러너_본인_프로필을_수정한다(final RunnerUpdateRequest 러너_업데이트_요청) {
+            response = AssuredSupport.patch("/api/v1/profile/runner/me", accessToken, 러너_업데이트_요청);
+            return this;
+        }
     }
 
     public static class RunnerProfileServerResponseBuilder {
@@ -73,7 +82,7 @@ public class RunnerProfileAssuredSupport {
             });
         }
 
-        public void 러너_프로필_상세_조회를_검증한다(RunnerProfileResponse.Detail 러너_프로필_상세_응답) {
+        public void 러너_프로필_상세_조회를_검증한다(final RunnerProfileResponse.Detail 러너_프로필_상세_응답) {
             final RunnerProfileResponse.Detail actual = this.response.as(RunnerProfileResponse.Detail.class);
             assertSoftly(softly -> {
                         softly.assertThat(actual.runnerId()).isNotNull();
@@ -85,6 +94,22 @@ public class RunnerProfileAssuredSupport {
                         softly.assertThat(actual.technicalTags()).containsExactlyElementsOf(러너_프로필_상세_응답.technicalTags());
                     }
             );
+        }
+
+        public void 러너_본인_프로필_수정_성공을_검증한다(final HttpStatus HTTP_STATUS, final Long 러너_아이디) {
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
+                softly.assertThat(response.header("Location")).isNotNull();
+            });
+        }
+
+        public void 러너_본인_프로필_수정_실패를_검증한다(final ClientErrorCode 클라이언트_에러_코드) {
+            final ErrorResponse actual = this.response.as(ErrorResponse.class);
+
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(클라이언트_에러_코드.getHttpStatus().value());
+                softly.assertThat(actual.errorCode()).isEqualTo(클라이언트_에러_코드.getErrorCode());
+            });
         }
     }
 }

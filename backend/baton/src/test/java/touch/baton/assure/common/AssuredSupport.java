@@ -4,6 +4,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
+import java.util.Map;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AssuredSupport {
@@ -63,6 +65,17 @@ public class AssuredSupport {
                 .body(params)
                 .when().log().ifValidationFails()
                 .patch(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .when().log().ifValidationFails()
+                .accept(APPLICATION_JSON_VALUE)
+                .queryParams(queryParams)
+                .get(uri)
                 .then().log().ifError()
                 .extract();
     }
