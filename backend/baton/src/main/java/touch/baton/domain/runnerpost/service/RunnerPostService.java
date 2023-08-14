@@ -197,7 +197,7 @@ public class RunnerPostService {
 
     private RunnerPost getRunnerPostOrThrowException(final Long runnerPostId) {
         return runnerPostRepository.findById(runnerPostId)
-                .orElseThrow(() -> new RunnerPostBusinessException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId를 다시 확인해주세요"));
+                .orElseThrow(() -> new RunnerPostBusinessException("해당 runnerPostId 로 러너 게시글을 찾을 수 없습니다. runnerPostId 를 다시 확인해주세요"));
     }
 
     @Transactional
