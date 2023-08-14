@@ -13,9 +13,9 @@ import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class SupporterProfileAssuredSupport {
+public class SupporterAssuredSupport {
 
-    private SupporterProfileAssuredSupport() {
+    private SupporterAssuredSupport() {
     }
 
     public static SupporterClientRequestBuilder 클라이언트_요청() {

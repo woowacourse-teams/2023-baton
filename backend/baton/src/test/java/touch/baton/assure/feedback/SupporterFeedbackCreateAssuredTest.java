@@ -24,7 +24,7 @@ import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 
 @SuppressWarnings("NonAsciiCharacters")
-class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
+class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
 
     // TODO: 2023/08/03 로그인 기능 테스트 추가
     @Disabled
@@ -41,7 +41,10 @@ class SupporterFeedbackAssuredCreateTest extends AssuredTestConfig {
 
         // when, then
         SupporterFeedbackAssuredSupport
-                .클라이언트_요청().서포터_피드백을_등록한다(request)
-                .서버_응답().서포터_피드백_등록_성공을_검증한다(new HttpStatusAndLocationHeader(CREATED, "/api/v1/feedback/supporter"));
+                .클라이언트_요청()
+                .서포터_피드백을_등록한다(request)
+
+                .서버_응답()
+                .서포터_피드백_등록_성공을_검증한다(new HttpStatusAndLocationHeader(CREATED, "/api/v1/feedback/supporter"));
     }
 }

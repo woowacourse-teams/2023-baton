@@ -87,12 +87,12 @@ public class RunnerPostAssuredSupport {
         }
 
         public RunnerPostClientRequestBuilder 서포터와_연관된_러너_게시글_페이징을_조회한다(final Long 서포터_식별자값,
-                                                                        final ReviewStatus 리뷰_상태,
+                                                                        final ReviewStatus 리뷰_진행_상태,
                                                                         final Pageable 페이징_정보
         ) {
             final Map<String, Object> queryParams = Map.of(
                     "supporterId", 서포터_식별자값,
-                    "reviewStatus", 리뷰_상태,
+                    "reviewStatus", 리뷰_진행_상태,
                     "size", 페이징_정보.getPageSize(),
                     "page", 페이징_정보.getPageNumber()
             );
@@ -119,6 +119,19 @@ public class RunnerPostAssuredSupport {
                     서포터_선택_요청_정보,
                     accessToken
             );
+            return this;
+        }
+
+        public RunnerPostClientRequestBuilder 로그인한_서포터의_러너_게시글_페이징을_조회한다(final ReviewStatus 리뷰_진행_상태,
+                                                                         final Pageable 페이징_정보
+        ) {
+            final Map<String, Object> queryParams = Map.of(
+                    "reviewStatus", 리뷰_진행_상태,
+                    "size", 페이징_정보.getPageSize(),
+                    "page", 페이징_정보.getPageNumber()
+            );
+
+            response = AssuredSupport.get("/api/v1/posts/runner/me/supporter", accessToken, queryParams);
             return this;
         }
 

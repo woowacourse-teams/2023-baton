@@ -9,9 +9,9 @@ import touch.baton.domain.member.controller.response.LoginMemberInfoResponse;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MemberProfileAssuredSupport {
+public class MemberAssuredSupport {
 
-    private MemberProfileAssuredSupport() {
+    private MemberAssuredSupport() {
     }
 
     public static MemberClientRequestBuilder 클라이언트_요청() {

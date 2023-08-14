@@ -43,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostServiceReadTest extends ServiceTestConfig {
@@ -88,7 +89,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .reviewStatus(ReviewStatus.NOT_STARTED)
+                .reviewStatus(NOT_STARTED)
                 .runner(runner)
                 .supporter(null)
                 .build();
@@ -144,9 +145,9 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         });
     }
 
-    @DisplayName("Supporter 외래키와 ReviewStatus 로 러너 게시글을 조회한다.")
+    @DisplayName("Supporter 외래키와 ReviewStatus 가 NOT_STARTED 가 아닌 것으로 러너 게시글을 조회한다.")
     @Test
-    void readRunnerPostsBySupporterIdAndReviewStatus() {
+    void readRunnerPostsBySupporterIdAndReviewStatusIsNot_NOT_STARTED() {
         // given
         final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
@@ -209,5 +210,32 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
 
         // then1
         assertThat(foundApplicantCount).isZero();
+    }
+
+    @DisplayName("Supporter 외래키와 ReviewStatus 가 NOT_STARTED 로 러너 게시글을 조회한다.")
+    @Test
+    void readRunnerPostsBySupporterIdAndReviewStatusIs_NOT_STARTED() {
+        // given
+        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
+
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
+
+        // when
+        final PageRequest pageable = PageRequest.of(0, 10);
+        final Page<RunnerPost> pageRunnerPosts
+                = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), NOT_STARTED);
+
+        // then
+        assertAll(
+                () -> assertThat(pageRunnerPosts.getPageable()).isEqualTo(pageable),
+                () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
+        );
     }
 }

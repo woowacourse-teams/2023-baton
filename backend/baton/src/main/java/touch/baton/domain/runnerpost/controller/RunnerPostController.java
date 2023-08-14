@@ -1,6 +1,7 @@
 package touch.baton.domain.runnerpost.controller;
 
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -166,6 +167,29 @@ public class RunnerPostController {
                 .mapToObj(index -> {
                     final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
                     final long applicantCount = applicantCounts.get(index);
+
+                    return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
+                }).toList();
+
+        final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
+    @GetMapping("/me/supporter")
+    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
+            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @AuthSupporterPrincipal final Supporter supporter,
+            @PathParam("reviewStatus") final ReviewStatus reviewStatus
+    ) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporter.getId(), reviewStatus);
+        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
+        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
+                .mapToObj(index -> {
+                    final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
+                    final Long applicantCount = applicantCounts.get(index);
 
                     return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
                 }).toList();

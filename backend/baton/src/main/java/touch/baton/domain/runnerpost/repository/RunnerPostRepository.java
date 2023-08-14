@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
@@ -37,7 +36,14 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
                                                       @Param("supporterId") final Long supporterId,
                                                       @Param("reviewStatus") final ReviewStatus reviewStatus);
 
-    List<RunnerPost> readBySupporterId(Long supporterId);
-
-    Optional<RunnerPost> readByTitle(Title title);
+    @Query("""
+            select rp
+            from RunnerPost rp
+            join fetch SupporterRunnerPost srp on srp.runnerPost.id = rp.id
+            where srp.supporter.id = :supporterId
+            and rp.reviewStatus = :reviewStatus
+            """)
+    Page<RunnerPost> joinSupporterRunnerPostBySupporterIdAndReviewStatus(final Pageable pageable,
+                                                                         @Param("supporterId") final Long supporterId,
+                                                                         @Param("reviewStatus") final ReviewStatus reviewStatus);
 }

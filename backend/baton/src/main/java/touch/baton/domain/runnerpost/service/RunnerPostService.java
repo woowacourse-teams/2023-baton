@@ -237,6 +237,9 @@ public class RunnerPostService {
                                                                         final Long supporterId,
                                                                         final ReviewStatus reviewStatus
     ) {
+        if (reviewStatus.isSameAsNotStarted()) {
+            return runnerPostRepository.joinSupporterRunnerPostBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
+        }
         return runnerPostRepository.findBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
     }
 

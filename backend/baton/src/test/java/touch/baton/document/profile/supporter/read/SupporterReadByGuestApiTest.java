@@ -26,9 +26,7 @@ import static org.mockito.Mockito.spy;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -39,7 +37,7 @@ import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(SupporterProfileController.class)
-class SupporterProfileReadApiTest extends RestdocsConfig {
+class SupporterReadByGuestApiTest extends RestdocsConfig {
 
     @MockBean
     private SupporterService supporterService;
