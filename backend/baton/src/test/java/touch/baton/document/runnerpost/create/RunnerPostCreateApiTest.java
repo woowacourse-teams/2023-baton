@@ -56,7 +56,8 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerPostController(runnerPostService));
+        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
+        restdocsSetUp(runnerPostController);
     }
 
     @DisplayName("Supporter 가 RunnerPost 에 리뷰를 지원한다.")
