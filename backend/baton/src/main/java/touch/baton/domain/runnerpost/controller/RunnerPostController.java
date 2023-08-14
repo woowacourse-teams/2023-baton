@@ -150,7 +150,7 @@ public class RunnerPostController {
         final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
                 .mapToObj(index -> {
                     final RunnerPost runnerPost = foundRunnerPosts.get(index);
-                    Long applicantCount = calculateApplicantCount(applicantCounts, index);
+                    Long applicantCount =  applicantCounts.get(index);
 
                     return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
                 }).toList();
@@ -159,14 +159,6 @@ public class RunnerPostController {
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
-    }
-
-    private Long calculateApplicantCount(final List<Long> applicantCounts, final int index) {
-        if (applicantCounts.size() == 0) {
-            return 0L;
-        }
-
-        return applicantCounts.get(index);
     }
 
     @GetMapping("/search")

@@ -249,7 +249,12 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+        final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+        if (applicantCounts.size() == 0) {
+            applicantCounts.add(0L);
+        }
+
+        return applicantCounts;
     }
 
     @Transactional
