@@ -244,6 +244,10 @@ public class RunnerPostService {
         return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
     }
 
+    public long readCountByRunnerPostId(final Long runnerPostId) {
+        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0);
+    }
+
     @Transactional
     public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
