@@ -47,6 +47,11 @@ public class SupporterAssuredSupport {
             return this;
         }
 
+        public SupporterClientRequestBuilder 서포터_마이페이지를_토큰으로_조회한다() {
+            response = AssuredSupport.get("/api/v1/profile/supporter/me", accessToken);
+            return this;
+        }
+
         public SupporterServerResponseBuilder 서버_응답() {
             return new SupporterServerResponseBuilder(response);
         }
@@ -89,6 +94,20 @@ public class SupporterAssuredSupport {
                 softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getHttpStatus().value());
                 softly.assertThat(actual.errorCode()).isEqualTo(clientErrorCode.getErrorCode());
             });
+        }
+
+        public void 서포터_마이페이지_프로필_조회_성공을_검증한다(final SupporterResponse.MyProfile 서포터_마이페이지_프로필_응답) {
+            final SupporterResponse.MyProfile actual = this.response.as(SupporterResponse.MyProfile.class);
+
+            assertSoftly(softly -> {
+                        softly.assertThat(actual.name()).isEqualTo(서포터_마이페이지_프로필_응답.name());
+                        softly.assertThat(actual.company()).isEqualTo(서포터_마이페이지_프로필_응답.company());
+                        softly.assertThat(actual.imageUrl()).isEqualTo(서포터_마이페이지_프로필_응답.imageUrl());
+                        softly.assertThat(actual.githubUrl()).isEqualTo(서포터_마이페이지_프로필_응답.githubUrl());
+                        softly.assertThat(actual.introduction()).isEqualTo(서포터_마이페이지_프로필_응답.introduction());
+                        softly.assertThat(actual.technicalTags()).isEqualTo(서포터_마이페이지_프로필_응답.technicalTags());
+                    }
+            );
         }
     }
 }

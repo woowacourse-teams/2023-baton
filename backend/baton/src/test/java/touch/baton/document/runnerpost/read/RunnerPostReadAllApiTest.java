@@ -24,19 +24,28 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.time.LocalDateTime.now;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.spy;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -56,6 +65,64 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
     void setUp() {
         final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
         restdocsSetUp(runnerPostController);
+    }
+
+    @DisplayName("러너 게시글 상세 조회 API")
+    @Test
+    void readByRunnerPostId() throws Exception {
+        // given
+        final Runner runnerHyena = RunnerFixture.createRunner(MemberFixture.createHyena());
+
+        final Deadline deadline = deadline(now().plusHours(100));
+        final Tag javaTag = TagFixture.create(tagName("자바"));
+
+        // when
+        final Runner spyRunnerHyena = spy(runnerHyena);
+        when(spyRunnerHyena.getId()).thenReturn(1L);
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(spyRunnerHyena, deadline, List.of(javaTag));
+        final RunnerPost spyRunnerPost = spy(runnerPost);
+        when(spyRunnerPost.getId()).thenReturn(1L);
+
+        when(runnerPostService.readByRunnerPostId(any()))
+                .thenReturn(spyRunnerPost);
+        when(runnerPostService.readCountByRunnerPostId(any()))
+                .thenReturn(3L);
+
+        final String token = getAccessTokenBySocialId(runnerHyena.getMember().getSocialId().getValue());
+
+        when(oauthRunnerRepository.joinByMemberSocialId(any()))
+                .thenReturn(Optional.ofNullable(runnerHyena));
+
+        // then
+        mockMvc.perform(get("/api/v1/posts/runner/{runnerPostId}", spyRunnerPost.getId())
+                        .header(AUTHORIZATION, "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andDo(restDocs.document(
+                        requestHeaders(
+                                headerWithName(AUTHORIZATION).description("Bearer JWT (필수값 x)")
+                        ),
+                        pathParameters(
+                                parameterWithName("runnerPostId").description("러너 게시글 식별자값")
+                        ),
+                        responseFields(
+                                fieldWithPath("runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
+                                fieldWithPath("title").type(STRING).description("러너 게시글 제목"),
+                                fieldWithPath("contents").type(STRING).description("러너 게시글 내용"),
+                                fieldWithPath("deadline").type(STRING).description("러너 게시글 마감기한"),
+                                fieldWithPath("isOwner").type(BOOLEAN).description("러너 게시글 주인 여부"),
+                                fieldWithPath("applicantCount").type(NUMBER).description("러너 게시글 서포터 지원자수"),
+                                fieldWithPath("watchedCount").type(NUMBER).description("러너 게시글 조회수"),
+                                fieldWithPath("reviewStatus").type(STRING).description("러너 게시글 리뷰 상태"),
+                                fieldWithPath("pullRequestUrl").type(STRING).description("러너 게시글 PR URL"),
+                                fieldWithPath("tags").type(ARRAY).description("러너 게시글 태그 목록"),
+                                fieldWithPath("runnerProfile.runnerId").type(NUMBER).description("러너 게시글 식별자값(id)"),
+                                fieldWithPath("runnerProfile.name").type(STRING).description("러너 게시글 식별자값(id)"),
+                                fieldWithPath("runnerProfile.company").type(STRING).description("러너 게시글 식별자값(id)"),
+                                fieldWithPath("runnerProfile.imageUrl").type(STRING).description("러너 게시글 식별자값(id)")
+                        ))
+                );
     }
 
     @DisplayName("러너 게시글 전체 조회 API")
@@ -114,7 +181,7 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
         when(runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
         when(runnerPostService.readCountsByRunnerPostIds(anyList()))
-                .thenReturn(List.of(1));
+                .thenReturn(List.of(1L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/search")

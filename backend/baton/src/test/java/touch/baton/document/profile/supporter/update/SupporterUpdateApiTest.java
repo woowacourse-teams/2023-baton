@@ -90,7 +90,7 @@ public class SupporterUpdateApiTest extends RestdocsConfig {
                                 fieldWithPath("technicalTags.[]").type(ARRAY).description("변경할 기술 태그 목록")
                         ),
                         responseHeaders(headerWithName(LOCATION).description("redirect uri"))
-                        ))
+                ))
                 .andDo(print());
     }
 }

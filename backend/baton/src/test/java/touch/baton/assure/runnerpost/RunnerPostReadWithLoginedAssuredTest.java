@@ -1,10 +1,9 @@
- package touch.baton.assure.runnerpost;
+package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -12,13 +11,11 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 
-import java.util.ArrayList;
-
 import static java.time.LocalDateTime.now;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Detail_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.클라이언트_요청;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
-import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
@@ -30,22 +27,37 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(now().plusHours(100))));
         final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
 
+        final RunnerPostResponse.Detail 러너_게시글_detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_헤나, 러너_게시글, ReviewStatus.NOT_STARTED, 러너_게시글.getId(), 1, 0);
+
         클라이언트_요청()
                 .토큰으로_로그인한다(로그인용_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(러너_게시글.getId())
 
                 .서버_응답()
-                .러너_게시글_단건_조회_성공을_검증한다(new RunnerPostResponse.Detail(
-                        러너_게시글.getId(),
-                        러너_게시글.getTitle().getValue(),
-                        러너_게시글.getContents().getValue(),
-                        러너_게시글.getPullRequestUrl().getValue(),
-                        러너_게시글.getDeadline().getValue(),
-                        watchedCount(1).getValue(),
-                        ReviewStatus.NOT_STARTED,
-                        true,
-                        RunnerResponse.Detail.from(러너_헤나),
-                        new ArrayList<>()
-                ));
+                .러너_게시글_단건_조회_성공을_검증한다(러너_게시글_detail_응답);
+    }
+
+    private RunnerPostResponse.Detail 러너_게시글_Detail_응답을_생성한다(final Runner 로그인한_러너,
+                                                             final RunnerPost 러너_게시글,
+                                                             final ReviewStatus 리뷰_상태,
+                                                             final Long 러너_게시글_식별자값,
+                                                             final int 조회수,
+                                                             final int 서포터_지원자수
+    ) {
+        return 러너_게시글_Detail_응답(
+                러너_게시글_식별자값,
+                러너_게시글.getTitle().getValue(),
+                러너_게시글.getContents().getValue(),
+                러너_게시글.getPullRequestUrl().getValue(),
+                러너_게시글.getDeadline().getValue(),
+                조회수,
+                서포터_지원자수,
+                리뷰_상태,
+                !러너_게시글.isNotOwner(로그인한_러너),
+                러너_게시글.getRunner(),
+                러너_게시글.getRunnerPostTags().getRunnerPostTags().stream()
+                        .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
+                        .toList()
+        );
     }
 }
