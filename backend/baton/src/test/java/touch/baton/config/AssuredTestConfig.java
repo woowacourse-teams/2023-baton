@@ -44,7 +44,7 @@ public abstract class AssuredTestConfig {
     protected RunnerPostRepository runnerPostRepository;
 
     @Autowired
-    protected SupporterRepository supporterRepository;
+    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Autowired
     protected TechnicalTagRepository technicalTagRepository;
