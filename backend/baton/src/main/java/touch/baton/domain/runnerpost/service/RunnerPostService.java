@@ -217,35 +217,23 @@ public class RunnerPostService {
                                                  final Long runnerPostId,
                                                  final RunnerPostUpdateRequest.AppliedSupporter request
     ) {
-        final Supporter foundApplySupporter = findApplySupporter(runnerPostId, request);
-        final RunnerPost foundRunnerPost = findRunnerPostOfOwner(runner, runnerPostId);
-
-        foundRunnerPost.assignSupporter(foundApplySupporter);
-    }
-
-    private Supporter findApplySupporter(final Long runnerPostId, final RunnerPostUpdateRequest.AppliedSupporter request) {
-        final Supporter foundSupporter = supporterRepository.findById(request.supporterId())
+        final Supporter foundApplySupporter = supporterRepository.findById(request.supporterId())
                 .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
+        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
-        if (isApplySupporter(runnerPostId, foundSupporter)) {
+        if (isApplySupporter(runnerPostId, foundApplySupporter)) {
             throw new RunnerPostBusinessException("게시글에 리뷰를 제안한 서포터가 아닙니다.");
         }
+        if (foundRunnerPost.isNotOwner(runner)) {
+            throw new RunnerPostBusinessException("RunnerPost 의 글쓴이와 다른 사용자입니다.");
+        }
 
-        return foundSupporter;
+        foundRunnerPost.assignSupporter(foundApplySupporter);
     }
 
     private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
         return !supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
     }
 
-    private RunnerPost findRunnerPostOfOwner(final Runner runner, final Long runnerPostId) {
-        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
-                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
-
-        if (foundRunnerPost.isNotOwner(runner)) {
-            throw new RunnerPostBusinessException("RunnerPost 의 글쓴이와 다른 사용자입니다.");
-        }
-
-        return foundRunnerPost;
-    }
 }
