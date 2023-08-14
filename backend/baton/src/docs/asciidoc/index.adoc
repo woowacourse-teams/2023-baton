@@ -15,6 +15,7 @@ endif::[]
 include::MemberLoginProfileReadApi.adoc[]
 
 == *[ 게시글 ]*
+
 include::RunnerPostUpdateApi.adoc[]
 
 == *[ 러너 ]*
@@ -23,4 +24,5 @@ include::RunnerProfileReadApi.adoc[]
 
 == *[ 서포터 ]*
 
+include::SupporterProfileReadApi.adoc[]
 include::SupporterProfileUpdateApi.adoc[]

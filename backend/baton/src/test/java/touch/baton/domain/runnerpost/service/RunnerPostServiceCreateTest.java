@@ -154,7 +154,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         // then
         assertSoftly(softly -> {
             softly.assertThatCode(() -> runnerPostService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId()))
-                            .doesNotThrowAnyException();
+                    .doesNotThrowAnyException();
             softly.assertThatThrownBy(() -> runnerPostService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId()))
                     .isInstanceOf(RunnerPostBusinessException.class);
         });

@@ -119,7 +119,6 @@ public class RunnerPostController {
                                                      @PathVariable final Long runnerPostId
     ) {
         runnerPostService.deleteByRunnerPostId(runnerPostId, runner);
-
         return ResponseEntity.noContent().build();
     }
 

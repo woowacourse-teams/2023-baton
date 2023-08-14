@@ -136,12 +136,17 @@ public class RunnerPostService {
 
     @Transactional
     public void deleteByRunnerPostId(final Long runnerPostId, final Runner runner) {
-        // FIXME: 2023/08/03 삭제 시 본인인지 확인하는 로직 넣기
-        final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.findById(runnerPostId);
-        if (maybeRunnerPost.isEmpty()) {
-            throw new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다.");
+        final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 삭제할 러너 게시글이 존재하지 않습니다."));
+        if (runnerPost.isNotOwner(runner)) {
+            throw new RunnerPostBusinessException("RunnerPost 를 게시한 유저가 아닙니다.");
         }
-
+        if (runnerPost.isReviewStatusStarted()) {
+            throw new RunnerPostBusinessException("삭제할 수 없는 상태의 리뷰 상태입니다.");
+        }
+        if (supporterRunnerPostRepository.existsByRunnerPostId(runnerPostId)) {
+            throw new RunnerPostBusinessException("지원자가 존재하여 삭제할 수 없습니다.");
+        }
         runnerPostRepository.deleteById(runnerPostId);
     }
 

@@ -26,6 +26,8 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
         """)
     Optional<Integer> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
+    boolean existsByRunnerPostId(final Long runnerPostId);
+
     void deleteBySupporterIdAndRunnerPostId(final Long supporterId, final Long runnerPostId);
 
     boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
