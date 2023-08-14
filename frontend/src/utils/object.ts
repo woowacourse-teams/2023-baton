@@ -4,7 +4,7 @@ interface ObjType {
   [key: string | number]: Primitive | Object | any[];
 }
 
-export function deepEqual(object1: ObjType, object2: ObjType): boolean {
+export const deepEqual = (object1: ObjType, object2: ObjType): boolean => {
   if (Array.isArray(object1) && Array.isArray(object2)) {
     if (object1.length !== object2.length) return false;
   }
@@ -24,4 +24,4 @@ export function deepEqual(object1: ObjType, object2: ObjType): boolean {
   }
 
   return true;
-}
+};
