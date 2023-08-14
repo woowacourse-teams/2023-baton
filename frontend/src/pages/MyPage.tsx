@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
+import { getRequest } from '@/api/fetch';
 
 export type PostOptions = SelectOption<ReviewStatus>[];
 
@@ -48,7 +49,6 @@ const MyPage = () => {
   const [isRunner, setIsRunner] = useState(true);
 
   const { getToken } = useToken();
-  const token = getToken();
 
   useEffect(() => {
     if (isRunner) {
@@ -57,77 +57,32 @@ const MyPage = () => {
   }, [isRunner]);
 
   useEffect(() => {
-    if (isRunner) {
-      const fetchRunnerMyPage = async () => {
-        const profileResult = await getRunnerProfile();
-        const postResult = await getRunnerPostList();
+    const fetchMyPageData = async (role: 'runner' | 'supporter') => {
+      const profileResult = await getProfile(role);
+      const postResult = await getPostList(role);
 
-        setMyPageProfile(profileResult);
-        setMyPagePostList(postResult);
-      };
+      setMyPageProfile(profileResult);
+      setMyPagePostList(postResult);
+    };
 
-      fetchRunnerMyPage();
-    } else {
-      const fetchSupporterMyPage = async () => {
-        const profileResult = await getSupporterProfile();
-        const postResult = await getSupporterPostList();
-
-        setMyPageProfile(profileResult);
-        setMyPagePostList(postResult);
-      };
-
-      fetchSupporterMyPage();
-    }
+    fetchMyPageData(isRunner ? 'runner' : 'supporter');
   }, [isRunner]);
 
-  const getRunnerProfile = async () => {
+  const getProfile = async (role: 'runner' | 'supporter') => {
+    const token = getToken()?.value;
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-    const response = await fetch(`${BATON_BASE_URL}/profile/runner/me`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const data = await response.json();
+    const data = await getRequest<GetMyPageProfileResponse>(`${BATON_BASE_URL}/profile/${role}/me`, `Bearer ${token}`);
 
     return data;
   };
 
-  const getRunnerPostList = async () => {
+  const getPostList = async (role: 'runner' | 'supporter') => {
+    const token = getToken()?.value;
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/me/runner`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const data = await response.json();
-
-    return data;
-  };
-
-  const getSupporterProfile = async () => {
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
-
-    const response = await fetch(`${BATON_BASE_URL}/profile/supporter/me`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const data = await response.json();
-
-    return data;
-  };
-
-  const getSupporterPostList = async () => {
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
-
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/me/supporter`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    const data = await response.json();
+    const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
+    const data = await getRequest<GetMyPagePost>(`${BATON_BASE_URL}/posts/${rolePath}`, `Bearer ${token}`);
 
     return data;
   };
