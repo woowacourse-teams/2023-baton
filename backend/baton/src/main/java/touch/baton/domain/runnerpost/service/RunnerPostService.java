@@ -143,7 +143,7 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest request) {
+    public Long updateRunnerPost(final Long runnerPostId, final Runner runner, final RunnerPostUpdateRequest.Default request) {
         // TODO: 메소드 분리
         // FIXME: 2023/08/03 주인 확인 로직 넣기
         final RunnerPost runnerPost = runnerPostRepository.findById(runnerPostId)
@@ -221,4 +221,29 @@ public class RunnerPostService {
         }
         supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
     }
+
+    @Transactional
+    public void updateRunnerPostAppliedSupporter(final Runner runner,
+                                                 final Long runnerPostId,
+                                                 final RunnerPostUpdateRequest.SelectSupporter request
+    ) {
+        final Supporter foundApplySupporter = supporterRepository.findById(request.supporterId())
+                .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
+        final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+
+        if (isApplySupporter(runnerPostId, foundApplySupporter)) {
+            throw new RunnerPostBusinessException("게시글에 리뷰를 제안한 서포터가 아닙니다.");
+        }
+        if (foundRunnerPost.isNotOwner(runner)) {
+            throw new RunnerPostBusinessException("RunnerPost 의 글쓴이와 다른 사용자입니다.");
+        }
+
+        foundRunnerPost.assignSupporter(foundApplySupporter);
+    }
+
+    private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
+        return !supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
+    }
+
 }
