@@ -69,7 +69,7 @@ public class RunnerPostAssuredSupport {
         }
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_삭제한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.delete("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값);
+            response = AssuredSupport.delete("/api/v1/posts/runner/{runnerPostId}", accessToken, "runnerPostId", 러너_게시글_식별자값);
             return this;
         }
 

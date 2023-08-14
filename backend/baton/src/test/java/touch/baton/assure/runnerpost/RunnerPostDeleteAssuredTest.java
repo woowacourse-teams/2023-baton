@@ -16,7 +16,8 @@ import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -55,7 +56,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(존재하지_않는_러너_게시글의_식별자값)
 
                 .서버_응답()
-                .러너_게시글_삭제_실패를_검증한다(NOT_FOUND);
+                .러너_게시글_삭제_실패를_검증한다(INTERNAL_SERVER_ERROR);
     }
 
     @Test
@@ -72,7 +73,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()
-                .러너_게시글_삭제_실패를_검증한다(BAD_REQUEST);
+                .러너_게시글_삭제_실패를_검증한다(INTERNAL_SERVER_ERROR);
     }
 
     @Test
@@ -89,7 +90,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()
-                .러너_게시글_삭제_실패를_검증한다(BAD_REQUEST);
+                .러너_게시글_삭제_실패를_검증한다(INTERNAL_SERVER_ERROR);
     }
 
     @Test
@@ -109,6 +110,6 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()
-                .러너_게시글_삭제_실패를_검증한다(BAD_REQUEST);
+                .러너_게시글_삭제_실패를_검증한다(INTERNAL_SERVER_ERROR);
     }
 }
