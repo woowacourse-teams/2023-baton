@@ -15,10 +15,13 @@ endif::[]
 ==== *리뷰할 서포터 선택 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-supporter/http-request.adoc[]
 
 ===== *Http Request Header*
+
 include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-supporter/request-headers.adoc[]
 
 ===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-post-update-api-test/update-runner-post-supporter/http-response.adoc[]
