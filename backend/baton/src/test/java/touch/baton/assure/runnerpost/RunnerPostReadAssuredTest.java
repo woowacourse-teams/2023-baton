@@ -54,7 +54,6 @@ public class RunnerPostReadAssuredTest extends AssuredTestConfig {
     }
 
     private RunnerPost 러너_게시글을_등록한다(final Runner 러너) {
-
         return runnerPostRepository.save(RunnerPostFixture.create(러너, deadline(now().plusHours(100))));
     }
 
