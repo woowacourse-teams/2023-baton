@@ -5,5 +5,5 @@ import touch.baton.domain.supporter.SupporterRunnerPost;
 
 public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRunnerPost, Long> {
 
-    int deleteBySupporterIdAndRunnerPostId(final Long supporterId, final Long runnerPostId);
+    void deleteBySupporterIdAndRunnerPostId(final Long supporterId, final Long runnerPostId);
 }
