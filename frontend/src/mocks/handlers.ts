@@ -79,6 +79,7 @@ export const handlers = [
     const { name, company, introduction, technicalTags } = await req.json();
 
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+  }),
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
