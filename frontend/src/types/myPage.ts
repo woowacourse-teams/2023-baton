@@ -3,7 +3,7 @@ import { ReviewStatus } from './runnerPost';
 
 export interface GetMyPageProfileResponse extends Profile {}
 
-export interface GetMyPagePost {
+export interface GetMyPagePostResponse {
   data: MyPagePost[];
 }
 
