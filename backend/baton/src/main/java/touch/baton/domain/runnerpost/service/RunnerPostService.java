@@ -249,6 +249,10 @@ public class RunnerPostService {
         return runnerPostRepository.findByRunnerId(runnerId);
     }
 
+    public List<Integer> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
+        return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+    }
+
     public Page<RunnerPost> readRunnerPostsByRunnerIdAndReviewStatus(final Pageable pageable,
                                                                      final Long runnerId,
                                                                      final ReviewStatus reviewStatus) {

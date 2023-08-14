@@ -144,7 +144,9 @@ public record RunnerPostResponse() {
                                  LocalDateTime deadline,
                                  List<String> tags,
                                  int watchedCount,
-                                 int applicantCount
+                                 int applicantCount,
+                                 String reviewStatus
+
 
     ) {
 
@@ -156,7 +158,8 @@ public record RunnerPostResponse() {
                     runnerPost.getDeadline().getValue(),
                     convertToTags(runnerPost),
                     runnerPost.getWatchedCount().getValue(),
-                    applicantCount
+                    applicantCount,
+                    runnerPost.getReviewStatus().name()
             );
         }
     }
