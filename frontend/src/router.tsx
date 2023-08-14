@@ -9,12 +9,13 @@ import CreationResultPage from './pages/CreationResultPage';
 import MyPage from './pages/MyPage';
 import GithubCallbackPage from './pages/GithubCallbackPage';
 import ProfileEditPage from './pages/ProfileEditPage';
+import SupporterSelectPage from './pages/SupporterSelectPage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
   RUNNER_POST: '/runner-post/:runnerPostId',
   RUNNER_POST_CREATE: '/runner-post-create/',
-  SUPPORTER_SELECT: '/supporter-select',
+  SUPPORTER_SELECT: '/supporter-select/:runnerPostId',
   MY_PAGE: '/my-page',
   LOGIN: '/login',
   NOT_FOUND: '/*',
@@ -57,6 +58,10 @@ export const router = createBrowserRouter(
           element: <ProfileEditPage />,
         },
         { path: ROUTER_PATH.GITHUB_CALLBACK, element: <GithubCallbackPage /> },
+        {
+          path: ROUTER_PATH.SUPPORTER_SELECT,
+          element: <SupporterSelectPage />,
+        },
       ],
     },
   ],
