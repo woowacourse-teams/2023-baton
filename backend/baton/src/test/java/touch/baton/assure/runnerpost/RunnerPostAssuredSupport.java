@@ -10,10 +10,13 @@ import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.domain.common.response.PageResponse;
+import touch.baton.domain.runner.Runner;
+import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +32,20 @@ public class RunnerPostAssuredSupport {
 
     public static RunnerPostClientRequestBuilder 클라이언트_요청() {
         return new RunnerPostClientRequestBuilder();
+    }
+
+    public static RunnerPostResponse.Detail 러너_게시글_Detail_응답(final Long 러너_게시글_식별자값,
+                                                             final String 제목,
+                                                             final String 내용,
+                                                             final String 풀_리퀘스트,
+                                                             final LocalDateTime 마감기한,
+                                                             final int 조회수,
+                                                             final ReviewStatus 리뷰_상태,
+                                                             final boolean 주인_여부,
+                                                             final Runner 러너,
+                                                             final List<String> 태그_목록
+    ) {
+        return new RunnerPostResponse.Detail(러너_게시글_식별자값, 제목, 내용, 풀_리퀘스트, 마감기한, 조회수, 리뷰_상태, 주인_여부, RunnerResponse.Detail.from(러너), 태그_목록);
     }
 
     public static PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터가_리뷰_완료한_러너_게시글_응답(final Pageable 페이징_정보,
