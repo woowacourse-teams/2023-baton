@@ -31,7 +31,6 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
 
 import java.net.URI;
 import java.util.List;
@@ -75,11 +74,11 @@ public class RunnerPostController {
                                                           @PathVariable final Long runnerPostId,
                                                           @RequestBody @Valid final RunnerPostApplicantCreateRequest request
     ) {
-        final SupporterRunnerPost savedRunnerPostApplicant = runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
+        runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
 
         final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
                 .path("/{runnerPostId}")
-                .buildAndExpand(savedRunnerPostApplicant.getRunnerPost().getId())
+                .buildAndExpand(runnerPostId)
                 .toUri();
 
         return ResponseEntity.created(redirectUri).build();

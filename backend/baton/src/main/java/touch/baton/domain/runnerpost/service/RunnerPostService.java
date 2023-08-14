@@ -202,7 +202,7 @@ public class RunnerPostService {
     }
 
     @Transactional
-    public SupporterRunnerPost createRunnerPostApplicant(final Supporter supporter,
+    public Long createRunnerPostApplicant(final Supporter supporter,
                                                          final RunnerPostApplicantCreateRequest request,
                                                          final Long runnerPostId
     ) {
@@ -218,7 +218,7 @@ public class RunnerPostService {
                 .message(new Message(request.message()))
                 .build();
 
-        return supporterRunnerPostRepository.save(runnerPostApplicant);
+        return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
     }
 
     public List<RunnerPost> readAllRunnerPosts() {

@@ -100,16 +100,19 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
 
         // when
         final RunnerPostApplicantCreateRequest request = new RunnerPostApplicantCreateRequest("안녕하세요. 서포터 헤나입니다.");
-        final SupporterRunnerPost savedRunnerPostApplicant = runnerPostService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId());
+        final Long savedRunnerPostApplicantId = runnerPostService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId());
+
+        final Optional<SupporterRunnerPost> maybeRunnerPostApplicant = supporterRunnerPostRepository.findById(savedRunnerPostApplicantId);
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(savedRunnerPostApplicant.getId())
+            softly.assertThat(maybeRunnerPostApplicant).isPresent();
+            softly.assertThat(maybeRunnerPostApplicant.get().getId())
                     .isNotNull()
-                    .isEqualTo(savedRunnerPostApplicant.getId());
-            softly.assertThat(savedRunnerPostApplicant.getSupporter()).isEqualTo(savedSupporterHyena);
-            softly.assertThat(savedRunnerPostApplicant.getRunnerPost()).isEqualTo(savedRunnerPost);
-            softly.assertThat(savedRunnerPostApplicant.getMessage().getValue()).isEqualTo(request.message());
+                    .isEqualTo(maybeRunnerPostApplicant.get().getId());
+            softly.assertThat(maybeRunnerPostApplicant.get().getSupporter()).isEqualTo(savedSupporterHyena);
+            softly.assertThat(maybeRunnerPostApplicant.get().getRunnerPost()).isEqualTo(savedRunnerPost);
+            softly.assertThat(maybeRunnerPostApplicant.get().getMessage().getValue()).isEqualTo(request.message());
         });
     }
 }
