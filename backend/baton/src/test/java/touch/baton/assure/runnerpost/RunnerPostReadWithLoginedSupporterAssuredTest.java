@@ -51,6 +51,7 @@ public class RunnerPostReadWithLoginedSupporterAssuredTest extends AssuredTestCo
                 ReviewStatus.NOT_STARTED
         ));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(대기중인_게시글, 로그인된_서포터));
+
         리뷰중인_게시글 = runnerPostRepository.save(RunnerPostFixture.create(
                 러너_누군가,
                 로그인된_서포터,
@@ -58,6 +59,7 @@ public class RunnerPostReadWithLoginedSupporterAssuredTest extends AssuredTestCo
                 ReviewStatus.IN_PROGRESS
         ));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(리뷰중인_게시글, 로그인된_서포터));
+
         완료된_게시글 = runnerPostRepository.save(RunnerPostFixture.create(
                 러너_누군가,
                 로그인된_서포터,
