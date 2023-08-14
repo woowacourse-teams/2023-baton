@@ -47,6 +47,9 @@ const MyPage = () => {
   const [postOptions, setPostOptions] = useState<PostOptions>(RUNNER_POST_OPTIONS);
   const [isRunner, setIsRunner] = useState(true);
 
+  const { getToken } = useToken();
+  const token = getToken();
+
   useEffect(() => {
     if (isRunner) {
       setPostOptions(RUNNER_POST_OPTIONS);
@@ -76,9 +79,6 @@ const MyPage = () => {
       fetchSupporterMyPage();
     }
   }, [isRunner]);
-
-  const token =
-    'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXRvbiIsImlhdCI6MTY5MTY3MjUwNCwiZXhwIjoxNjk0MjY0NTA0LCJzb2NpYWxJZCI6Imd5ZW9uZ3phIn0.CWUC0Q9Qlw4oRC_CNm-aVKNNGYYUKuVplz16WdreFC8';
 
   const getRunnerProfile = async () => {
     if (!token) throw new Error('토큰이 존재하지 않습니다');
