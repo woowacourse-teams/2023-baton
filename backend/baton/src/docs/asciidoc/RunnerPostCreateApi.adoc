@@ -15,10 +15,13 @@ endif::[]
 ==== *러너 게시글 생성 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post/http-request.adoc[]
 
 ===== *Http Request Header*
+
 include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post/request-headers.adoc[]
 
 ===== *Http Response Header*
+
 include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post/response-headers.adoc[]
