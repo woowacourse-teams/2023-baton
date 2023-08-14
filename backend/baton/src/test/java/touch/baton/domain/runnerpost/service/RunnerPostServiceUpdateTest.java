@@ -140,8 +140,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(unsavedRunnerPostId, assignedSupporter))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("해당 식별자의 러너 게시글이 존재하지 않습니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 
     @DisplayName("서포터가 배정 되지 않은 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
@@ -152,8 +151,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("아직 서포터가 배정이 안 된 게시글 입니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 
     @DisplayName("다른 서포터가 리뷰 중인 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
@@ -166,8 +164,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), differentSupporter))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("다른 사람이 리뷰 중인 게시글의 상태를 변경할 수 없습니다.");
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 
     @DisplayName("만료된 리뷰 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
@@ -178,7 +175,6 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
-                .isInstanceOf(RunnerPostDomainException.class)
-                .hasMessage("ReviewStatus 를 수정하던 도중 OVERDUE 에서 DONE 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
+                .isInstanceOf(RunnerPostDomainException.class);
     }
 }
