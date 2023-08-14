@@ -51,7 +51,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                         applicantSupporter,
                         new Deadline(LocalDateTime.now().plusHours(100))
                 ));
-        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(applicantSupporter, runnerPost);
+        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
         supporterRunnerPostRepository.save(supporterRunnerPost);
 
         // when
@@ -71,7 +71,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                         applicantSupporter,
                         new Deadline(LocalDateTime.now().plusHours(100))
                 ));
-        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(applicantSupporter, runnerPost);
+        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
         supporterRunnerPostRepository.save(supporterRunnerPost);
         runnerPostRepository.delete(runnerPost);
 
@@ -91,7 +91,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                         new Deadline(LocalDateTime.now().plusHours(100)),
                         ReviewStatus.IN_PROGRESS
                 ));
-        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(applicantSupporter, runnerPost);
+        final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
         supporterRunnerPostRepository.save(supporterRunnerPost);
 
 

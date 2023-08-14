@@ -60,7 +60,7 @@ public class SupporterRunnerPostDeleteAssuredTest extends AssuredTestConfig {
     }
 
     private void 서포터가_러너_게시글에_리뷰_제안한다(final Supporter 서포터, final RunnerPost 러너_게시글) {
-        final SupporterRunnerPost 리뷰_제안 = SupporterRunnerPostFixture.create(서포터, 러너_게시글);
+        final SupporterRunnerPost 리뷰_제안 = SupporterRunnerPostFixture.create(러너_게시글, 서포터);
         supporterRunnerPostRepository.save(리뷰_제안);
     }
 }

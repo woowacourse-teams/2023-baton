@@ -18,16 +18,22 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
     private SupporterRunnerPostRepository supporterRunnerPostRepository;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Autowired
     private RunnerRepository runnerRepository;
@@ -82,30 +88,26 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
                 .supporter(supporter)
                 .message(new Message("안녕하세요. 서포터 헤나입니다."))
                 .build();
-
-    @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
-    private EntityManager entityManager;
+    }
 
     @DisplayName("서포터의_러너_게시글_리뷰_제안을_철회하는데_성공한다")
     @Test
     void deleteBySupporterAndRunnerPostId() {
         // given
-        entityManager.persist(reviewerMember);
-        final Member reviewerMember = MemberFixture.createDitoo();
-        final Supporter reviewerSupporter = SupporterFixture.create(reviewerMember);
-        entityManager.persist(reviewerSupporter);
+        final Member reviewerMember = memberRepository.save(MemberFixture.createDitoo());
+        final Supporter reviewerSupporter = supporterRepository.save(SupporterFixture.create(reviewerMember));
 
-        final Member revieweeMember = MemberFixture.createJudy();
-        entityManager.persist(revieweeMember);
-        final Runner revieweeRunner = RunnerFixture.createRunner(revieweeMember);
-        entityManager.persist(revieweeRunner);
-        final RunnerPost runnerPost = RunnerPostFixture.create(revieweeRunner, reviewerSupporter, new Deadline(LocalDateTime.now().plusHours(100)));
-        entityManager.persist(runnerPost);
+        final Member revieweeMember = memberRepository.save(MemberFixture.createJudy());
+        final Runner revieweeRunner = runnerRepository.save(RunnerFixture.createRunner(revieweeMember));
 
-        final SupporterRunnerPost deletedSupporterRunnerPost = SupporterRunnerPostFixture.create(reviewerSupporter, runnerPost);
-        entityManager.persist(deletedSupporterRunnerPost);
+        final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
+                revieweeRunner,
+                reviewerSupporter,
+                deadline(LocalDateTime.now().plusHours(100))
+        ));
+
+        final SupporterRunnerPost deletedSupporterRunnerPost = supporterRunnerPostRepository.save(
+                SupporterRunnerPostFixture.create(runnerPost, reviewerSupporter));
 
         // when
         supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(reviewerSupporter.getId(), runnerPost.getId());
@@ -114,4 +116,3 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
         assertThat(supporterRunnerPostRepository.findById(deletedSupporterRunnerPost.getId())).isNotPresent();
     }
 }
-    }

@@ -46,9 +46,6 @@ public abstract class AssuredTestConfig {
     @Autowired
     protected SupporterRunnerPostRepository supporterRunnerPostRepository;
 
-    @Autowired
-    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
-
     @MockBean
     private JwtDecoder jwtDecoder;
 
