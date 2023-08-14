@@ -45,20 +45,12 @@ const ProfileEditPage = () => {
       e.target.value = '';
     }
 
-    if (e.target.value.slice(-2) === '  ') {
-      e.target.value = e.target.value.slice(0, -1);
-    }
-
     setName(e.target.value);
   };
 
   const handleChangeCompany = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === ' ') {
       e.target.value = '';
-    }
-
-    if (e.target.value.slice(-2) === '  ') {
-      e.target.value = e.target.value.slice(0, -1);
     }
 
     setCompany(e.target.value);
@@ -76,7 +68,7 @@ const ProfileEditPage = () => {
     setTechnicalTags(newTags);
   };
 
-  const UpdateProfileInputValue = (profile: Profile) => {
+  const updateProfileInputValue = (profile: Profile) => {
     const newProfile = structuredClone(profile);
 
     setName(newProfile.name);
@@ -100,8 +92,11 @@ const ProfileEditPage = () => {
     if (!introduction) return alert('자기소개를 입력해주세요');
     if (!technicalTags) return;
 
-    setRunnerProfile({ ...runnerProfile, name, company, introduction, technicalTags });
-    patchRunnerProfile({ name, company, introduction, technicalTags });
+    const newInfo = { name: name.trim(), company: company.trim(), introduction: introduction.trim(), technicalTags };
+
+    setRunnerProfile({ ...runnerProfile, ...newInfo });
+    updateProfileInputValue({ ...runnerProfile, ...newInfo });
+    patchRunnerProfile(newInfo);
   };
 
   const saveSupporterProfile = () => {
@@ -114,8 +109,11 @@ const ProfileEditPage = () => {
     if (!introduction) return alert('자기소개를 입력해주세요');
     if (!technicalTags) return;
 
-    setSupporterProfile({ ...supporterProfile, name, company, introduction, technicalTags });
-    patchSupporterProfile({ name, company, introduction, technicalTags });
+    const newInfo = { name: name.trim(), company: company.trim(), introduction: introduction.trim(), technicalTags };
+
+    setSupporterProfile({ ...supporterProfile, ...newInfo });
+    updateProfileInputValue({ ...supporterProfile, ...newInfo });
+    patchSupporterProfile(newInfo);
   };
 
   const confirmTagSelect = (tags: TechnicsType[]) => {
@@ -133,7 +131,7 @@ const ProfileEditPage = () => {
     }
 
     setIsRunner(true);
-    UpdateProfileInputValue(runnerProfile);
+    updateProfileInputValue(runnerProfile);
   };
 
   const handleClickSupporterButton = () => {
@@ -146,7 +144,7 @@ const ProfileEditPage = () => {
     }
 
     setIsRunner(false);
-    UpdateProfileInputValue(supporterProfile);
+    updateProfileInputValue(supporterProfile);
   };
 
   const openModal = () => {
@@ -194,7 +192,7 @@ const ProfileEditPage = () => {
       setRunnerProfile(result);
 
       if (isRunner) {
-        UpdateProfileInputValue(result);
+        updateProfileInputValue(result);
       }
     };
 
@@ -210,7 +208,7 @@ const ProfileEditPage = () => {
       setSupporterProfile(result);
 
       if (!isRunner) {
-        UpdateProfileInputValue(result);
+        updateProfileInputValue(result);
       }
     };
 
