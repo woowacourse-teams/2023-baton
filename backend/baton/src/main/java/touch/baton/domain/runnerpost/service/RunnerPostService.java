@@ -11,7 +11,6 @@ import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
-import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
@@ -203,13 +202,13 @@ public class RunnerPostService {
 
     @Transactional
     public Long createRunnerPostApplicant(final Supporter supporter,
-                                                         final RunnerPostApplicantCreateRequest request,
-                                                         final Long runnerPostId
+                                          final RunnerPostApplicantCreateRequest request,
+                                          final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = getRunnerPostOrThrowException(runnerPostId);
         final boolean isApplicantHistoryExist = supporterRunnerPostRepository.existsBySupporterAndRunnerPostId(supporter, runnerPostId);
         if (isApplicantHistoryExist) {
-            throw new RunnerPostDomainException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
+            throw new RunnerPostBusinessException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
         }
 
         final SupporterRunnerPost runnerPostApplicant = SupporterRunnerPost.builder()
