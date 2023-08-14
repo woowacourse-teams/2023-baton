@@ -59,9 +59,9 @@ public class AssuredSupport {
     public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .when().log().ifValidationFails()
-                .accept(APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .queryParams(queryParams)
+                .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();

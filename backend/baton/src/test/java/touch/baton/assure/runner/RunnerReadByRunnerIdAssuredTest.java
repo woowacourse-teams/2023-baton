@@ -13,7 +13,7 @@ import touch.baton.fixture.domain.TechnicalTagFixture;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class RunnerReadByRunnerIdAssuredTest extends AssuredTestConfig {
+class RunnerReadByRunnerIdAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너_프로필_조회에_성공한다() {
