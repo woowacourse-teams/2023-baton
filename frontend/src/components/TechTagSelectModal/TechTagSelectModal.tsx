@@ -2,50 +2,50 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '../common/Modal/Modal';
 import { TECHNICS } from '@/constants/tags';
-import { TechnicsType } from '@/types/tags';
+import { Technic } from '@/types/tags';
 import Button from '../common/Button/Button';
 import TechLabelButton from '../TechLabelButton/TechLabelButton';
 
 interface Props {
-  defaultTags?: TechnicsType[];
+  defaultTags?: Technic[];
   closeModal: () => void;
-  confirmTagSelect: (tags: TechnicsType[]) => void;
+  confirmTagSelect: (tags: Technic[]) => void;
 }
 
 const TechTagSelectModal = ({ defaultTags, closeModal, confirmTagSelect }: Props) => {
-  const [modalSelectTags, setModalSelectedTags] = useState<TechnicsType[]>([...(defaultTags ?? [])]);
+  const [SelectedTags, setSelectedTags] = useState<Technic[]>([...(defaultTags ?? [])]);
 
-  const pushModalTag = (tag: TechnicsType) => {
-    if (!modalSelectTags) return;
+  const pushTag = (tag: Technic) => {
+    if (!SelectedTags) return;
 
-    const newTags = [...modalSelectTags, tag].sort((a, b) => {
+    const newTags = [...SelectedTags, tag].sort((a, b) => {
       if (a > b) return 1;
       return -1;
     });
 
-    setModalSelectedTags(newTags);
+    setSelectedTags(newTags);
   };
 
-  const popModalTag = (tag: TechnicsType) => {
-    if (!modalSelectTags) return;
+  const popModalTag = (tag: Technic) => {
+    if (!SelectedTags) return;
 
-    const newTags = modalSelectTags.filter((item) => tag !== item);
-    setModalSelectedTags(newTags);
+    const newTags = SelectedTags.filter((item) => tag !== item);
+    setSelectedTags(newTags);
   };
 
-  const handleClickModalTag = (tag: TechnicsType) => {
-    if (!modalSelectTags) return;
-    if (modalSelectTags?.includes(tag)) {
+  const handleClickModalTag = (tag: Technic) => {
+    if (!SelectedTags) return;
+    if (SelectedTags?.includes(tag)) {
       popModalTag(tag);
 
       return;
     }
 
-    pushModalTag(tag);
+    pushTag(tag);
   };
 
   const handleClickConfirmButton = () => {
-    confirmTagSelect(modalSelectTags ?? []);
+    confirmTagSelect(SelectedTags ?? []);
   };
 
   return (
@@ -57,7 +57,7 @@ const TechTagSelectModal = ({ defaultTags, closeModal, confirmTagSelect }: Props
             <S.TagButtonWrapper key={tag}>
               <TechLabelButton
                 tag={tag}
-                $isSelected={modalSelectTags?.includes(tag) ?? false}
+                $isSelected={SelectedTags?.includes(tag) ?? false}
                 handleClickTag={handleClickModalTag}
               />
             </S.TagButtonWrapper>

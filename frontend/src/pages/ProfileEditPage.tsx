@@ -14,7 +14,7 @@ import {
   SupporterProfileRequest,
   SupporterProfileResponse,
 } from '@/types/profile';
-import { TechnicsType } from '@/types/tags';
+import { Technic } from '@/types/tags';
 import { deepEqual } from '@/utils/object';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -30,11 +30,11 @@ const ProfileEditPage = () => {
   const [name, setName] = useState<string | null>(null);
   const [company, setCompany] = useState<string | null>(null);
   const [introduction, setIntroduction] = useState<string | null>(null);
-  const [technicalTags, setTechnicalTags] = useState<TechnicsType[] | null>(null);
+  const [technicalTags, setTechnicalTags] = useState<Technic[] | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const isThereModification = isRunner
+  const isModified = isRunner
     ? !deepEqual({ ...runnerProfile }, { ...runnerProfile, name, company, introduction, technicalTags })
     : !deepEqual({ ...supporterProfile }, { ...supporterProfile, name, company, introduction, technicalTags });
 
@@ -61,7 +61,7 @@ const ProfileEditPage = () => {
     setIntroduction(newIntroduction);
   };
 
-  const popTag = (tag: TechnicsType) => {
+  const popTag = (tag: Technic) => {
     if (!technicalTags) return;
 
     const newTags = technicalTags.filter((item) => tag !== item);
@@ -89,7 +89,7 @@ const ProfileEditPage = () => {
   };
 
   const saveRunnerProfile = () => {
-    if (!isThereModification) return alert('수정된 내용이 없습니다');
+    if (!isModified) return alert('수정된 내용이 없습니다');
 
     if (!runnerProfile) return;
 
@@ -106,7 +106,7 @@ const ProfileEditPage = () => {
   };
 
   const saveSupporterProfile = () => {
-    if (!isThereModification) return alert('수정된 내용이 없습니다');
+    if (!isModified) return alert('수정된 내용이 없습니다');
 
     if (!supporterProfile) return;
 
@@ -122,7 +122,7 @@ const ProfileEditPage = () => {
     patchSupporterProfile(newInfo);
   };
 
-  const confirmTagSelect = (tags: TechnicsType[]) => {
+  const confirmTagSelect = (tags: Technic[]) => {
     setTechnicalTags([...tags]);
     closeModal();
   };
@@ -130,7 +130,7 @@ const ProfileEditPage = () => {
   const handleClickRunnerButton = () => {
     if (!runnerProfile) return alert('러너 프로필 정보를 불러오지 못했습니다');
 
-    if (isThereModification) {
+    if (isModified) {
       if (confirm('서포터 프로필에 수정 사항이 있습니다. 최근 편집된 내용을 저장할까요?')) {
         saveSupporterProfile();
       }
@@ -143,7 +143,7 @@ const ProfileEditPage = () => {
   const handleClickSupporterButton = () => {
     if (!supporterProfile) return alert('서포터 프로필 정보를 불러오지 못했습니다');
 
-    if (isThereModification) {
+    if (isModified) {
       if (confirm('러너 프로필에 수정 사항이 있습니다. 최근 편집된 내용을 저장할까요?')) {
         saveRunnerProfile();
       }
@@ -186,7 +186,7 @@ const ProfileEditPage = () => {
   };
 
   useEffect(() => {
-    const fetchRunnerProfile = async () => {
+    const getRunnerProfile = async () => {
       const token = getToken()?.value;
       if (!token) {
         return alert('토큰이 존재하지 않습니다');
@@ -202,7 +202,7 @@ const ProfileEditPage = () => {
       }
     };
 
-    const fetchSupporterProfile = async () => {
+    const getSupporterProfile = async () => {
       const token = getToken()?.value;
       if (!token) {
         return alert('토큰이 존재하지 않습니다');
@@ -218,8 +218,8 @@ const ProfileEditPage = () => {
       }
     };
 
-    fetchSupporterProfile();
-    fetchRunnerProfile();
+    getSupporterProfile();
+    getRunnerProfile();
   }, []);
 
   return (
@@ -248,7 +248,7 @@ const ProfileEditPage = () => {
             <S.SaveButtonWrapper>
               <Button
                 width="100px"
-                colorTheme={isThereModification ? 'WHITE' : 'GRAY'}
+                colorTheme={isModified ? 'WHITE' : 'GRAY'}
                 onClick={handleClickSaveButton}
                 fontWeight={700}
               >

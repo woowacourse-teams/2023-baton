@@ -6,18 +6,18 @@ import {
   TypescriptIconWhite,
 } from '@/assets/technicalLabelIcon';
 import { TECH_COLOR_MAP } from '@/constants/tags';
-import { TechnicsType } from '@/types/tags';
+import { Technic } from '@/types/tags';
 import React from 'react';
 import { styled } from 'styled-components';
 
 interface Props {
-  tag: TechnicsType;
-  handleClickTag: (tag: TechnicsType) => void;
+  tag: Technic;
+  handleClickTag: (tag: Technic) => void;
   $isSelected?: boolean;
   isDeleteButton?: boolean;
 }
 
-const TECH_ICON_MAP: Record<TechnicsType, JSX.Element> = {
+const TECH_ICON_MAP: Record<Technic, JSX.Element> = {
   javascript: <JavascriptIconWhite />,
   typescript: <TypescriptIconWhite />,
   react: <ReactIconWhite />,
@@ -25,7 +25,7 @@ const TECH_ICON_MAP: Record<TechnicsType, JSX.Element> = {
   spring: <SpringIconWhite />,
 };
 
-const TECH_GARY_ICON_MAP: Record<TechnicsType, JSX.Element> = {
+const TECH_GARY_ICON_MAP: Record<Technic, JSX.Element> = {
   javascript: <JavascriptIconWhite color="var(--gray-500)" />,
   typescript: <TypescriptIconWhite color="var(--gray-500)" />,
   react: <ReactIconWhite color="var(--gray-500)" />,

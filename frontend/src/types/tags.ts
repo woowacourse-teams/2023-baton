@@ -1,3 +1,3 @@
 import { TECHNICS } from '@/constants/tags';
 
-export type TechnicsType = (typeof TECHNICS)[number];
+export type Technic = (typeof TECHNICS)[number];

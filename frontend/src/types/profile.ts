@@ -1,5 +1,5 @@
 import { ReviewStatus } from './runnerPost';
-import { TechnicsType } from './tags';
+import { Technic } from './tags';
 
 export interface GetRunnerProfileResponse {
   profile: Profile;
@@ -30,5 +30,5 @@ export interface Profile {
   imageUrl: string;
   githubUrl: string;
   introduction: string;
-  technicalTags: TechnicsType[];
+  technicalTags: Technic[];
 }
