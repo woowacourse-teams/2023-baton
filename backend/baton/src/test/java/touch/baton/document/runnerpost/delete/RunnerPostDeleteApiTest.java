@@ -1,4 +1,4 @@
-package touch.baton.document.runnerpost.read;
+package touch.baton.document.runnerpost.delete;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,7 +26,6 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
@@ -67,8 +66,6 @@ public class RunnerPostDeleteApiTest extends RestdocsConfig {
                         pathParameters(
                                 parameterWithName("runnerPostId").description("러너 게시글 식별자값")
                         )
-                ))
-                .andDo(print());
-
+                ));
     }
 }

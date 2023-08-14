@@ -138,7 +138,7 @@ public class RunnerPostService {
         if (runnerPost.isNotOwner(runner)) {
             throw new RunnerPostBusinessException("RunnerPost 를 게시한 유저가 아닙니다.");
         }
-        if (runnerPost.isReviewStatusNotSameAsNotStarted()) {
+        if (runnerPost.isReviewStatusStarted()) {
             throw new RunnerPostBusinessException("삭제할 수 없는 상태의 리뷰 상태입니다.");
         }
         if (supporterRunnerPostRepository.existsByRunnerPostId(runnerPostId)) {

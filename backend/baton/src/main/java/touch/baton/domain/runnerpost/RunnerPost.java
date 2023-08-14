@@ -246,7 +246,7 @@ public class RunnerPost extends BaseEntity {
         return !runner.equals(targetRunner);
     }
 
-    public boolean isReviewStatusNotSameAsNotStarted() {
+    public boolean isReviewStatusStarted() {
         return reviewStatus.isNotSameAsNotStarted();
     }
 
