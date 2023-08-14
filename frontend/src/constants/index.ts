@@ -9,4 +9,8 @@ export const REVIEW_STATUS_LABEL_TEXT: { [key in ReviewStatus]: string } = {
   DONE: '리뷰 완료',
 };
 
+export const REVIEW_STATUS: ReviewStatus[] = Object.keys(REVIEW_STATUS_LABEL_TEXT) as ReviewStatus[];
+export const RUNNER_POST_OPTIONS = ['대기중인 리뷰', '진행중인 리뷰', '완료된 리뷰'];
+export const SUPPORTER_POST_OPTIONS = ['신청한 리뷰', '진행중인 리뷰', '완료된 리뷰'];
+
 export const ACCESS_TOKEN_LOCAL_STORAGE_KEY = 'ACCESS_TOKEN';

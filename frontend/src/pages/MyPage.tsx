@@ -6,54 +6,25 @@ import { BATON_BASE_URL } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetMyPagePost, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
-import { ReviewStatus } from '@/types/runnerPost';
-import { SelectOption } from '@/types/select';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { getRequest } from '@/api/fetch';
-
-export type PostOptions = SelectOption<ReviewStatus>[];
-
-const createPostOptions = (labels: string[]): PostOptions => {
-  return [
-    {
-      value: 'NOT_STARTED',
-      label: labels[0],
-      selected: true,
-    },
-    {
-      value: 'IN_PROGRESS',
-      label: labels[1],
-      selected: false,
-    },
-    {
-      value: 'DONE',
-      label: labels[2],
-      selected: false,
-    },
-  ];
-};
-
-const runnerPostLabels = ['대기중인 리뷰', '진행중인 리뷰', '완료된 리뷰'];
-const supporterPostLabels = ['신청한 리뷰', '진행중인 리뷰', '완료된 리뷰'];
-
-export const RUNNER_POST_OPTIONS = createPostOptions(runnerPostLabels);
-export const SUPPORTER_POST_OPTIONS = createPostOptions(supporterPostLabels);
+import { PostOptions, runnerPostOptions, supportPostOptions } from '@/utils/postOption';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
   const [myPagePostList, setMyPagePostList] = useState<GetMyPagePost | null>(null);
-  const [postOptions, setPostOptions] = useState<PostOptions>(RUNNER_POST_OPTIONS);
+  const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
   const [isRunner, setIsRunner] = useState(true);
 
   const { getToken } = useToken();
 
   useEffect(() => {
     if (isRunner) {
-      setPostOptions(RUNNER_POST_OPTIONS);
-    } else setPostOptions(SUPPORTER_POST_OPTIONS);
+      setPostOptions(runnerPostOptions);
+    } else setPostOptions(supportPostOptions);
   }, [isRunner]);
 
   useEffect(() => {
