@@ -247,7 +247,7 @@ public class RunnerPost extends BaseEntity {
     }
 
     public boolean isReviewStatusStarted() {
-        return reviewStatus.isNotSameAsNotStarted();
+        return !(reviewStatus.isNotStarted() || reviewStatus.isOverdue());
     }
 
     public boolean isDifferentSupporter(final Supporter targetSupporter) {
