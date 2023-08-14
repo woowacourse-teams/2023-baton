@@ -54,7 +54,7 @@ const TechTagSelectModal = ({ defaultTags, closeModal, confirmTagSelect }: Props
             <S.TagButtonWrapper key={tag}>
               <TechLabelButton
                 tag={tag}
-                $isSelected={SelectedTags?.includes(tag) ?? false}
+                isSelected={SelectedTags?.includes(tag) ?? false}
                 handleClickTag={handleClickModalTag}
               />
             </S.TagButtonWrapper>

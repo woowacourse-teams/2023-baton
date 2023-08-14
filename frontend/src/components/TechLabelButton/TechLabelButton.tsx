@@ -13,7 +13,7 @@ import { styled } from 'styled-components';
 interface Props {
   tag: Technic;
   handleClickTag: (tag: Technic) => void;
-  $isSelected?: boolean;
+  isSelected?: boolean;
   isDeleteButton?: boolean;
 }
 
@@ -33,14 +33,14 @@ const TECH_GARY_ICON_MAP: Record<Technic, JSX.Element> = {
   spring: <SpringIconWhite color="var(--gray-500)" />,
 };
 
-const TechLabelButton = ({ tag, $isSelected = true, handleClickTag, isDeleteButton }: Props) => {
+const TechLabelButton = ({ tag, isSelected = true, handleClickTag, isDeleteButton }: Props) => {
   const handleClick = () => {
     handleClickTag(tag);
   };
 
   return (
-    <S.TagSelectButton type="button" $isSelected={$isSelected} $color={TECH_COLOR_MAP[tag]} onClick={handleClick}>
-      {$isSelected ? TECH_ICON_MAP[tag] : TECH_GARY_ICON_MAP[tag]}
+    <S.TagSelectButton type="button" $isSelected={isSelected} $color={TECH_COLOR_MAP[tag]} onClick={handleClick}>
+      {isSelected ? TECH_ICON_MAP[tag] : TECH_GARY_ICON_MAP[tag]}
       {isDeleteButton ? `${tag} X` : tag}
     </S.TagSelectButton>
   );
