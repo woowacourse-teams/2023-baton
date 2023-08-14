@@ -65,7 +65,7 @@ public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
         final Supporter 선택된_서포터 = supporterRepository.save(SupporterFixture.create(사용자_디투));
         final String 서포터_디투_토큰 = login(디투_소셜_아이디);
 
-        final RunnerPost 서포터가_배정된_게시글 = runnerPostRepository.save(RunnerPostFixture.create(글_쓴_러너, 선택된_서포터, IN_PROGRESS));
+        final RunnerPost 서포터가_배정된_게시글 = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(글_쓴_러너, 선택된_서포터, IN_PROGRESS));
 
         // when, then
         RunnerPostAssuredSupport

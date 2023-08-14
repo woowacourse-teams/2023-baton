@@ -10,7 +10,6 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
-import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -22,7 +21,6 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagsFixture;
-import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
@@ -206,7 +204,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void updateRunnerPostReviewStatusDone() {
         // given
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, assignedSupporter, IN_PROGRESS));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS));
 
         // when
         runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter);
@@ -222,7 +220,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void fail_updateRunnerPostReviewStatusDone_if_invalid_runnerPostId() {
         // given
-        runnerPostRepository.save(RunnerPostFixture.create(runner, assignedSupporter, IN_PROGRESS));
+        runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS));
         final Long unsavedRunnerPostId = 100000L;
 
         // when, then
@@ -234,7 +232,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void fail_updateRunnerPostReviewStatusDone_if_supporter_is_null() {
         // given
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, null, IN_PROGRESS));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, null, IN_PROGRESS));
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
@@ -245,7 +243,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void fail_updateRunnerPostReviewStatusDone_if_different_supporter_is_assigned() {
         // given
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, assignedSupporter, IN_PROGRESS));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS));
         final Member differentMember = memberRepository.save(MemberFixture.createHyena());
         final Supporter differentSupporter = supporterRepository.save(SupporterFixture.create(differentMember));
 
@@ -258,7 +256,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     @Test
     void fail_updateRunnerPostReviewStatusDone_if_reviewStatus_is_overdue() {
         // given
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, assignedSupporter, OVERDUE));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, OVERDUE));
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
