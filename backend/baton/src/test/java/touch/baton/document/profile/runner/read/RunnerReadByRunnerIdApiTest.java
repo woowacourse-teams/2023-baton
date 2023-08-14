@@ -28,6 +28,8 @@ import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -64,6 +66,9 @@ public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("runnerId").description("러너 식별자값")
+                        ),
                         responseFields(
                                 fieldWithPath("runnerId").type(NUMBER).description("러너 식별자값"),
                                 fieldWithPath("name").type(STRING).description("러너 이름"),
