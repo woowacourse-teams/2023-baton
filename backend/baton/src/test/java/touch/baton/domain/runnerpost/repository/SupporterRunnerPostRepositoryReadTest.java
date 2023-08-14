@@ -20,8 +20,7 @@ import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
@@ -54,19 +53,14 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
         final Supporter supporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runner, supporter));
 
+        final Long notSavedRunnerPostId = -1L;
+        final Long notSavedSupporter = -1L;
+
         // when, then
-        assertAll(
-                () -> assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), supporter.getId()))
-                        .isTrue(),
-                () -> {
-                    final Long notSavedRunnerPostId = 10000L;
-                    assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(notSavedRunnerPostId, supporter.getId()))
-                            .isFalse();
-                },
-                () -> {
-                    final Long notSavedSupporter = 10000L;
-                    assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), notSavedSupporter))
-                            .isFalse();
+        assertSoftly(softly -> {
+                    softly.assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), supporter.getId())).isTrue();
+                    softly.assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(notSavedRunnerPostId, supporter.getId())).isFalse();
+                    softly.assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), notSavedSupporter)).isFalse();
                 }
         );
     }
