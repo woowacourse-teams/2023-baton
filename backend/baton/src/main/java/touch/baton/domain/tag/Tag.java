@@ -38,16 +38,16 @@ public class Tag {
         this.tagName = tagName;
     }
 
-    public static Tag newInstance(final String tagName) {
-        return Tag.builder()
-                .tagName(new TagName(tagName))
-                .build();
-    }
-
     private void validateNotNull(final TagName tagName) {
         if (Objects.isNull(tagName)) {
             throw new TagDomainException("Tag 의 tagName 은 null 일 수 없습니다.");
         }
+    }
+
+    public static Tag newInstance(final String tagName) {
+        return Tag.builder()
+                .tagName(new TagName(tagName))
+                .build();
     }
 
     public boolean isSameTagName(final String tagName) {

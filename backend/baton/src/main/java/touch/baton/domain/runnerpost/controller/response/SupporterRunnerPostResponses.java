@@ -4,10 +4,10 @@ import java.util.List;
 
 public record SupporterRunnerPostResponses() {
 
-    public record All(List<SupporterRunnerPostResponse.Detail> data) {
+    public record Detail(List<SupporterRunnerPostResponse.Detail> data) {
 
-        public static All from(final List<SupporterRunnerPostResponse.Detail> data) {
-            return new SupporterRunnerPostResponses.All(data);
+        public static Detail from(final List<SupporterRunnerPostResponse.Detail> data) {
+            return new Detail(data);
         }
     }
 }

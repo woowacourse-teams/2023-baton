@@ -9,7 +9,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.Runner;
+import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
@@ -35,6 +37,7 @@ import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -62,6 +65,12 @@ class RunnerPostReadApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
+
+    @MockBean
+    private MemberRepository memberRepository;
+
+    @MockBean
+    private RunnerRepository runnerRepository;
 
     @BeforeEach
     void setUp() {
@@ -107,13 +116,10 @@ class RunnerPostReadApiTest extends RestdocsConfig {
         // given
         final Member member = MemberFixture.createHyena();
         final Runner runner = RunnerFixture.createRunner(member);
-        oauthMemberRepository.save(member);
-        oauthRunnerRepository.save(runner);
         final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
         final Tag javaTag = TagFixture.create(tagName("자바"));
         final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline, List.of(javaTag));
         final RunnerPost spyRunnerPost = spy(runnerPost);
-
 
         final Supporter supporter = SupporterFixture.create(MemberFixture.createJudy());
         final Supporter spySupporter = spy(supporter);

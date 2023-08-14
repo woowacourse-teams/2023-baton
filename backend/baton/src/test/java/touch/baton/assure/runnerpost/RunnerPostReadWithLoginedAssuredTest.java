@@ -84,24 +84,15 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         final Supporter 서포터_주디 = supporterRepository.save(SupporterFixture.create(사용자_주디));
         final SupporterRunnerPost 서포터_러너_게시글 = supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(러너_게시글, 서포터_주디));
 
+        final SupporterRunnerPostResponse.Detail 서포토_러너_게시글_응답 = SupporterRunnerPostResponse.Detail.from(서포터_러너_게시글);
+        final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답들 = SupporterRunnerPostResponses.Detail.from(List.of(서포토_러너_게시글_응답));
+
         RunnerPostAssuredSupport
                 .클라이언트_요청()
                 .토큰으로_로그인한다(로그인용_토큰)
                 .러너_게시글_식별자값으로_서포터_러너_게시글을_조회한다(러너_게시글.getId())
 
                 .서버_응답()
-                .서포터_러너_게시글_조회_성공을_검증한다(new SupporterRunnerPostResponses.All(
-                        List.of(new SupporterRunnerPostResponse.Detail(
-                                서포터_주디.getId(),
-                                서포터_러너_게시글.getSupporter().getMember().getMemberName().getValue(),
-                                서포터_러너_게시글.getSupporter().getMember().getCompany().getValue(),
-                                서포터_러너_게시글.getSupporter().getReviewCount().getValue(),
-                                서포터_러너_게시글.getSupporter().getMember().getImageUrl().getValue(),
-                                서포터_러너_게시글.getMessage().getValue(),
-                                서포터_러너_게시글.getSupporter().getSupporterTechnicalTags().getSupporterTechnicalTags().stream()
-                                        .map(supporterTechnicalTag -> supporterTechnicalTag.getTechnicalTag().getTagName().getValue())
-                                        .toList()
-                        ))
-                ));
+                .서포터_러너_게시글_조회_성공을_검증한다(서포터_러너_게시글_응답들);
     }
 }

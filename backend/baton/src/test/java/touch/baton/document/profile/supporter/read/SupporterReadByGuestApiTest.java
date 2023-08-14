@@ -60,7 +60,6 @@ class SupporterReadByGuestApiTest extends RestdocsConfig {
         when(spySupporter.getId()).thenReturn(1L);
         when(supporterService.readBySupporterId(spySupporter.getId())).thenReturn(spySupporter);
 
-
         // then
         mockMvc.perform(get("/api/v1/profile/supporter/{supporterId}", 1L))
                 .andExpect(status().isOk())

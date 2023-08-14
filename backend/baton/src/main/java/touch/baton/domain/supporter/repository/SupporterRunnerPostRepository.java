@@ -41,5 +41,5 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
 
     boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
 
-    List<SupporterRunnerPost> readAllByRunnerPostId(final Long runnerPostId);
+    List<SupporterRunnerPost> readByRunnerPostId(final Long runnerPostId);
 }

@@ -9,14 +9,6 @@ import java.util.List;
 
 public record RunnerPostResponse() {
 
-    private static List<String> convertToTags(final RunnerPost runnerPost) {
-        return runnerPost.getRunnerPostTags()
-                .getRunnerPostTags()
-                .stream()
-                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
-                .toList();
-    }
-
     public record Detail(Long runnerPostId,
                          String title,
                          String contents,
@@ -168,5 +160,13 @@ public record RunnerPostResponse() {
                     runnerPost.getReviewStatus().name()
             );
         }
+    }
+
+    private static List<String> convertToTags(final RunnerPost runnerPost) {
+        return runnerPost.getRunnerPostTags()
+                .getRunnerPostTags()
+                .stream()
+                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
+                .toList();
     }
 }

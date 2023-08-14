@@ -23,10 +23,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
-import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
 
-import java.util.List;
 import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -211,8 +208,8 @@ public class RunnerPostAssuredSupport {
             );
         }
 
-        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.All 서포터_러너_게시글_응답) {
-            final List<SupporterRunnerPostResponse.Detail> actual = this.response.as(SupporterRunnerPostResponses.All.class).data();
+        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답) {
+            final List<SupporterRunnerPostResponse.Detail> actual = this.response.as(SupporterRunnerPostResponses.Detail.class).data();
 
             assertThat(actual).hasSize(서포터_러너_게시글_응답.data().size());
 

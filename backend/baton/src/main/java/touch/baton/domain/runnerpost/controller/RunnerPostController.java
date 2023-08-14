@@ -109,13 +109,14 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}/supporters")
-    public ResponseEntity<SupporterRunnerPostResponses.All> readAll(@AuthRunnerPrincipal final Runner runner,
-                                                                    @PathVariable final Long runnerPostId) {
-        final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner.getId(), runnerPostId).stream()
+    public ResponseEntity<SupporterRunnerPostResponses.Detail> readAll(@AuthRunnerPrincipal final Runner runner,
+                                                                       @PathVariable final Long runnerPostId
+    ) {
+        final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner, runnerPostId).stream()
                 .map(supporterRunnerPost -> SupporterRunnerPostResponse.Detail.from(supporterRunnerPost))
                 .toList();
 
-        return ResponseEntity.ok(SupporterRunnerPostResponses.All.from(responses));
+        return ResponseEntity.ok(SupporterRunnerPostResponses.Detail.from(responses));
     }
 
     @GetMapping("/{runnerPostId}/test")
