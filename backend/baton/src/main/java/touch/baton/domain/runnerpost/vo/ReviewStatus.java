@@ -21,6 +21,10 @@ public enum ReviewStatus {
         return this != NOT_STARTED;
     }
 
+    public boolean isOverdue() {
+        return this == OVERDUE;
+    }
+
     public boolean isNotStarted() {
         return this == NOT_STARTED;
     }

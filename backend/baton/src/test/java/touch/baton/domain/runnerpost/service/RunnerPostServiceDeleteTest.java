@@ -1,33 +1,25 @@
 package touch.baton.domain.runnerpost.service;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.RunnerPostTags;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.supporter.Supporter;
+import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostServiceDeleteTest extends ServiceTestConfig {
 
@@ -44,62 +36,84 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
         );
     }
 
-    @Disabled
     @DisplayName("RunnerPost 식별자값으로 RunnerPost 을 삭제한다.")
     @Test
     void success_deleteByRunnerPostId() {
         // given
-        final Member member = Member.builder()
-                .memberName(new MemberName("헤에디주"))
-                .socialId(new SocialId("testSocialId"))
-                .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
-                .githubUrl(new GithubUrl("github.com/hyena0608"))
-                .company(new Company("우아한형제들"))
-                .build();
-        memberRepository.saveAndFlush(member);
-
-        final Runner runner = Runner.builder()
-                .member(member)
-                .build();
-        runnerRepository.saveAndFlush(runner);
-
-        final RunnerPost runnerPost = RunnerPost.builder()
-                .title(new Title("제 코드 리뷰 좀 해주세요!!"))
-                .contents(new Contents("제 코드는 클린코드가 맞을까요?"))
-                .deadline(new Deadline(LocalDateTime.now()))
-                .pullRequestUrl(new PullRequestUrl("https://"))
-                .watchedCount(new WatchedCount(0))
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .runner(runner)
-                .supporter(null)
-                .build();
-        final Long saveRunnerPostId = runnerPostRepository.saveAndFlush(runnerPost).getId();
-
-        final Tag tag = Tag.builder()
-                .tagName(new TagName("자바"))
-                .build();
-        tagRepository.save(tag);
-
-        final RunnerPostTag runnerPostTag = RunnerPostTag.builder()
-                .runnerPost(runnerPost)
-                .tag(tag)
-                .build();
-        runnerPostTagRepository.save(runnerPostTag);
+        final Member member = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
+        final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(10))));
 
         // when
-        runnerPostService.deleteByRunnerPostId(saveRunnerPostId, runner);
+        runnerPostService.deleteByRunnerPostId(runnerPost.getId(), runner);
 
         // then
-        assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(saveRunnerPostId))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다.");
+        assertThat(runnerPostRepository.existsById(runnerPost.getId())).isFalse();
     }
 
-    @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 을 삭제 시도할 경우 예외가 발생한다.")
+    @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 를 삭제 시도할 경우 예외가 발생한다.")
     @Test
     void fail_deleteByRunnerPostId_if_runnerPost_is_null() {
-        assertThatThrownBy(() -> runnerPostService.readByRunnerPostId(0L))
-                .isInstanceOf(RunnerPostBusinessException.class)
-                .hasMessage("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다.");
+        final Member member = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
+        assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(0L, runner))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("RunnerPost 를 작성하지 않은 Runner 가 삭제 시도할 경우 예외가 발생한다.")
+    @Test
+    void fail_deleteByRunnerPostId_if_not_owner() {
+        // given
+        final Member memberRunnerPostOwner = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(memberRunnerPostOwner));
+        final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
+                runnerPostOwner,
+                deadline(LocalDateTime.now().plusHours(10))
+        ));
+        final Member memberRunnerPostNotOwner = memberRepository.save(MemberFixture.createJudy());
+        final Runner runnerPostNotOwner = runnerRepository.save(RunnerFixture.createRunner(memberRunnerPostNotOwner));
+
+        // when & then
+        assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(runnerPost.getId(), runnerPostNotOwner))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("NOT_STARTED 상태가 아닌 RunnerPost 를 삭제 시도할 경우 예외가 발생한다.")
+    @Test
+    void fail_deleteByRunnerPostId_if_reviewStatus_is_not_NOT_STARTED() {
+        // given
+        final Member memberRunner = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(memberRunner));
+        final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
+                runner,
+                deadline(LocalDateTime.now().plusHours(10))
+        ));
+        final Member memberSupporter = memberRepository.save(MemberFixture.createEthan());
+        final Supporter supporter = supporterRepository.save(SupporterFixture.create(memberSupporter));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+        runnerPost.assignSupporter(supporter);
+
+        // when & then
+        assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(runnerPost.getId(), runner))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("지원한 서포터가 있는 경우에 RunnerPost 를 삭제 시도할 경우 예외가 발생한다.")
+    @Test
+    void fail_deleteByRunnerPostId_if_applicant_is_exist() {
+        // given
+        final Member member = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
+        final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
+                runner,
+                deadline(LocalDateTime.now().plusHours(10))
+        ));
+        final Member memberSupporter = memberRepository.save(MemberFixture.createEthan());
+        final Supporter supporter = supporterRepository.save(SupporterFixture.create(memberSupporter));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+
+        // when & then
+        assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(runnerPost.getId(), runner))
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 }

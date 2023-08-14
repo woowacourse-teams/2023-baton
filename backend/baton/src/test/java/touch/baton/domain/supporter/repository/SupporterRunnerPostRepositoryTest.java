@@ -25,6 +25,7 @@ import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
@@ -76,10 +77,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
                 savedRunnerPostThree.getId(),
                 savedRunnerPostFour.getId()
         );
-        final List<Integer> foundRunnerPostsApplicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+        final List<Long> foundRunnerPostsApplicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
 
         // then
-        assertThat(foundRunnerPostsApplicantCounts).containsExactly(1, 1, 1, 1);
+        assertThat(foundRunnerPostsApplicantCounts).containsExactly(1L, 1L, 1L, 1L);
     }
 
     private SupporterRunnerPost createSupporterRunnerPost(final Supporter supporter, final RunnerPost runnerPost) {
@@ -88,6 +89,32 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
                 .supporter(supporter)
                 .message(new Message("안녕하세요. 서포터 헤나입니다."))
                 .build();
+    }
+
+    @DisplayName("RunnerPost 외래키로 된 SupporterRunnerPost 가 존재하는지 확인한다.")
+    @Test
+    void existsByRunnerPostId() {
+        // given
+        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
+        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        final RunnerPost runnerPostOfApplicantExist = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+        final RunnerPost runnerPostOfApplicantNotExist = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+        runnerPostOfApplicantExist.assignSupporter(savedSupporterHyena);
+        supporterRunnerPostRepository.save(createSupporterRunnerPost(savedSupporterHyena, runnerPostOfApplicantExist));
+
+        // when
+        final boolean actualOfExist = supporterRunnerPostRepository.existsByRunnerPostId(runnerPostOfApplicantExist.getId());
+        final boolean actualOfNotExist = supporterRunnerPostRepository.existsByRunnerPostId(runnerPostOfApplicantNotExist.getId());
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actualOfExist).isTrue();
+            softly.assertThat(actualOfNotExist).isFalse();
+        });
     }
 
     @DisplayName("서포터의 러너 게시글 리뷰 제안을 철회하는데 성공한다")
