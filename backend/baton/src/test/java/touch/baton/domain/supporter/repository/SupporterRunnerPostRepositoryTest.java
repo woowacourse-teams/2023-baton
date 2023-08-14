@@ -90,7 +90,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
                 .build();
     }
 
-    @DisplayName("서포터의_러너_게시글_리뷰_제안을_철회하는데_성공한다")
+    @DisplayName("서포터의 러너 게시글 리뷰 제안을 철회하는데 성공한다")
     @Test
     void deleteBySupporterAndRunnerPostId() {
         // given

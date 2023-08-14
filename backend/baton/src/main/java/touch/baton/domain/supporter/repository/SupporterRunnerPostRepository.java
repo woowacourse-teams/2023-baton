@@ -10,11 +10,11 @@ import java.util.List;
 public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRunnerPost, Long> {
 
     @Query("""
-        select count(1)
-        from SupporterRunnerPost srp
-        group by srp.runnerPost.id
-        having srp.runnerPost.id in (:runnerPostIds)
-        """)
+            select count(1)
+            from SupporterRunnerPost srp
+            group by srp.runnerPost.id
+            having srp.runnerPost.id in (:runnerPostIds)
+            """)
     List<Integer> countByRunnerPostIdIn(@Param("runnerPostIds") final List<Long> runnerPostIds);
 
     void deleteBySupporterIdAndRunnerPostId(final Long supporterId, final Long runnerPostId);

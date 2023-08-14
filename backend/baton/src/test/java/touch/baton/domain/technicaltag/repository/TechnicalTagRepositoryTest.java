@@ -32,8 +32,8 @@ class TechnicalTagRepositoryTest extends RepositoryTestConfig {
 
         // then
         assertSoftly(softly -> {
-           softly.assertThat(actual).isPresent();
-           softly.assertThat(expected).isEqualTo(actual.get());
+            softly.assertThat(actual).isPresent();
+            softly.assertThat(expected).isEqualTo(actual.get());
         });
     }
 
