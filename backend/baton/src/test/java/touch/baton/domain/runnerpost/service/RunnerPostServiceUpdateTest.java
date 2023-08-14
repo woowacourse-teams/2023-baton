@@ -9,14 +9,19 @@ import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagsFixture;
+import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.ContentsFixture.contents;
@@ -41,6 +47,10 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     private static final LocalDateTime DEADLINE = LocalDateTime.now().plusHours(100);
     private static final String CONTENTS = "싸게 부탁드려요.";
 
+    private static Runner runnerPostOwner;
+    private static RunnerPost targetRunnerPost;
+    private static Supporter applySupporter;
+
     private RunnerPostService runnerPostService;
 
     @BeforeEach
@@ -52,13 +62,22 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
                 supporterRepository,
                 supporterRunnerPostRepository
         );
+
+        final Member ehtanMember = memberRepository.save(MemberFixture.createEthan());
+        runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
+        targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
+                deadline(LocalDateTime.now().plusDays(10))));
+
+        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        applySupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(targetRunnerPost, applySupporter));
     }
 
     @DisplayName("Runner Post 수정에 성공한다.")
     @Test
     void success() {
         // given
-        final RunnerPostUpdateRequest request = new RunnerPostUpdateRequest(
+        final RunnerPostUpdateRequest.Default request = new RunnerPostUpdateRequest.Default(
                 TITLE, List.of(TAG, OTHER_TAG), PULL_REQUEST_URL, DEADLINE, CONTENTS);
         final Member ditoo = MemberFixture.createDitoo();
         memberRepository.save(ditoo);
@@ -96,5 +115,77 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
                         .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                         .toList()
         ).containsExactly(TAG, OTHER_TAG);
+    }
+
+    @DisplayName("러너는 자신의 글에 제안한 서포터를 서포터로 선택할 수 있다.")
+    @Test
+    void updateRunnerPostAppliedSupporter() {
+        // given
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
+
+        // when
+        runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, targetRunnerPost.getId(), request);
+
+        // then
+        final Optional<RunnerPost> maybeRunnerPost = runnerPostRepository.findById(targetRunnerPost.getId());
+        assertThat(maybeRunnerPost).isPresent();
+
+        final RunnerPost actualRunnerPost = maybeRunnerPost.get();
+        assertAll(
+                () -> assertThat(actualRunnerPost.getSupporter().getId()).isEqualTo(applySupporter.getId()),
+                () -> assertThat(actualRunnerPost.getReviewStatus()).isEqualTo(ReviewStatus.IN_PROGRESS)
+        );
+    }
+
+    @DisplayName("러너는 가입되어 있지 않는 서포터를 선택할 수 없다.")
+    @Test
+    void fail_updateRunnerPostAppliedSupporter_if_not_join_supporter() {
+        // given
+        final Long notJoinSupporterId = 1000000L;
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(notJoinSupporterId);
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, targetRunnerPost.getId(), request))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("러너는 자신의 글에 제안한 서포터가 아니면 서포터로 선택할 수 없다.")
+    @Test
+    void fail_updateRunnerPostAppliedSupporter_if_not_apply_supporter() {
+        // given
+        final Member ditooMember = memberRepository.save(MemberFixture.createDitoo());
+        final Supporter notApplySupporter = supporterRepository.save(SupporterFixture.create(ditooMember));
+
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(notApplySupporter.getId());
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, targetRunnerPost.getId(), request))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("러너는 작성된 글이 아니면 서포터를 선택할 수 없다.")
+    @Test
+    void fail_updateRunnerPostAppliedSupporter_if_is_not_written_runnerPost() {
+        // given
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
+        final Long notWrittenRunnerPostId = 1000000L;
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(runnerPostOwner, notWrittenRunnerPostId, request))
+                .isInstanceOf(RunnerPostBusinessException.class);
+    }
+
+    @DisplayName("러너는 자신의 글이 아니면 서포터를 선택할 수 없다.")
+    @Test
+    void fail_updateRunnerPostAppliedSupporter_if_is_not_owner_of_runnerPost() {
+        // given
+        final Member ditooMember = memberRepository.save(MemberFixture.createDitoo());
+        final Runner notOwnerRunner = runnerRepository.save(RunnerFixture.createRunner(ditooMember));
+
+        final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
+
+        // when, then
+        assertThatThrownBy(() -> runnerPostService.updateRunnerPostAppliedSupporter(notOwnerRunner, targetRunnerPost.getId(), request))
+                .isInstanceOf(RunnerPostBusinessException.class);
     }
 }

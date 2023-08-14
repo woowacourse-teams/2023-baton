@@ -22,4 +22,6 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
 
     boolean existsBySupporterAndRunnerPostId(@Param("supporter") final Supporter supporter,
                                              @Param("runnerPostId") final Long runnerPostId);
+
+    boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
 }
