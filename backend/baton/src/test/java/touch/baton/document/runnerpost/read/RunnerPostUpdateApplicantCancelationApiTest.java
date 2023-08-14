@@ -74,8 +74,7 @@ public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig 
 
         // when
         when(spyRunnerPost.getId()).thenReturn(1L);
-        when(oauthSupporterRepository.joinByMemberSocialId(any()))
-                .thenReturn(Optional.ofNullable(supporter));
+        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
         runnerPostService.deleteSupporterRunnerPost(any(), eq(1L));
 
         // then
