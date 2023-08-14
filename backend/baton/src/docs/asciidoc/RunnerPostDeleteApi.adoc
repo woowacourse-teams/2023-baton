@@ -15,10 +15,13 @@ endif::[]
 ==== *러너 게시글 삭제 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-post-delete-api-test/delete-by-runner-post-id/http-request.adoc[]
 
 ===== *Http Request Path Parameters*
+
 include::{snippets}/../../build/generated-snippets/runner-post-delete-api-test/delete-by-runner-post-id/path-parameters.adoc[]
 
 ===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-post-delete-api-test/delete-by-runner-post-id/http-response.adoc[]

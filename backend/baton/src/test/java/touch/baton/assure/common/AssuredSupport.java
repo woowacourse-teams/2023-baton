@@ -148,7 +148,7 @@ public class AssuredSupport {
                 .then().log().ifError()
                 .extract();
     }
-    
+
     public static ExtractableResponse<Response> delete(final String uri, final String accessToken, final String pathParamName, final Long id) {
         return RestAssured
                 .given().log().ifValidationFails()
