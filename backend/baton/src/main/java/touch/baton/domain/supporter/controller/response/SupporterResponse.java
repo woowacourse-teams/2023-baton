@@ -49,6 +49,27 @@ public record SupporterResponse() {
         }
     }
 
+    public record MyProfile(
+            String name,
+            String imageUrl,
+            String githubUrl,
+            String introduction,
+            String company,
+            List<String> technicalTags
+    ) {
+
+        public static MyProfile from(final Supporter supporter) {
+            return new SupporterResponse.MyProfile(
+                    supporter.getMember().getMemberName().getValue(),
+                    supporter.getMember().getImageUrl().getValue(),
+                    supporter.getMember().getGithubUrl().getValue(),
+                    supporter.getIntroduction().getValue(),
+                    supporter.getMember().getCompany().getValue(),
+                    convertToTechnicalTags(supporter)
+            );
+        }
+    }
+
     private static List<String> convertToTechnicalTags(final Supporter supporter) {
         return supporter.getSupporterTechnicalTags().getSupporterTechnicalTags()
                 .stream()
