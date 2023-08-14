@@ -81,8 +81,7 @@ public class Runner extends BaseEntity {
 
     private Introduction defaultIntroductionIfNull(final Introduction introduction) {
         if (Objects.isNull(introduction.getValue())) {
-            return Introduction.getDefaultValue();
-            //return new Introduction(Introduction.getDefaultValue());
+            return Introduction.getDefaultIntroduction();
         }
         return introduction;
     }

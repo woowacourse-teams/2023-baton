@@ -75,7 +75,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너의_게시글_식별자값으로_서포터_러너_게시글_조회에_성공한다() {
-        final Member 사용자_헤나 = memberRepository.save(MemberFixture.createJudy());
+        final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
         final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 사용자_헤나));
         final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(LocalDateTime.now().plusHours(100))));
         final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
@@ -84,8 +84,8 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         final Supporter 서포터_주디 = supporterRepository.save(SupporterFixture.create(사용자_주디));
         final SupporterRunnerPost 서포터_러너_게시글 = supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(러너_게시글, 서포터_주디));
 
-        final SupporterRunnerPostResponse.Detail 서포토_러너_게시글_응답 = SupporterRunnerPostResponse.Detail.from(서포터_러너_게시글);
-        final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답들 = SupporterRunnerPostResponses.Detail.from(List.of(서포토_러너_게시글_응답));
+        final SupporterRunnerPostResponse.Detail 서포터_러너_게시글_응답 = SupporterRunnerPostResponse.Detail.from(서포터_러너_게시글);
+        final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답들 = SupporterRunnerPostResponses.Detail.from(List.of(서포터_러너_게시글_응답));
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()

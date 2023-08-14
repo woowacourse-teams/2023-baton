@@ -25,7 +25,7 @@ public class Introduction {
         this.value = value;
     }
 
-    public static Introduction getDefaultValue() {
+    public static Introduction getDefaultIntroduction() {
         return new Introduction(DEFAULT_VALUE);
     }
 }

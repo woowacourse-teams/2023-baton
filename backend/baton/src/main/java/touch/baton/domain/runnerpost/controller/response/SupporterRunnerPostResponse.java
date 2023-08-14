@@ -24,11 +24,11 @@ public record SupporterRunnerPostResponse() {
                     supporterRunnerPost.getSupporter().getReviewCount().getValue(),
                     supporterRunnerPost.getSupporter().getMember().getImageUrl().getValue(),
                     supporterRunnerPost.getMessage().getValue(),
-                    getTechnicalTags(supporterRunnerPost.getSupporter())
+                    convertToTechnicalTags(supporterRunnerPost.getSupporter())
             );
         }
 
-        private static List<String> getTechnicalTags(final Supporter supporter) {
+        private static List<String> convertToTechnicalTags(final Supporter supporter) {
             return supporter.getSupporterTechnicalTags().getSupporterTechnicalTags().stream()
                     .map(supporterTechnicalTag -> supporterTechnicalTag.getTechnicalTag().getTagName().getValue())
                     .toList();

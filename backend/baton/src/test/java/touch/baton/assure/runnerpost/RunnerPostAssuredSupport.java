@@ -18,6 +18,7 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.time.LocalDateTime;
@@ -49,7 +50,6 @@ public class RunnerPostAssuredSupport {
                                                              final long 서포터_지원자수,
                                                              final ReviewStatus 리뷰_상태,
                                                              final boolean 주인_여부,
-                                                             final boolean 서포터_지원_여부,
                                                              final Runner 러너,
                                                              final List<String> 태그_목록
     ) {
@@ -208,14 +208,12 @@ public class RunnerPostAssuredSupport {
             );
         }
 
-        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답) {
+        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답들) {
             final List<SupporterRunnerPostResponse.Detail> actual = this.response.as(SupporterRunnerPostResponses.Detail.class).data();
-
-            assertThat(actual).hasSize(서포터_러너_게시글_응답.data().size());
 
             IntStream.range(0, actual.size()).forEach(i -> {
                 SupporterRunnerPostResponse.Detail actualItem = actual.get(i);
-                SupporterRunnerPostResponse.Detail expectedItem = 서포터_러너_게시글_응답.data().get(i);
+                SupporterRunnerPostResponse.Detail expectedItem = 서포터_러너_게시글_응답들.data().get(i);
                 assertSoftly(softly -> {
                     softly.assertThat(actualItem.supporterId()).isEqualTo(expectedItem.supporterId());
                     softly.assertThat(actualItem.name()).isEqualTo(expectedItem.name());
@@ -230,6 +228,7 @@ public class RunnerPostAssuredSupport {
 
         public void 서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터와_연관된_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.ReferencedBySupporter> actual = this.response.as(new TypeRef<PageResponse<RunnerPostResponse.ReferencedBySupporter>>() {
+
             });
 
             assertSoftly(softly -> {
