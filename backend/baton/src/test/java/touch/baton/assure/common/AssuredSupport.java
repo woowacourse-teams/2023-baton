@@ -50,15 +50,10 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri,
-                                                    final String pathParamName,
-                                                    final Long id,
-                                                    final String accessToken
-    ) {
+    public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .pathParam(pathParamName, id)
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
@@ -75,10 +70,15 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
+    public static ExtractableResponse<Response> get(final String uri,
+                                                    final String pathParamName,
+                                                    final Long id,
+                                                    final String accessToken
+    ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
+                .pathParam(pathParamName, id)
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
@@ -97,9 +97,10 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object params) {
+    public static ExtractableResponse<Response> get(final String uri, final String accessToken, final Map<String, Object> queryParams) {
         return RestAssured
                 .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
                 .contentType(APPLICATION_JSON_VALUE)
                 .queryParams(queryParams)
                 .when().log().ifValidationFails()
@@ -127,12 +128,12 @@ public class AssuredSupport {
     }
 
 
-    public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object params) {
+    public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object requestBody) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(params)
+                .body(requestBody)
                 .when().log().ifValidationFails()
                 .patch(uri)
                 .then().log().ifError()

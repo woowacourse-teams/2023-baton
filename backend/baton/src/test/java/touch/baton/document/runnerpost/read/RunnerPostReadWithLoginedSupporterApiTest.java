@@ -99,7 +99,7 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
         when(runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
         when(runnerPostService.readCountsByRunnerPostIds(anyList()))
-                .thenReturn(List.of(1));
+                .thenReturn(List.of(1L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/me/supporter")

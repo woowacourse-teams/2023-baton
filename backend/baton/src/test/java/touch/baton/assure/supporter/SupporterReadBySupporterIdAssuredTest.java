@@ -43,7 +43,7 @@ class SupporterReadBySupporterIdAssuredTest extends AssuredTestConfig {
         final String 서포터_디투_토큰 = login(디투_소셜_아이디);
 
         // when, then
-        SupporterProfileAssuredSupport
+        SupporterAssuredSupport
                 .클라이언트_요청()
                 .로그인_한다(서포터_디투_토큰)
                 .서포터_마이페이지를_토큰으로_조회한다()

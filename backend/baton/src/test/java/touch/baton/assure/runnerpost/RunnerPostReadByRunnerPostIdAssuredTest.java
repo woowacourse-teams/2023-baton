@@ -42,10 +42,11 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
                         러너_게시글.getPullRequestUrl().getValue(),
                         러너_게시글.getDeadline().getValue(),
                         watchedCount(1).getValue(),
+                        0L,
                         ReviewStatus.NOT_STARTED,
                         true,
-                        RunnerResponse.Detail.from(러너_헤나),
-                        new ArrayList<>()
+                        new ArrayList<>(),
+                        RunnerResponse.Detail.from(러너_헤나)
                 ));
     }
 }
