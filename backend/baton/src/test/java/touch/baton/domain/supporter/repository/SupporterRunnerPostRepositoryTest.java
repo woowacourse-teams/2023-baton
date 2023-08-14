@@ -77,10 +77,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
                 savedRunnerPostThree.getId(),
                 savedRunnerPostFour.getId()
         );
-        final List<Integer> foundRunnerPostsApplicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+        final List<Long> foundRunnerPostsApplicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
 
         // then
-        assertThat(foundRunnerPostsApplicantCounts).containsExactly(1, 1, 1, 1);
+        assertThat(foundRunnerPostsApplicantCounts).containsExactly(1L, 1L, 1L, 1L);
     }
 
     private SupporterRunnerPost createSupporterRunnerPost(final Supporter supporter, final RunnerPost runnerPost) {
