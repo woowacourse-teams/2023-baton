@@ -34,8 +34,8 @@ public class SupporterProfileController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<SupporterResponse.MyProfile> readMyProfileByToken(@AuthSupporterPrincipal Supporter supporter) {
-        final SupporterResponse.MyProfile response = SupporterResponse.MyProfile.from(supporter);
+    public ResponseEntity<SupporterResponse.MyProfile> readSupporterMyProfileByLoginToken(@AuthSupporterPrincipal final Supporter loginedSupporter) {
+        final SupporterResponse.MyProfile response = SupporterResponse.MyProfile.from(loginedSupporter);
 
         return ResponseEntity.ok(response);
     }

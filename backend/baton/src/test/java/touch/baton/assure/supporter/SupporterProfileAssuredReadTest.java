@@ -33,14 +33,14 @@ class SupporterProfileAssuredReadTest extends AssuredTestConfig {
     @Test
     void 서포터_마이페이지_프로필을_조회한다() {
         // given
-        final String ditooSocialId = "hongsile";
-        final Member 사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(ditooSocialId));
+        final String 디투_소셜_아이디 = "hongsile";
+        final Member 사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(디투_소셜_아이디));
 
         final TechnicalTag 자바_태그 = technicalTagRepository.save(TechnicalTagFixture.createJava());
         final TechnicalTag 리액트_태그 = technicalTagRepository.save(TechnicalTagFixture.createReact());
 
         final Supporter 서포터_디투 = supporterRepository.save(SupporterFixture.create(사용자_디투, List.of(자바_태그, 리액트_태그)));
-        final String 서포터_디투_토큰 = login(ditooSocialId);
+        final String 서포터_디투_토큰 = login(디투_소셜_아이디);
 
         // when, then
         SupporterProfileAssuredSupport
@@ -50,17 +50,37 @@ class SupporterProfileAssuredReadTest extends AssuredTestConfig {
 
                 .서버_응답()
                 .서포터_마이페이지_프로필_조회_성공을_검증한다(new SupporterResponse.MyProfile(
-                        사용자_디투.getMemberName().getValue(),
-                        사용자_디투.getImageUrl().getValue(),
-                        사용자_디투.getGithubUrl().getValue(),
-                        서포터_디투.getIntroduction().getValue(),
-                        사용자_디투.getCompany().getValue(),
-                        서퐅_기술_스택(서포터_디투)
+                        이름(사용자_디투),
+                        이미지_주소(사용자_디투),
+                        깃허브_주소(사용자_디투),
+                        소개(서포터_디투),
+                        소속(사용자_디투),
+                        서포터_기술_스택(서포터_디투)
                 ));
     }
 
-    private List<String> 서퐅_기술_스택(final Supporter 서포터_디투) {
-        return 서포터_디투.getSupporterTechnicalTags().getSupporterTechnicalTags().stream()
+    private String 이름(final Member 사용자) {
+        return 사용자.getMemberName().getValue();
+    }
+
+    private String 이미지_주소(final Member 사용자) {
+        return 사용자.getImageUrl().getValue();
+    }
+
+    private String 깃허브_주소(final Member 사용자) {
+        return 사용자.getGithubUrl().getValue();
+    }
+
+    private String 소개(final Supporter 서포터) {
+        return 서포터.getIntroduction().getValue();
+    }
+
+    private String 소속(final Member 사용자) {
+        return 사용자.getCompany().getValue();
+    }
+
+    private List<String> 서포터_기술_스택(final Supporter 서포터) {
+        return 서포터.getSupporterTechnicalTags().getSupporterTechnicalTags().stream()
                 .map(supporterTechnicalTag -> supporterTechnicalTag.getTechnicalTag().getTagName().getValue())
                 .toList();
     }
