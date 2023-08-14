@@ -15,6 +15,7 @@ include::MemberLoginProfileReadApi.adoc[]
 
 == *[ 러너 ]*
 include::RunnerProfileReadApi.adoc[]
+include::RunnerPostCreateApi.adoc[]
 
 == *[ 서포터 ]*
 include::SupporterProfileUpdateApi.adoc[]
