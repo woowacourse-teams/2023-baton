@@ -83,7 +83,7 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
         // then
         final RunnerPostApplicantCreateRequest request = new RunnerPostApplicantCreateRequest("안녕하세요, 서포터 헤나입니다.");
 
-        mockMvc.perform(post("/api/v1/posts/runner/{runnerPostId}/applicant", spyRunnerPost.getId())
+        mockMvc.perform(post("/api/v1/posts/runner/{runnerPostId}/application", spyRunnerPost.getId())
                         .header(AUTHORIZATION, "Bearer " + token)
                         .contentType(APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(request)))

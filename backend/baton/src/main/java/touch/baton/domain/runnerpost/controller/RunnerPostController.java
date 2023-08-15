@@ -73,7 +73,7 @@ public class RunnerPostController {
         return ResponseEntity.created(redirectUri).build();
     }
 
-    @PostMapping("{runnerPostId}/applicant")
+    @PostMapping("{runnerPostId}/application")
     public ResponseEntity<Void> createRunnerPostApplicant(@AuthSupporterPrincipal final Supporter supporter,
                                                           @PathVariable final Long runnerPostId,
                                                           @RequestBody @Valid final RunnerPostApplicantCreateRequest request
