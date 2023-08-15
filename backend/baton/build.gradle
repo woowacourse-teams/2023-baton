@@ -29,8 +29,8 @@ repositories {
 
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
-	set('restDocsCopyFrom', 'build/docs/asciidoc')
-	set('restDocsCopyInto', 'src/main/resources/static/docs')
+	set('restDocsCopyFrom', file("build/docs/asciidoc"))
+	set('restDocsCopyInto', file("src/main/resources/static/docs"))
 }
 
 dependencies {
