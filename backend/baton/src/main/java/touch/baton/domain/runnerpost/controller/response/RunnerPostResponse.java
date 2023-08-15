@@ -18,11 +18,16 @@ public record RunnerPostResponse() {
                          long applicantCount,
                          ReviewStatus reviewStatus,
                          boolean isOwner,
+                         boolean isApplied,
                          List<String> tags,
                          RunnerResponse.Detail runnerProfile
     ) {
 
-        public static Detail of(final RunnerPost runnerPost, final boolean isOwner, final long applicantCount) {
+        public static Detail of(final RunnerPost runnerPost,
+                                final boolean isOwner,
+                                final boolean isApplied,
+                                final long applicantCount
+        ) {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
@@ -33,6 +38,7 @@ public record RunnerPostResponse() {
                     applicantCount,
                     runnerPost.getReviewStatus(),
                     isOwner,
+                    isApplied,
                     convertToTags(runnerPost),
                     RunnerResponse.Detail.from(runnerPost.getRunner())
             );

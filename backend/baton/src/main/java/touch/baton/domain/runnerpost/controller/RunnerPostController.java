@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.common.response.PageResponse;
+import touch.baton.domain.member.Member;
+import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.runner.Runner;
@@ -87,15 +89,20 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}")
-    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthRunnerPrincipal(required = false) final Runner runner,
+    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthMemberPrincipal(required = false) final Member member,
                                                                         @PathVariable final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
         final long applicantCount = runnerPostService.readCountByRunnerPostId(foundRunnerPost.getId());
+        final boolean isApplicantHistoryExist = runnerPostService.existsRunnerPostApplicantByRunnerPostIdAndMemberId(runnerPostId, member.getId());
 
         runnerPostService.increaseWatchedCount(foundRunnerPost);
-        final RunnerPostResponse.Detail response
-                = RunnerPostResponse.Detail.of(foundRunnerPost, foundRunnerPost.isNotOwner(runner), applicantCount);
+        final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.of(
+                foundRunnerPost,
+                foundRunnerPost.isNotOwner(member),
+                isApplicantHistoryExist,
+                applicantCount
+        );
 
         return ResponseEntity.ok(response);
     }
