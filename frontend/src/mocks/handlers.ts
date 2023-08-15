@@ -2,6 +2,10 @@ import { rest } from 'msw';
 import runnerPostList from './data/runnerPostList.json';
 import runnerPostDetails from './data/runnerPostDetails.json';
 import supporterCardList from './data/supporterCardList.json';
+import myPageRunnerProfile from './data/myPageRunnerProfile.json';
+import myPageSupporterProfile from './data/myPageSupporterProfile.json';
+import myPageRunnerPost from './data/myPageRunnerPost.json';
+import myPageSupporterPost from './data/myPageSupporterPost.json';
 import runnerProfile from './data/runnerProfile.json';
 import runnerProfileInfo from './data/runnerProfileInfo.json';
 import supporterProfileInfo from './data/supporterProfileInfo.json';
@@ -47,8 +51,20 @@ export const handlers = [
     return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
   }),
 
-  rest.get('*/profile/runner', async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+  rest.get('*/profile/runner/me', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerProfile));
+  }),
+
+  rest.get('*/profile/supporter/me', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterProfile));
+  }),
+
+  rest.get('*/posts/runner/me/runner', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerPost));
+  }),
+
+  rest.get('*/posts/runner/me/supporter', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterPost));
   }),
 
   rest.get('*/profile/runner/me', async (req, res, ctx) => {

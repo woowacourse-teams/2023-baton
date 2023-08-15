@@ -1,18 +1,37 @@
-import React from 'react';
-import { styled } from 'styled-components';
-import { usePageRouter } from '@/hooks/usePageRouter';
-import Avatar from '@/components/common/Avatar/Avatar';
-import { RunnerPost } from '@/types/runnerPost';
+import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
+import { usePageRouter } from '@/hooks/usePageRouter';
+import React from 'react';
+import styled from 'styled-components';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
+import { MyPagePost } from '@/types/myPage';
 
-const RunnerPostItem = ({
-  runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, applicantCount, reviewStatus },
-}: {
-  runnerPostData: RunnerPost;
-}) => {
+interface Props extends MyPagePost {
+  isRunner?: boolean;
+}
+
+const MyPagePostItem = ({
+  runnerPostId,
+  title,
+  deadline,
+  reviewStatus,
+  tags,
+  watchedCount,
+  applicantCount,
+  isRunner,
+}: Props) => {
+  const handleClickSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    alert('준비중인 서포터 선택 기능입니다');
+  };
+
+  const handleClickFeedbackButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    alert('준비중인 후기 작성 기능입니다');
+  };
+
   const { goToRunnerPostPage } = usePageRouter();
 
   const handlePostClick = () => {
@@ -24,7 +43,7 @@ const RunnerPostItem = ({
       <S.LeftSideContainer>
         <S.PostTitle>{title}</S.PostTitle>
         <S.DeadLineContainer>
-          <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
+          <S.DeadLine>{deadline} 까지</S.DeadLine>
           <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'WHITE'}>
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
@@ -36,10 +55,6 @@ const RunnerPostItem = ({
         </S.TagContainer>
       </S.LeftSideContainer>
       <S.RightSideContainer>
-        <S.ProfileContainer>
-          <Avatar width="60px" height="60px" imageUrl={runnerProfile.imageUrl} />
-          <S.ProfileName>{runnerProfile.name}</S.ProfileName>
-        </S.ProfileContainer>
         <S.ChatViewContainer>
           <S.statisticsContainer>
             <S.statisticsImage src={eyeIcon} />
@@ -48,12 +63,39 @@ const RunnerPostItem = ({
             <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
+        {isRunner ? (
+          reviewStatus === 'NOT_STARTED' ? (
+            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+              서포터 선택하기
+            </Button>
+          ) : reviewStatus === 'IN_PROGRESS' ? (
+            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+              코드 보러가기
+            </Button>
+          ) : (
+            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
+              서포터 후기 작성
+            </Button>
+          )
+        ) : reviewStatus === 'NOT_STARTED' ? (
+          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+            제안 취소하기
+          </Button>
+        ) : reviewStatus === 'IN_PROGRESS' ? (
+          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
+            코드 보러가기
+          </Button>
+        ) : (
+          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
+            러너 후기 작성
+          </Button>
+        )}
       </S.RightSideContainer>
     </S.RunnerPostItemContainer>
   );
 };
 
-export default RunnerPostItem;
+export default MyPagePostItem;
 
 const S = {
   RunnerPostItemContainer: styled.li`
@@ -69,12 +111,6 @@ const S = {
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
-
-    &:hover {
-      transition: all 0.3s ease;
-      transform: scale(1.015);
-      outline: 1.5px solid var(--baton-red);
-    }
   `,
 
   PostTitle: styled.p`
@@ -107,28 +143,23 @@ const S = {
   Tag: styled.span``,
 
   LeftSideContainer: styled.div``,
+
   RightSideContainer: styled.div`
     display: flex;
     flex-direction: column;
-    align-items: end;
-    justify-content: space-between;
-  `,
+    justify-content: end;
+    gap: 15px;
 
-  ProfileContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    margin-bottom: 30px;
-    gap: 10px;
-  `,
-
-  ProfileName: styled.p`
-    font-size: 14px;
+    & button:hover {
+      transition: all 0.3s ease;
+      background-color: var(--baton-red);
+      color: var(--white-color);
+    }
   `,
 
   ChatViewContainer: styled.div`
     display: flex;
+    justify-content: end;
 
     gap: 10px;
 
