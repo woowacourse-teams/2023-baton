@@ -306,4 +306,7 @@ public class RunnerPostService {
         return !supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
     }
 
+    public boolean existsRunnerPostApplicantByRunnerPostIdAndMemberId(final Long runnerPostId, final Long memberId) {
+        return supporterRunnerPostRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
+    }
 }

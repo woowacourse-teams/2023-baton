@@ -19,12 +19,21 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
     List<Long> countByRunnerPostIdIn(@Param("runnerPostIds") final List<Long> runnerPostIds);
 
     @Query("""
-        select count(1)
-        from SupporterRunnerPost srp
-        group by srp.runnerPost.id
-        having srp.runnerPost.id = :runnerPostId
-        """)
+            select count(1)
+            from SupporterRunnerPost srp
+            group by srp.runnerPost.id
+            having srp.runnerPost.id = :runnerPostId
+            """)
     Optional<Integer> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
+
+    @Query("""
+            select (count(1) >= 1)
+            from SupporterRunnerPost srp
+            join fetch Member m on m.id = srp.supporter.member.id
+            where srp.runnerPost.id = :runnerPostId
+            and srp.supporter.member.id = :memberId
+            """)
+    boolean existsByRunnerPostIdAndMemberId(@Param("runnerPostId") final Long runnerPostId, @Param("memberId") final Long memberId);
 
     boolean existsByRunnerPostId(final Long runnerPostId);
 
