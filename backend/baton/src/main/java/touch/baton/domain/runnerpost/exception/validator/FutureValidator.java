@@ -23,5 +23,5 @@ public class FutureValidator implements ConstraintValidator<ValidFuture, LocalDa
             throw new ClientRequestException(errorCode);
         }
         return true;
-
+    }
 }
