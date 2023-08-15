@@ -50,20 +50,22 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
+    public static ExtractableResponse<Response> post(final String uri, final Object params, final String accessToken) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(params)
                 .when().log().ifValidationFails()
-                .get(uri)
+                .post(uri)
                 .then().log().ifError()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final String pathParamName, final Long id) {
+    public static ExtractableResponse<Response> get(final String uri, final String accessToken) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .pathParam(pathParamName, id)
+                .auth().preemptive().oauth2(accessToken)
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
@@ -85,6 +87,15 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get(final String uri, final String pathParamName, final Long id) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .pathParam(pathParamName, id)
+                .when().log().ifValidationFails()
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
 
     public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
         return RestAssured

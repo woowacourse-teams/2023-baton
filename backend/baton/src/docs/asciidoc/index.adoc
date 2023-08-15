@@ -27,9 +27,11 @@ include::RunnerPostDeleteApi.adoc[]
 include::RunnerProfileReadApi.adoc[]
 include::RunnerLoginProfileReadApi.adoc[]
 include::RunnerProfileUpdateApi.adoc[]
+include::RunnerPostCreateApi.adoc[]
 
 == *[ 서포터 ]*
 
 include::SupporterProfileReadApi.adoc[]
+
 include::SupporterProfileUpdateApi.adoc[]
 include::RunnerPostUpdateApi.adoc[]

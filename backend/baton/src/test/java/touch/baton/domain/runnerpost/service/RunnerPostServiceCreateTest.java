@@ -40,7 +40,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
     private static final String TAG = "Java";
     private static final String OTHER_TAG = "Spring";
     private static final String PULL_REQUEST_URL = "https://github.com/cookienc";
-    private static final LocalDateTime DEADLINE = of(2099, 12, 12, 0, 0);
+    private static final LocalDateTime DEADLINE = LocalDateTime.now().plusDays(10);
     private static final String CONTENTS = "싸게 부탁드려요.";
 
     private RunnerPostService runnerPostService;
@@ -65,10 +65,8 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
                 PULL_REQUEST_URL,
                 DEADLINE,
                 CONTENTS);
-        final Member ethan = MemberFixture.createEthan();
-        memberRepository.save(ethan);
-        final Runner runner = RunnerFixture.createRunner(ethan);
-        runnerRepository.save(runner);
+        final Member ethanMember = memberRepository.save(MemberFixture.createEthan());
+        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(ethanMember));
 
         // when
         final Long savedId = runnerPostService.createRunnerPost(runner, request);
