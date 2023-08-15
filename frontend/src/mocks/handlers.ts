@@ -6,6 +6,9 @@ import myPageRunnerProfile from './data/myPageRunnerProfile.json';
 import myPageSupporterProfile from './data/myPageSupporterProfile.json';
 import myPageRunnerPost from './data/myPageRunnerPost.json';
 import myPageSupporterPost from './data/myPageSupporterPost.json';
+import runnerProfile from './data/runnerProfile.json';
+import runnerProfileInfo from './data/runnerProfileInfo.json';
+import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
 
 export const handlers = [
@@ -62,6 +65,36 @@ export const handlers = [
 
   rest.get('*/posts/runner/me/supporter', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterPost));
+  }),
+
+  rest.get('*/profile/runner/me', async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.delay(500),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(runnerProfileInfo),
+    );
+  }),
+
+  rest.get('*/profile/supporter/me', async (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.delay(500),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(supporterProfileInfo),
+    );
+  }),
+
+  rest.patch('*/profile/runner/me', async (req, res, ctx) => {
+    const { name, company, introduction, technicalTags } = await req.json();
+
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+  }),
+
+  rest.patch('*/profile/supporter/me', async (req, res, ctx) => {
+    const { name, company, introduction, technicalTags } = await req.json();
+
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
   }),
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
