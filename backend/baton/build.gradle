@@ -94,4 +94,8 @@ task copyDocument(type: Copy) {
 	into file(restDocsCopyIntoBuild)
 }
 
+tasks.named('resolveMainClassName') {
+	inputs.files(tasks.named('copyDocument'))
+}
+
 bootJar.dependsOn('copyDocument')
