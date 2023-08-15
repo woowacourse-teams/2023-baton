@@ -28,6 +28,10 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.RESULT);
   };
 
+  const goToSupporterProfilePage = (supporterId: number) => {
+    navigate(ROUTER_PATH.SUPPORTER_PROFILE.replace(':supporterId', supporterId.toString()));
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -39,6 +43,7 @@ export const usePageRouter = () => {
     goToLoginPage,
     goToMyPage,
     goToCreationResultPage,
+    goToSupporterProfilePage,
     goBack,
   };
 };
