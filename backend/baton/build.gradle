@@ -29,8 +29,9 @@ repositories {
 
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
-	set('restDocsCopyFrom', file("build/docs/asciidoc"))
-	set('restDocsCopyInto', file("src/main/resources/static/docs"))
+	set('restDocsCopyFrom', file("build/docs/asciidoc/index.html"))
+	set('restDocsCopyIntoBuild', file("build/resources/static/docs"))
+	set('restDocsCopyIntoLocal', file("src/main/resources/static/docs"))
 }
 
 dependencies {
@@ -89,7 +90,8 @@ asciidoctor.doFirst {
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor
 	from file(restDocsCopyFrom)
-	into file(restDocsCopyInto)
+	into file(restDocsCopyIntoLocal)
+	into file(restDocsCopyIntoBuild)
 }
 
 bootJar.dependsOn('copyDocument')
