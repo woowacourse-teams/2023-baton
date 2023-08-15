@@ -32,6 +32,5 @@ include::RunnerPostCreateApi.adoc[]
 == *[ 서포터 ]*
 
 include::SupporterProfileReadApi.adoc[]
-
 include::SupporterProfileUpdateApi.adoc[]
 include::RunnerPostUpdateApi.adoc[]

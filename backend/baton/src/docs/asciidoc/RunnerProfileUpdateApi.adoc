@@ -5,31 +5,31 @@ endif::[]
 :icons: font
 :source-highlighter: highlight.js
 :toc: left
-:toclevels: 2
+:toclevels: 3
 :sectlinks:
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-== *러너 프로필 수정*
+=== *러너 프로필 수정*
 
-=== *러너 프로필 수정 API*
+==== *러너 프로필 수정 API*
 
-==== *Http Request*
+===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-update-api-test/update-runner-profile/http-request.adoc[]
 
-==== *Http Request Headers*
+===== *Http Request Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/request-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-update-api-test/update-runner-profile/request-headers.adoc[]
 
-==== *Http Request Body*
+===== *Http Request Body*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/request-body.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-update-api-test/update-runner-profile/request-body.adoc[]
 
-==== *Http Response*
+===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-update-api-test/update-runner-profile/http-response.adoc[]
 
-==== *Http Response Headers*
+===== *Http Response Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-update-api-test/update-runner-profile/response-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-update-api-test/update-runner-profile/response-headers.adoc[]

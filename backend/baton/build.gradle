@@ -29,6 +29,8 @@ repositories {
 
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
+	set('restDocsCopyFrom', 'build/docs/asciidoc')
+	set('restDocsCopyInto', 'src/main/resources/static/docs')
 }
 
 dependencies {
@@ -81,15 +83,13 @@ tasks.named('asciidoctor') {
 }
 
 asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
+	delete file(restDocsCopyFrom)
 }
 
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor
-	from file('build/docs/asciidoc')
-	into file('src/main/resources/static/docs')
+	from file(restDocsCopyFrom)
+	into file(restDocsCopyInto)
 }
 
-build {
-	dependsOn copyDocument
-}
+bootJar.dependsOn('copyDocument')
