@@ -16,20 +16,20 @@ endif::[]
 
 ==== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-update-supporter-cancelation-api-test/update-supporter-cancel-runner-post/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/http-request.adoc[]
 
 ==== *Http Request Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-post-update-supporter-cancelation-api-test/update-supporter-cancel-runner-post/request-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/request-headers.adoc[]
 
 ==== *Http Path Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-update-supporter-cancelation-api-test/update-supporter-cancel-runner-post/path-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/path-parameters.adoc[]
 
 ==== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-update-supporter-cancelation-api-test/update-supporter-cancel-runner-post/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/http-response.adoc[]
 
 ==== *Http Response Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-post-update-supporter-cancelation-api-test/update-supporter-cancel-runner-post/response-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/response-headers.adoc[]

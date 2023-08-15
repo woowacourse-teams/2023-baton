@@ -16,30 +16,12 @@ endif::[]
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-runner-profile/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-read-by-runner-id-api-test/read-runner-profile/http-request.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-runner-profile/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-read-by-runner-id-api-test/read-runner-profile/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-runner-profile/response-fields.adoc[]
-
-==== *러너 마이페이지 프로필 조회 API*
-
-===== *Http Request*
-
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/http-request.adoc[]
-
-===== *Http Request Headers*
-
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/request-headers.adoc[]
-
-===== *Http Response*
-
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/http-response.adoc[]
-
-===== *Http Response Fields*
-
-include::{snippets}/../../build/generated-snippets/runner-profile-read-api-test/read-my-profile-by-token/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-read-by-runner-id-api-test/read-runner-profile/response-fields.adoc[]
