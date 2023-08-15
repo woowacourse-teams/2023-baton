@@ -8,24 +8,35 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
+import { GetRunnerPostResponse } from '@/types/runnerPost';
+import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
 
 const SupporterProfilePage = () => {
   const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
+  const [supporterProfilePost, setSupporterProfilePost] = useState<GetRunnerPostResponse | null>(null);
 
   const { supporterId } = useParams();
 
   useEffect(() => {
-    const fetchProfileData = async () => {
+    const fetchProfilePageData = async () => {
       const profileResult = await getProfile();
+      const postResult = await getPost();
 
       setSupporterProfile(profileResult);
+      setSupporterProfilePost(postResult);
     };
 
-    fetchProfileData();
-  }, [supporterId]);
+    fetchProfilePageData();
+  }, []);
 
   const getProfile = async () => {
     const data = await getRequest<GetSupporterProfileResponse>(`/profile/supporter/${supporterId}`);
+
+    return data;
+  };
+
+  const getPost = async () => {
+    const data = await getRequest<GetRunnerPostResponse>(`/posts/runner/search/${supporterId}`);
 
     return data;
   };
@@ -60,6 +71,16 @@ const SupporterProfilePage = () => {
           </S.Anchor>
         </Button>
       </S.IntroductionContainer>
+
+      <S.ReviewCountWrapper>
+        <S.ReviewCountTitle>완료된 리뷰</S.ReviewCountTitle>
+        <S.ReviewCount>{supporterProfilePost?.data.length}</S.ReviewCount>
+      </S.ReviewCountWrapper>
+      <S.PostsContainer>
+        {supporterProfilePost?.data.map((runnerPostData) => (
+          <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
+        ))}
+      </S.PostsContainer>
     </Layout>
   );
 };
@@ -127,7 +148,7 @@ const S = {
     justify-content: space-between;
 
     padding: 0 10px;
-    margin-bottom: 50px;
+    margin-bottom: 80px;
 
     border-left: 3px solid var(--gray-600);
   `,
@@ -148,4 +169,27 @@ const S = {
   `,
 
   GoToGitHub: styled.p``,
+
+  PostsContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  `,
+
+  ReviewCountWrapper: styled.div`
+    display: flex;
+    align-items: center;
+    margin: 0 0 40px 20px;
+  `,
+
+  ReviewCountTitle: styled.span`
+    font-size: 30px;
+    margin-right: 15px;
+  `,
+
+  ReviewCount: styled.span`
+    font-size: 40px;
+    font-weight: 700;
+  `,
 };
