@@ -30,7 +30,7 @@ repositories {
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
 	set('restDocsCopyFrom', file("build/docs/asciidoc/index.html"))
-	set('restDocsCopyIntoBuild', file("build/resources/static/docs"))
+	set('restDocsCopyIntoBuild', file("build/resources/main/static/docs"))
 	set('restDocsCopyIntoLocal', file("src/main/resources/static/docs"))
 }
 
@@ -92,6 +92,10 @@ task copyDocument(type: Copy) {
 	from file(restDocsCopyFrom)
 	into file(restDocsCopyIntoLocal)
 	into file(restDocsCopyIntoBuild)
+}
+
+tasks.named('resolveMainClassName') {
+	inputs.files(tasks.named('copyDocument'))
 }
 
 bootJar.dependsOn('copyDocument')
