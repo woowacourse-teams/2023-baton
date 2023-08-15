@@ -45,6 +45,7 @@ public class RunnerPostAssuredSupport {
                                                              final long 서포터_지원자수,
                                                              final ReviewStatus 리뷰_상태,
                                                              final boolean 주인_여부,
+                                                             final boolean 서포터_지원_여부,
                                                              final Runner 러너,
                                                              final List<String> 태그_목록
     ) {
@@ -58,6 +59,7 @@ public class RunnerPostAssuredSupport {
                 서포터_지원자수,
                 리뷰_상태,
                 주인_여부,
+                서포터_지원_여부,
                 태그_목록,
                 RunnerResponse.Detail.from(러너)
         );
