@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -8,87 +8,61 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
 import Button from '@/components/common/Button/Button';
-import { BATON_BASE_URL, REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
+import { REVIEW_STATUS_LABEL_TEXT } from '@/constants/index';
 import Label from '@/components/common/Label/Label';
 import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
 import { useToken } from '@/hooks/useToken';
+import { deleteRequest, getRequest } from '@/api/fetch';
 
 const RunnerPostPage = () => {
+  const { runnerPostId } = useParams();
+
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { goToMainPage, goBack } = usePageRouter();
-  const { runnerPostId } = useParams();
   const { getToken } = useToken();
 
   useEffect(() => {
-    getRunnerPost()
-      .then((data) => {
-        setRunnerPost(data);
+    getRunnerPost();
+  }, []);
+
+  const getRunnerPost = useCallback(() => {
+    const token = getToken()?.value;
+
+    getRequest<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}/test`, token)
+      .then((result) => {
+        setRunnerPost(result);
       })
-      .catch((error) => {
-        setRunnerPost(null);
+      .catch(() => {
+        alert('게시글을 불러오지 못했습니다.');
+
+        goBack();
       });
   }, []);
 
-  const getRunnerPost = async (): Promise<GetDetailedRunnerPostResponse> => {
-    const token = getToken()?.value;
-
-    if (!token) {
-      const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
-        method: 'GET',
-      });
-
-      if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
-
-      const data = await response.json().catch(() => {
-        throw new Error('게시글을 불러오지 못했습니다.');
-      });
-
-      return data;
-    }
-
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}/test`, {
-      method: 'GET',
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    if (!response.ok) throw new Error('게시글을 불러오지 못했습니다.');
-
-    const data = await response.json().catch(() => {
-      throw new Error('게시글을 불러오지 못했습니다.');
-    });
-
-    return data;
-  };
-
-  const deleteRunnerPost = () => {
+  const deleteRunnerPost = useCallback(() => {
     const token = getToken()?.value;
 
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-    fetch(`${BATON_BASE_URL}/posts/runner/${runnerPostId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    deleteRequest(`/posts/runner/${runnerPostId}`, token)
       .then(() => {
+        alert('게시글이 삭제되었습니다.');
+
         goToMainPage();
       })
       .catch(() => {
         alert('게시글을 삭제하지 못했습니다.');
       });
-  };
+  }, []);
 
   const handleClickDeleteButton = () => {
     setIsModalOpen(false);
 
     deleteRunnerPost();
-    // goToMainPage();
   };
 
   const openModal = () => {
