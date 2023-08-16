@@ -17,7 +17,7 @@ public class Introduction {
 
     private static final String DEFAULT_VALUE = "안녕하세요.";
 
-    @Column(name = "introduction", nullable = false)
+    @Column(name = "introduction", nullable = true)
     private String value;
 
     public Introduction(final String value) {
