@@ -228,6 +228,27 @@ public class RunnerPostController {
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
     }
 
+    @GetMapping("/me/runner")
+    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+                                                                                            @AuthRunnerPrincipal final Runner runner,
+                                                                                            @RequestParam("reviewStatus") final ReviewStatus reviewStatus) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, runner.getId(), reviewStatus);
+        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+
+        final List<RunnerPostResponse.SimpleInMyPage> responses = IntStream.range(0, pageRunnerPosts.getContent().size())
+                .mapToObj(index -> {
+                            final Long applicantCount = applicantCounts.get(index);
+                            final RunnerPost runnerPost = pageRunnerPosts.getContent().get(index);
+                            return RunnerPostResponse.SimpleInMyPage.from(runnerPost, applicantCount);
+                        }
+                ).toList();
+
+        final Page<RunnerPostResponse.SimpleInMyPage> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
     @PatchMapping("/{runnerPostId}/cancelation")
     public ResponseEntity<Void> updateSupporterCancelRunnerPost(@AuthSupporterPrincipal final Supporter supporter,
                                                                 @PathVariable final Long runnerPostId

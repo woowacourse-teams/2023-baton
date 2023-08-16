@@ -11,6 +11,13 @@ public record RunnerPostReadResponses() {
         }
     }
 
+    public record Filtering(List<RunnerPostResponse.SimpleInMyPage> data) {
+
+        public static Filtering from(final List<RunnerPostResponse.SimpleInMyPage> data) {
+            return new Filtering(data);
+        }
+    }
+
     public record LoginedSupporter(List<RunnerPostResponse.LoginedSupporter> data) {
 
         public static LoginedSupporter from(final List<RunnerPostResponse.LoginedSupporter> data) {

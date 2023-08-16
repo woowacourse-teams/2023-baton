@@ -24,6 +24,16 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
 
     Page<RunnerPost> findAll(final Pageable pageable);
 
+    @Query(countQuery = """
+            select count(1)
+            from RunnerPost rp
+            where rp.runner.id = :runnerId
+            and rp.reviewStatus = :reviewStatus
+            """)
+    Page<RunnerPost> findByRunnerIdAndReviewStatus(final Pageable pageable,
+                                                      @Param("runnerId") final Long runnerId,
+                                                      @Param("reviewStatus") final ReviewStatus reviewStatus);
+
     List<RunnerPost> findByRunnerId(final Long runnerId);
 
     @Query(countQuery = """

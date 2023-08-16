@@ -139,6 +139,27 @@ public record RunnerPostResponse() {
             );
         }
     }
+    public record SimpleInMyPage(Long runnerPostId,
+                                 String title,
+                                 LocalDateTime deadline,
+                                 List<String> tags,
+                                 int watchedCount,
+                                 int applicantCount
+
+    ) {
+
+        public static SimpleInMyPage from(final RunnerPost runnerPost,
+                                          final int applicantCount) {
+            return new SimpleInMyPage(
+                    runnerPost.getId(),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getWatchedCount().getValue(),
+                    applicantCount
+            );
+        }
+    }
 
     public record ReferencedBySupporter(Long runnerPostId,
                                         String title,
