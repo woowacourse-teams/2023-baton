@@ -38,7 +38,6 @@ public class OauthController {
                                       @RequestParam final String code
     ) {
         final String jwtToken = oauthService.login(oauthType, code);
-
         return ResponseEntity.ok()
                 .header(AUTHORIZATION, jwtToken)
                 .build();
