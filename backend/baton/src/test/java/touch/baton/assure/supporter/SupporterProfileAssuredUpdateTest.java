@@ -67,7 +67,7 @@ public class SupporterProfileAssuredUpdateTest extends AssuredTestConfig {
     }
 
     @Test
-    void 서포터_정보_수정_시에_소개글이_없어도_된다() {
+    void 서포터_정보_수정_시에_소개글이_없으면_예외가_발생한다() {
         final SupporterUpdateRequest supporterUpdateRequest = new SupporterUpdateRequest("디투랜드", "배달의민족", null, List.of("java", "spring"));
 
         SupporterAssuredSupport
@@ -76,7 +76,7 @@ public class SupporterProfileAssuredUpdateTest extends AssuredTestConfig {
                 .서포터_본인_프로필을_수정한다(supporterUpdateRequest)
 
                 .서버_응답()
-                .서포터_본인_프로필_수정_성공을_검증한다(NO_CONTENT);
+                .서포터_본인_프로필_수정_실패를_검증한다(SUPPORTER_INTRODUCTION_IS_NULL);
     }
 
     @Test
