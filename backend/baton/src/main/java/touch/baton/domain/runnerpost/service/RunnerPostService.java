@@ -248,9 +248,11 @@ public class RunnerPostService {
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
         return runnerPostRepository.findByRunnerId(runnerId);
     }
+
     public Page<RunnerPost> readRunnerPostsByRunnerIdAndReviewStatus(final Pageable pageable,
                                                                      final Long runnerId,
-                                                                     final ReviewStatus reviewStatus) {
+                                                                     final ReviewStatus reviewStatus
+    ) {
         return runnerPostRepository.findByRunnerIdAndReviewStatus(pageable, runnerId, reviewStatus);
     }
 
@@ -265,18 +267,14 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
-        if (applicantCounts.isEmpty()) {
-            initApplicantCounts(runnerPostIds, applicantCounts);
-        }
-
-        return applicantCounts;
-    }
-
-    private void initApplicantCounts(final List<Long> runnerPostIds, final List<Long> applicantCounts) {
-        for (int i = 0; i < runnerPostIds.size(); i++) {
-            applicantCounts.add(0L);
-        }
+        return runnerPostIds.stream()
+                .map(runnerPostId -> {
+                    if (!supporterRunnerPostRepository.existsByRunnerPostId(runnerPostId)) {
+                        return 0L;
+                    } else {
+                        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElse(0L);
+                    }
+                }).toList();
     }
 
     @Transactional
@@ -296,7 +294,7 @@ public class RunnerPostService {
     }
 
     public long readCountByRunnerPostId(final Long runnerPostId) {
-        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0);
+        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0L);
     }
 
     @Transactional

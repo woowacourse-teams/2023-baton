@@ -10,6 +10,10 @@ import java.util.Optional;
 
 public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRunnerPost, Long> {
 
+//    @Query("SELECT CASE WHEN COUNT(srp) > 0 THEN 1 ELSE 0 END " +
+//            "FROM SupporterRunnerPost srp " +
+//            "WHERE srp.runnerPost.id IN :runnerPostIds " +
+//            "GROUP BY srp.runnerPost.id")
     @Query("""
             select count(1)
             from SupporterRunnerPost srp
@@ -24,7 +28,7 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
             group by srp.runnerPost.id
             having srp.runnerPost.id = :runnerPostId
             """)
-    Optional<Integer> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
+    Optional<Long> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
     @Query("""
             select (count(1) >= 1)
