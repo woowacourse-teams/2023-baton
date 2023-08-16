@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import TextArea from '../Textarea/Textarea';
 
 interface Props {
+  messageState: string;
+  handleChangeMessage: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder: string;
   closeModal: () => void;
   handleClickSendButton: () => void;
 }
 
-const SendMessageModal = ({ placeholder, closeModal, handleClickSendButton }: Props) => {
-  const [message, setMessage] = useState<string>('');
-
-  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
-  };
-
+const SendMessageModal = ({
+  messageState,
+  handleChangeMessage,
+  placeholder,
+  closeModal,
+  handleClickSendButton,
+}: Props) => {
   return (
     <Modal width="900px" height="500px" closeModal={closeModal}>
       <S.SendMessageModalContainer>
@@ -29,7 +31,7 @@ const SendMessageModal = ({ placeholder, closeModal, handleClickSendButton }: Pr
           padding="0"
           placeholder={placeholder}
           handleInputTextState={handleChangeMessage}
-          inputTextState={message}
+          inputTextState={messageState}
         />
         <S.ButtonContainer>
           <Button colorTheme="GRAY" fontWeight={700} onClick={closeModal}>
