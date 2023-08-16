@@ -134,6 +134,17 @@ public class RunnerPostService {
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
     }
 
+    public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Runner runner, final Long runnerPostId) {
+        final RunnerPost foundRunnerPost = runnerPostRepository.joinMemberByRunnerPostId(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException(("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다.")));
+
+        if (foundRunnerPost.isNotOwner(runner)) {
+            throw new RunnerPostBusinessException("RunnerPost 의 작성자가 아닙니다.");
+        }
+
+        return supporterRunnerPostRepository.readByRunnerPostId(runnerPostId);
+    }
+
     @Transactional
     public void increaseWatchedCount(final RunnerPost runnerPost) {
         runnerPost.increaseWatchedCount();

@@ -12,7 +12,10 @@ import touch.baton.fixture.domain.SupporterFixture;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static touch.baton.domain.common.exception.ClientErrorCode.*;
+import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_INTRODUCTION_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_TECHNICAL_TAGS_ARE_NULL;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class SupporterUpdateAssuredTest extends AssuredTestConfig {
@@ -67,7 +70,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
     }
 
     @Test
-    void 서포터_정보_수정_시에_소개글이_없어도_된다() {
+    void 서포터_정보_수정_시에_소개글이_없으면_예외가_발생한다() {
         final SupporterUpdateRequest 서포터_수정_요청_값 = new SupporterUpdateRequest("디투랜드", "배달의민족", null, List.of("java", "spring"));
 
         SupporterAssuredSupport
@@ -76,7 +79,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
                 .서포터_본인_프로필을_수정한다(서포터_수정_요청_값)
 
                 .서버_응답()
-                .서포터_본인_프로필_수정_성공을_검증한다(NO_CONTENT);
+                .서포터_본인_프로필_수정_실패를_검증한다(SUPPORTER_INTRODUCTION_IS_NULL);
     }
 
     @Test

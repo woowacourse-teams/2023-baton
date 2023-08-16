@@ -42,8 +42,8 @@ public class SupporterRunnerPostAssuredSupport {
 
         private final ExtractableResponse<Response> response;
 
-        public SupporterRunnerPostServerResponseBuilder(final ExtractableResponse<Response> response) {
-            this.response = response;
+        public SupporterRunnerPostServerResponseBuilder(final ExtractableResponse<Response> 응답) {
+            this.response = 응답;
         }
 
         public void 서포터의_리뷰_제안_철회를_검증한다(final HttpStatus HTTP_STATUS,

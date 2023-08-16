@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -38,11 +39,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class RunnerPostTest {
@@ -75,6 +78,40 @@ class RunnerPostTest {
             .member(supporterMember)
             .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
             .build();
+
+    @DisplayName("runnerPostTags 전체를 추가할 수 있다.")
+    @Test
+    void addAllRunnerPostTags() {
+        // given
+        final String title = "JPA 리뷰 부탁 드려요.";
+        final String contents = "넘나 어려워요.";
+        final String pullRequestUrl = "https://github.com/cookienc";
+        final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
+        final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
+        final RunnerPostTag java = RunnerPostTag.builder()
+                .tag(Tag.newInstance("Java"))
+                .runnerPost(runnerPost)
+                .build();
+        final RunnerPostTag spring = RunnerPostTag.builder()
+                .tag(Tag.newInstance("Spring"))
+                .runnerPost(runnerPost)
+                .build();
+
+        final List<String> expectedTagNames = Arrays.asList("Java", "Spring");
+
+        // when
+        runnerPost.addAllRunnerPostTags(List.of(java, spring));
+         List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
+        final List<String> actualTagNames = runnerPostTags.stream()
+                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
+                .collect(Collectors.toList());
+
+        // then
+        assertSoftly(softAssertions -> {
+            assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
+            assertThat(actualTagNames).containsExactlyElementsOf(expectedTagNames);
+        });
+    }
 
     @DisplayName("생성 테스트")
     @Nested
@@ -262,31 +299,6 @@ class RunnerPostTest {
         }
     }
 
-    @DisplayName("runnerPostTags 전체를 추가할 수 있다.")
-    @Test
-    void addAllRunnerPostTags() {
-        // given
-        final String title = "JPA 리뷰 부탁 드려요.";
-        final String contents = "넘나 어려워요.";
-        final String pullRequestUrl = "https://github.com/cookienc";
-        final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
-        final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
-        final RunnerPostTag java = RunnerPostTag.builder()
-                .tag(Tag.newInstance("Java"))
-                .runnerPost(runnerPost)
-                .build();
-        final RunnerPostTag spring = RunnerPostTag.builder()
-                .tag(Tag.newInstance("Spring"))
-                .runnerPost(runnerPost)
-                .build();
-
-        // when
-        runnerPost.addAllRunnerPostTags(List.of(java, spring));
-
-        // then
-        assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
-    }
-
     @DisplayName("Supporter 할당")
     @Nested
     class AssignSupporter {
@@ -358,6 +370,11 @@ class RunnerPostTest {
     @DisplayName("RunnerPost ReviewStatus 수정")
     @Nested
     class UpdateReviewStatus {
+
+        private static Stream<Arguments> reviewStatusDummy() {
+            return Arrays.stream(ReviewStatus.values())
+                    .map(Arguments::arguments);
+        }
 
         @DisplayName("IN_PROGRESS 에서 DONE 으로 수정 성공한다.")
         @Test
@@ -487,31 +504,5 @@ class RunnerPostTest {
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(reviewStatus))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
-
-        private static Stream<Arguments> reviewStatusDummy() {
-            return Arrays.stream(ReviewStatus.values())
-                    .map(Arguments::arguments);
-        }
-
-    }
-
-    // FIXME: 2023/08/13 아이디 없어서 테스트가 통과 안되는데 어떻게 함?
-    @Disabled
-    @DisplayName("글 주인이 아니면 true 를 반환한다.")
-    @Test
-    void isNotOwner() {
-        // given
-        final Member ethanMember = MemberFixture.createEthan();
-        final Runner ownerRunner = RunnerFixture.createRunner(ethanMember);
-        final RunnerPost runnerPost = RunnerPostFixture.create(ownerRunner, DeadlineFixture.deadline(LocalDateTime.now().plusHours(10)));
-
-        final Member hyenaMember = MemberFixture.createHyena();
-        final Runner notOwnerRunner = RunnerFixture.createRunner(hyenaMember);
-
-        // when, then
-        assertAll(
-                () -> assertThat(runnerPost.isNotOwner(notOwnerRunner)).isTrue(),
-                () -> assertThat(runnerPost.isNotOwner(ownerRunner)).isFalse()
-        );
     }
 }

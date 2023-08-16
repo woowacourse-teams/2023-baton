@@ -41,13 +41,13 @@ public abstract class AssuredTestConfig {
     protected SupporterRepository supporterRepository;
 
     @Autowired
-    protected TechnicalTagRepository technicalTagRepository;
-
-    @Autowired
     protected RunnerPostRepository runnerPostRepository;
 
     @Autowired
     protected SupporterRunnerPostRepository supporterRunnerPostRepository;
+
+    @Autowired
+    protected TechnicalTagRepository technicalTagRepository;
 
     @MockBean
     private JwtDecoder jwtDecoder;

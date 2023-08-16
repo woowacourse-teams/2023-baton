@@ -42,8 +42,8 @@ public class SupporterAssuredSupport {
             return this;
         }
 
-        public SupporterClientRequestBuilder 서포터_본인_프로필을_수정한다(final SupporterUpdateRequest request) {
-            response = AssuredSupport.patch("/api/v1/profile/supporter/me", accessToken, request);
+        public SupporterClientRequestBuilder 서포터_본인_프로필을_수정한다(final SupporterUpdateRequest 서포터_업데이트_요청) {
+            response = AssuredSupport.patch("/api/v1/profile/supporter/me", accessToken, 서포터_업데이트_요청);
             return this;
         }
 
@@ -61,8 +61,8 @@ public class SupporterAssuredSupport {
 
         private final ExtractableResponse<Response> response;
 
-        public SupporterServerResponseBuilder(final ExtractableResponse<Response> response) {
-            this.response = response;
+        public SupporterServerResponseBuilder(final ExtractableResponse<Response> 응답) {
+            this.response = 응답;
         }
 
         public void 서포터_프로필_조회_성공을_검증한다(final SupporterResponse.Profile 서포터_프로필_응답) {
@@ -87,12 +87,12 @@ public class SupporterAssuredSupport {
             });
         }
 
-        public void 서포터_본인_프로필_수정_실패를_검증한다(final ClientErrorCode clientErrorCode) {
+        public void 서포터_본인_프로필_수정_실패를_검증한다(final ClientErrorCode 클라이언트_에러_코드) {
             final ErrorResponse actual = this.response.as(ErrorResponse.class);
 
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getHttpStatus().value());
-                softly.assertThat(actual.errorCode()).isEqualTo(clientErrorCode.getErrorCode());
+                softly.assertThat(response.statusCode()).isEqualTo(클라이언트_에러_코드.getHttpStatus().value());
+                softly.assertThat(actual.errorCode()).isEqualTo(클라이언트_에러_코드.getErrorCode());
             });
         }
 

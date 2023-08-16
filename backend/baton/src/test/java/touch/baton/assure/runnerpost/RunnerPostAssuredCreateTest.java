@@ -63,8 +63,8 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
                 .서포터가_러너_게시글에_리뷰_신청_성공을_검증한다(에단의_러너_게시글_식별자값);
     }
 
-    private Runner 러너를_저장한다(final Member member) {
-        final Member 저장된_사용자 = memberRepository.save(member);
+    private Runner 러너를_저장한다(final Member 사용자) {
+        final Member 저장된_사용자 = memberRepository.save(사용자);
 
         return runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 저장된_사용자));
     }

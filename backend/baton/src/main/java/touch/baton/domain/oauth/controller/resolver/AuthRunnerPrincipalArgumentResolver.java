@@ -34,7 +34,6 @@ public class AuthRunnerPrincipalArgumentResolver extends UserPrincipalArgumentRe
     @Override
     protected Object getGuest() {
         return Runner.builder()
-                .introduction(new Introduction("게스트"))
                 .member(Member.builder()
                         .memberName(new MemberName("게스트"))
                         .socialId(new SocialId("guestSocialId"))

@@ -1,4 +1,3 @@
-
 package touch.baton.document.profile.runner.read;
 
 import org.junit.jupiter.api.BeforeEach;

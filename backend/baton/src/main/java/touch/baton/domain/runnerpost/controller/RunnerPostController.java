@@ -27,6 +27,8 @@ import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
@@ -104,6 +106,17 @@ public class RunnerPostController {
         );
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{runnerPostId}/supporters")
+    public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
+                                                                                                      @PathVariable final Long runnerPostId
+    ) {
+        final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner, runnerPostId).stream()
+                .map(supporterRunnerPost -> SupporterRunnerPostResponse.Detail.from(supporterRunnerPost))
+                .toList();
+
+        return ResponseEntity.ok(SupporterRunnerPostResponses.Detail.from(responses));
     }
 
     @GetMapping("/{runnerPostId}/test")

@@ -35,7 +35,10 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -114,6 +117,24 @@ public class RunnerPost extends BaseEntity {
         this.runnerPostTags = runnerPostTags;
     }
 
+    public static RunnerPost newInstance(final String title,
+                                         final String contents,
+                                         final String pullRequestUrl,
+                                         final LocalDateTime deadline,
+                                         final Runner runner
+    ) {
+        return RunnerPost.builder()
+                .title(new Title(title))
+                .contents(new Contents(contents))
+                .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
+                .deadline(new Deadline(deadline))
+                .runner(runner)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .watchedCount(WatchedCount.zero())
+                .reviewStatus(NOT_STARTED)
+                .build();
+    }
+
     private void validateNotNull(final Title title,
                                  final Contents contents,
                                  final PullRequestUrl pullRequestUrl,
@@ -154,24 +175,6 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(runnerPostTags)) {
             throw new RunnerPostDomainException("RunnerPost 의 runnerPostTags 는 null 일 수 없습니다.");
         }
-    }
-
-    public static RunnerPost newInstance(final String title,
-                                         final String contents,
-                                         final String pullRequestUrl,
-                                         final LocalDateTime deadline,
-                                         final Runner runner
-    ) {
-        return RunnerPost.builder()
-                .title(new Title(title))
-                .contents(new Contents(contents))
-                .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
-                .deadline(new Deadline(deadline))
-                .runner(runner)
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .watchedCount(WatchedCount.zero())
-                .reviewStatus(NOT_STARTED)
-                .build();
     }
 
     public void addAllRunnerPostTags(final List<RunnerPostTag> postTags) {

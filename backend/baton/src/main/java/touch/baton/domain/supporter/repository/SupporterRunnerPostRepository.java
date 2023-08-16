@@ -40,4 +40,6 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
     void deleteBySupporterIdAndRunnerPostId(final Long supporterId, final Long runnerPostId);
 
     boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
+
+    List<SupporterRunnerPost> readByRunnerPostId(final Long runnerPostId);
 }

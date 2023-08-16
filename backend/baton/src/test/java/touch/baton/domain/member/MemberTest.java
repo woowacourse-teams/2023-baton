@@ -13,7 +13,9 @@ import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.fixture.domain.MemberFixture;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class MemberTest {
 

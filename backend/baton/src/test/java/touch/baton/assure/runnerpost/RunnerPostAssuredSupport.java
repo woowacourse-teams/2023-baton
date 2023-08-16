@@ -14,6 +14,7 @@ import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -101,6 +102,11 @@ public class RunnerPostAssuredSupport {
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
             response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값, accessToken);
+            return this;
+        }
+
+        public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_서포터_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
+            response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}/supporters", "runnerPostId", 러너_게시글_식별자값, accessToken);
             return this;
         }
 
@@ -222,6 +228,18 @@ public class RunnerPostAssuredSupport {
             );
         }
 
+        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 전체_러너_게시글_페이징_응답) {
+            final SupporterRunnerPostResponses.Detail actual = this.response.as(new TypeRef<SupporterRunnerPostResponses.Detail>() {
+
+            });
+
+            assertSoftly(softly -> {
+                        softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                        softly.assertThat(actual.data()).isEqualTo(전체_러너_게시글_페이징_응답.data());
+                    }
+            );
+        }
+
         public void 러너_게시글_삭제_성공을_검증한다(final HttpStatus HTTP_STATUS) {
             assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
         }
@@ -245,10 +263,10 @@ public class RunnerPostAssuredSupport {
             );
         }
 
-        public void 러너_게시글_등록_성공을_검증한다(final HttpStatusAndLocationHeader 게시글_등록_성공_응답) {
+        public void 러너_게시글_등록_성공을_검증한다(final HttpStatusAndLocationHeader httpStatusAndLocationHeader) {
             assertSoftly(softly -> {
-                        softly.assertThat(response.statusCode()).isEqualTo(게시글_등록_성공_응답.getHttpStatus().value());
-                        softly.assertThat(response.header(LOCATION)).contains(게시글_등록_성공_응답.getLocation());
+                        softly.assertThat(response.statusCode()).isEqualTo(httpStatusAndLocationHeader.getHttpStatus().value());
+                        softly.assertThat(response.header(LOCATION)).contains(httpStatusAndLocationHeader.getLocation());
                     }
             );
         }
