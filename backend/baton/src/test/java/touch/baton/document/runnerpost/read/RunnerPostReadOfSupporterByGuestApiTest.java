@@ -66,12 +66,6 @@ class RunnerPostReadApiTest extends RestdocsConfig {
     @MockBean
     private RunnerPostService runnerPostService;
 
-    @MockBean
-    private MemberRepository memberRepository;
-
-    @MockBean
-    private RunnerRepository runnerRepository;
-
     @BeforeEach
     void setUp() {
         final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);

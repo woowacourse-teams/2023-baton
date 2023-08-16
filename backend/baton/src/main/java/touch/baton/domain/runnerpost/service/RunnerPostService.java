@@ -139,11 +139,10 @@ public class RunnerPostService {
                 .orElseThrow(() -> new RunnerPostBusinessException(("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다.")));
 
         if (foundRunnerPost.isNotOwner(runner)) {
-            throw new RunnerPostBusinessException("RunnerPost 의 작성자가 다릅니다.");
+            throw new RunnerPostBusinessException("RunnerPost 의 작성자가 아닙니다.");
         }
-        final List<SupporterRunnerPost> supporterRunnerPosts = supporterRunnerPostRepository.readByRunnerPostId(runnerPostId);
 
-        return supporterRunnerPosts;
+        return supporterRunnerPostRepository.readByRunnerPostId(runnerPostId);
     }
 
     @Transactional

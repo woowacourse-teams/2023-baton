@@ -80,9 +80,9 @@ public class SupporterAssuredSupport {
             );
         }
 
-        public void 서포터_본인_프로필_수정_성공을_검증한다(final HttpStatus http_상태) {
+        public void 서포터_본인_프로필_수정_성공을_검증한다(final HttpStatus HTTP_STATUS) {
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(http_상태.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
                 softly.assertThat(response.header("Location")).isNotNull();
             });
         }

@@ -263,10 +263,10 @@ public class RunnerPostAssuredSupport {
             );
         }
 
-        public void 러너_게시글_등록_성공을_검증한다(final HttpStatusAndLocationHeader 게시글_등록_성공_응답) {
+        public void 러너_게시글_등록_성공을_검증한다(final HttpStatusAndLocationHeader httpStatusAndLocationHeader) {
             assertSoftly(softly -> {
-                        softly.assertThat(response.statusCode()).isEqualTo(게시글_등록_성공_응답.getHttpStatus().value());
-                        softly.assertThat(response.header(LOCATION)).contains(게시글_등록_성공_응답.getLocation());
+                        softly.assertThat(response.statusCode()).isEqualTo(httpStatusAndLocationHeader.getHttpStatus().value());
+                        softly.assertThat(response.header(LOCATION)).contains(httpStatusAndLocationHeader.getLocation());
                     }
             );
         }

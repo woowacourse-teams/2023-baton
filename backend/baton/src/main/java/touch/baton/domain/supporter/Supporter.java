@@ -64,26 +64,28 @@ public class Supporter extends BaseEntity {
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        validateNotNull(reviewCount, member, supporterTechnicalTags);
+        validateNotNull(reviewCount, introduction, member, supporterTechnicalTags);
         this.id = id;
-        this.reviewCount = reviewCount;
         this.introduction = introduction;
+        this.reviewCount = reviewCount;
         this.member = member;
         this.supporterTechnicalTags = supporterTechnicalTags;
     }
 
     private void validateNotNull(final ReviewCount reviewCount,
+                                 final Introduction introduction,
                                  final Member member,
                                  final SupporterTechnicalTags supporterTechnicalTags
     ) {
         validateReviewCountNotNull(reviewCount);
         validateMemberNotNull(member);
         validateSupporterTechnicalTagsNotNull(supporterTechnicalTags);
+        updateIntroduction(introduction);
     }
 
-    private void validateSupporterTechnicalTagsNotNull(final SupporterTechnicalTags supporterTechnicalTags) {
-        if (Objects.isNull(supporterTechnicalTags)) {
-            throw new SupporterDomainException("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
+    private void validateReviewCountNotNull(final ReviewCount reviewCount) {
+        if (Objects.isNull(reviewCount)) {
+            throw new SupporterDomainException("Supporter 의 reviewCount 는 null 일 수 없습니다.");
         }
     }
 
@@ -93,11 +95,23 @@ public class Supporter extends BaseEntity {
         }
     }
 
-    private void validateReviewCountNotNull(final ReviewCount reviewCount) {
-        if (Objects.isNull(reviewCount)) {
-            throw new SupporterDomainException("Supporter 의 reviewCount 는 null 일 수 없습니다.");
+    private void validateSupporterTechnicalTagsNotNull(final SupporterTechnicalTags supporterTechnicalTags) {
+        if (Objects.isNull(supporterTechnicalTags)) {
+            throw new SupporterDomainException("Supporter 의 supporterTechnicalTags 는 null 일 수 없습니다.");
         }
     }
+
+    public void updateIntroduction(final Introduction introduction) {
+        this.introduction = updateDefaultIntroductionIfNull(introduction);
+    }
+
+    private Introduction updateDefaultIntroductionIfNull(final Introduction introduction) {
+        if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
+            return Introduction.getDefaultIntroduction();
+        }
+        return introduction;
+    }
+
 
     public void addAllSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {
         this.supporterTechnicalTags.addAll(supporterTechnicalTags);
@@ -109,17 +123,6 @@ public class Supporter extends BaseEntity {
 
     public void updateCompany(final Company company) {
         this.member.updateCompany(company);
-    }
-
-    public void updateIntroduction(final Introduction introduction) {
-        this.introduction = updateDefaultIntroductionIfNull(introduction);
-    }
-
-    private Introduction updateDefaultIntroductionIfNull(final Introduction introduction) {
-        if (Objects.isNull(introduction.getValue()) || Objects.isNull(introduction)) {
-            return Introduction.getDefaultIntroduction();
-        }
-        return introduction;
     }
 
     @Override

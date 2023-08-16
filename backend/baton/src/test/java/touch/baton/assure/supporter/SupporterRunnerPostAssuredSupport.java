@@ -46,12 +46,12 @@ public class SupporterRunnerPostAssuredSupport {
             this.response = 응답;
         }
 
-        public void 서포터의_리뷰_제안_철회를_검증한다(final HttpStatus http_상태,
+        public void 서포터의_리뷰_제안_철회를_검증한다(final HttpStatus HTTP_STATUS,
                                         final String 응답_헤더_이름,
                                         final String 응답_헤더_값
         ) {
             assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(http_상태.value());
+                softly.assertThat(response.statusCode()).isEqualTo(HTTP_STATUS.value());
                 softly.assertThat(response.header(응답_헤더_이름)).isEqualTo(응답_헤더_값);
             });
         }

@@ -15,10 +15,9 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class Introduction {
 
-    private static final String DEFAULT_VALUE = "'안녕하세요.'";
+    private static final String DEFAULT_VALUE = "안녕하세요.";
 
-    @ColumnDefault(DEFAULT_VALUE)
-    @Column(name = "introduction", nullable = true)
+    @Column(name = "introduction", nullable = false)
     private String value;
 
     public Introduction(final String value) {

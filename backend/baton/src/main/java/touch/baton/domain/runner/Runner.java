@@ -58,11 +58,16 @@ public class Runner extends BaseEntity {
                    final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
-        validateMemberNotNull(member);
+        validateNotNull(member, introduction);
         this.id = id;
         this.introduction = introduction;
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
+    }
+
+    private void validateNotNull(final Member member, final Introduction introduction) {
+        validateMemberNotNull(member);
+        updateIntroduction(introduction);
     }
 
     private void validateMemberNotNull(final Member member) {
@@ -71,27 +76,26 @@ public class Runner extends BaseEntity {
         }
     }
 
-    public void addAllRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags) {
-        this.runnerTechnicalTags.addAll(runnerTechnicalTags);
-    }
-
     public void updateIntroduction(final Introduction introduction) {
-        this.introduction = defaultIntroductionIfNull(introduction);
+        this.introduction = updateDefaultIntroductionIfNull(introduction);
     }
 
-    private Introduction defaultIntroductionIfNull(final Introduction introduction) {
-        if (Objects.isNull(introduction.getValue())) {
+    private Introduction updateDefaultIntroductionIfNull(final Introduction introduction) {
+        if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
             return Introduction.getDefaultIntroduction();
         }
         return introduction;
     }
-
     public void updateMemberName(final MemberName memberName) {
         this.member.updateMemberName(memberName);
     }
 
     public void updateCompany(final Company company) {
         this.member.updateCompany(company);
+    }
+
+    public void addAllRunnerTechnicalTags(final List<RunnerTechnicalTag> runnerTechnicalTags) {
+        this.runnerTechnicalTags.addAll(runnerTechnicalTags);
     }
 
     @Override

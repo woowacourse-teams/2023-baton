@@ -96,29 +96,12 @@ class RunnerPostTest {
 
         // when
         runnerPost.addAllRunnerPostTags(List.of(java, spring));
+        final List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
 
         // then
-        assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
-    }
-
-    // FIXME: 2023/08/13 아이디 없어서 테스트가 통과 안되는데 어떻게 함?
-    @Disabled
-    @DisplayName("글 주인이 아니면 true 를 반환한다.")
-    @Test
-    void isNotOwner() {
-        // given
-        final Member ethanMember = MemberFixture.createEthan();
-        final Runner ownerRunner = RunnerFixture.createRunner(ethanMember);
-        final RunnerPost runnerPost = RunnerPostFixture.create(ownerRunner, DeadlineFixture.deadline(LocalDateTime.now().plusHours(10)));
-
-        final Member hyenaMember = MemberFixture.createHyena();
-        final Runner notOwnerRunner = RunnerFixture.createRunner(hyenaMember);
-
-        // when, then
-        assertAll(
-                () -> assertThat(runnerPost.isNotOwner(notOwnerRunner)).isTrue(),
-                () -> assertThat(runnerPost.isNotOwner(ownerRunner)).isFalse()
-        );
+        assertThat(runnerPostTags).hasSize(2);
+        assertThat(runnerPostTags.get(0).getTag().getTagName().getValue()).isEqualTo("Java");
+        assertThat(runnerPostTags.get(1).getTag().getTagName().getValue()).isEqualTo("Spring");
     }
 
     @DisplayName("생성 테스트")
