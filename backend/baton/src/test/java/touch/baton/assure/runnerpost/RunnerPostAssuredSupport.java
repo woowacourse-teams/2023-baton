@@ -14,18 +14,14 @@ import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
-import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -50,6 +46,7 @@ public class RunnerPostAssuredSupport {
                                                              final long 서포터_지원자수,
                                                              final ReviewStatus 리뷰_상태,
                                                              final boolean 주인_여부,
+                                                             final boolean 서포터_지원_여부,
                                                              final Runner 러너,
                                                              final List<String> 태그_목록
     ) {
@@ -208,27 +205,8 @@ public class RunnerPostAssuredSupport {
             );
         }
 
-        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 서포터_러너_게시글_응답들) {
-            final List<SupporterRunnerPostResponse.Detail> actual = this.response.as(SupporterRunnerPostResponses.Detail.class).data();
-
-            IntStream.range(0, actual.size()).forEach(i -> {
-                SupporterRunnerPostResponse.Detail actualItem = actual.get(i);
-                SupporterRunnerPostResponse.Detail expectedItem = 서포터_러너_게시글_응답들.data().get(i);
-                assertSoftly(softly -> {
-                    softly.assertThat(actualItem.supporterId()).isEqualTo(expectedItem.supporterId());
-                    softly.assertThat(actualItem.name()).isEqualTo(expectedItem.name());
-                    softly.assertThat(actualItem.company()).isEqualTo(expectedItem.company());
-                    softly.assertThat(actualItem.reviewCount()).isEqualTo(expectedItem.reviewCount());
-                    softly.assertThat(actualItem.imageUrl()).isEqualTo(expectedItem.imageUrl());
-                    softly.assertThat(actualItem.message()).isEqualTo(expectedItem.message());
-                    softly.assertThat(actualItem.technicalTags()).isEqualTo(expectedItem.technicalTags());
-                });
-            });
-        }
-
         public void 서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터와_연관된_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.ReferencedBySupporter> actual = this.response.as(new TypeRef<PageResponse<RunnerPostResponse.ReferencedBySupporter>>() {
-
             });
 
             assertSoftly(softly -> {
@@ -240,6 +218,18 @@ public class RunnerPostAssuredSupport {
 
         public void 전체_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.Simple> 전체_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<PageResponse<RunnerPostResponse.Simple>>() {
+
+            });
+
+            assertSoftly(softly -> {
+                        softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                        softly.assertThat(actual.data()).isEqualTo(전체_러너_게시글_페이징_응답.data());
+                    }
+            );
+        }
+
+        public void 서포터_러너_게시글_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 전체_러너_게시글_페이징_응답) {
+            final SupporterRunnerPostResponses.Detail actual = this.response.as(new TypeRef<SupporterRunnerPostResponses.Detail>() {
 
             });
 
