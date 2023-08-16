@@ -78,38 +78,6 @@ class RunnerPostReadApiTest extends RestdocsConfig {
         restdocsSetUp(runnerPostController);
     }
 
-    @DisplayName("러너 게시글 전체 조회 API")
-    @Test
-    void readAllRunnerPosts() throws Exception {
-        // given
-        final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena());
-        final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
-        final Tag javaTag = TagFixture.create(tagName("자바"));
-        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline, List.of(javaTag));
-        final RunnerPost spyRunnerPost = spy(runnerPost);
-
-        // when
-        given(spyRunnerPost.getId()).willReturn(1L);
-        given(runnerPostService.readAllRunnerPosts()).willReturn(List.of(spyRunnerPost));
-
-        // then
-        mockMvc.perform(get("/api/v1/posts/runner"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON))
-                .andDo(restDocs.document(
-                        responseFields(
-                                fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
-                                fieldWithPath("data.[].title").type(STRING).description("러너 게시글의 제목"),
-                                fieldWithPath("data.[].deadline").type(STRING).description("러너 게시글의 마감 기한"),
-                                fieldWithPath("data.[].watchedCount").type(NUMBER).description("러너 게시글의 조회수"),
-                                fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글의 리뷰 상태"),
-                                fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
-                                fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
-                                fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록")
-                        ))
-                );
-    }
-
     @DisplayName("러너 게시글의 지원한 서포터 목록 조회 API")
     @Test
     void readSupporterRunnerPostsByRunnerPostId() throws Exception {
