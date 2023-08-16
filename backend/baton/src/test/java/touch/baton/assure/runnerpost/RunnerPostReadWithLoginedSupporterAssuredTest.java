@@ -26,9 +26,9 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 @SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostReadWithLoginedSupporterAssuredTest extends AssuredTestConfig {
 
+    private final PageRequest 페이징_정보 = PageRequest.of(1, 10);
     private Supporter 로그인된_서포터;
     private String 로그인용_토큰;
-    private final PageRequest 페이징_정보 = PageRequest.of(1, 10);
     private RunnerPost 대기중인_게시글;
     private RunnerPost 리뷰중인_게시글;
     private RunnerPost 완료된_게시글;

@@ -18,7 +18,6 @@ import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;

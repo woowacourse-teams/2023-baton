@@ -57,11 +57,14 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-one-api-test
 ==== *서포터 러너 게시글 조회 API*
 
 ===== *Http Request*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/http-request.adoc[]
 
 ===== *Http Response*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/http-response.adoc[]
 
 ===== *Http Response Fields*
+
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/response-fields.adoc[]
 

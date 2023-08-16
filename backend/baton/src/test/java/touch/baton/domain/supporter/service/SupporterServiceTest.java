@@ -5,13 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.response.RunnerResponse;
-import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 
 import java.util.List;
