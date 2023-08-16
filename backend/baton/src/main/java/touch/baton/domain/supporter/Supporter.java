@@ -40,7 +40,7 @@ public class Supporter extends BaseEntity {
     private ReviewCount reviewCount;
 
     @Embedded
-    private Introduction introduction = Introduction.getDefaultIntroduction();
+    private Introduction introduction;
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_to_member"), nullable = false)
@@ -54,16 +54,18 @@ public class Supporter extends BaseEntity {
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        this(null, reviewCount, member, supporterTechnicalTags);
+        this(null, reviewCount, Introduction.getDefaultIntroduction(), member, supporterTechnicalTags);
     }
 
     private Supporter(final Long id,
                       final ReviewCount reviewCount,
+                      final Introduction introduction,
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
         validateNotNull(reviewCount, member, supporterTechnicalTags);
         this.id = id;
+        this.introduction = introduction;
         this.reviewCount = reviewCount;
         this.member = member;
         this.supporterTechnicalTags = supporterTechnicalTags;
@@ -97,14 +99,14 @@ public class Supporter extends BaseEntity {
     }
 
     public void updateIntroduction(final Introduction introduction) {
-        this.introduction = validateIntroductionNotNull(introduction);
+        validateIntroductionNotNull(introduction);
+        this.introduction = introduction;
     }
 
-    private Introduction validateIntroductionNotNull(final Introduction introduction) {
-        if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
-            return Introduction.getDefaultIntroduction();
+    private void validateIntroductionNotNull(final Introduction introduction) {
+        if (Objects.isNull(introduction)) {
+            throw new SupporterDomainException("Supporter 의 introduction 은 null 일 수 없습니다.");
         }
-        return introduction;
     }
 
     public void addAllSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {

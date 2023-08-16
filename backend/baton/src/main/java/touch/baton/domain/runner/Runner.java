@@ -16,6 +16,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.runner.exception.RunnerDomainException;
+import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
 
@@ -36,7 +37,7 @@ public class Runner extends BaseEntity {
     private Long id;
 
     @Embedded
-    private Introduction introduction = Introduction.getDefaultIntroduction();
+    private Introduction introduction;
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_runner_to_member"), nullable = false)
@@ -49,15 +50,17 @@ public class Runner extends BaseEntity {
     private Runner(final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
-        this(null, member, runnerTechnicalTags);
+        this(null, Introduction.getDefaultIntroduction(), member, runnerTechnicalTags);
     }
 
     private Runner(final Long id,
+                   final Introduction introduction,
                    final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
         validateMemberNotNull(member);
         this.id = id;
+        this.introduction = introduction;
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
     }
@@ -68,15 +71,15 @@ public class Runner extends BaseEntity {
         }
     }
 
-    public Introduction updateIntroduction(final Introduction introduction) {
-        return this.introduction = validateIntroductionNotNull(introduction);
+    public void updateIntroduction(final Introduction introduction) {
+        validateIntroductionNotNull(introduction);
+        this.introduction = introduction;
     }
 
-    private Introduction validateIntroductionNotNull(final Introduction introduction) {
-        if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
-            return Introduction.getDefaultIntroduction();
+    private void validateIntroductionNotNull(final Introduction introduction) {
+        if (Objects.isNull(introduction)) {
+            throw new SupporterDomainException("Runner 의 introduction 은 null 일 수 없습니다.");
         }
-        return introduction;
     }
 
     public void updateMemberName(final MemberName memberName) {
