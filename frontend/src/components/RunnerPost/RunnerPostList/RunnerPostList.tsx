@@ -8,14 +8,19 @@ const RunnerPostList = () => {
   const [runnerPostList, setRunnerPostList] = useState<GetRunnerPostResponse | null>(null);
 
   useEffect(() => {
-    const getRunnerPost = async () => {
-      const result = await getRequest<GetRunnerPostResponse>('/posts/runner/test');
-
-      setRunnerPostList(result);
-    };
-
     getRunnerPost();
   }, []);
+
+  const getRunnerPost = () => {
+    getRequest('/posts/runner/test')
+      .then(async (response) => {
+        const data = await response.json();
+        setRunnerPostList(data);
+      })
+      .catch((error: Error) => {
+        alert('게시글 목록을 불러오지 못했습니다.' + error.message);
+      });
+  };
 
   return (
     <S.RunnerPostWrapper>
