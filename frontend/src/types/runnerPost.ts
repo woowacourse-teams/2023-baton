@@ -9,7 +9,7 @@ export interface RunnerPost {
   title: string;
   deadline: string;
   tags: string[];
-  runnerProfile: RunnerProfile;
+  runnerProfile?: RunnerProfile;
   watchedCount: number;
   applicantCount: number;
   reviewStatus: ReviewStatus;

@@ -1,26 +1,12 @@
-import { ReviewStatus } from './runnerPost';
 import { Technic } from './tags';
 
-export interface GetRunnerProfileResponse {
-  profile: Profile;
-  runnerPosts: ProfileRunnerPost[];
-}
+export interface GetRunnerProfileResponse extends Profile {}
 
-export interface ProfileRunnerPost {
-  runnerPostId: number;
-  title: string;
-  deadline: string;
-  tags: string[];
-  reviewStatus: ReviewStatus;
-}
+export interface GetSupporterProfileResponse extends Profile {}
 
-export interface RunnerProfileResponse extends Profile {}
+export interface PatchRunnerProfileRequest extends ProfileRequest {}
 
-export interface SupporterProfileResponse extends Profile {}
-
-export interface RunnerProfileRequest extends ProfileRequest {}
-
-export interface SupporterProfileRequest extends ProfileRequest {}
+export interface PatchSupporterProfileRequest extends ProfileRequest {}
 
 export type ProfileRequest = Omit<Profile, 'githubUrl' | 'imageUrl'>;
 

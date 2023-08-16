@@ -19,7 +19,7 @@ const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { goToMainPage, goBack } = usePageRouter();
+  const { goToMainPage, goBack, goToRunnerProfilePage } = usePageRouter();
   const { runnerPostId } = useParams();
   const { getToken } = useToken();
 
@@ -99,6 +99,12 @@ const RunnerPostPage = () => {
     setIsModalOpen(false);
   };
 
+  const viewProfile = () => {
+    if (runnerPost) {
+      goToRunnerProfilePage(runnerPost?.runnerProfile.runnerId);
+    }
+  };
+
   return (
     <Layout>
       <S.RunnerPostContainer>
@@ -141,7 +147,7 @@ const RunnerPostPage = () => {
               <S.Contents>{runnerPost.contents}</S.Contents>
               <S.BottomContentContainer>
                 <S.LeftSideContainer>
-                  <S.ProfileContainer>
+                  <S.ProfileContainer onClick={viewProfile}>
                     <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
                     <S.Profile>
                       <S.Name>{runnerPost.runnerProfile.name}</S.Name>
@@ -276,6 +282,8 @@ const S = {
     flex-direction: row;
     align-items: center;
     gap: 20px;
+
+    cursor: pointer;
   `,
 
   Profile: styled.div`
