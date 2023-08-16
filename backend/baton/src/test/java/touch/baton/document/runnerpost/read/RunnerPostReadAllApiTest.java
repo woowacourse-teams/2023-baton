@@ -92,6 +92,10 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("size").description("페이지 사이즈"),
+                                parameterWithName("page").description("페이지 번호")
+                        ),
                         responseFields(
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
                                 fieldWithPath("data.[].title").type(STRING).description("러너 게시글의 제목"),
