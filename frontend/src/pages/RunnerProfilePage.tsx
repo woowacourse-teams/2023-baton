@@ -15,19 +15,19 @@ const RunnerProfilePage = () => {
   const { runnerId } = useParams();
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      const profileResult = await getProfile();
-
-      setRunnerProfile(profileResult);
-    };
-
-    fetchProfileData();
+    getProfile();
   }, [runnerId]);
 
   const getProfile = async () => {
-    const data = await getRequest<GetRunnerProfileResponse>(`/profile/runner/${runnerId}`);
+    getRequest(`/profile/runner/${runnerId}`)
+      .then(async (response) => {
+        const data: GetRunnerProfileResponse = await response.json();
 
-    return data;
+        setRunnerProfile(data);
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   return (

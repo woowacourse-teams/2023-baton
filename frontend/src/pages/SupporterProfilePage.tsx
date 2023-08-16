@@ -18,27 +18,32 @@ const SupporterProfilePage = () => {
   const { supporterId } = useParams();
 
   useEffect(() => {
-    const fetchProfilePageData = async () => {
-      const profileResult = await getProfile();
-      const postResult = await getPost();
+    getProfile();
+    getPost();
+  }, [supporterId]);
 
-      setSupporterProfile(profileResult);
-      setSupporterProfilePost(postResult);
-    };
+  const getProfile = () => {
+    getRequest(`/profile/supporter/${supporterId}`)
+      .then(async (response) => {
+        const data: GetSupporterProfileResponse = await response.json();
 
-    fetchProfilePageData();
-  }, []);
-
-  const getProfile = async () => {
-    const data = await getRequest<GetSupporterProfileResponse>(`/profile/supporter/${supporterId}`);
-
-    return data;
+        setSupporterProfile(data);
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   const getPost = async () => {
-    const data = await getRequest<GetRunnerPostResponse>(`/posts/runner/search/${supporterId}`);
+    getRequest(`/posts/runner/search/${supporterId}`)
+      .then(async (response) => {
+        const data: GetRunnerPostResponse = await response.json();
 
-    return data;
+        setSupporterProfilePost(data);
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   return (
