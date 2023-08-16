@@ -9,6 +9,7 @@ import myPageSupporterPost from './data/myPageSupporterPost.json';
 import runnerProfileInfo from './data/runnerProfileInfo.json';
 import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
+import supporterProfilePost from './data/supporterProfilePost.json';
 
 export const handlers = [
   rest.post('*/posts/runner/test', async (req, res, ctx) => {
@@ -94,5 +95,17 @@ export const handlers = [
     const { reviewType, descriptions, supporterId, runnerPostId } = await req.json();
 
     return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'), ctx.json({}));
+  }),
+
+  rest.get('*/profile/runner/:runnerId', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
+  }),
+
+  rest.get('*/profile/supporter/:supporterId', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterProfileInfo));
+  }),
+
+  rest.get('*/posts/runner/search/:supporterId', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterProfilePost));
   }),
 ];

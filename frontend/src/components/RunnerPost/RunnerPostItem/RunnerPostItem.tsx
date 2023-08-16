@@ -36,10 +36,14 @@ const RunnerPostItem = ({
         </S.TagContainer>
       </S.LeftSideContainer>
       <S.RightSideContainer>
-        <S.ProfileContainer>
-          <Avatar width="60px" height="60px" imageUrl={runnerProfile.imageUrl} />
-          <S.ProfileName>{runnerProfile.name}</S.ProfileName>
-        </S.ProfileContainer>
+        {runnerProfile ? (
+          <>
+            <S.ProfileContainer>
+              <Avatar width="60px" height="60px" imageUrl={runnerProfile.imageUrl} />
+              <S.ProfileName>{runnerProfile.name}</S.ProfileName>
+            </S.ProfileContainer>
+          </>
+        ) : null}
         <S.ChatViewContainer>
           <S.statisticsContainer>
             <S.statisticsImage src={eyeIcon} />

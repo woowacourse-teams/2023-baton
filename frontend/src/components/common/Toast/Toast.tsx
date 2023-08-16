@@ -8,10 +8,10 @@ interface Props {
   colorTheme: 'ERROR' | 'COMPLETION';
   title: string;
   description: string;
-  ms?: number;
+  ms: number;
 }
 
-const Toast = ({ colorTheme, description, title, ms = 3000 }: Props) => {
+const Toast = ({ colorTheme, description, title, ms }: Props) => {
   return createPortal(
     <S.ToastWrapper key={crypto.randomUUID()} $colorTheme={colorTheme} ms={ms}>
       <S.Icon src={colorTheme === 'COMPLETION' ? completeIcon : errorIcon} />

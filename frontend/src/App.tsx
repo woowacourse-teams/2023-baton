@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import { useToken } from './hooks/useToken';
+import ToastProvider from './contexts/ToastContext';
 
 const App = () => {
   const { validateToken } = useToken();
@@ -9,9 +10,11 @@ const App = () => {
   validateToken();
 
   return (
-    <S.AppContainer>
-      <Outlet />
-    </S.AppContainer>
+    <ToastProvider>
+      <S.AppContainer>
+        <Outlet />
+      </S.AppContainer>
+    </ToastProvider>
   );
 };
 

@@ -18,5 +18,6 @@ export const Primary: Story = {
     colorTheme: 'COMPLETION',
     title: '생성 완료',
     description: '리뷰 요청 글 생성이 완료되었습니다.',
+    ms: 3000,
   },
 };

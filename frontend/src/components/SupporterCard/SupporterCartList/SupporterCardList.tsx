@@ -14,20 +14,22 @@ const SupporterCardList = () => {
   const [supporterList, setSupporterList] = useState<Candidate[]>([]);
 
   useEffect(() => {
-    const getSupporterList = async () => {
-      const token = getToken()?.value;
-      if (!token) throw new Error('토큰이 존재하지 않습니다');
-
-      const result = await getRequest<GetSupporterCandidateResponse>(
-        `/posts/runner/${runnerPostId}/supporters`,
-        `Bearer ${token}`,
-      );
-
-      setSupporterList(result.data);
-    };
-
     getSupporterList();
   }, []);
+
+  const getSupporterList = async () => {
+    const token = getToken()?.value;
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    getRequest(`/posts/runner/${runnerPostId}/supporters`, `Bearer ${token}`)
+      .then(async (response) => {
+        const data = await response.json();
+        setSupporterList(data.data);
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
+  };
 
   return (
     <S.SupporterCardListContainer>
