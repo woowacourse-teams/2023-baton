@@ -6,10 +6,10 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { BATON_BASE_URL } from '@/constants';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/utils/date';
+import { postRequest } from '@/api/fetch';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
@@ -87,28 +87,23 @@ const RunnerPostCreatePage = () => {
   const validateInputs = () => {
     if (!title) throw new Error('제목을 입력해주세요');
     if (!pullRequestUrl) throw new Error('PR주소를 입력해주세요');
-
     if (!deadline) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
   };
 
-  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
+  const postRunnerForm = (data: CreateRunnerPostRequest) => {
     const token = getToken()?.value;
+
+    if (!token) return alert('토큰이 존재하지 않습니다');
+
     const body = JSON.stringify(data);
 
-    if (!token) {
-      throw new Error('토큰이 존재하지 않습니다');
-    }
-
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
-      method: 'POST',
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.status !== 201) throw new Error(`${response.status} ERROR`);
+    postRequest(`/posts/runner/test`, `Bearer ${token}`, body)
+      .then(async () => {
+        goToCreationResultPage();
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   const submitForm = async () => {
@@ -120,13 +115,7 @@ const RunnerPostCreatePage = () => {
       contents,
     };
 
-    try {
-      await postRunnerForm(postData);
-    } catch (error) {
-      return alert(error);
-    }
-
-    goToCreationResultPage();
+    await postRunnerForm(postData);
   };
 
   return (
