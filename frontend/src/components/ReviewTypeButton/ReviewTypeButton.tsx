@@ -12,11 +12,17 @@ interface Props extends React.HTMLProps<HTMLImageElement> {
   isSelected: boolean;
   value: ReviewType;
   label?: string;
-  handelClick?: () => void;
+  selectReviewType?: (value: ReviewType) => void;
 }
 
-const ReviewTypeButton = ({ isSelected, value, label, handelClick, ...rest }: Props) => {
+const ReviewTypeButton = ({ isSelected, value, label, selectReviewType, ...rest }: Props) => {
   const iconRef = useRef<HTMLImageElement>(null);
+
+  const handleClick = () => {
+    if (!selectReviewType) return;
+
+    selectReviewType(value);
+  };
 
   const handleMouseHover = (e: React.PointerEvent<HTMLButtonElement>) => {
     if (!iconRef.current) return;
@@ -85,7 +91,7 @@ const ReviewTypeButton = ({ isSelected, value, label, handelClick, ...rest }: Pr
     case 'BAD':
       return (
         <S.ReviewTypeItem>
-          <S.Button onMouseOver={handleMouseHover} onMouseLeave={handleMouseLeave} onClick={handelClick}>
+          <S.Button onMouseOver={handleMouseHover} onMouseLeave={handleMouseLeave} onClick={handleClick}>
             <img src={BadFeedbackGrayIcon} {...rest} ref={iconRef} />
             {label && <S.ReviewTypeLabel $isSelect={isSelected}>{label}</S.ReviewTypeLabel>}
           </S.Button>
@@ -94,7 +100,7 @@ const ReviewTypeButton = ({ isSelected, value, label, handelClick, ...rest }: Pr
     case 'GOOD':
       return (
         <S.ReviewTypeItem>
-          <S.Button onMouseOver={handleMouseHover} onMouseLeave={handleMouseLeave} onClick={handelClick}>
+          <S.Button onMouseOver={handleMouseHover} onMouseLeave={handleMouseLeave} onClick={handleClick}>
             <img src={GoodFeedbackGrayIcon} {...rest} ref={iconRef} />
             {label && <S.ReviewTypeLabel $isSelect={isSelected}>{label}</S.ReviewTypeLabel>}
           </S.Button>
@@ -103,7 +109,7 @@ const ReviewTypeButton = ({ isSelected, value, label, handelClick, ...rest }: Pr
     case 'GREAT':
       return (
         <S.ReviewTypeItem>
-          <S.Button onMouseOver={handleMouseHover} onMouseLeave={handleMouseLeave} onClick={handelClick}>
+          <S.Button onMouseOver={handleMouseHover} onMouseLeave={handleMouseLeave} onClick={handleClick}>
             <img src={GreatFeedbackGrayIcon} {...rest} ref={iconRef} />
             {label && <S.ReviewTypeLabel $isSelect={isSelected}>{label}</S.ReviewTypeLabel>}
           </S.Button>

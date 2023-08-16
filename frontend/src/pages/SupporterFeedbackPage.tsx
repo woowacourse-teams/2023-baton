@@ -115,9 +115,7 @@ const SupporterFeedbackPage = () => {
               width="100px"
               height="70px"
               label={option.label}
-              handelClick={() => {
-                selectReviewType(option.value);
-              }}
+              selectReviewType={selectReviewType}
             />
           ))}
         </S.ReviewTypeList>
