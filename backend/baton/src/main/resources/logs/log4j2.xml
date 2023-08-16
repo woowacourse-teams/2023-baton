@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="FILE_NAME">daily-log</Property>
+        <Property name="WARN_FILE_NAME">warn-log</Property>
+        <Property name="ERROR_FILE_NAME">error-log</Property>
+        <Property name="BASE_DIR">logs</Property>
+        <Property name="COLOR_PATTERN">%style{%d{ISO8601}}{white} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable</Property>
+        <Property name="PATTERN">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${COLOR_PATTERN}" charset="UTF-8"/>
+        </Console>
+
+        <RollingFile name="dailyFile">
+            <FileName>${BASE_DIR}/${FILE_NAME}.log</FileName>
+            <FilePattern>${BASE_DIR}/${FILE_NAME}-%d{yyyy-MM-dd-hh-mm}.log</FilePattern>
+            <PatternLayout pattern="${PATTERN}" />
+            <LevelRangeFilter minLevel="ERROR" maxLevel="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="100MB"/>
+                <TimeBasedTriggeringPolicy interval = "1" modulate = "true"/>
+            </Policies>
+            <DefaultRolloverStrategy>
+                <Delete basePath="${LOG_PATH}" maxDepth="1">
+                    <IfAccumulatedFileCount exceeds="3"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="warnFile">
+            <FileName>${BASE_DIR}/${WARN_FILE_NAME}.log</FileName>
+            <FilePattern>${BASE_DIR}/${WARN_FILE_NAME}-%d{yyyy-MM-dd-hh-mm}.log</FilePattern>
+            <PatternLayout pattern="${PATTERN}" />
+            <LevelRangeFilter minLevel="WARN" maxLevel="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="25" fileIndex="min" >
+                <Delete basePath="${BASE_DIR}">
+                    <IfFileName glob="*.log" />
+                    <IfLastModified age="10d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+
+        <RollingFile name="errorFile">
+            <FileName>${BASE_DIR}/${ERROR_FILE_NAME}.log</FileName>
+            <FilePattern>${BASE_DIR}/${ERROR_FILE_NAME}-%d{yyyy-MM-dd-hh-mm}.log</FilePattern>
+            <PatternLayout pattern="${PATTERN}" />
+            <LevelRangeFilter minLevel="ERROR" maxLevel="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="10 MB"/>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1" /><!-- 일별 로그 파일 생성-->
+            </Policies>
+            <DefaultRolloverStrategy max="25" fileIndex="min" >
+                <Delete basePath="${BASE_DIR}">
+                    <IfFileName glob="*.log" />
+                    <IfLastModified age="10d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+
+        <Root level="INFO" additivity="false">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="dailyFile"/>
+            <AppenderRef ref="warnFile"/>
+            <AppenderRef ref="errorFile"/>
+        </Root>
+
+        <Logger name="touch.baton" level="INFO" additivity="false" >
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="dailyFile"/>
+            <AppenderRef ref="warnFile"/>
+            <AppenderRef ref="errorFile"/>
+        </Logger>
+
+    </Loggers>
+</Configuration>
