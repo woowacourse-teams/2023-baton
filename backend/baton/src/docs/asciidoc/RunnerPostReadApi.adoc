@@ -60,6 +60,10 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-one-api-test
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/http-request.adoc[]
 
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-one-api-test/read-by-runner-post-id/request-headers.adoc[]
+
 ===== *Http Request Path Parameters*
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/path-parameters.adoc[]
