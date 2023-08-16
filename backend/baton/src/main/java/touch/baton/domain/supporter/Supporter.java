@@ -40,7 +40,7 @@ public class Supporter extends BaseEntity {
     private ReviewCount reviewCount;
 
     @Embedded
-    private Introduction introduction;
+    private Introduction introduction = Introduction.getDefaultIntroduction();
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_supporter_to_member"), nullable = false)
@@ -111,7 +111,6 @@ public class Supporter extends BaseEntity {
         }
         return introduction;
     }
-
 
     public void addAllSupporterTechnicalTags(final List<SupporterTechnicalTag> supporterTechnicalTags) {
         this.supporterTechnicalTags.addAll(supporterTechnicalTags);

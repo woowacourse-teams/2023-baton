@@ -67,7 +67,7 @@ public class OauthService {
 
     private Runner saveNewRunner(final Member member) {
         final Runner newRunner = Runner.builder()
-                .introduction(new Introduction(""))
+                .introduction(Introduction.getDefaultIntroduction())
                 .member(member)
                 .build();
 
@@ -77,7 +77,7 @@ public class OauthService {
     private Supporter saveNewSupporter(final Member member) {
         final Supporter newSupporter = Supporter.builder()
                 .reviewCount(new ReviewCount(0))
-                .introduction(new Introduction(""))
+                .introduction(Introduction.getDefaultIntroduction())
                 .member(member)
                 .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();

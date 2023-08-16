@@ -36,7 +36,7 @@ public class Runner extends BaseEntity {
     private Long id;
 
     @Embedded
-    private Introduction introduction;
+    private Introduction introduction = Introduction.getDefaultIntroduction();
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_runner_to_member"), nullable = false)
@@ -60,14 +60,14 @@ public class Runner extends BaseEntity {
     ) {
         validateNotNull(member, introduction);
         this.id = id;
-        this.introduction = introduction;
+        this.introduction = getDefaultIntroductionIfNull(introduction);
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
     }
 
     private void validateNotNull(final Member member, final Introduction introduction) {
         validateMemberNotNull(member);
-        updateIntroduction(introduction);
+        validateIntroductionNotNull(introduction);
     }
 
     private void validateMemberNotNull(final Member member) {
@@ -76,16 +76,23 @@ public class Runner extends BaseEntity {
         }
     }
 
-    public void updateIntroduction(final Introduction introduction) {
-        this.introduction = updateDefaultIntroductionIfNull(introduction);
+    private void validateIntroductionNotNull(final Introduction introduction) {
+        if (Objects.isNull(member)) {
+            throw new RunnerDomainException("Runner 의 introduction 은 null 일 수 없습니다.");
+        }
     }
 
-    private Introduction updateDefaultIntroductionIfNull(final Introduction introduction) {
+    public Introduction updateIntroduction(final Introduction introduction) {
+        return this.introduction = getDefaultIntroductionIfNull(introduction);
+    }
+
+    private Introduction getDefaultIntroductionIfNull(final Introduction introduction) {
         if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
             return Introduction.getDefaultIntroduction();
         }
         return introduction;
     }
+
     public void updateMemberName(final MemberName memberName) {
         this.member.updateMemberName(memberName);
     }
