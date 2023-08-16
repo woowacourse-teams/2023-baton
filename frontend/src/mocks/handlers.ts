@@ -6,30 +6,25 @@ import myPageRunnerProfile from './data/myPageRunnerProfile.json';
 import myPageSupporterProfile from './data/myPageSupporterProfile.json';
 import myPageRunnerPost from './data/myPageRunnerPost.json';
 import myPageSupporterPost from './data/myPageSupporterPost.json';
-import runnerProfile from './data/runnerProfile.json';
 import runnerProfileInfo from './data/runnerProfileInfo.json';
 import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
 
 export const handlers = [
   rest.post('*/posts/runner/test', async (req, res, ctx) => {
-    const { title, tags, pullRequestUrl, deadline, contents } = await req.json();
-
-    return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
+    return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.get('*/posts/runner/test', async (_, res, ctx) => {
-    return res(ctx.delay(300), ctx.status(200), ctx.json(runnerPostList));
+  rest.get('*/posts/runner/test', async (req, res, ctx) => {
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
   }),
 
   rest.put('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
-    const { title, tags, pullRequestUrl, deadline, contents } = await req.json();
-
-    return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
+    return res(ctx.delay(300), ctx.status(201));
   }),
 
   rest.delete('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
-    return res(ctx.delay(300), ctx.status(204), ctx.set('Content-Type', 'application/json'));
+    return res(ctx.delay(300), ctx.status(204));
   }),
 
   rest.get('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
@@ -46,9 +41,7 @@ export const handlers = [
   }),
 
   rest.post('*/posts/runner/test', async (req, res, ctx) => {
-    const { title, tags, pullRequestUrl, deadline, contents } = await req.json();
-
-    return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'));
+    return res(ctx.delay(300), ctx.status(201));
   }),
 
   rest.get('*/profile/runner/me', async (req, res, ctx) => {
@@ -86,15 +79,11 @@ export const handlers = [
   }),
 
   rest.patch('*/profile/runner/me', async (req, res, ctx) => {
-    const { name, company, introduction, technicalTags } = await req.json();
-
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
   }),
 
   rest.patch('*/profile/supporter/me', async (req, res, ctx) => {
-    const { name, company, introduction, technicalTags } = await req.json();
-
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfile));
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
   }),
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
