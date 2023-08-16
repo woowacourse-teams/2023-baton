@@ -14,6 +14,7 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
 import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_INTRODUCTION_IS_NULL;
 import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_TECHNICAL_TAGS_ARE_NULL;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -71,7 +72,7 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
     }
 
     @Test
-    void 러너_정보_수정_시에_소개글이_없어도_된다() {
+    void 러너_정보_수정_시에_소개글이_없으면_예외가_발생한다() {
         final RunnerUpdateRequest 러너_업데이트_요청 = new RunnerUpdateRequest("업데이트된 이름", "업데이트된 소속", null, List.of("Java", "React"));
 
         RunnerAssuredSupport
@@ -80,7 +81,7 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
 
                 .서버_응답()
-                .러너_본인_프로필_수정_성공을_검증한다(NO_CONTENT, 러너_디투.getId());
+                .러너_본인_프로필_수정_실패를_검증한다(RUNNER_INTRODUCTION_IS_NULL);
     }
 
     @Test
