@@ -1,20 +1,28 @@
 import { BATON_BASE_URL } from '@/constants';
+interface customError {
+  errorCode: string;
+  message: string;
+}
 
 const fetchAPI = async (url: string, options: RequestInit) => {
   const response = await fetch(`${BATON_BASE_URL}${url}`, options);
 
-  if (!response.ok) throw new Error(`Error: ${response.text}`);
+  if (!response.ok) {
+    const error: customError = await response.json();
 
-  return response.json();
+    throw new Error(error.message);
+  }
+  return response;
 };
 
-export const getRequest = async <T>(url: string, authorization?: string) => {
-  const response: T = await fetchAPI(
+export const getRequest = async (url: string, authorization?: string) => {
+  const response = await fetchAPI(
     url,
     authorization
       ? {
           method: 'GET',
           headers: {
+            'Content-Type': 'application/json',
             Authorization: authorization,
           },
         }
@@ -26,8 +34,8 @@ export const getRequest = async <T>(url: string, authorization?: string) => {
   return response;
 };
 
-export const postRequest = async <T>(url: string, authorization: string, body: BodyInit) => {
-  const response: T = await fetchAPI(url, {
+export const postRequest = async (url: string, authorization: string, body: BodyInit) => {
+  const response = await fetchAPI(url, {
     method: 'POST',
     headers: {
       Authorization: authorization,
@@ -38,22 +46,22 @@ export const postRequest = async <T>(url: string, authorization: string, body: B
   return response;
 };
 
-export const deleteRequest = async <T>(url: string, authorization: string, body: BodyInit) => {
-  const response: T = await fetchAPI(url, {
+export const deleteRequest = async (url: string, authorization: string) => {
+  const response = await fetchAPI(url, {
     method: 'DELETE',
     headers: {
       Authorization: authorization,
     },
-    body,
   });
 
   return response;
 };
 
-export const putRequest = async <T>(url: string, authorization: string, body: BodyInit) => {
-  const response: T = await fetchAPI(url, {
+export const putRequest = async (url: string, authorization: string, body: BodyInit) => {
+  const response = await fetchAPI(url, {
     method: 'PUT',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: authorization,
     },
     body,
@@ -62,10 +70,11 @@ export const putRequest = async <T>(url: string, authorization: string, body: Bo
   return response;
 };
 
-export const patchRequest = async <T>(url: string, authorization: string, body: BodyInit) => {
-  const response: T = await fetchAPI(url, {
+export const patchRequest = async (url: string, authorization: string, body: BodyInit) => {
+  const response = await fetchAPI(url, {
     method: 'PATCH',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: authorization,
     },
     body,
