@@ -140,6 +140,7 @@ public record RunnerPostResponse() {
         }
     }
     public record SimpleInMyPage(Long runnerPostId,
+                                 Long supporterId,
                                  String title,
                                  LocalDateTime deadline,
                                  List<String> tags,
@@ -154,6 +155,7 @@ public record RunnerPostResponse() {
                                           final long applicantCount) {
             return new SimpleInMyPage(
                     runnerPost.getId(),
+                    getSupporterIdByRunnerPost(runnerPost),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getDeadline().getValue(),
                     convertToTags(runnerPost),
@@ -161,6 +163,14 @@ public record RunnerPostResponse() {
                     applicantCount,
                     runnerPost.getReviewStatus().name()
             );
+        }
+
+        private static Long getSupporterIdByRunnerPost(final RunnerPost runnerPost) {
+            Long supporterId = null;
+            if (runnerPost.getSupporter() != null) {
+                supporterId = runnerPost.getSupporter().getId();
+            }
+            return supporterId;
         }
     }
 

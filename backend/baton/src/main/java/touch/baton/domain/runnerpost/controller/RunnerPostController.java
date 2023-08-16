@@ -231,7 +231,8 @@ public class RunnerPostController {
     @GetMapping("/me/runner")
     public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
                                                                                             @AuthRunnerPrincipal final Runner runner,
-                                                                                            @RequestParam("reviewStatus") final ReviewStatus reviewStatus) {
+                                                                                            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
+    ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, runner.getId(), reviewStatus);
         final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
 

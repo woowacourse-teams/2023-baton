@@ -80,16 +80,20 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/rea
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-runner-my-page/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/request-headers.adoc[]
 
 ===== *Http Request Query Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-runner-my-page/query-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/query-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-runner-my-page/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-runner-my-page/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/response-fields.adoc[]

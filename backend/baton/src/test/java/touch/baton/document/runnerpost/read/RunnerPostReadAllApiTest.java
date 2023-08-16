@@ -35,7 +35,10 @@ import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.spy;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.head;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
@@ -213,14 +216,17 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
+                        requestHeaders(
+                                headerWithName(AUTHORIZATION).description("Bearer JWT")
+                        ),
                         queryParameters(
                                 parameterWithName("size").description("페이지 사이즈"),
                                 parameterWithName("page").description("페이지 번호"),
                                 parameterWithName("reviewStatus").description("리뷰 상태")
                         ),
                         responseFields(
-
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
+                                fieldWithPath("data.[].supporterId").type(NUMBER).optional().description("서포터 식별자값(id)은 null 일 수 있다"),
                                 fieldWithPath("data.[].title").type(STRING).description("러너 게시글 제목"),
                                 fieldWithPath("data.[].deadline").type(STRING).description("러너 게시글의 마감 기한"),
                                 fieldWithPath("data.[].tags").type(ARRAY).description("러너 게시글 태그 목록"),

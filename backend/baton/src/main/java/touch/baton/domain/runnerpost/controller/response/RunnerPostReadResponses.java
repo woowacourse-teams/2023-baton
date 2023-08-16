@@ -11,10 +11,10 @@ public record RunnerPostReadResponses() {
         }
     }
 
-    public record Filtering(List<RunnerPostResponse.SimpleInMyPage> data) {
+    public record SimpleInMyPage(List<RunnerPostResponse.SimpleInMyPage> data) {
 
-        public static Filtering from(final List<RunnerPostResponse.SimpleInMyPage> data) {
-            return new Filtering(data);
+        public static SimpleInMyPage from(final List<RunnerPostResponse.SimpleInMyPage> data) {
+            return new SimpleInMyPage(data);
         }
     }
 
