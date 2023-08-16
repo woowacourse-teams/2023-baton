@@ -104,21 +104,23 @@ const SupporterFeedbackPage = () => {
         <S.Title>리뷰 후기 남기기 💌</S.Title>
       </S.TitleWrapper>
       <S.FeedbackContainer>
-        <S.SubTitle>리뷰에 대한 후기를 남겨주세요</S.SubTitle>
-        <S.ReviewTypeList>
-          {reviewTypeOptions.map((option) => (
-            <ReviewTypeButton
-              key={option.value}
-              type="button"
-              value={option.value}
-              isSelected={option.selected}
-              width="100px"
-              height="70px"
-              label={option.label}
-              selectReviewType={selectReviewType}
-            />
-          ))}
-        </S.ReviewTypeList>
+        <S.ReviewTypeContainer>
+          <S.SubTitle>리뷰에 대한 후기를 남겨주세요</S.SubTitle>
+          <S.ReviewTypeList>
+            {reviewTypeOptions.map((option) => (
+              <ReviewTypeButton
+                key={option.value}
+                type="button"
+                value={option.value}
+                isSelected={option.selected}
+                width="100px"
+                height="70px"
+                label={option.label}
+                selectReviewType={selectReviewType}
+              />
+            ))}
+          </S.ReviewTypeList>
+        </S.ReviewTypeContainer>
         <S.UnderLine />
         {reviewType && (
           <S.DescriptionContainer>
@@ -163,6 +165,14 @@ const S = {
     margin: 0 auto;
 
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25), 0 6px 10px rgba(0, 0, 0, 0.22);
+  `,
+
+  ReviewTypeContainer: styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
   `,
 
   ReviewTypeList: styled.ul`
