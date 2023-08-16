@@ -8,26 +8,18 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
-import touch.baton.fixture.domain.SupporterFixture;
 
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_전체_조회_응답;
-import static touch.baton.fixture.domain.TechnicalTagFixture.createJava;
-import static touch.baton.fixture.domain.TechnicalTagFixture.createSpring;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.IntroductionFixture.introduction;
-import static touch.baton.fixture.vo.MessageFixture.message;
-import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 
+@SuppressWarnings("NonAsciiCharacters")
 class RunnerPostReadAssuredTest extends AssuredTestConfig {
 
     @Test

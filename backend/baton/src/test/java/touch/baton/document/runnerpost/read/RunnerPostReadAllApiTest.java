@@ -24,18 +24,14 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.time.LocalDateTime.now;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.spy;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
@@ -44,11 +40,9 @@ import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.testcontainers.shaded.com.google.common.net.HttpHeaders.AUTHORIZATION;
 import static touch.baton.fixture.domain.TechnicalTagFixture.createJava;
 import static touch.baton.fixture.domain.TechnicalTagFixture.createSpring;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
@@ -87,8 +81,8 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner")
-                .queryParam("size", String.valueOf(pageOne.getPageSize()))
-                .queryParam("page", String.valueOf(pageOne.getPageNumber())))
+                        .queryParam("size", String.valueOf(pageOne.getPageSize()))
+                        .queryParam("page", String.valueOf(pageOne.getPageNumber())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
