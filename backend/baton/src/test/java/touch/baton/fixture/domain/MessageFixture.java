@@ -2,7 +2,7 @@ package touch.baton.fixture.domain;
 
 import touch.baton.domain.supporter.vo.Message;
 
-public class MessageFixture {
+public abstract class MessageFixture {
 
     private MessageFixture() {
     }

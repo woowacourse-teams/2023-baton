@@ -106,7 +106,6 @@ class RunnerPostTest {
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .collect(Collectors.toList());
 
-
         // then
         assertSoftly(softAssertions -> {
             assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
@@ -505,6 +504,5 @@ class RunnerPostTest {
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(reviewStatus))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
-
     }
 }
