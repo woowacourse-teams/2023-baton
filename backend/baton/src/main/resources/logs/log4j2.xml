@@ -6,7 +6,7 @@
         <Property name="ERROR_FILE_NAME">error-log</Property>
         <Property name="BASE_DIR">logs</Property>
         <Property name="COLOR_PATTERN">%style{%d{ISO8601}}{white} %highlight{%-5level }[%style{%t}{bright,blue}] %style{%C{1.}}{bright,yellow}: %msg%n%throwable</Property>
-        <Property name="PATTERN">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
+        <Property name="PATTERN">[%equals{%X{request_id}}{}{startup}] %d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
     </Properties>
 
     <Appenders>
