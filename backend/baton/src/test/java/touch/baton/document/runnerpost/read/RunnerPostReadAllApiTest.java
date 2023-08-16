@@ -24,13 +24,16 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.spy;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
@@ -169,6 +172,68 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].watchedCount").type(NUMBER).description("러너 게시글의 조회수"),
                                 fieldWithPath("data.[].applicantCount").type(NUMBER).description("러너 게시글에 신청한 서포터 수"),
                                 fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글 리뷰 상태")
+                        ))
+                );
+    }
+
+    @DisplayName("러너와 연관된 러너 게시글 페이징 조회 API")
+    @Test
+    void readRunnerMyPage() throws Exception {
+        // given
+        final Runner runnerJudy = RunnerFixture.createRunner(MemberFixture.createJudy());
+        final String token = getAccessTokenBySocialId(runnerJudy.getMember().getSocialId().getValue());
+
+        when(oauthRunnerRepository.joinByMemberSocialId(notNull()))
+                .thenReturn(Optional.ofNullable(runnerJudy));
+
+        final Tag javaTag = TagFixture.create(tagName("자바"));
+        final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
+        final RunnerPost runnerPost = RunnerPostFixture.create(runnerJudy, deadline, List.of(javaTag));
+
+        // when
+        final RunnerPost spyRunnerPost = spy(runnerPost);
+        when(spyRunnerPost.getId()).thenReturn(1L);
+
+        final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
+        final PageRequest pageOne = PageRequest.of(1, 10);
+        final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
+        when(runnerPostService.readRunnerPostsByRunnerIdAndReviewStatus(any(), any(), any()))
+                .thenReturn(pageRunnerPosts);
+        when(runnerPostService.readCountsByRunnerPostIds(anyList()))
+                .thenReturn(List.of(0));
+
+        // then
+        mockMvc.perform(get("/api/v1/posts/runner/me/runner")
+                        .header(AUTHORIZATION, "Bearer " + token)
+                        .characterEncoding(UTF_8)
+                        .accept(APPLICATION_JSON)
+                        .queryParam("size", String.valueOf(pageOne.getPageSize()))
+                        .queryParam("page", String.valueOf(pageOne.getPageNumber()))
+                        .queryParam("reviewStatus", ReviewStatus.IN_PROGRESS.name()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("size").description("페이지 사이즈"),
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("reviewStatus").description("리뷰 상태")
+                        ),
+                        responseFields(
+
+                                fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
+                                fieldWithPath("data.[].title").type(STRING).description("러너 게시글 제목"),
+                                fieldWithPath("data.[].deadline").type(STRING).description("러너 게시글의 마감 기한"),
+                                fieldWithPath("data.[].tags").type(ARRAY).description("러너 게시글 태그 목록"),
+                                fieldWithPath("data.[].watchedCount").type(NUMBER).description("러너 게시글의 조회수"),
+                                fieldWithPath("data.[].applicantCount").type(NUMBER).description("러너 게시글에 신청한 서포터 수"),
+                                fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글 리뷰 상태"),
+                                fieldWithPath("pageInfo.isFirst").type(BOOLEAN).description("첫 번째 페이지인지"),
+                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 인지"),
+                                fieldWithPath("pageInfo.hasNext").type(BOOLEAN).description("다음 페이지가 있는지"),
+                                fieldWithPath("pageInfo.totalPages").type(NUMBER).description("총 페이지 수"),
+                                fieldWithPath("pageInfo.totalElements").type(NUMBER).description("총 데이터 수"),
+                                fieldWithPath("pageInfo.currentPage").type(NUMBER).description("현재 페이지 번호"),
+                                fieldWithPath("pageInfo.currentSize").type(NUMBER).description("현재 페이지 데이터 수")
                         ))
                 );
     }

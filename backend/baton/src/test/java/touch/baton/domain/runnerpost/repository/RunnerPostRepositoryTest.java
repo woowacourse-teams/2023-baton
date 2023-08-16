@@ -130,4 +130,33 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(pageTwoRunnerPosts.getContent()).containsExactly(savedRunnerPostThree);
         });
     }
+
+    @DisplayName("Runner 식별자값과 ReviewStatus 로 연관된 RunnerPost 를 페이징하여 조회한다.")
+    @Test
+    void findByRunnerIdAndReviewStatus() {
+        // given
+        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
+
+        final RunnerPost runnerPostOne = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost savedRunnerPostOne = runnerPostRepository.save(runnerPostOne);
+        final RunnerPost runnerPostTwo = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost savedRunnerPostTwo = runnerPostRepository.save(runnerPostTwo);
+        final RunnerPost runnerPostThree = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));
+        final RunnerPost savedRunnerPostThree = runnerPostRepository.save(runnerPostThree);
+
+        // when
+        final PageRequest pageOne = PageRequest.of(0, 2);
+        final PageRequest pageTwo = PageRequest.of(1, 2);
+
+        final Page<RunnerPost> pageOneRunnerPosts
+                = runnerPostRepository.findByRunnerIdAndReviewStatus(pageOne, savedRunnerDitoo.getId(), ReviewStatus.NOT_STARTED);
+        final Page<RunnerPost> pageTwoRunnerPosts
+                = runnerPostRepository.findByRunnerIdAndReviewStatus(pageTwo, savedRunnerDitoo.getId(), ReviewStatus.NOT_STARTED);
+
+        assertSoftly(softly -> {
+            softly.assertThat(pageOneRunnerPosts.getContent()).containsExactly(savedRunnerPostOne, savedRunnerPostTwo);
+            softly.assertThat(pageTwoRunnerPosts.getContent()).containsExactly(savedRunnerPostThree);
+        });
+    }
 }

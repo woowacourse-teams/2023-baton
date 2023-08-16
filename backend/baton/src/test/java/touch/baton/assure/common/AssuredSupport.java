@@ -121,6 +121,18 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams, final String accessToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .when().log().ifValidationFails()
+                .accept(APPLICATION_JSON_VALUE)
+                .queryParams(queryParams)
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> patch(final String uri,
                                                       final String pathParamName,
                                                       final Long id,
