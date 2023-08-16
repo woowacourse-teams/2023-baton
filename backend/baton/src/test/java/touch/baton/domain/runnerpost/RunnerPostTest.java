@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -38,11 +39,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 class RunnerPostTest {
@@ -94,14 +97,21 @@ class RunnerPostTest {
                 .runnerPost(runnerPost)
                 .build();
 
+        final List<String> expectedTagNames = Arrays.asList("Java", "Spring");
+
         // when
         runnerPost.addAllRunnerPostTags(List.of(java, spring));
-        final List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
+         List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
+        final List<String> actualTagNames = runnerPostTags.stream()
+                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
+                .collect(Collectors.toList());
+
 
         // then
-        assertThat(runnerPostTags).hasSize(2);
-        assertThat(runnerPostTags.get(0).getTag().getTagName().getValue()).isEqualTo("Java");
-        assertThat(runnerPostTags.get(1).getTag().getTagName().getValue()).isEqualTo("Spring");
+        assertSoftly(softAssertions -> {
+            assertThat(runnerPost.getRunnerPostTags().getRunnerPostTags()).hasSize(2);
+            assertThat(actualTagNames).containsExactlyElementsOf(expectedTagNames);
+        });
     }
 
     @DisplayName("생성 테스트")

@@ -64,23 +64,21 @@ public class Supporter extends BaseEntity {
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        validateNotNull(reviewCount, introduction, member, supporterTechnicalTags);
+        validateNotNull(reviewCount, member, supporterTechnicalTags);
         this.id = id;
-        this.introduction = introduction;
+        this.introduction = validateIntroductionNotNull(introduction);
         this.reviewCount = reviewCount;
         this.member = member;
         this.supporterTechnicalTags = supporterTechnicalTags;
     }
 
     private void validateNotNull(final ReviewCount reviewCount,
-                                 final Introduction introduction,
                                  final Member member,
                                  final SupporterTechnicalTags supporterTechnicalTags
     ) {
         validateReviewCountNotNull(reviewCount);
         validateMemberNotNull(member);
         validateSupporterTechnicalTagsNotNull(supporterTechnicalTags);
-        updateIntroduction(introduction);
     }
 
     private void validateReviewCountNotNull(final ReviewCount reviewCount) {
@@ -102,10 +100,10 @@ public class Supporter extends BaseEntity {
     }
 
     public void updateIntroduction(final Introduction introduction) {
-        this.introduction = updateDefaultIntroductionIfNull(introduction);
+        this.introduction = validateIntroductionNotNull(introduction);
     }
 
-    private Introduction updateDefaultIntroductionIfNull(final Introduction introduction) {
+    private Introduction validateIntroductionNotNull(final Introduction introduction) {
         if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
             return Introduction.getDefaultIntroduction();
         }

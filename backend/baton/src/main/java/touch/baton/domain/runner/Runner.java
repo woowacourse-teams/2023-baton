@@ -58,16 +58,11 @@ public class Runner extends BaseEntity {
                    final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
-        validateNotNull(member, introduction);
+        validateMemberNotNull(member);
         this.id = id;
-        this.introduction = getDefaultIntroductionIfNull(introduction);
+        this.introduction = validateIntroductionNotNull(introduction);
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
-    }
-
-    private void validateNotNull(final Member member, final Introduction introduction) {
-        validateMemberNotNull(member);
-        validateIntroductionNotNull(introduction);
     }
 
     private void validateMemberNotNull(final Member member) {
@@ -76,17 +71,11 @@ public class Runner extends BaseEntity {
         }
     }
 
-    private void validateIntroductionNotNull(final Introduction introduction) {
-        if (Objects.isNull(member)) {
-            throw new RunnerDomainException("Runner 의 introduction 은 null 일 수 없습니다.");
-        }
-    }
-
     public Introduction updateIntroduction(final Introduction introduction) {
-        return this.introduction = getDefaultIntroductionIfNull(introduction);
+        return this.introduction = validateIntroductionNotNull(introduction);
     }
 
-    private Introduction getDefaultIntroductionIfNull(final Introduction introduction) {
+    private Introduction validateIntroductionNotNull(final Introduction introduction) {
         if (Objects.isNull(introduction) || Objects.isNull(introduction.getValue())) {
             return Introduction.getDefaultIntroduction();
         }
