@@ -24,7 +24,7 @@
                 <TimeBasedTriggeringPolicy interval = "1" modulate = "true"/>
             </Policies>
             <DefaultRolloverStrategy>
-                <Delete basePath="${LOG_PATH}" maxDepth="1">
+                <Delete basePath="${BASE_DIR}" maxDepth="1">
                     <IfAccumulatedFileCount exceeds="3"/>
                 </Delete>
             </DefaultRolloverStrategy>
