@@ -28,8 +28,8 @@ export const DESCRIPTION_OPTIONS_GOOD: DescriptionOptions = [
     selected: false,
   },
   {
-    value: '리뷰까지 걸리는 시간이 짧았어요',
-    label: '리뷰까지 걸리는 시간이 짧았어요',
+    value: '친절하고 매너가 좋아요',
+    label: '친절하고 매너가 좋아요',
     selected: false,
   },
   {
@@ -51,8 +51,8 @@ export const DESCRIPTION_OPTIONS_BAD: DescriptionOptions = [
     selected: false,
   },
   {
-    value: '리뷰까지 걸리는 시간이 길었어요',
-    label: '리뷰까지 걸리는 시간이 길었어요',
+    value: '친절하지 못해요',
+    label: '친절하지 못해요',
     selected: false,
   },
   {
