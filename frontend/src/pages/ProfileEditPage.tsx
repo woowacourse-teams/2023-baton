@@ -9,10 +9,10 @@ import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import {
   Profile,
-  RunnerProfileRequest,
-  RunnerProfileResponse,
-  SupporterProfileRequest,
-  SupporterProfileResponse,
+  PatchRunnerProfileRequest,
+  GetRunnerProfileResponse,
+  PatchSupporterProfileRequest,
+  GetSupporterProfileResponse,
 } from '@/types/profile';
 import { Technic } from '@/types/tags';
 import { deepEqual } from '@/utils/object';
@@ -24,8 +24,8 @@ const ProfileEditPage = () => {
 
   const [isRunner, setIsRunner] = useState(true);
 
-  const [runnerProfile, setRunnerProfile] = useState<RunnerProfileResponse | null>(null);
-  const [supporterProfile, setSupporterProfile] = useState<SupporterProfileResponse | null>(null);
+  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
+  const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
 
   const [name, setName] = useState<string | null>(null);
   const [company, setCompany] = useState<string | null>(null);
@@ -193,7 +193,7 @@ const ProfileEditPage = () => {
     setIsModalOpen(false);
   };
 
-  const patchRunnerProfile = async (runnerProfile: RunnerProfileRequest) => {
+  const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
     const token = getToken()?.value;
     if (!token) {
       return alert('토큰이 존재하지 않습니다');
@@ -202,9 +202,12 @@ const ProfileEditPage = () => {
     const body = JSON.stringify(runnerProfile);
 
     patchRequest(`/profile/runner/me`, `Bearer ${token}`, body);
+
+    await patchRequest<PatchRunnerProfileRequest>(`/profile/runner/me`, authorization, body);
+
   };
 
-  const patchSupporterProfile = async (supporterProfile: SupporterProfileRequest) => {
+  const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
     const token = getToken()?.value;
     if (!token) {
       return alert('토큰이 존재하지 않습니다');
@@ -213,6 +216,9 @@ const ProfileEditPage = () => {
     const body = JSON.stringify(supporterProfile);
 
     patchRequest(`/profile/supporter/me`, `Bearer ${token}`, body);
+  };
+
+    patchRequest<PatchSupporterProfileRequest>(`/profile/supporter/me`, authorization, body);
   };
 
   return (

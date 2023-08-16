@@ -10,6 +10,8 @@ import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/utils/date';
 import { postRequest } from '@/api/fetch';
+import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
+
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
@@ -24,11 +26,17 @@ const RunnerPostCreatePage = () => {
   const [contents, setContents] = useState<string>('');
 
   const pushTag = (newTag: string) => {
-    if (newTag.length > 15) return alert('태그명은 15자 이내로 입력해주세요.');
-    if (tags.length >= 5) return alert('입력할 수 있는 태그는 최대 5개입니다.');
-    if (tags.includes(newTag)) return alert('중복된 태그는 입력 불가합니다.');
+    const newTags = [...tags, newTag];
 
-    setTags((current) => [...current, newTag]);
+    try {
+      validateTags(newTags);
+    } catch (error) {
+      alert(error);
+
+      return;
+    }
+
+    setTags(newTags);
   };
 
   const removeTag = (tag?: string) => {
@@ -42,7 +50,7 @@ const RunnerPostCreatePage = () => {
   };
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    setTitle(e.target.value.trim());
   };
 
   const changePullRequestUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,17 +58,16 @@ const RunnerPostCreatePage = () => {
   };
 
   const changeDeadline = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const datetime = new Date(e.target.value);
+    try {
+      validateDeadline(e.target.value);
+    } catch (error) {
+      alert(error);
 
-    if (isPastTime(datetime)) {
       const newDeadline = getDatetime(addHours(nowDate, 1));
       setDeadline(newDeadline);
 
-      alert('최소한 현재보다 1시간 이후의 시간을 입력해주세요');
-
       return;
     }
-
     setDeadline(e.target.value);
   };
 
@@ -88,6 +95,11 @@ const RunnerPostCreatePage = () => {
     if (!title) throw new Error('제목을 입력해주세요');
     if (!pullRequestUrl) throw new Error('PR주소를 입력해주세요');
     if (!deadline) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
+    
+    validateTitle(title);
+    validateTags(tags);
+    validatePullRequestUrl(pullRequestUrl);
+    validateDeadline(deadline);
   };
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {

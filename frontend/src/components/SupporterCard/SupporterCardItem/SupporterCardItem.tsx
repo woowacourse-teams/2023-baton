@@ -19,7 +19,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
   const { runnerPostId } = useParams();
 
   const { getToken } = useToken();
-  const { goToMyPage } = usePageRouter();
+  const { goToMyPage, goToSupporterProfilePage } = usePageRouter();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -29,6 +29,10 @@ const SupporterCardItem = ({ supporter }: Props) => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const viewProfile = () => {
+    goToSupporterProfilePage(supporter.supporterId);
   };
 
   const selectSupporter = () => {
@@ -71,7 +75,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
         <S.Message> {supporter.message}</S.Message>
       </S.MessageContainer>
       <S.ButtonContainer>
-        <Button colorTheme="BLACK" width="94px" height="35px" fontSize="14px" fontWeight={700}>
+        <Button colorTheme="BLACK" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={viewProfile}>
           프로필 보기
         </Button>
         <Button colorTheme="WHITE" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={openModal}>
