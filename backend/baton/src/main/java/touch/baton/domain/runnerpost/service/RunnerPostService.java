@@ -230,8 +230,8 @@ public class RunnerPostService {
         return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
     }
 
-    public List<RunnerPost> readAllRunnerPosts() {
-        return runnerPostRepository.findAllByOrderByCreatedAtDesc();
+    public Page<RunnerPost> readAllRunnerPosts(final Pageable pageable) {
+        return runnerPostRepository.findAll(pageable);
     }
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
@@ -249,7 +249,18 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+        final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
+        if (applicantCounts.isEmpty()) {
+            initApplicantCounts(runnerPostIds, applicantCounts);
+        }
+
+        return applicantCounts;
+    }
+
+    private void initApplicantCounts(final List<Long> runnerPostIds, final List<Long> applicantCounts) {
+        for (int i = 0; i < runnerPostIds.size(); i++) {
+            applicantCounts.add(0L);
+        }
     }
 
     @Transactional

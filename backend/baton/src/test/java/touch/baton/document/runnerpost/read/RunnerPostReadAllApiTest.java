@@ -70,16 +70,26 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
         final Tag javaTag = TagFixture.create(tagName("자바"));
         final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline, List.of(javaTag));
         final RunnerPost spyRunnerPost = spy(runnerPost);
+        given(spyRunnerPost.getId()).willReturn(1L);
 
         // when
-        given(spyRunnerPost.getId()).willReturn(1L);
-        given(runnerPostService.readAllRunnerPosts()).willReturn(List.of(spyRunnerPost));
+        final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
+        final PageRequest pageOne = PageRequest.of(1, 10);
+        final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
+        when(runnerPostService.readAllRunnerPosts(any())).thenReturn(pageRunnerPosts);
+        when(runnerPostService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
 
         // then
-        mockMvc.perform(get("/api/v1/posts/runner"))
+        mockMvc.perform(get("/api/v1/posts/runner")
+                        .queryParam("size", String.valueOf(pageOne.getPageSize()))
+                        .queryParam("page", String.valueOf(pageOne.getPageNumber())))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("size").description("페이지 사이즈"),
+                                parameterWithName("page").description("페이지 번호")
+                        ),
                         responseFields(
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
                                 fieldWithPath("data.[].title").type(STRING).description("러너 게시글의 제목"),
@@ -88,7 +98,15 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글의 리뷰 상태"),
                                 fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
                                 fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
-                                fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록")
+                                fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
+                                fieldWithPath("data.[].applicantCount").type(NUMBER).description("러너 게시글에 신청한 서포터 수"),
+                                fieldWithPath("pageInfo.isFirst").type(BOOLEAN).description("첫 번째 페이지인지"),
+                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지인지"),
+                                fieldWithPath("pageInfo.hasNext").type(BOOLEAN).description("다음 페이지가 있는지"),
+                                fieldWithPath("pageInfo.totalPages").type(NUMBER).description("총 페이지 수"),
+                                fieldWithPath("pageInfo.totalElements").type(NUMBER).description("총 데이터 수"),
+                                fieldWithPath("pageInfo.currentPage").type(NUMBER).description("현재 페이지"),
+                                fieldWithPath("pageInfo.currentSize").type(NUMBER).description("현재 페이지 데이터 수")
                         ))
                 );
     }

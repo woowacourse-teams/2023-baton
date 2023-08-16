@@ -80,17 +80,21 @@ public record RunnerPostResponse() {
                          String title,
                          LocalDateTime deadline,
                          int watchedCount,
+                         long applicantCount,
                          String reviewStatus,
                          RunnerResponse.Simple runnerProfile,
                          List<String> tags
     ) {
 
-        public static Simple from(final RunnerPost runnerPost) {
+        public static Simple from(final RunnerPost runnerPost,
+                                  final long applicantCount
+        ) {
             return new Simple(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getDeadline().getValue(),
                     runnerPost.getWatchedCount().getValue(),
+                    applicantCount,
                     runnerPost.getReviewStatus().name(),
                     RunnerResponse.Simple.from(runnerPost.getRunner()),
                     convertToTags(runnerPost)
