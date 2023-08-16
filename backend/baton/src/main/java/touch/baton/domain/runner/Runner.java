@@ -46,21 +46,18 @@ public class Runner extends BaseEntity {
     private RunnerTechnicalTags runnerTechnicalTags;
 
     @Builder
-    private Runner(final Introduction introduction,
-                   final Member member,
+    private Runner(final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
-        this(null, introduction, member, runnerTechnicalTags);
+        this(null, member, runnerTechnicalTags);
     }
 
     private Runner(final Long id,
-                   final Introduction introduction,
                    final Member member,
                    final RunnerTechnicalTags runnerTechnicalTags
     ) {
         validateMemberNotNull(member);
         this.id = id;
-        this.introduction = validateIntroductionNotNull(introduction);
         this.member = member;
         this.runnerTechnicalTags = runnerTechnicalTags;
     }

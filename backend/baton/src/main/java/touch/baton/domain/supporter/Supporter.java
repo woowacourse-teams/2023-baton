@@ -51,22 +51,19 @@ public class Supporter extends BaseEntity {
 
     @Builder
     private Supporter(final ReviewCount reviewCount,
-                      final Introduction introduction,
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
-        this(null, reviewCount, introduction, member, supporterTechnicalTags);
+        this(null, reviewCount, member, supporterTechnicalTags);
     }
 
     private Supporter(final Long id,
                       final ReviewCount reviewCount,
-                      final Introduction introduction,
                       final Member member,
                       final SupporterTechnicalTags supporterTechnicalTags
     ) {
         validateNotNull(reviewCount, member, supporterTechnicalTags);
         this.id = id;
-        this.introduction = validateIntroductionNotNull(introduction);
         this.reviewCount = reviewCount;
         this.member = member;
         this.supporterTechnicalTags = supporterTechnicalTags;

@@ -37,7 +37,6 @@ public abstract class RunnerFixture {
 
     public static Runner createRunner(final Introduction introduction, final Member member) {
         return Runner.builder()
-                .introduction(introduction)
                 .member(member)
                 .runnerTechnicalTags(new RunnerTechnicalTags(new ArrayList<>()))
                 .build();
@@ -48,7 +47,6 @@ public abstract class RunnerFixture {
                                       final RunnerTechnicalTags runnerTechnicalTags
     ) {
         return Runner.builder()
-                .introduction(introduction)
                 .member(member)
                 .runnerTechnicalTags(runnerTechnicalTags)
                 .build();

@@ -109,8 +109,8 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}/supporters")
-    public ResponseEntity<SupporterRunnerPostResponses.Detail> readAll(@AuthRunnerPrincipal final Runner runner,
-                                                                       @PathVariable final Long runnerPostId
+    public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
+                                                                                                      @PathVariable final Long runnerPostId
     ) {
         final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner, runnerPostId).stream()
                 .map(supporterRunnerPost -> SupporterRunnerPostResponse.Detail.from(supporterRunnerPost))

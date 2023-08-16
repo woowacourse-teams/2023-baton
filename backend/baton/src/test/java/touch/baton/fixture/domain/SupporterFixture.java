@@ -1,6 +1,5 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
@@ -21,7 +20,6 @@ public abstract class SupporterFixture {
         return Supporter.builder()
                 .reviewCount(ReviewCountFixture.reviewCount(0))
                 .member(member)
-                .introduction(new Introduction("안녕하세요. 서포터입니다."))
                 .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();
     }
@@ -33,7 +31,6 @@ public abstract class SupporterFixture {
         return Supporter.builder()
                 .reviewCount(reviewCount)
                 .member(member)
-                .introduction(new Introduction("안녕하세요. 서포터입니다."))
                 .supporterTechnicalTags(supporterTechnicalTags)
                 .build();
     }
@@ -51,7 +48,6 @@ public abstract class SupporterFixture {
         final Supporter supporter = Supporter.builder()
                 .reviewCount(reviewCount)
                 .member(member)
-                .introduction(new Introduction("안녕하세요. 서포터입니다."))
                 .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();
 

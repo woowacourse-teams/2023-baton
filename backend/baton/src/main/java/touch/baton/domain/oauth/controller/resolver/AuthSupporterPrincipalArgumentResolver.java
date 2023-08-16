@@ -33,7 +33,6 @@ public class AuthSupporterPrincipalArgumentResolver extends UserPrincipalArgumen
     protected Object getGuest() {
         return Supporter.builder()
                 .reviewCount(new ReviewCount(0))
-                .introduction(new Introduction("게스트"))
                 .member(null)
                 .supporterTechnicalTags(new SupporterTechnicalTags(Collections.emptyList()))
                 .build();
