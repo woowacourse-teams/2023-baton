@@ -70,7 +70,7 @@ const SupporterFeedbackPage = () => {
     setDescriptionOptions(newOptions);
   };
 
-  const patchSupporterProfile = async (feedback: PostFeedbackRequest) => {
+  const postSupporterProfile = async (feedback: PostFeedbackRequest) => {
     const token = getToken()?.value;
     if (!token) {
       return alert('토큰이 존재하지 않습니다');
@@ -78,12 +78,7 @@ const SupporterFeedbackPage = () => {
 
     const body = JSON.stringify(feedback);
     const authorization = `Bearer ${token}`;
-
-    try {
-      postRequest<PostFeedbackRequest>(`/feedback/supporter`, authorization, body);
-    } catch (error) {
-      console.log(error);
-    }
+    postRequest(`/feedback/supporter`, authorization, body).catch(() => alert('제출 과정에서 오류가 발생했습니다'));
   };
 
   const handleClickSubmit = async () => {
@@ -91,7 +86,7 @@ const SupporterFeedbackPage = () => {
     if (!Number(supporterId)) return alert('해당 서포터가 존재하지 않습니다');
     if (!Number(runnerPostId)) return alert('해당 게시물이 존재하지 않습니다');
 
-    await patchSupporterProfile({
+    await postSupporterProfile({
       reviewType,
       descriptions,
       supporterId: Number(supporterId),
