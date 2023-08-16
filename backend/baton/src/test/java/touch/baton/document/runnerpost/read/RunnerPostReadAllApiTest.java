@@ -200,7 +200,7 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
         when(runnerPostService.readRunnerPostsByRunnerIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
         when(runnerPostService.readCountsByRunnerPostIds(anyList()))
-                .thenReturn(List.of(0));
+                .thenReturn(List.of(0L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/me/runner")

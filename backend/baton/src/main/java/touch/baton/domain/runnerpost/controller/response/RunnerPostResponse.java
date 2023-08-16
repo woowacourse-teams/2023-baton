@@ -144,14 +144,14 @@ public record RunnerPostResponse() {
                                  LocalDateTime deadline,
                                  List<String> tags,
                                  int watchedCount,
-                                 int applicantCount,
+                                 long applicantCount,
                                  String reviewStatus
 
 
     ) {
 
         public static SimpleInMyPage from(final RunnerPost runnerPost,
-                                          final int applicantCount) {
+                                          final long applicantCount) {
             return new SimpleInMyPage(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
