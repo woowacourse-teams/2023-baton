@@ -53,8 +53,7 @@ public class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
         final String token = getAccessTokenBySocialId(socialId);
 
         // when
-        when(oauthMemberRepository.findBySocialId(any()))
-                .thenReturn(Optional.ofNullable(member));
+        when(oauthMemberRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
 
         // then
         mockMvc.perform(get("/api/v1/profile/me").header(AUTHORIZATION, "Bearer " + token))

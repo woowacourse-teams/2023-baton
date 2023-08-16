@@ -22,9 +22,9 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
             """)
     Optional<RunnerPost> joinMemberByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
-    Page<RunnerPost> findAll(Pageable pageable);
+    Page<RunnerPost> findAll(final Pageable pageable);
 
-    List<RunnerPost> findByRunnerId(Long runnerId);
+    List<RunnerPost> findByRunnerId(final Long runnerId);
 
     @Query(countQuery = """
             select count(1)

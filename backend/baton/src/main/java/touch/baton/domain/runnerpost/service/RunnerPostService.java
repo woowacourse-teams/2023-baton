@@ -250,7 +250,7 @@ public class RunnerPostService {
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
         final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
-        if (applicantCounts.size() == 0) {
+        if (applicantCounts.isEmpty()) {
             applicantCounts.add(0L);
         }
 

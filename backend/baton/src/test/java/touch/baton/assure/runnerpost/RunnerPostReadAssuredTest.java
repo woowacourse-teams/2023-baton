@@ -28,7 +28,7 @@ import static touch.baton.fixture.vo.IntroductionFixture.introduction;
 import static touch.baton.fixture.vo.MessageFixture.message;
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 
-public class RunnerPostReadAssuredTest extends AssuredTestConfig {
+class RunnerPostReadAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너_게시글_전체_조회에_성공한다() {

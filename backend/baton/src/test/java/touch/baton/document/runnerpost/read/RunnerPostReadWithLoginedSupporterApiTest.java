@@ -89,8 +89,7 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
         final Supporter spyLoginedSupporter = spy(loginedSupporter);
-        when(oauthSupporterRepository.joinByMemberSocialId(any()))
-                .thenReturn(Optional.ofNullable(spyLoginedSupporter));
+        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(spyLoginedSupporter));
         when(spyRunnerPost.getId()).thenReturn(1L);
 
         final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
@@ -98,8 +97,7 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
         final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
         when(runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
-        when(runnerPostService.readCountsByRunnerPostIds(anyList()))
-                .thenReturn(List.of(1L));
+        when(runnerPostService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/me/supporter")

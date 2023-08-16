@@ -72,11 +72,9 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
         when(spyRunnerPost.getId()).thenReturn(1L);
-        when(runnerPostService.createRunnerPostApplicant(any(), any(), any()))
-                .thenReturn(1L);
+        when(runnerPostService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
 
-        when(oauthSupporterRepository.joinByMemberSocialId(any()))
-                .thenReturn(Optional.ofNullable(supporterHyena));
+        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
 
         final String token = getAccessTokenBySocialId(supporterHyena.getMember().getSocialId().getValue());
 

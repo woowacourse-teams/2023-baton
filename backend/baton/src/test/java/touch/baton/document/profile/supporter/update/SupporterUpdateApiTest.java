@@ -68,8 +68,7 @@ public class SupporterUpdateApiTest extends RestdocsConfig {
         final String token = getAccessTokenBySocialId(socialId);
 
         // when
-        when(oauthSupporterRepository.joinByMemberSocialId(any()))
-                .thenReturn(Optional.ofNullable(supporter));
+        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
 
         // then
         mockMvc.perform(patch("/api/v1/profile/supporter/me")

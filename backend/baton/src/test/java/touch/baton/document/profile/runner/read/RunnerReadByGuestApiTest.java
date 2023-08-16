@@ -61,8 +61,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
         final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena(), List.of(java, spring));
         final String token = getAccessTokenBySocialId(runner.getMember().getSocialId().getValue());
 
-        when(oauthRunnerRepository.joinByMemberSocialId(notNull()))
-                .thenReturn(Optional.ofNullable(runner));
+        when(oauthRunnerRepository.joinByMemberSocialId(notNull())).thenReturn(Optional.ofNullable(runner));
 
         // then
         mockMvc.perform(get("/api/v1/profile/runner/me")
