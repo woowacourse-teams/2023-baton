@@ -10,6 +10,7 @@ import MyPage from './pages/MyPage';
 import GithubCallbackPage from './pages/GithubCallbackPage';
 import ProfileEditPage from './pages/ProfileEditPage';
 import SupporterSelectPage from './pages/SupporterSelectPage';
+import SupporterFeedbackPage from './pages/SupporterFeedbackPage';
 import SupporterProfilePage from './pages/SupporterProfilePage';
 import RunnerProfilePage from './pages/RunnerProfilePage';
 
@@ -25,6 +26,7 @@ export const ROUTER_PATH = {
   RUNNER_PROFILE: '/runner-profile/:runnerId',
   SUPPORTER_PROFILE: '/supporter-profile/:supporterId',
   PROFILE_EDIT: '/profile-edit',
+  SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
   GITHUB_CALLBACK: '/oauth/github/callback', // Authorization callback URL?
 };
 
@@ -65,6 +67,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.SUPPORTER_SELECT,
           element: <SupporterSelectPage />,
+        },
+        {
+          path: ROUTER_PATH.SUPPORTER_FEEDBACK,
+          element: <SupporterFeedbackPage />,
         },
         {
           path: ROUTER_PATH.RUNNER_PROFILE,

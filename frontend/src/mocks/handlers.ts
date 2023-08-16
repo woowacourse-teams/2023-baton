@@ -91,6 +91,12 @@ export const handlers = [
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 
+  rest.post('*/feedback/supporter', async (req, res, ctx) => {
+    const { reviewType, descriptions, supporterId, runnerPostId } = await req.json();
+
+    return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'), ctx.json({}));
+  }),
+
   rest.get('*/profile/runner/:runnerId', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
   }),
