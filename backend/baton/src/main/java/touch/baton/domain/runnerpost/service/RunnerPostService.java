@@ -251,10 +251,16 @@ public class RunnerPostService {
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
         final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
         if (applicantCounts.isEmpty()) {
-            applicantCounts.add(0L);
+            initApplicantCounts(runnerPostIds, applicantCounts);
         }
 
         return applicantCounts;
+    }
+
+    private void initApplicantCounts(final List<Long> runnerPostIds, final List<Long> applicantCounts) {
+        for (int i = 0; i < runnerPostIds.size(); i++) {
+            applicantCounts.add(0L);
+        }
     }
 
     @Transactional
