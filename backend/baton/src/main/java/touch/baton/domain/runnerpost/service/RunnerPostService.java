@@ -43,6 +43,7 @@ public class RunnerPostService {
     private final RunnerPostTagRepository runnerPostTagRepository;
     private final TagRepository tagRepository;
     private final SupporterRepository supporterRepository;
+    private final SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Transactional
     public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
@@ -252,10 +253,6 @@ public class RunnerPostService {
                                                                      final Long runnerId,
                                                                      final ReviewStatus reviewStatus) {
         return runnerPostRepository.findByRunnerIdAndReviewStatus(pageable, runnerId, reviewStatus);
-    }
-
-    public List<Integer> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
     }
 
     public Page<RunnerPost> readRunnerPostsBySupporterIdAndReviewStatus(final Pageable pageable,
