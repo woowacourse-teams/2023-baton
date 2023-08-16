@@ -16,6 +16,7 @@ import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
+import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -251,6 +252,10 @@ public class RunnerPost extends BaseEntity {
 
     public boolean isNotOwner(final Runner targetRunner) {
         return !runner.equals(targetRunner);
+    }
+
+    public boolean isNotOwner(final Member targetMember) {
+        return !runner.getMember().equals(targetMember);
     }
 
     public boolean isReviewStatusStarted() {

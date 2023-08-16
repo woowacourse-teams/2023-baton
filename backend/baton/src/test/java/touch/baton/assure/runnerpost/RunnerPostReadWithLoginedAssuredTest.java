@@ -27,7 +27,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(now().plusHours(100))));
         final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
 
-        final RunnerPostResponse.Detail 러너_게시글_detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_헤나, 러너_게시글, ReviewStatus.NOT_STARTED, 러너_게시글.getId(), 1, 0);
+        final RunnerPostResponse.Detail 러너_게시글_detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_헤나, 러너_게시글, ReviewStatus.NOT_STARTED, 러너_게시글.getId(), 1, 0, false);
 
         클라이언트_요청()
                 .토큰으로_로그인한다(로그인용_토큰)
@@ -42,7 +42,8 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
                                                              final ReviewStatus 리뷰_상태,
                                                              final Long 러너_게시글_식별자값,
                                                              final int 조회수,
-                                                             final int 서포터_지원자수
+                                                             final long 서포터_지원자수,
+                                                             final boolean 서포터_지원_여부
     ) {
         return 러너_게시글_Detail_응답(
                 러너_게시글_식별자값,
@@ -54,6 +55,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
                 서포터_지원자수,
                 리뷰_상태,
                 !러너_게시글.isNotOwner(로그인한_러너),
+                서포터_지원_여부,
                 러너_게시글.getRunner(),
                 러너_게시글.getRunnerPostTags().getRunnerPostTags().stream()
                         .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())

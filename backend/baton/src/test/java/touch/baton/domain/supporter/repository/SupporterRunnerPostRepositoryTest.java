@@ -91,6 +91,70 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
                 .build();
     }
 
+    @DisplayName("Member 가 SupporterRunnerPost 에 지원한 이력이 있을 경우 true 를 반환한다.")
+    @Test
+    void existsByRunnerPostIdAndMemberId_return_true() {
+        // given
+        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+
+        final SupporterRunnerPost runnerPostApplicant = createSupporterRunnerPost(savedSupporterHyena, savedRunnerPost);
+        supporterRunnerPostRepository.save(runnerPostApplicant);
+
+        // when
+        final Long notExistMemberId = -1L;
+        final boolean isApplicantHistoryExist = supporterRunnerPostRepository.existsByRunnerPostIdAndMemberId(
+                savedRunnerPost.getId(),
+                savedMemberHyena.getId()
+        );
+
+        // then
+        assertThat(isApplicantHistoryExist).isTrue();
+    }
+
+    @DisplayName("Member 가 SupporterRunnerPost 에 지원한 이력이 없을 경우 false 를 반환한다.")
+    @Test
+    void existsByRunnerPostIdAndMemberId_if_supporterRunnerPost_is_not_exist_then_return_false() {
+        // given
+        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
+
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
+
+        // when
+        final boolean isApplicantHistoryNotExist = supporterRunnerPostRepository.existsByRunnerPostIdAndMemberId(
+                savedRunnerPost.getId(),
+                savedMemberHyena.getId()
+        );
+
+        // then
+        assertThat(isApplicantHistoryNotExist).isFalse();
+    }
+
+    @DisplayName("Member 가 SupporterRunnerPost 에 지원한 이력을 조회할 때 RunnerPost 자체가 없으면 false 를 반환한다.")
+    @Test
+    void existsByRunnerPostIdAndMemberId_if_runnerPost_is_not_exist_then_return_false() {
+        // given
+        final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
+
+        // when
+        final Long notExistRunnerPostId = -1L;
+        final boolean isApplicantHistoryNotExist = supporterRunnerPostRepository.existsByRunnerPostIdAndMemberId(
+                notExistRunnerPostId,
+                savedMemberHyena.getId()
+        );
+
+        // then
+        assertThat(isApplicantHistoryNotExist).isFalse();
+    }
+
     @DisplayName("RunnerPost 외래키로 된 SupporterRunnerPost 가 존재하는지 확인한다.")
     @Test
     void existsByRunnerPostId() {

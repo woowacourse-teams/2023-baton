@@ -45,6 +45,7 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
                         0L,
                         ReviewStatus.NOT_STARTED,
                         true,
+                        false,
                         new ArrayList<>(),
                         RunnerResponse.Detail.from(러너_헤나)
                 ));
