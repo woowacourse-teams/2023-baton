@@ -1,74 +1,59 @@
 import ListFilter from '@/components/ListFilter/ListFilter';
-import ProfileRunnerPostItem from '@/components/Profile/ProfileRunnerPostItem/ProfileRunnerPostItem';
+import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
-import { BATON_BASE_URL } from '@/constants';
+import Button from '@/components/common/Button/Button';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetRunnerProfileResponse } from '@/types/profile';
-import { ReviewStatus } from '@/types/runnerPost';
-import { SelectOption } from '@/types/select';
+import { GetMyPagePostResponse, GetMyPageProfileResponse } from '@/types/myPage';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-type ReviewPostOptions = SelectOption<ReviewStatus>[];
-
-const reviewPostOptions: ReviewPostOptions = [
-  {
-    value: 'NOT_STARTED',
-    label: '대기중인 리뷰',
-    selected: true,
-  },
-  {
-    value: 'IN_PROGRESS',
-    label: '진행중인 리뷰',
-    selected: false,
-  },
-  {
-    value: 'DONE',
-    label: '완료된 리뷰',
-    selected: false,
-  },
-];
+import githubIcon from '@/assets/github-icon.svg';
+import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
+import { getRequest } from '@/api/fetch';
+import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
 
 const MyPage = () => {
-  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
-
-  const [postOptions, setPostOptions] = useState<ReviewPostOptions>(reviewPostOptions);
-
+  const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
+  const [myPagePostList, setMyPagePostList] = useState<GetMyPagePostResponse | null>(null);
+  const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
   const [isRunner, setIsRunner] = useState(true);
 
   const { getToken } = useToken();
 
-  const getRunnerProfile = async () => {
-    try {
-      const token = getToken()?.value;
-      if (!token) throw new Error('토큰이 존재하지 않습니다');
-
-      const response = await fetch(`${BATON_BASE_URL}/profile/runner`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-
-      const supporterCardList = await response.json();
-
-      return supporterCardList;
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
+  }, [isRunner]);
 
   useEffect(() => {
-    const fetchRunnerPost = async () => {
-      const result = await getRunnerProfile();
-      setRunnerProfile(result);
+    const fetchMyPageData = async (role: 'runner' | 'supporter') => {
+      const profileResult = await getProfile(role);
+      const postResult = await getPostList(role);
+
+      setMyPageProfile(profileResult);
+      setMyPagePostList(postResult);
     };
 
-    fetchRunnerPost();
-  }, []);
+    fetchMyPageData(isRunner ? 'runner' : 'supporter');
+  }, [isRunner]);
+
+  const getProfile = async (role: 'runner' | 'supporter') => {
+    const token = getToken()?.value;
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    const data = await getRequest<GetMyPageProfileResponse>(`/profile/${role}/me`, `Bearer ${token}`);
+
+    return data;
+  };
+
+  const getPostList = async (role: 'runner' | 'supporter') => {
+    const token = getToken()?.value;
+    if (!token) throw new Error('토큰이 존재하지 않습니다');
+
+    const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
+    const data = await getRequest<GetMyPagePostResponse>(`/posts/${rolePath}`, `Bearer ${token}`);
+
+    return data;
+  };
 
   const selectOptions = (value: string | number) => {
     const selectedOptionIndex = postOptions.findIndex((option) => option.value === value);
@@ -82,19 +67,19 @@ const MyPage = () => {
     setPostOptions(newOptions);
   };
 
-  const filterList = () => {
-    const posts = runnerProfile?.runnerPosts;
-    if (!posts) return;
+  const filterList = (postList: GetMyPagePostResponse | null, options: PostOptions) => {
+    const posts = postList?.data || [];
 
-    const selectedOption = postOptions.filter((option) => option.selected)[0];
-    if (!selectedOption) return;
+    const selectedOption = options.filter((option) => option.selected)[0];
+    if (!selectedOption) return [];
 
     const filteredPosts = posts.filter((post) => post.reviewStatus === selectedOption.value);
+
     return filteredPosts;
   };
 
   const handleClickSupporterButton = () => {
-    alert('준비중인 기능입니다');
+    setIsRunner(!isRunner);
   };
 
   return (
@@ -102,31 +87,45 @@ const MyPage = () => {
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
-            imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
-            width={'100px'}
-            height={'100px'}
+            imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
+            width="100px"
+            height="100px"
           />
-          <S.IntroduceContainer>
-            <S.Name>{runnerProfile?.profile.name}</S.Name>
-            <S.Introduce>{runnerProfile?.profile.introduction}</S.Introduce>
-          </S.IntroduceContainer>
+          <S.InfoDetailContainer>
+            <S.Name>{myPageProfile?.name}</S.Name>
+            <S.Company>{myPageProfile?.company}</S.Company>
+            <S.TechLabel>
+              {myPageProfile?.technicalTags.map((tag) => (
+                <TechLabel key={tag} tag={tag} />
+              ))}
+            </S.TechLabel>
+          </S.InfoDetailContainer>
         </S.InfoContainer>
         <S.ButtonContainer>
-          <S.RunnerSupporterButton $isSelected={isRunner}>러너</S.RunnerSupporterButton>
+          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
+            러너
+          </S.RunnerSupporterButton>
           <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
             서포터
           </S.RunnerSupporterButton>
         </S.ButtonContainer>
       </S.ProfileContainer>
+
+      <S.IntroductionContainer>
+        <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
+        <Button width="127px" height="43px" colorTheme="BLACK" fontWeight={700}>
+          <S.Anchor href={myPageProfile?.githubUrl} target="_blank">
+            <img src={githubIcon} />
+            <S.GoToGitHub>Github</S.GoToGitHub>
+          </S.Anchor>
+        </Button>
+      </S.IntroductionContainer>
+
       <S.PostsContainer>
         <S.FilterWrapper>
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
-        <S.ListContainer>
-          {filterList()?.map((item) => (
-            <ProfileRunnerPostItem key={item.runnerPostId} {...item} />
-          ))}
-        </S.ListContainer>
+        <MyPagePostList filterList={() => filterList(myPagePostList, postOptions)} isRunner={isRunner} />
       </S.PostsContainer>
     </Layout>
   );
@@ -136,24 +135,24 @@ export default MyPage;
 
 const S = {
   ProfileContainer: styled.div`
-    padding: 50px;
-    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    padding: 50px 0;
   `,
 
   InfoContainer: styled.div`
     display: flex;
     align-items: center;
-    gap: 20px;
 
-    height: 175px;
+    gap: 20px;
   `,
 
-  IntroduceContainer: styled.div`
+  InfoDetailContainer: styled.div`
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    width: 300px;
   `,
 
   Name: styled.div`
@@ -161,17 +160,18 @@ const S = {
     font-weight: 700;
   `,
 
-  Introduce: styled.div`
-    font-size: 20px;
-
-    white-space: no-wrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  Company: styled.div`
+    font-size: 18px;
+  `,
+  TechLabel: styled.div`
+    display: flex;
+    gap: 8px;
   `,
 
   ButtonContainer: styled.div`
     display: flex;
-    gap: 20px;
+    align-items: center;
+    gap: 10px;
   `,
 
   RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
@@ -179,7 +179,7 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    width: 220px;
+    width: 95px;
     height: 38px;
     border-radius: 18px;
     border: 1px solid ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
@@ -189,16 +189,37 @@ const S = {
     color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
   `,
 
+  IntroductionContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+
+    padding: 0 10px;
+    margin-bottom: 50px;
+
+    border-left: 3px solid var(--gray-600);
+  `,
+
+  Introduction: styled.div`
+    width: 700px;
+
+    font-size: 18px;
+
+    white-space: no-wrap;
+  `,
+
+  Anchor: styled.a`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  `,
+
+  GoToGitHub: styled.p``,
+
   PostsContainer: styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-  `,
-
-  ListContainer: styled.ul`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
   `,
 
   FilterWrapper: styled.div`

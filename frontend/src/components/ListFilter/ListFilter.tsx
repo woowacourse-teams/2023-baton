@@ -63,6 +63,8 @@ const S = {
     flex-direction: column;
     align-items: center;
 
+    width: 150px;
+
     font-size: 26px;
     font-weight: 700;
     color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'var(--gray-700)')};
