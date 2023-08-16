@@ -1,10 +1,17 @@
 import { BATON_BASE_URL } from '@/constants';
+interface customError {
+  errorCode: string;
+  message: string;
+}
 
 const fetchAPI = async (url: string, options: RequestInit) => {
   const response = await fetch(`${BATON_BASE_URL}${url}`, options);
 
-  if (!response.ok) throw new Error(`Error: ${response.text}`);
+  if (!response.ok) {
+    const error: customError = await response.json();
 
+    throw new Error(error.message);
+  }
   return response;
 };
 
