@@ -3,8 +3,7 @@ import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { BATON_BASE_URL } from '@/constants';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
@@ -47,7 +46,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
 
     patchRequest(`/posts/runner/${runnerPostId}/supporters`, token, body)
       .then(async () => {
-        showCompletionToast({ description: '서포터 선택을 완료했습니다', title: '작성 완료' });
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);
 
         goToMyPage();
       })

@@ -13,6 +13,7 @@ import { getRequest } from '@/api/fetch';
 import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_TITLE } from '@/constants/message';
+import { usePageRouter } from '@/hooks/usePageRouter';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
@@ -21,7 +22,7 @@ const MyPage = () => {
   const [isRunner, setIsRunner] = useState(true);
 
   const { getToken } = useToken();
-
+  const { goToProfileEditPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
@@ -88,6 +89,17 @@ const MyPage = () => {
 
   return (
     <Layout>
+      <S.TitleContainer>
+        <S.Title>마이페이지</S.Title>
+        <S.ButtonContainer>
+          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
+            러너
+          </S.RunnerSupporterButton>
+          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
+            서포터
+          </S.RunnerSupporterButton>
+        </S.ButtonContainer>
+      </S.TitleContainer>
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
@@ -105,14 +117,16 @@ const MyPage = () => {
             </S.TechLabel>
           </S.InfoDetailContainer>
         </S.InfoContainer>
-        <S.ButtonContainer>
-          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-            러너
-          </S.RunnerSupporterButton>
-          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-            서포터
-          </S.RunnerSupporterButton>
-        </S.ButtonContainer>
+        <Button
+          width="80px"
+          height="35px"
+          colorTheme="WHITE"
+          fontSize="12px"
+          fontWeight={700}
+          onClick={goToProfileEditPage}
+        >
+          프로필 수정
+        </Button>
       </S.ProfileContainer>
 
       <S.IntroductionContainer>
@@ -138,6 +152,16 @@ const MyPage = () => {
 export default MyPage;
 
 const S = {
+  TitleContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+  `,
+
+  Title: styled.h1`
+    font-size: 36px;
+    font-weight: 700;
+  `,
   ProfileContainer: styled.div`
     display: flex;
     justify-content: space-between;
@@ -175,7 +199,10 @@ const S = {
   ButtonContainer: styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 10px;
+
+    margin-top: 50px;
   `,
 
   RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
@@ -204,9 +231,10 @@ const S = {
   `,
 
   Introduction: styled.div`
-    width: 700px;
+    width: 75%;
 
     font-size: 18px;
+    line-height: 1.5;
 
     white-space: no-wrap;
   `,

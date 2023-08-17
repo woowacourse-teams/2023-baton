@@ -60,4 +60,9 @@ export const TOAST_COMPLETION_MESSAGE = {
     title: '삭제 완료',
     description: '삭제를 완료했어요',
   },
+
+  SUPPORTER_SELECT: {
+    title: '선택 완료',
+    description: '서포터 선택을 완료했어요',
+  },
 };
