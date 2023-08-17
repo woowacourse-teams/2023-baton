@@ -6,6 +6,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 public record RunnerPostResponse() {
 
@@ -137,6 +138,39 @@ public record RunnerPostResponse() {
                     convertToTags(runnerPost),
                     runnerPost.getReviewStatus().name()
             );
+        }
+    }
+    public record SimpleInMyPage(Long runnerPostId,
+                                 Long supporterId,
+                                 String title,
+                                 LocalDateTime deadline,
+                                 List<String> tags,
+                                 int watchedCount,
+                                 long applicantCount,
+                                 String reviewStatus
+
+    ) {
+
+        public static SimpleInMyPage from(final RunnerPost runnerPost,
+                                          final long applicantCount
+        ) {
+            return new SimpleInMyPage(
+                    runnerPost.getId(),
+                    getSupporterIdByRunnerPost(runnerPost),
+                    runnerPost.getTitle().getValue(),
+                    runnerPost.getDeadline().getValue(),
+                    convertToTags(runnerPost),
+                    runnerPost.getWatchedCount().getValue(),
+                    applicantCount,
+                    runnerPost.getReviewStatus().name()
+            );
+        }
+
+        private static Long getSupporterIdByRunnerPost(final RunnerPost runnerPost) {
+            if (Objects.isNull(runnerPost.getSupporter())) {
+                return null;
+            }
+            return runnerPost.getSupporter().getId();
         }
     }
 

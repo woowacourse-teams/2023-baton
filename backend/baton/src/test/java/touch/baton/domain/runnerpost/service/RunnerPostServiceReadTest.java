@@ -173,6 +173,28 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         );
     }
 
+    @DisplayName("Runner 외래키와 ReviewStatus 로 러너 게시글을 조회한다.")
+    @Test
+    void readRunnerPostsByRunnerIdAndReviewStatus() {
+        // given
+        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
+        final RunnerPost savedRunnerPost = runnerPostRepository.save(runnerPost);
+
+        // when
+        final PageRequest pageable = PageRequest.of(0, 10);
+        final Page<RunnerPost> pageRunnerPosts
+                = runnerPostService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, savedRunnerEthan.getId(), ReviewStatus.NOT_STARTED);
+
+        // then
+        assertAll(
+                () -> assertThat(pageRunnerPosts.getPageable()).isEqualTo(pageable),
+                () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
+        );
+    }
+
     @DisplayName("RunnerPost 식별자값으로 Supporter 지원자수를 count 한다.")
     @Test
     void readCountByRunnerPostId() {

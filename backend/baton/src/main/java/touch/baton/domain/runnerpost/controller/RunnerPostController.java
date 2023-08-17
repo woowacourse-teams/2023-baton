@@ -75,9 +75,10 @@ public class RunnerPostController {
     }
 
     @PostMapping("{runnerPostId}/application")
-    public ResponseEntity<Void> createRunnerPostApplicant(@AuthSupporterPrincipal final Supporter supporter,
-                                                          @PathVariable final Long runnerPostId,
-                                                          @RequestBody @Valid final RunnerPostApplicantCreateRequest request
+    public ResponseEntity<Void> createRunnerPostApplicant(
+            @AuthSupporterPrincipal final Supporter supporter,
+            @PathVariable final Long runnerPostId,
+            @RequestBody @Valid final RunnerPostApplicantCreateRequest request
     ) {
         runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
 
@@ -90,8 +91,9 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}")
-    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(@AuthMemberPrincipal(required = false) final Member member,
-                                                                        @PathVariable final Long runnerPostId
+    public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(
+            @AuthMemberPrincipal(required = false) final Member member,
+            @PathVariable final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
         final long applicantCount = runnerPostService.readCountByRunnerPostId(foundRunnerPost.getId());
@@ -109,8 +111,9 @@ public class RunnerPostController {
     }
 
     @GetMapping("/{runnerPostId}/supporters")
-    public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
-                                                                                                      @PathVariable final Long runnerPostId
+    public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(
+            @AuthRunnerPrincipal final Runner runner,
+            @PathVariable final Long runnerPostId
     ) {
         final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner, runnerPostId).stream()
                 .map(supporterRunnerPost -> SupporterRunnerPostResponse.Detail.from(supporterRunnerPost))
@@ -156,14 +159,16 @@ public class RunnerPostController {
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(@PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable) {
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(
+            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable
+    ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readAllRunnerPosts(pageable);
         final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
         final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
         final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
                 .mapToObj(index -> {
                     final RunnerPost runnerPost = foundRunnerPosts.get(index);
-                    Long applicantCount =  applicantCounts.get(index);
+                    final Long applicantCount = applicantCounts.get(index);
 
                     return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
                 }).toList();
@@ -226,6 +231,29 @@ public class RunnerPostController {
                 .toList();
 
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
+    }
+
+    @GetMapping("/me/runner")
+    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(
+            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @AuthRunnerPrincipal final Runner runner,
+            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
+    ) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, runner.getId(), reviewStatus);
+        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+
+        final List<RunnerPostResponse.SimpleInMyPage> responses = IntStream.range(0, pageRunnerPosts.getContent().size())
+                .mapToObj(index -> {
+                            final Long applicantCount = applicantCounts.get(index);
+                            final RunnerPost runnerPost = pageRunnerPosts.getContent().get(index);
+                            return RunnerPostResponse.SimpleInMyPage.from(runnerPost, applicantCount);
+                        }
+                ).toList();
+
+        final Page<RunnerPostResponse.SimpleInMyPage> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
     @PatchMapping("/{runnerPostId}/cancelation")

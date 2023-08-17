@@ -76,3 +76,24 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/rea
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/response-fields.adoc[]
 
+==== * 러너 마이페이지 게시글 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/request-headers.adoc[]
+
+===== *Http Request Query Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/query-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/response-fields.adoc[]

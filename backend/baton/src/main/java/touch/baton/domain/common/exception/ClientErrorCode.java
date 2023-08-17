@@ -21,10 +21,8 @@ public enum ClientErrorCode {
 
     NAME_IS_NULL(HttpStatus.BAD_REQUEST, "MB001", "사용자의 이름을 입력해주세요."),
     COMPANY_IS_NULL(HttpStatus.BAD_REQUEST, "MB002", "사용자의 회사 정보를 입력해주세요."),
-
     SUPPORTER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB003", "서포터 기술 태그 목록을 빈 값이라도 입력해주세요."),
     RUNNER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB004", "러너 기술 태그 목록을 빈 값이라도 입력해주세요."),
-
     RUNNER_INTRODUCTION_IS_NULL(HttpStatus.BAD_REQUEST, "MB005", "러너의 정보를 입력해주세요."),
     SUPPORTER_INTRODUCTION_IS_NULL(HttpStatus.BAD_REQUEST, "MB006", "서포터의 정보를 입력해주세요."),
 
