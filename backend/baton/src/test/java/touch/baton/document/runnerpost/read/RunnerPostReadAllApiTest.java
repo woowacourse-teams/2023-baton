@@ -146,7 +146,7 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
         // then
         mockMvc.perform(get("/api/v1/posts/runner/search")
                         .characterEncoding(UTF_8)
-                        .accept(APPLICATION_JSON)
+                        .contentType(APPLICATION_JSON)
                         .queryParam("size", String.valueOf(pageOne.getPageSize()))
                         .queryParam("page", String.valueOf(pageOne.getPageNumber()))
                         .queryParam("supporterId", String.valueOf(spySupporterHyena.getId()))
