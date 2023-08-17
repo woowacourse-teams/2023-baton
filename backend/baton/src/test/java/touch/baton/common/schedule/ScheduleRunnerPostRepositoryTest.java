@@ -18,7 +18,7 @@ import touch.baton.fixture.domain.RunnerPostFixture;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.Assertions.assertThat;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
@@ -53,13 +53,12 @@ class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
 
         // when
         scheduleRunnerPostRepository.updateAllPassedDeadline();
-        final List<RunnerPost> actual = scheduleRunnerPostRepository.findAll();
+        final List<ReviewStatus> actual = scheduleRunnerPostRepository.findAll().stream()
+                .map(RunnerPost::getReviewStatus)
+                .toList();
 
         // then
-        assertSoftly(softly -> {
-            softly.assertThat(actual.get(0).getReviewStatus()).isEqualTo(OVERDUE);
-            softly.assertThat(actual.get(1).getReviewStatus()).isEqualTo(OVERDUE);
-        });
+        assertThat(actual).containsExactly(OVERDUE, OVERDUE);
     }
 
     @DisplayName("deadline 이 지난 DONE 상태의 runnerPost 는 리뷰 상태가 업데이트 되지 않는다.")
@@ -76,13 +75,12 @@ class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
 
         // when
         scheduleRunnerPostRepository.updateAllPassedDeadline();
-        final List<RunnerPost> actual = scheduleRunnerPostRepository.findAll();
+        final List<ReviewStatus> actual = scheduleRunnerPostRepository.findAll().stream()
+                .map(RunnerPost::getReviewStatus)
+                .toList();
 
         // then
-        assertSoftly(softly -> {
-            softly.assertThat(actual.get(0).getReviewStatus()).isEqualTo(expectedReviewStatus);
-            softly.assertThat(actual.get(1).getReviewStatus()).isEqualTo(expectedReviewStatus);
-        });
+        assertThat(actual).containsExactly(expectedReviewStatus, expectedReviewStatus);
     }
 
     @DisplayName("deadline 이 지나지 않은 NOT_STARTED 상태의 runnerPost 는 리뷰 상태가 업데이트 되지 않는다.")
@@ -99,12 +97,11 @@ class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
 
         // when
         scheduleRunnerPostRepository.updateAllPassedDeadline();
-        final List<RunnerPost> actual = scheduleRunnerPostRepository.findAll();
+        final List<ReviewStatus> actual = scheduleRunnerPostRepository.findAll().stream()
+                .map(RunnerPost::getReviewStatus)
+                .toList();
 
         // then
-        assertSoftly(softly -> {
-            softly.assertThat(actual.get(0).getReviewStatus()).isEqualTo(expectedReviewStatus);
-            softly.assertThat(actual.get(1).getReviewStatus()).isEqualTo(expectedReviewStatus);
-        });
+        assertThat(actual).containsExactly(expectedReviewStatus, expectedReviewStatus);
     }
 }

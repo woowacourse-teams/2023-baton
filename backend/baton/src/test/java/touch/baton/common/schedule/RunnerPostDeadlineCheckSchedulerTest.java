@@ -15,9 +15,8 @@ import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.Assertions.assertThat;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
@@ -50,13 +49,10 @@ class RunnerPostDeadlineCheckSchedulerTest extends ServiceTestConfig {
 
         // when
         runnerPostDeadlineCheckScheduler.updateReviewStatus();
-        final List<RunnerPost> actual = em.createQuery("select rp from RunnerPost rp", RunnerPost.class)
-                .getResultList();
+        final RunnerPost actual = em.createQuery("select rp from RunnerPost rp", RunnerPost.class)
+                .getSingleResult();
 
         // then
-        assertSoftly(softly -> {
-            softly.assertThat(actual).hasSize(1);
-            softly.assertThat(actual.get(0).getReviewStatus()).isEqualTo(OVERDUE);
-        });
+        assertThat(actual.getReviewStatus()).isEqualTo(OVERDUE);
     }
 }
