@@ -22,7 +22,7 @@ const Header = () => {
 
   const getProfile = () => {
     const token = getToken()?.value;
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) return alert('토큰이 존재하지 않습니다');
 
     getRequest(`/profile/me`, `Bearer ${token}`).then(async (response) => {
       const data: GetHeaderProfileResponse = await response.json();
