@@ -1,9 +1,10 @@
 import { Profile } from './profile';
-import { ReviewStatus } from './runnerPost';
+import { PageInfo, ReviewStatus } from './runnerPost';
 
 export interface GetMyPageProfileResponse extends Profile {}
 
 export interface GetMyPagePostResponse {
+  pageInfo: PageInfo;
   data: MyPagePost[];
 }
 

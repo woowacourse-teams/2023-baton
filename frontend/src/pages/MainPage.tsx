@@ -33,7 +33,7 @@ const MainPage = () => {
   };
 
   const getRunnerPost = () => {
-    getRequest('/posts/runner/test')
+    getRequest('/posts/runner')
       .then(async (response) => {
         const data: GetRunnerPostResponse = await response.json();
         setRunnerPostList([...runnerPostList, ...data.data]);
