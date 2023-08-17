@@ -4,26 +4,27 @@ import { styled } from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import GithubIcon from '@/assets/github-icon.svg';
 import { BATON_BASE_URL } from '@/constants';
+import { usePageRouter } from '@/hooks/usePageRouter';
 
 const LoginPage = () => {
+  const { goToMainPage } = usePageRouter();
+
   const handleLoginButton = () => {
     window.location.href = `${BATON_BASE_URL}/oauth/github`;
   };
 
   return (
-    <Layout>
-      <S.LoginContainer>
-        <S.Logo src={LogoImage} />
-        <S.LoginBoxContainer>
-          <S.LoginBoxText>코드 리뷰를 위해 github로 로그인 해주세요</S.LoginBoxText>
-          <S.LoginBoxGithubIcon src={GithubIcon} />
-          <S.LoginButton onClick={handleLoginButton}>
-            <S.LoginButtonIcon src={GithubIcon} />
-            <S.LoginButtonText>Sign in with github</S.LoginButtonText>
-          </S.LoginButton>
-        </S.LoginBoxContainer>
-      </S.LoginContainer>
-    </Layout>
+    <S.LoginContainer>
+      <S.Logo src={LogoImage} onClick={goToMainPage} />
+      <S.LoginBoxContainer>
+        <S.LoginBoxText>코드 리뷰를 위해 github로 로그인 해주세요</S.LoginBoxText>
+        <S.LoginBoxGithubIcon src={GithubIcon} />
+        <S.LoginButton onClick={handleLoginButton}>
+          <S.LoginButtonIcon src={GithubIcon} />
+          <S.LoginButtonText>Sign in with github</S.LoginButtonText>
+        </S.LoginButton>
+      </S.LoginBoxContainer>
+    </S.LoginContainer>
   );
 };
 
@@ -46,6 +47,8 @@ const S = {
   Logo: styled.img`
     width: 300px;
     height: 80px;
+
+    cursor: pointer;
   `,
 
   LoginBoxContainer: styled.div`
@@ -62,6 +65,7 @@ const S = {
   `,
 
   LoginBoxText: styled.div`
+    font-weight: 700;
     font-size: 18px;
   `,
 
