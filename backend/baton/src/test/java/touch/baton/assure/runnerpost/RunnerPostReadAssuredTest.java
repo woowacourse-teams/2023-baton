@@ -74,8 +74,8 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
         return runnerPostRepository.save(RunnerPostFixture.create(러너, deadline(now().plusHours(100))));
     }
 
-    private Runner 러너를_저장한다(final Member 멤버) {
-        final Member 저장된_사용자 = memberRepository.save(멤버);
+    private Runner 러너를_저장한다(final Member 사용자) {
+        final Member 저장된_사용자 = memberRepository.save(사용자);
 
         return runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 저장된_사용자));
     }

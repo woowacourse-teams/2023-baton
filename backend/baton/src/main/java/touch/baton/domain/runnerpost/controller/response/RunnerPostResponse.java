@@ -152,7 +152,8 @@ public record RunnerPostResponse() {
     ) {
 
         public static SimpleInMyPage from(final RunnerPost runnerPost,
-                                          final long applicantCount) {
+                                          final long applicantCount
+        ) {
             return new SimpleInMyPage(
                     runnerPost.getId(),
                     getSupporterIdByRunnerPost(runnerPost),
