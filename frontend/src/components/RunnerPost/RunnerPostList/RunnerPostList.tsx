@@ -1,31 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
-import { GetRunnerPostResponse } from '@/types/runnerPost';
-import { getRequest } from '@/api/fetch';
+import { RunnerPost } from '@/types/runnerPost';
 
-const RunnerPostList = () => {
-  const [runnerPostList, setRunnerPostList] = useState<GetRunnerPostResponse | null>(null);
+interface Props {
+  posts: RunnerPost[];
+}
 
-  useEffect(() => {
-    getRunnerPost();
-  }, []);
-
-  const getRunnerPost = () => {
-    getRequest('/posts/runner')
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
-
-        setRunnerPostList(data);
-      })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
-  };
-
+const RunnerPostList = ({ posts }: Props) => {
   return (
     <S.RunnerPostWrapper>
-      {runnerPostList?.data.map((runnerPostData) => (
+      {posts.map((runnerPostData) => (
         <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
       ))}
     </S.RunnerPostWrapper>

@@ -2,6 +2,7 @@ export type ReviewStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'DONE';
 
 export interface GetRunnerPostResponse {
   data: RunnerPost[];
+  pageInfo: PageInfo;
 }
 
 export interface RunnerPost {
@@ -44,4 +45,14 @@ export interface CreateRunnerPostRequest {
   pullRequestUrl: string;
   deadline: string;
   contents: string;
+}
+
+export interface PageInfo {
+  isFirst: boolean;
+  isLast: boolean;
+  hasNext: boolean;
+  totalPages: number;
+  totalElements: number;
+  currentPage: number;
+  currentSize: number;
 }
