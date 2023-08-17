@@ -46,7 +46,7 @@ const ProfileEditPage = () => {
     }
 
     getRequest(`/profile/runner/me`, `Bearer ${token}`).then(async (response) => {
-      const data: RunnerProfileResponse = await response.json();
+      const data: GetRunnerProfileResponse = await response.json();
       setRunnerProfile(data);
 
       if (isRunner) {
@@ -62,7 +62,7 @@ const ProfileEditPage = () => {
     }
 
     getRequest(`/profile/supporter/me`, `Bearer ${token}`).then(async (response) => {
-      const data: SupporterProfileResponse = await response.json();
+      const data: GetSupporterProfileResponse = await response.json();
       setSupporterProfile(data);
 
       if (!isRunner) {
@@ -202,9 +202,6 @@ const ProfileEditPage = () => {
     const body = JSON.stringify(runnerProfile);
 
     patchRequest(`/profile/runner/me`, `Bearer ${token}`, body);
-
-    await patchRequest<PatchRunnerProfileRequest>(`/profile/runner/me`, authorization, body);
-
   };
 
   const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
@@ -216,9 +213,6 @@ const ProfileEditPage = () => {
     const body = JSON.stringify(supporterProfile);
 
     patchRequest(`/profile/supporter/me`, `Bearer ${token}`, body);
-  };
-
-    patchRequest<PatchSupporterProfileRequest>(`/profile/supporter/me`, authorization, body);
   };
 
   return (
