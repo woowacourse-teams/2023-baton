@@ -18,18 +18,17 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
   const [myPagePostList, setMyPagePostList] = useState<MyPagePost[]>([]);
+
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
+
+  const [isRunner, setIsRunner] = useState<boolean>(true);
+
   const [page, setPage] = useState<number>(1);
   const [isLast, setIsLast] = useState<boolean>(false);
-  const [isRunner, setIsRunner] = useState<boolean>(true);
 
   const { getToken } = useToken();
   const { goToProfileEditPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
-
-  // useEffect(() => {
-  //   setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
-  // }, []); 오류 수정 해야함
 
   useEffect(() => {
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
@@ -91,6 +90,7 @@ const MyPage = () => {
   };
 
   const handleClickSupporterButton = () => {
+    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
     setIsRunner(!isRunner);
   };
 
