@@ -14,6 +14,7 @@ import java.util.Map;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class RunnerPostAssuredCreateSupport {
 
     private RunnerPostAssuredCreateSupport() {
