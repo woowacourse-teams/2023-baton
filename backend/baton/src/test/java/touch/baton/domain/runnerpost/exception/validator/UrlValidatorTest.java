@@ -45,7 +45,9 @@ class UrlValidatorTest {
         @ValueSource(strings = {"https;//github.com/hello",
                 "https://",
                 "http://",
-                "URL 아님"
+                "URL 아님",
+                "github.com/twitter/the-algorithm/pull/1740",
+                "htts:github.com/twitter/the-algorithm/pull/1740"
         })
         @ParameterizedTest
         void fail_if_not_url(final String target) {

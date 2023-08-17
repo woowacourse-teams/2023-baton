@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 
 public class UrlValidator implements ConstraintValidator<ValidNotUrl, String> {
 
-    private static final Pattern urlPattern = Pattern.compile("(https?:\\/\\/)?(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#?&//=]*)");
+    private static final Pattern urlPattern = Pattern.compile("https?:\\/\\/(www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%_\\+.~#()?&//=]*)");
 
     private ClientErrorCode errorCode;
 
