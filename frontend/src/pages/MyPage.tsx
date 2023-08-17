@@ -231,9 +231,10 @@ const S = {
   `,
 
   Introduction: styled.div`
-    width: 700px;
+    width: 75%;
 
     font-size: 18px;
+    line-height: 1.5;
 
     white-space: no-wrap;
   `,
