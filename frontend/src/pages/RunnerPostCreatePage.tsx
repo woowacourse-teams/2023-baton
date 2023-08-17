@@ -12,7 +12,6 @@ import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/ut
 import { postRequest } from '@/api/fetch';
 import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
 
-
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
@@ -92,10 +91,6 @@ const RunnerPostCreatePage = () => {
   };
 
   const validateInputs = () => {
-    if (!title) throw new Error('제목을 입력해주세요');
-    if (!pullRequestUrl) throw new Error('PR주소를 입력해주세요');
-    if (!deadline) throw new Error("마감기한의 '날짜'과 '시간' 모두 입력해주세요");
-    
     validateTitle(title);
     validateTags(tags);
     validatePullRequestUrl(pullRequestUrl);
