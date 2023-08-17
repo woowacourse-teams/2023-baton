@@ -11,7 +11,6 @@ import supporterProfilePost from './data/supporterProfilePost.json';
 import notStarted from './data/myPagePost/notStarted.json';
 import inProgress from './data/myPagePost/inProgress.json';
 import done from './data/myPagePost/done.json';
-import done2 from './data/myPagePost/done2.json';
 
 export const handlers = [
   rest.post('*/posts/runner', async (req, res, ctx) => {
@@ -84,7 +83,7 @@ export const handlers = [
         return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(inProgress));
 
       case 'DONE':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done2));
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done));
 
       default:
         return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({}));
