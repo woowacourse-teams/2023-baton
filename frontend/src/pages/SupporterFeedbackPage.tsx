@@ -4,7 +4,7 @@ import CheckBox from '@/components/CheckBox/CheckBox';
 import ReviewTypeButton from '@/components/ReviewTypeButton/ReviewTypeButton';
 import Button from '@/components/common/Button/Button';
 import { DESCRIPTION_OPTIONS_BAD, DESCRIPTION_OPTIONS_GOOD, REVIEW_TYPE_OPTIONS } from '@/constants/feedback';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
@@ -21,7 +21,7 @@ const SupporterFeedbackPage = () => {
 
   const { goToMyPage } = usePageRouter();
 
-  const { showErrorToast } = useContext(ToastContext);
+  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const [reviewTypeOptions, setReviewTypeOptions] = useState<ReviewTypeOptions>(structuredClone(REVIEW_TYPE_OPTIONS));
   const [descriptionOptions, setDescriptionOptions] = useState<DescriptionOptions>(
@@ -80,9 +80,9 @@ const SupporterFeedbackPage = () => {
 
     const body = JSON.stringify(feedback);
     const authorization = token;
-    postRequest(`/feedback/supporter`, authorization, body).catch((error) =>
-      showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }),
-    );
+    postRequest(`/feedback/supporter`, authorization, body)
+      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT))
+      .catch((error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   const validateIds = () => {
