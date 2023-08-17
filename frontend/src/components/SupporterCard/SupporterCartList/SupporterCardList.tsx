@@ -1,15 +1,19 @@
 import { Candidate, GetSupporterCandidateResponse } from '@/types/supporterCandidate';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import SupporterCardItem from '../SupporterCardItem/SupporterCardItem';
 import { useParams } from 'react-router-dom';
 import { useToken } from '@/hooks/useToken';
 import { getRequest } from '@/api/fetch';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 const SupporterCardList = () => {
   const { runnerPostId } = useParams();
 
   const { getToken } = useToken();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   const [supporterList, setSupporterList] = useState<Candidate[]>([]);
 
@@ -19,15 +23,16 @@ const SupporterCardList = () => {
 
   const getSupporterList = async () => {
     const token = getToken()?.value;
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) return;
 
-    getRequest(`/posts/runner/${runnerPostId}/supporters`, `Bearer ${token}`)
+    getRequest(`/posts/runner/${runnerPostId}/supporters`, token)
       .then(async (response) => {
         const data = await response.json();
         setSupporterList(data.data);
       })
       .catch((error: Error) => {
-        alert(error.message);
+        const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+        showErrorToast({ title: ERROR_TITLE.REQUEST, description });
       });
   };
 

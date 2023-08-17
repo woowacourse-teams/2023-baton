@@ -5,6 +5,8 @@ import TechTagSelectModal from '@/components/TechTagSelectModal/TechTagSelectMod
 import TextArea from '@/components/Textarea/Textarea';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import {
@@ -16,11 +18,14 @@ import {
 } from '@/types/profile';
 import { Technic } from '@/types/tags';
 import { deepEqual } from '@/utils/object';
-import React, { useEffect, useState } from 'react';
+import { validateCompany, validateIntroduction, validateName } from '@/utils/validate';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const ProfileEditPage = () => {
   const { getToken } = useToken();
+
+  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const [isRunner, setIsRunner] = useState(true);
 
@@ -41,11 +46,9 @@ const ProfileEditPage = () => {
 
   const getRunnerProfile = () => {
     const token = getToken()?.value;
-    if (!token) {
-      return alert('토큰이 존재하지 않습니다');
-    }
+    if (!token) return;
 
-    getRequest(`/profile/runner/me`, `Bearer ${token}`).then(async (response) => {
+    getRequest(`/profile/runner/me`, token).then(async (response) => {
       const data: GetRunnerProfileResponse = await response.json();
       setRunnerProfile(data);
 
@@ -57,11 +60,9 @@ const ProfileEditPage = () => {
 
   const getSupporterProfile = () => {
     const token = getToken()?.value;
-    if (!token) {
-      return alert('토큰이 존재하지 않습니다');
-    }
+    if (!token) return;
 
-    getRequest(`/profile/supporter/me`, `Bearer ${token}`).then(async (response) => {
+    getRequest(`/profile/supporter/me`, token).then(async (response) => {
       const data: GetSupporterProfileResponse = await response.json();
       setSupporterProfile(data);
 
@@ -120,16 +121,27 @@ const ProfileEditPage = () => {
     isRunner ? saveRunnerProfile() : saveSupporterProfile();
   };
 
+  const validateModification = () => {
+    validateName(name);
+    validateCompany(company);
+    validateIntroduction(introduction);
+  };
+
   const saveRunnerProfile = () => {
-    if (!isModified) return alert('수정된 내용이 없습니다');
+    if (!isModified) return;
 
-    if (!runnerProfile) return;
+    if (!runnerProfile || !technicalTags) return;
 
-    if (!name) return alert('이름을 입력해주세요');
-    if (!company) return alert('소속을 입력해주세요');
-    if (!introduction) return alert('자기소개를 입력해주세요');
-    if (!technicalTags) return;
+    try {
+      validateModification();
+    } catch (error) {
+      return showErrorToast({
+        description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
+        title: ERROR_TITLE.VALIDATION,
+      });
+    }
 
+    if (!name || !company || !introduction) return;
     const newInfo = { name: name.trim(), company: company.trim(), introduction: introduction.trim(), technicalTags };
 
     setRunnerProfile({ ...runnerProfile, ...newInfo });
@@ -138,15 +150,20 @@ const ProfileEditPage = () => {
   };
 
   const saveSupporterProfile = () => {
-    if (!isModified) return alert('수정된 내용이 없습니다');
+    if (!isModified) return;
 
-    if (!supporterProfile) return;
+    if (!supporterProfile || !technicalTags) return;
 
-    if (!name) return alert('이름을 입력해주세요');
-    if (!company) return alert('소속을 입력해주세요');
-    if (!introduction) return alert('자기소개를 입력해주세요');
-    if (!technicalTags) return;
+    try {
+      validateModification();
+    } catch (error) {
+      return showErrorToast({
+        description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
+        title: ERROR_TITLE.VALIDATION,
+      });
+    }
 
+    if (!name || !company || !introduction) return;
     const newInfo = { name: name.trim(), company: company.trim(), introduction: introduction.trim(), technicalTags };
 
     setSupporterProfile({ ...supporterProfile, ...newInfo });
@@ -160,12 +177,10 @@ const ProfileEditPage = () => {
   };
 
   const handleClickRunnerButton = () => {
-    if (!runnerProfile) return alert('러너 프로필 정보를 불러오지 못했습니다');
+    if (!runnerProfile) return showErrorToast(TOAST_ERROR_MESSAGE.NO_PROFILE);
 
     if (isModified) {
-      if (confirm('서포터 프로필에 수정 사항이 있습니다. 최근 편집된 내용을 저장할까요?')) {
-        saveSupporterProfile();
-      }
+      if (!confirm('저장하지 않고 러너 프로필로 이동할까요?')) return;
     }
 
     setIsRunner(true);
@@ -173,12 +188,10 @@ const ProfileEditPage = () => {
   };
 
   const handleClickSupporterButton = () => {
-    if (!supporterProfile) return alert('서포터 프로필 정보를 불러오지 못했습니다');
+    if (!supporterProfile) return showErrorToast(TOAST_ERROR_MESSAGE.NO_PROFILE);
 
     if (isModified) {
-      if (confirm('러너 프로필에 수정 사항이 있습니다. 최근 편집된 내용을 저장할까요?')) {
-        saveRunnerProfile();
-      }
+      if (!confirm('저장하지 않고 서포터 프로필로 이동할까요?')) return;
     }
 
     setIsRunner(false);
@@ -195,24 +208,24 @@ const ProfileEditPage = () => {
 
   const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
     const token = getToken()?.value;
-    if (!token) {
-      return alert('토큰이 존재하지 않습니다');
-    }
+    if (!token) return;
 
     const body = JSON.stringify(runnerProfile);
 
-    patchRequest(`/profile/runner/me`, `Bearer ${token}`, body);
+    patchRequest(`/profile/runner/me`, token, body)
+      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE))
+      .catch((error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
     const token = getToken()?.value;
-    if (!token) {
-      return alert('토큰이 존재하지 않습니다');
-    }
+    if (!token) return;
 
     const body = JSON.stringify(supporterProfile);
 
-    patchRequest(`/profile/supporter/me`, `Bearer ${token}`, body);
+    await patchRequest(`/profile/supporter/me`, token, body)
+      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE))
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   return (

@@ -5,12 +5,14 @@ import Button from '@/components/common/Button/Button';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetMyPagePostResponse, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { getRequest } from '@/api/fetch';
 import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_TITLE } from '@/constants/message';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
@@ -19,6 +21,8 @@ const MyPage = () => {
   const [isRunner, setIsRunner] = useState(true);
 
   const { getToken } = useToken();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
     setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
@@ -35,22 +39,20 @@ const MyPage = () => {
 
   const getProfile = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
-    if (!token) return alert('로그인이 필요합니다 🥺');
+    if (!token) return;
 
-    getRequest(`/profile/${role}/me`, `Bearer ${token}`)
+    getRequest(`/profile/${role}/me`, token)
       .then(async (response) => {
         const data: GetMyPageProfileResponse = await response.json();
 
         setMyPageProfile(data);
       })
-      .catch((err: Error) => {
-        alert(err.message);
-      });
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   const getPostList = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
-    if (!token) return alert('로그인이 필요합니다 🥺');
+    if (!token) return;
 
     const selectedPostOption = postOptions.filter((option) => option.selected)[0].value;
 
@@ -59,15 +61,13 @@ const MyPage = () => {
         ? `runner/me/runner?reviewStatus=${selectedPostOption}`
         : `runner/me/supporter?reviewStatus=${selectedPostOption}`;
 
-    getRequest(`/posts/${rolePath}`, `Bearer ${token}`)
+    getRequest(`/posts/${rolePath}`, token)
       .then(async (response) => {
         const data: GetMyPagePostResponse = await response.json();
 
         setMyPagePostList(data.data);
       })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   const selectOptions = (value: string | number) => {

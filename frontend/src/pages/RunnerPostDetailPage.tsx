@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -15,63 +15,66 @@ import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
 import { useToken } from '@/hooks/useToken';
 import { deleteRequest, getRequest, postRequest } from '@/api/fetch';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
+import { validateMessage } from '@/utils/validate';
 
 const RunnerPostPage = () => {
+  const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
+
   const { runnerPostId } = useParams();
 
-  const { goToMainPage, goToMyPage, goBack, goToRunnerProfilePage } = usePageRouter();
-  const { getToken } = useToken();
+  const { getToken, hasToken } = useToken();
+
+  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
   const [isMessageModalOpen, setIsMessageModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 
-  const token = useMemo(() => getToken()?.value, [getToken]);
-
   useEffect(() => {
     getRunnerPost();
   }, []);
 
   const getRunnerPost = () => {
+    const token = hasToken() ? getToken()?.value : undefined;
+
     getRequest(`/posts/runner/${runnerPostId}`, token)
       .then(async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
         setRunnerPost(data);
       })
       .catch((error: Error) => {
-        alert(error.message || '게시글 정보를 불러오지 못했습니다.');
-
+        showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message });
         goBack();
       });
   };
 
-  const deleteRunnerPost = useCallback(() => {
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
+  const deleteRunnerPost = () => {
+    const token = getToken()?.value;
+    if (!token) return;
 
     deleteRequest(`/posts/runner/${runnerPostId}`, token)
       .then(() => {
-        alert('리뷰 요청글을 삭제했습니다.');
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
 
         goToMainPage();
       })
-      .catch((error: Error) => {
-        alert(error.message || '게시글을 삭제하지 못했습니다.');
-      });
-  }, [token]);
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+  };
 
   const sendMessage = () => {
-    if (!token) {
-      alert('로그인이 필요합니다.');
-      return;
-    }
+    const token = getToken()?.value;
+    if (!token) return;
 
-    if (message.length < 20) {
-      alert('20자 이상 입력해주세요!');
+    try {
+      validateMessage(message);
+    } catch (error) {
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      showErrorToast({ title: ERROR_TITLE.REQUEST, description });
+
       return;
     }
 
@@ -79,13 +82,11 @@ const RunnerPostPage = () => {
 
     postRequest(`/posts/runner/${runnerPostId}/application`, token!, body)
       .then(() => {
-        alert('러너에게 리뷰 제안을 보냈습니다.');
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
 
         goToMyPage();
       })
-      .catch((error: Error) => {
-        alert(error.message || '리뷰 제안을 보내지 못했습니다.');
-      });
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

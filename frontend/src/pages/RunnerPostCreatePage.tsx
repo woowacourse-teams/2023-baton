@@ -4,19 +4,23 @@ import TextArea from '@/components/Textarea/Textarea';
 import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/utils/date';
 import { postRequest } from '@/api/fetch';
 import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
   const { goBack, goToCreationResultPage } = usePageRouter();
   const { getToken } = useToken();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -30,7 +34,8 @@ const RunnerPostCreatePage = () => {
     try {
       validateTags(newTags);
     } catch (error) {
-      alert(error);
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      showErrorToast({ title: ERROR_TITLE.VALIDATION, description });
 
       return;
     }
@@ -60,12 +65,11 @@ const RunnerPostCreatePage = () => {
     try {
       validateDeadline(e.target.value);
     } catch (error) {
-      alert(error);
-
       const newDeadline = getDatetime(addHours(nowDate, 1));
       setDeadline(newDeadline);
 
-      return;
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      return showErrorToast({ title: ERROR_TITLE.VALIDATION, description });
     }
     setDeadline(e.target.value);
   };
@@ -84,7 +88,8 @@ const RunnerPostCreatePage = () => {
     try {
       validateInputs();
     } catch (error) {
-      return alert(error);
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      return showErrorToast({ title: ERROR_TITLE.VALIDATION, description });
     }
 
     submitForm();
@@ -99,17 +104,17 @@ const RunnerPostCreatePage = () => {
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {
     const token = getToken()?.value;
-
-    if (!token) return alert('토큰이 존재하지 않습니다');
+    if (!token) return;
 
     const body = JSON.stringify(data);
 
-    postRequest(`/posts/runner`, `Bearer ${token}`, body)
+    postRequest(`/posts/runner`, token, body)
       .then(async () => {
         goToCreationResultPage();
       })
       .catch((error: Error) => {
-        alert(error.message);
+        const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+        showErrorToast({ title: ERROR_TITLE.REQUEST, description });
       });
   };
 

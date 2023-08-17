@@ -4,18 +4,22 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
 import { GetSupporterProfileResponse } from '@/types/profile';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import { GetRunnerPostResponse } from '@/types/runnerPost';
 import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_TITLE } from '@/constants/message';
 
 const SupporterProfilePage = () => {
   const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
   const [supporterProfilePost, setSupporterProfilePost] = useState<GetRunnerPostResponse | null>(null);
 
   const { supporterId } = useParams();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
     getProfile();
@@ -29,9 +33,7 @@ const SupporterProfilePage = () => {
 
         setSupporterProfile(data);
       })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   const getPost = async () => {
@@ -41,9 +43,7 @@ const SupporterProfilePage = () => {
 
         setSupporterProfilePost(data);
       })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   return (

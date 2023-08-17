@@ -1,4 +1,7 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
+import { TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
+import { useContext, useState } from 'react';
 
 export interface LoginToken {
   value: string;
@@ -6,12 +9,22 @@ export interface LoginToken {
 }
 
 export const useToken = () => {
+  const { showErrorToast } = useContext(ToastContext);
+
+  const hasToken = () => {
+    const token = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+
+    return !!token;
+  };
+
   const getToken = (): LoginToken | null => {
     try {
       const item = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
       if (!item) {
-        throw new Error('토큰이 존재하지 않습니다!');
+        showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
+
+        return null;
       }
 
       return JSON.parse(item);
@@ -41,9 +54,9 @@ export const useToken = () => {
     if (Number(time) - Date.now() < 0) {
       removeToken();
 
-      alert('로그인 토큰 유효기간이 지났습니다. 다시 로그인해 주세요');
+      showErrorToast(TOAST_ERROR_MESSAGE.TOKEN_EXPIRATION);
     }
   };
 
-  return { getToken, removeToken, saveToken, validateToken };
+  return { getToken, removeToken, saveToken, validateToken, hasToken };
 };

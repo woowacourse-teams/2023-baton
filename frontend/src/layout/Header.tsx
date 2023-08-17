@@ -1,39 +1,49 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import { useToken } from '@/hooks/useToken';
 import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
 import { getRequest } from '@/api/fetch';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 const Header = () => {
   const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
 
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
-  const { getToken, removeToken } = useToken();
-  const [isLogin, setIsLogin] = useState(false);
+
+  const { getToken, removeToken, hasToken } = useToken();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
-    setIsLogin(!!getToken());
+    const isLogin = hasToken();
 
     if (isLogin) getProfile();
-  }, [isLogin]);
+  }, []);
 
   const getProfile = () => {
     const token = getToken()?.value;
-    if (!token) return alert('토큰이 존재하지 않습니다');
+    if (!token) return;
 
-    getRequest(`/profile/me`, `Bearer ${token}`).then(async (response) => {
-      const data: GetHeaderProfileResponse = await response.json();
+    getRequest(`/profile/me`, token)
+      .then(async (response) => {
+        const data: GetHeaderProfileResponse = await response.json();
 
-      setProfile(data);
-    });
+        setProfile(data);
+      })
+      .catch((error: Error) =>
+        showErrorToast({
+          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
+          title: ERROR_TITLE.REQUEST,
+        }),
+      );
   };
 
   const handleClickLogoutButton = () => {
     removeToken();
-    setIsLogin(false);
 
     goToMainPage();
   };
@@ -47,7 +57,7 @@ const Header = () => {
       <S.HeaderContainer>
         <S.Logo src={LogoImage} onClick={goToMainPage} alt="바톤로고" />
         <S.MenuContainer>
-          {isLogin ? (
+          {hasToken() ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />

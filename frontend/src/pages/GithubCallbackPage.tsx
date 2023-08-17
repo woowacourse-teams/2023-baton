@@ -1,12 +1,16 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { useToken } from '@/hooks/useToken';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getRequest } from '@/api/fetch';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 
 function GithubCallbackPage() {
   const location = useLocation();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
   const { saveToken } = useToken();
@@ -17,7 +21,8 @@ function GithubCallbackPage() {
     const error = searchParams.get('error');
 
     if (error) {
-      alert('로그인 실패!');
+      showErrorToast(TOAST_ERROR_MESSAGE.LOGIN);
+
       goToLoginPage();
     }
 
@@ -33,14 +38,17 @@ function GithubCallbackPage() {
           const jwt = await response.headers.get('Authorization');
 
           if (!jwt) {
-            return alert('토큰을 받아오지 못했습니다.');
+            showErrorToast({ description: '토큰이 존재하지 않습니다', title: '권한 없음' });
+
+            return;
           }
 
           saveToken(jwt);
           goToMainPage();
         })
         .catch((error: Error) => {
-          alert(error.message);
+          const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+          showErrorToast({ title: ERROR_TITLE.REQUEST, description });
 
           goToLoginPage();
         });
