@@ -59,27 +59,6 @@ public class RunnerPostController {
         return ResponseEntity.created(redirectUri).build();
     }
 
-    @GetMapping
-    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable
-    ) {
-        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readAllRunnerPosts(pageable);
-        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
-        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
-        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
-                .mapToObj(index -> {
-                    final RunnerPost runnerPost = foundRunnerPosts.get(index);
-                    final Long applicantCount = applicantCounts.get(index);
-
-                    return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
-                }).toList();
-
-        final Page<RunnerPostResponse.Simple> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
-
-        return ResponseEntity.ok(PageResponse.from(pageResponse));
-    }
-
     @GetMapping("/{runnerPostId}")
     public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(
             @AuthMemberPrincipal(required = false) final Member member,
