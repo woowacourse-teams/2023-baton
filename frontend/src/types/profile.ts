@@ -10,6 +10,8 @@ export interface PatchSupporterProfileRequest extends ProfileRequest {}
 
 export type ProfileRequest = Omit<Profile, 'githubUrl' | 'imageUrl'>;
 
+export type GetHeaderProfileResponse = Pick<Profile, 'name' | 'imageUrl'>;
+
 export interface Profile {
   name: string;
   company: string;

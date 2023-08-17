@@ -6,10 +6,10 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import React, { useState } from 'react';
 import { styled } from 'styled-components';
-import { BATON_BASE_URL } from '@/constants';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/utils/date';
+import { postRequest } from '@/api/fetch';
 import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
 
 const RunnerPostCreatePage = () => {
@@ -97,24 +97,20 @@ const RunnerPostCreatePage = () => {
     validateDeadline(deadline);
   };
 
-  const postRunnerForm = async (data: CreateRunnerPostRequest) => {
+  const postRunnerForm = (data: CreateRunnerPostRequest) => {
     const token = getToken()?.value;
+
+    if (!token) return alert('토큰이 존재하지 않습니다');
+
     const body = JSON.stringify(data);
 
-    if (!token) {
-      throw new Error('토큰이 존재하지 않습니다');
-    }
-
-    const response = await fetch(`${BATON_BASE_URL}/posts/runner/test`, {
-      method: 'POST',
-      body,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (response.status !== 201) throw new Error(`${response.status} ERROR`);
+    postRequest(`/posts/runner`, `Bearer ${token}`, body)
+      .then(async () => {
+        goToCreationResultPage();
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   const submitForm = async () => {
@@ -126,13 +122,7 @@ const RunnerPostCreatePage = () => {
       contents,
     };
 
-    try {
-      await postRunnerForm(postData);
-    } catch (error) {
-      return alert(error);
-    }
-
-    goToCreationResultPage();
+    await postRunnerForm(postData);
   };
 
   return (

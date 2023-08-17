@@ -9,26 +9,31 @@ import myPageSupporterPost from './data/myPageSupporterPost.json';
 import runnerProfileInfo from './data/runnerProfileInfo.json';
 import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
+import headerProfile from './data/headerProfile.json';
 import supporterProfilePost from './data/supporterProfilePost.json';
 
 export const handlers = [
-  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+  rest.post('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.get('*/posts/runner/test', async (req, res, ctx) => {
+  rest.get('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
   }),
 
-  rest.put('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.get('*/profile/me', async (req, res, ctx) => {
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
+  }),
+
+  rest.put('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.delete('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.delete('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(204));
   }),
 
-  rest.get('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.get('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(
       ctx.delay(300),
       ctx.status(200),
@@ -37,11 +42,11 @@ export const handlers = [
     );
   }),
 
-  rest.get('*/supporters/test', async (req, res, ctx) => {
+  rest.get('*/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCardList));
   }),
 
-  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+  rest.post('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
@@ -88,6 +93,10 @@ export const handlers = [
   }),
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
+  }),
+
+  rest.patch('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 
