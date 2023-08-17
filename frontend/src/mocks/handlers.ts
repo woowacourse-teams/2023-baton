@@ -54,7 +54,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterProfile));
   }),
 
-  rest.get('*/posts/runner/me/runner?reviewStatus', async (req, res, ctx) => {
+  rest.get('*/posts/runner/me/runner?size&page&reviewStatus', async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
 
     switch (reviewStatus) {
@@ -72,7 +72,7 @@ export const handlers = [
     }
   }),
 
-  rest.get('*/posts/runner/me/supporter?reviewStatus', async (req, res, ctx) => {
+  rest.get('*/posts/runner/me/supporter?size&page&reviewStatus', async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
 
     switch (reviewStatus) {

@@ -38,5 +38,14 @@
       "watchedCount": 125,
       "supporterId": 2
     }
-  ]
+  ],
+  "pageInfo": {
+    "isFirst": true,
+    "isLast": false,
+    "hasNext": true,
+    "totalPages": 4,
+    "totalElements": 48,
+    "currentPage": 1,
+    "currentSize": 12
+  }
 }
