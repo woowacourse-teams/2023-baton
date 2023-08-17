@@ -31,8 +31,8 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
             and rp.reviewStatus = :reviewStatus
             """)
     Page<RunnerPost> findByRunnerIdAndReviewStatus(final Pageable pageable,
-                                                      @Param("runnerId") final Long runnerId,
-                                                      @Param("reviewStatus") final ReviewStatus reviewStatus);
+                                                   @Param("runnerId") final Long runnerId,
+                                                   @Param("reviewStatus") final ReviewStatus reviewStatus);
 
     List<RunnerPost> findByRunnerId(final Long runnerId);
 
@@ -53,7 +53,8 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
             where srp.supporter.id = :supporterId
             and rp.reviewStatus = :reviewStatus
             """)
-    Page<RunnerPost> joinSupporterRunnerPostBySupporterIdAndReviewStatus(final Pageable pageable,
-                                                                         @Param("supporterId") final Long supporterId,
-                                                                         @Param("reviewStatus") final ReviewStatus reviewStatus);
+    Page<RunnerPost> joinSupporterRunnerPostBySupporterIdAndReviewStatus(
+            final Pageable pageable,
+            @Param("supporterId") final Long supporterId,
+            @Param("reviewStatus") final ReviewStatus reviewStatus);
 }

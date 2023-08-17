@@ -6,6 +6,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 public record RunnerPostResponse() {
 
@@ -148,7 +149,6 @@ public record RunnerPostResponse() {
                                  long applicantCount,
                                  String reviewStatus
 
-
     ) {
 
         public static SimpleInMyPage from(final RunnerPost runnerPost,
@@ -166,11 +166,10 @@ public record RunnerPostResponse() {
         }
 
         private static Long getSupporterIdByRunnerPost(final RunnerPost runnerPost) {
-            Long supporterId = null;
-            if (runnerPost.getSupporter() != null) {
-                supporterId = runnerPost.getSupporter().getId();
+            if (Objects.isNull(runnerPost.getSupporter())) {
+                return runnerPost.getSupporter().getId();
             }
-            return supporterId;
+            return null;
         }
     }
 

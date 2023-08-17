@@ -80,7 +80,6 @@ public class AssuredSupport {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .when().log().ifValidationFails()
                 .pathParam(pathParamName, id)
                 .when().log().ifValidationFails()
                 .get(uri)
@@ -125,9 +124,9 @@ public class AssuredSupport {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .when().log().ifValidationFails()
-                .accept(APPLICATION_JSON_VALUE)
+                .contentType(APPLICATION_JSON_VALUE)
                 .queryParams(queryParams)
+                .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();

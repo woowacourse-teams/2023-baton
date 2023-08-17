@@ -268,13 +268,8 @@ public class RunnerPostService {
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
         return runnerPostIds.stream()
-                .map(runnerPostId -> {
-                    if (!supporterRunnerPostRepository.existsByRunnerPostId(runnerPostId)) {
-                        return 0L;
-                    } else {
-                        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElse(0L);
-                    }
-                }).toList();
+                .map(runnerPostId -> supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElse(0L))
+                .toList();
     }
 
     @Transactional
