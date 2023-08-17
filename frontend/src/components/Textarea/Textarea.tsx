@@ -1,4 +1,4 @@
-import React, { TextareaHTMLAttributes } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 interface Props extends React.HTMLProps<HTMLTextAreaElement> {
@@ -6,6 +6,7 @@ interface Props extends React.HTMLProps<HTMLTextAreaElement> {
   handleInputTextState: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   fontSize?: string | number;
   padding?: string;
+  lineHeight?: string | number;
 }
 
 const TextArea = ({
@@ -16,11 +17,18 @@ const TextArea = ({
   handleInputTextState,
   fontSize,
   padding,
+  lineHeight,
   ...rest
 }: Props) => {
   return (
     <S.InputContainer $width={width} $height={height} $padding={padding}>
-      <S.InputBox onChange={handleInputTextState} maxLength={maxLength} {...rest} />
+      <S.InputBox
+        onChange={handleInputTextState}
+        maxLength={maxLength}
+        $fontSize={fontSize}
+        $lineHeight={lineHeight}
+        {...rest}
+      />
       {maxLength && (
         <S.InputTextLength>
           {inputTextState?.length ?? 0} / {maxLength}
@@ -54,19 +62,22 @@ const S = {
     color: var(--gray-400);
   `,
 
-  InputBox: styled.textarea<{ $fontSize?: string | number }>`
+  InputBox: styled.textarea<{ $fontSize?: string | number; $lineHeight?: string | number }>`
     flex: 1;
 
     border: transparent;
+    padding: 0;
 
     font-size: ${({ $fontSize }) => $fontSize || '18px'};
-    line-height: 2;
+    line-height: ${({ $lineHeight }) => $lineHeight || 2};
+
+    resize: none;
 
     &.note {
     }
 
     &::placeholder {
-      font-size: 18px;
+      ${({ $fontSize }) => $fontSize || '18px'};
     }
 
     &:focus {
