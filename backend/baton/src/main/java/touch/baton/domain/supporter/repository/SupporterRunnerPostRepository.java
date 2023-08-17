@@ -26,6 +26,17 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
             """)
     Optional<Long> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
+    @Query("SELECT CASE WHEN EXISTS (" +
+            "SELECT 1 FROM SupporterRunnerPost srp " +
+            "WHERE srp.runnerPost.id = rp.id) " +
+
+            "THEN (SELECT COUNT(srp.id) FROM SupporterRunnerPost srp " +
+            "WHERE srp.runnerPost.id = rp.id) ELSE 0 END " +
+            "FROM RunnerPost rp " +
+            "WHERE rp.id IN :runnerPostIds " +
+            "ORDER BY rp.id DESC")
+    List<Long> countByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
+
     @Query("""
             select (count(1) >= 1)
             from SupporterRunnerPost srp

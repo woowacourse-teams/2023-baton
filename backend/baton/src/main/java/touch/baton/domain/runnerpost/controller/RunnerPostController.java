@@ -168,7 +168,7 @@ public class RunnerPostController {
         final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
                 .mapToObj(index -> {
                     final RunnerPost runnerPost = foundRunnerPosts.get(index);
-                    Long applicantCount = applicantCounts.get(index);
+                    final Long applicantCount = applicantCounts.get(index);
 
                     return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
                 }).toList();

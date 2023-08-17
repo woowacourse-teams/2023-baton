@@ -30,6 +30,7 @@ import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -267,9 +268,8 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return runnerPostIds.stream()
-                .map(runnerPostId -> supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElse(0L))
-                .toList();
+        return supporterRunnerPostRepository.countByRunnerPostIds(runnerPostIds);
+
     }
 
     @Transactional
