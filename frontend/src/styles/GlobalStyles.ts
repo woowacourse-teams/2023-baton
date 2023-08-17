@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import PRETENDARD from '../assets/fonts/PretendardVariable.woff2';
 import { ResetStyle } from './ResetStyle';
 
 export const GlobalStyle = createGlobalStyle`
@@ -7,7 +6,7 @@ export const GlobalStyle = createGlobalStyle`
 ${ResetStyle}
   @font-face {
       font-family: 'Pretendard Variable';
-      src: url(${PRETENDARD}) format("woff2");
+      src: font-url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
   }
 
   :root {
@@ -17,13 +16,14 @@ ${ResetStyle}
   * {
     box-sizing: border-box;
     font-family: "Pretendard Variable", sans-serif !important;
+    color: #333333;
   }
   
   html,
 
   /* Colors *****************************************/
   :root {
-    --baton-red: #F13232;
+    --baton-red: #F64545;
     --label-color: #333333;
     --count-color: #04c09e;
     --border-color: #dddddd;
