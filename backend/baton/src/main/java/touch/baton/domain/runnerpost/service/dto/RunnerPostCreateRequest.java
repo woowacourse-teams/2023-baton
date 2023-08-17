@@ -4,6 +4,7 @@ import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.validator.ValidNotNull;
 import touch.baton.domain.runnerpost.exception.validator.ValidFuture;
 import touch.baton.domain.runnerpost.exception.validator.ValidMaxLength;
+import touch.baton.domain.runnerpost.exception.validator.ValidNotUrl;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,6 +14,7 @@ public record RunnerPostCreateRequest(@ValidNotNull(clientErrorCode = ClientErro
                                       @ValidNotNull(clientErrorCode = ClientErrorCode.TAGS_ARE_NULL)
                                       List<String> tags,
                                       @ValidNotNull(clientErrorCode = ClientErrorCode.PULL_REQUEST_URL_IS_NULL)
+                                      @ValidNotUrl(clientErrorCode = ClientErrorCode.PULL_REQUEST_URL_IS_NOT_URL)
                                       String pullRequestUrl,
                                       @ValidNotNull(clientErrorCode = ClientErrorCode.DEADLINE_IS_NULL)
                                       @ValidFuture(clientErrorCode = ClientErrorCode.PAST_DEADLINE)
