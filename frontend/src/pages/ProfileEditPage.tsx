@@ -367,16 +367,14 @@ const S = {
     gap: 30px;
   `,
 
-  AvatarWrapper: styled.div`
-    margin-bottom: 30px;
-  `,
+  AvatarWrapper: styled.div``,
 
   SaveButtonWrapper: styled.div`
     display: flex;
     justify-content: end;
 
     width: 600px;
-    padding: 30px 0;
+    padding-bottom: 30px;
   `,
 
   InputName: styled.div`
@@ -411,8 +409,10 @@ const S = {
 
   ButtonContainer: styled.div`
     display: flex;
-    justify-content: end;
+    justify-content: center;
     gap: 15px;
+
+    margin: 50px;
   `,
 
   InputWrapper: styled.div`

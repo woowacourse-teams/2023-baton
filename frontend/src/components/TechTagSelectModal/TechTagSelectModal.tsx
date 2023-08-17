@@ -81,7 +81,7 @@ const S = {
     justify-content: space-between;
     gap: 20px;
 
-    padding: 15px 0;
+    padding: 15px 10px;
   `,
 
   ModalTitle: styled.div`
