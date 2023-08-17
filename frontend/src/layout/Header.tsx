@@ -8,7 +8,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import { getRequest } from '@/api/fetch';
 
 const Header = () => {
-  const [runnerProfile, setRunnerProfile] = useState<GetHeaderProfileResponse | null>(null);
+  const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
 
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
   const { getToken, removeToken } = useToken();
@@ -17,17 +17,17 @@ const Header = () => {
   useEffect(() => {
     setIsLogin(!!getToken());
 
-    if (isLogin) getRunnerProfile();
+    if (isLogin) getProfile();
   }, [isLogin]);
 
-  const getRunnerProfile = () => {
+  const getProfile = () => {
     const token = getToken()?.value;
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
     getRequest(`/profile/me`, `Bearer ${token}`).then(async (response) => {
       const data: GetHeaderProfileResponse = await response.json();
 
-      setRunnerProfile(data);
+      setProfile(data);
     });
   };
 
@@ -50,12 +50,8 @@ const Header = () => {
           {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
-                <Avatar
-                  width="35px"
-                  height="35px"
-                  imageUrl={runnerProfile?.imageUrl || 'https://via.placeholder.com/150'}
-                />
-                <p>{runnerProfile?.name}</p>
+                <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
+                <p>{profile?.name}</p>
               </S.AvatarContainer>
               <S.LoginButton onClick={handleClickLogoutButton}>로그아웃</S.LoginButton>
             </>
