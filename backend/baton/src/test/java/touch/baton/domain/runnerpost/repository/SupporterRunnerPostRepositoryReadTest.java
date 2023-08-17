@@ -88,11 +88,17 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
         // when
         final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIds(List.of(firstRunnerPost.getId(), twoRunnerPost.getId()));
 
+        final Long actualSecondRunnerPostApplicantsCount = applicantCounts.get(0);
+        final Long actualFirstRunnerPostApplicantsCount = applicantCounts.get(1);
+        final Long expectedSecondRunnerPostApplicantsCount = 0L;
+        final Long expectedFirstRunnerPostApplicantsCount = 2L;
+        final int expectedSize = 2;
+
         // when, then
         assertSoftly(softly -> {
-                    softly.assertThat(applicantCounts.size()).isEqualTo(2);
-                    softly.assertThat(applicantCounts.get(0)).isEqualTo(0L);
-                    softly.assertThat(applicantCounts.get(1)).isEqualTo(2L);
+            softly.assertThat(applicantCounts.size()).isEqualTo(expectedSize);
+            softly.assertThat(actualSecondRunnerPostApplicantsCount).isEqualTo(expectedSecondRunnerPostApplicantsCount);
+            softly.assertThat(actualFirstRunnerPostApplicantsCount).isEqualTo(expectedFirstRunnerPostApplicantsCount);
                 }
         );
     }
