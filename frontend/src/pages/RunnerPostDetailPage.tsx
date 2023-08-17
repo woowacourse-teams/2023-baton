@@ -20,7 +20,7 @@ import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 const RunnerPostPage = () => {
   const { runnerPostId } = useParams();
 
-  const { goToMainPage, goToMyPage, goBack } = usePageRouter();
+  const { goToMainPage, goToMyPage, goBack, goToRunnerProfilePage } = usePageRouter();
   const { getToken } = useToken();
 
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
@@ -35,7 +35,7 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = () => {
-    getRequest(`/posts/runner/${runnerPostId}/test`, token)
+    getRequest(`/posts/runner/${runnerPostId}`, token)
       .then(async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
         setRunnerPost(data);
@@ -114,6 +114,12 @@ const RunnerPostPage = () => {
     setIsMessageModalOpen(false);
   };
 
+  const viewProfile = () => {
+    if (runnerPost) {
+      goToRunnerProfilePage(runnerPost?.runnerProfile.runnerId);
+    }
+  };
+
   return (
     <Layout>
       <S.RunnerPostContainer>
@@ -156,7 +162,7 @@ const RunnerPostPage = () => {
               <S.Contents>{runnerPost.contents}</S.Contents>
               <S.BottomContentContainer>
                 <S.LeftSideContainer>
-                  <S.ProfileContainer>
+                  <S.ProfileContainer onClick={viewProfile}>
                     <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
                     <S.Profile>
                       <S.Name>{runnerPost.runnerProfile.name}</S.Name>
@@ -304,6 +310,8 @@ const S = {
     flex-direction: row;
     align-items: center;
     gap: 20px;
+
+    cursor: pointer;
   `,
 
   Profile: styled.div`

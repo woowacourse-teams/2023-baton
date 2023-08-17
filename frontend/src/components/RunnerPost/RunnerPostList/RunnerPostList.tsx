@@ -12,13 +12,14 @@ const RunnerPostList = () => {
   }, []);
 
   const getRunnerPost = () => {
-    getRequest('/posts/runner/test')
+    getRequest('/posts/runner')
       .then(async (response) => {
-        const data = await response.json();
+        const data: GetRunnerPostResponse = await response.json();
+
         setRunnerPostList(data);
       })
       .catch((error: Error) => {
-        alert('게시글 목록을 불러오지 못했습니다.' + error.message);
+        alert(error.message);
       });
   };
 

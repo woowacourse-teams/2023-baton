@@ -19,7 +19,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
   const { runnerPostId } = useParams();
 
   const { getToken } = useToken();
-  const { goToMyPage } = usePageRouter();
+  const { goToMyPage, goToSupporterProfilePage } = usePageRouter();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -31,23 +31,25 @@ const SupporterCardItem = ({ supporter }: Props) => {
     setIsModalOpen(false);
   };
 
+  const viewProfile = () => {
+    goToSupporterProfilePage(supporter.supporterId);
+  };
+
   const selectSupporter = () => {
     const token = getToken()?.value;
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) return alert('토큰이 존재하지 않습니다');
 
-    try {
-      patchRequest(
-        `/posts/runner/${runnerPostId}/supporters`,
-        `Bearer ${token}`,
-        JSON.stringify({ supporterId: supporter.supporterId }),
-      );
+    const body = JSON.stringify({ supporterId: supporter.supporterId });
 
-      alert('서포터 선택을 완료했습니다');
-    } catch (error) {
-      alert(`서포터 선택에 실패했습니다 ${error instanceof Error ? error.message : ''}`);
-    }
+    patchRequest(`/posts/runner/${runnerPostId}/supporters`, `Bearer ${token}`, body)
+      .then(async () => {
+        alert('서포터 선택을 완료했습니다');
 
-    goToMyPage();
+        goToMyPage();
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   return (
@@ -73,7 +75,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
         <S.Message> {supporter.message}</S.Message>
       </S.MessageContainer>
       <S.ButtonContainer>
-        <Button colorTheme="BLACK" width="94px" height="35px" fontSize="14px" fontWeight={700}>
+        <Button colorTheme="BLACK" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={viewProfile}>
           프로필 보기
         </Button>
         <Button colorTheme="WHITE" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={openModal}>

@@ -9,10 +9,10 @@ import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import {
   Profile,
-  RunnerProfileRequest,
-  RunnerProfileResponse,
-  SupporterProfileRequest,
-  SupporterProfileResponse,
+  PatchRunnerProfileRequest,
+  GetRunnerProfileResponse,
+  PatchSupporterProfileRequest,
+  GetSupporterProfileResponse,
 } from '@/types/profile';
 import { Technic } from '@/types/tags';
 import { deepEqual } from '@/utils/object';
@@ -24,8 +24,8 @@ const ProfileEditPage = () => {
 
   const [isRunner, setIsRunner] = useState(true);
 
-  const [runnerProfile, setRunnerProfile] = useState<RunnerProfileResponse | null>(null);
-  const [supporterProfile, setSupporterProfile] = useState<SupporterProfileResponse | null>(null);
+  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
+  const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
 
   const [name, setName] = useState<string | null>(null);
   const [company, setCompany] = useState<string | null>(null);
@@ -33,6 +33,43 @@ const ProfileEditPage = () => {
   const [technicalTags, setTechnicalTags] = useState<Technic[] | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    getRunnerProfile();
+    getSupporterProfile();
+  }, []);
+
+  const getRunnerProfile = () => {
+    const token = getToken()?.value;
+    if (!token) {
+      return alert('토큰이 존재하지 않습니다');
+    }
+
+    getRequest(`/profile/runner/me`, `Bearer ${token}`).then(async (response) => {
+      const data: GetRunnerProfileResponse = await response.json();
+      setRunnerProfile(data);
+
+      if (isRunner) {
+        updateProfileInputValue(data);
+      }
+    });
+  };
+
+  const getSupporterProfile = () => {
+    const token = getToken()?.value;
+    if (!token) {
+      return alert('토큰이 존재하지 않습니다');
+    }
+
+    getRequest(`/profile/supporter/me`, `Bearer ${token}`).then(async (response) => {
+      const data: GetSupporterProfileResponse = await response.json();
+      setSupporterProfile(data);
+
+      if (!isRunner) {
+        updateProfileInputValue(data);
+      }
+    });
+  };
 
   const isModified = isRunner
     ? !deepEqual({ ...runnerProfile }, { ...runnerProfile, name, company, introduction, technicalTags })
@@ -156,66 +193,27 @@ const ProfileEditPage = () => {
     setIsModalOpen(false);
   };
 
-  const patchRunnerProfile = async (runnerProfile: RunnerProfileRequest) => {
+  const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
     const token = getToken()?.value;
     if (!token) {
       return alert('토큰이 존재하지 않습니다');
     }
 
     const body = JSON.stringify(runnerProfile);
-    const authorization = `Bearer ${token}`;
 
-    await patchRequest<RunnerProfileRequest>(`/profile/runner/me`, authorization, body);
+    patchRequest(`/profile/runner/me`, `Bearer ${token}`, body);
   };
 
-  const patchSupporterProfile = async (supporterProfile: SupporterProfileRequest) => {
+  const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
     const token = getToken()?.value;
     if (!token) {
       return alert('토큰이 존재하지 않습니다');
     }
 
     const body = JSON.stringify(supporterProfile);
-    const authorization = `Bearer ${token}`;
 
-    patchRequest<SupporterProfileRequest>(`/profile/supporter/me`, authorization, body);
+    patchRequest(`/profile/supporter/me`, `Bearer ${token}`, body);
   };
-
-  useEffect(() => {
-    const getRunnerProfile = async () => {
-      const token = getToken()?.value;
-      if (!token) {
-        return alert('토큰이 존재하지 않습니다');
-      }
-
-      const authorization = `Bearer ${token}`;
-      const result = await getRequest<RunnerProfileResponse>(`/profile/runner/me`, authorization);
-
-      setRunnerProfile(result);
-
-      if (isRunner) {
-        updateProfileInputValue(result);
-      }
-    };
-
-    const getSupporterProfile = async () => {
-      const token = getToken()?.value;
-      if (!token) {
-        return alert('토큰이 존재하지 않습니다');
-      }
-
-      const authorization = `Bearer ${token}`;
-      const result = await getRequest<SupporterProfileResponse>(`/profile/supporter/me`, authorization);
-
-      setSupporterProfile(result);
-
-      if (!isRunner) {
-        updateProfileInputValue(result);
-      }
-    };
-
-    getSupporterProfile();
-    getRunnerProfile();
-  }, []);
 
   return (
     <Layout>
