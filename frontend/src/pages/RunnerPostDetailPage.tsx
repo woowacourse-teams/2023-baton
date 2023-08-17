@@ -32,7 +32,7 @@ const RunnerPostPage = () => {
     const token = getToken()?.value;
 
     if (!token) {
-      getRequest(`/posts/runner/${runnerPostId}/test`)
+      getRequest(`/posts/runner/${runnerPostId}`)
         .then(async (response) => {
           const data: GetDetailedRunnerPostResponse = await response.json();
 
@@ -43,7 +43,7 @@ const RunnerPostPage = () => {
         });
     }
 
-    getRequest(`/posts/runner/${runnerPostId}/test`, `Bearer ${token}`)
+    getRequest(`/posts/runner/${runnerPostId}`, `Bearer ${token}`)
       .then(async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
 
@@ -59,7 +59,7 @@ const RunnerPostPage = () => {
 
     if (!token) throw new Error('토큰이 존재하지 않습니다');
 
-    deleteRequest(`/posts/runner/${runnerPostId}/test`, `Bearer ${token}`)
+    deleteRequest(`/posts/runner/${runnerPostId}`, `Bearer ${token}`)
       .then(() => {
         goToMainPage();
       })

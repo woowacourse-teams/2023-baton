@@ -13,11 +13,11 @@ import headerProfile from './data/headerProfile.json';
 import supporterProfilePost from './data/supporterProfilePost.json';
 
 export const handlers = [
-  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+  rest.post('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.get('*/posts/runner/test', async (req, res, ctx) => {
+  rest.get('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
   }),
 
@@ -25,15 +25,15 @@ export const handlers = [
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
   }),
 
-  rest.put('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.put('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.delete('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.delete('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(204));
   }),
 
-  rest.get('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.get('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(
       ctx.delay(300),
       ctx.status(200),
@@ -42,11 +42,11 @@ export const handlers = [
     );
   }),
 
-  rest.get('*/supporters/test', async (req, res, ctx) => {
+  rest.get('*/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCardList));
   }),
 
-  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+  rest.post('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
