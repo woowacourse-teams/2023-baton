@@ -10,8 +10,6 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-=== *러너 게시글 삭제*
-
 ==== *러너 게시글 삭제 API*
 
 ===== *Http Request*
