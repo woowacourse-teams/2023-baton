@@ -28,5 +28,14 @@
       "applicantCount": 4,
       "watchedCount": 125
     }
-  ]
+  ],
+  "pageInfo": {
+    "isFirst": true,
+    "isLast": false,
+    "hasNext": true,
+    "totalPages": 4,
+    "totalElements": 48,
+    "currentPage": 1,
+    "currentSize": 12
+  }
 }

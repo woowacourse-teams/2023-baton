@@ -19,18 +19,23 @@ const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
   const [myPagePostList, setMyPagePostList] = useState<MyPagePost[]>([]);
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
-  const [isRunner, setIsRunner] = useState(true);
+  const [page, setPage] = useState<number>(1);
+  const [isLast, setIsLast] = useState<boolean>(false);
+  const [isRunner, setIsRunner] = useState<boolean>(true);
 
   const { getToken } = useToken();
   const { goToProfileEditPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
 
-  useEffect(() => {
-    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
-  }, [isRunner]);
+  // useEffect(() => {
+  //   setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
+  // }, []); 오류 수정 해야함
 
   useEffect(() => {
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
+      setMyPagePostList([]);
+      setPage(1);
+
       getProfile(role);
       getPostList(role);
     };
@@ -59,14 +64,16 @@ const MyPage = () => {
 
     const rolePath =
       role === 'runner'
-        ? `runner/me/runner?reviewStatus=${selectedPostOption}`
-        : `runner/me/supporter?reviewStatus=${selectedPostOption}`;
+        ? `runner/me/runner?size=10&page=${page}&reviewStatus=${selectedPostOption}`
+        : `runner/me/supporter?size=10&page=${page}&reviewStatus=${selectedPostOption}`;
 
     getRequest(`/posts/${rolePath}`, token)
       .then(async (response) => {
         const data: GetMyPagePostResponse = await response.json();
 
-        setMyPagePostList(data.data);
+        setMyPagePostList((current) => [...current, ...data.data]);
+        setPage(page + 1);
+        setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
@@ -85,6 +92,12 @@ const MyPage = () => {
 
   const handleClickSupporterButton = () => {
     setIsRunner(!isRunner);
+  };
+
+  const handleClickMoreButton = () => {
+    const role = isRunner ? 'runner' : 'supporter';
+
+    getPostList(role);
   };
 
   return (
@@ -144,6 +157,13 @@ const MyPage = () => {
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
         <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
+        <S.MoreButtonWrapper>
+          {!isLast && (
+            <Button colorTheme="RED" width="1200px" height="55px" onClick={handleClickMoreButton}>
+              더보기
+            </Button>
+          )}
+        </S.MoreButtonWrapper>
       </S.PostsContainer>
     </Layout>
   );
@@ -256,5 +276,9 @@ const S = {
 
   FilterWrapper: styled.div`
     padding: 70px 20px;
+  `,
+
+  MoreButtonWrapper: styled.div`
+    margin-top: 50px;
   `,
 };

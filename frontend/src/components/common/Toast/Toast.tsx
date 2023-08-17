@@ -13,7 +13,7 @@ interface Props {
 
 const Toast = ({ colorTheme, description, title, ms }: Props) => {
   return createPortal(
-    <S.ToastWrapper key={crypto.randomUUID()} $colorTheme={colorTheme} ms={ms}>
+    <S.ToastWrapper key={Date.now()} $colorTheme={colorTheme} ms={ms}>
       <S.Icon src={colorTheme === 'COMPLETION' ? completeIcon : errorIcon} />
       <S.MessageContainer>
         <S.Title>{title}</S.Title>

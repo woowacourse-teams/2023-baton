@@ -11,6 +11,7 @@ import supporterProfilePost from './data/supporterProfilePost.json';
 import notStarted from './data/myPagePost/notStarted.json';
 import inProgress from './data/myPagePost/inProgress.json';
 import done from './data/myPagePost/done.json';
+import done2 from './data/myPagePost/done2.json';
 
 export const handlers = [
   rest.post('*/posts/runner', async (req, res, ctx) => {
@@ -54,7 +55,7 @@ export const handlers = [
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterProfile));
   }),
 
-  rest.get('*/posts/runner/me/runner?reviewStatus', async (req, res, ctx) => {
+  rest.get('*/posts/runner/me/runner?size&page&reviewStatus', async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
 
     switch (reviewStatus) {
@@ -72,7 +73,7 @@ export const handlers = [
     }
   }),
 
-  rest.get('*/posts/runner/me/supporter?reviewStatus', async (req, res, ctx) => {
+  rest.get('*/posts/runner/me/supporter?size&page&reviewStatus', async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
 
     switch (reviewStatus) {
@@ -83,7 +84,7 @@ export const handlers = [
         return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(inProgress));
 
       case 'DONE':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done));
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done2));
 
       default:
         return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({}));

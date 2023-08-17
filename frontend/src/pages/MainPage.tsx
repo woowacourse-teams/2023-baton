@@ -19,6 +19,13 @@ const MainPage = () => {
 
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
   const [isLast, setIsLast] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(1);
+
+  const handleClickMoreButton = () => {
+    setPage(page + 1);
+
+    getRunnerPost();
+  };
 
   useEffect(() => {
     getRunnerPost();
@@ -34,7 +41,7 @@ const MainPage = () => {
   };
 
   const getRunnerPost = () => {
-    getRequest('/posts/runner')
+    getRequest(`/posts/runner?size=10&page=${page}`)
       .then(async (response) => {
         const data: GetRunnerPostResponse = await response.json();
         setRunnerPostList([...runnerPostList, ...data.data]);
@@ -68,7 +75,7 @@ const MainPage = () => {
       <S.RunnerPostContainer>
         <RunnerPostList posts={runnerPostList} />
         {!isLast && (
-          <Button colorTheme="RED" width="720px" onClick={getRunnerPost}>
+          <Button colorTheme="RED" width="1200px" height="55px" onClick={handleClickMoreButton}>
             더보기
           </Button>
         )}
