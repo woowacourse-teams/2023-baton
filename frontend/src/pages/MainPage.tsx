@@ -1,16 +1,22 @@
 import { getRequest } from '@/api/fetch';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import Button from '@/components/common/Button/Button';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetRunnerPostResponse, RunnerPost } from '@/types/runnerPost';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
+
   const { getToken } = useToken();
+
+  const { showErrorToast } = useContext(ToastContext);
+
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
   const [isLast, setIsLast] = useState<boolean>(true);
 
@@ -34,9 +40,7 @@ const MainPage = () => {
         setRunnerPostList([...runnerPostList, ...data.data]);
         setIsLast(data.pageInfo.isLast);
       })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   return (

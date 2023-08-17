@@ -45,7 +45,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
 
     const body = JSON.stringify({ supporterId: supporter.supporterId });
 
-    patchRequest(`/posts/runner/${runnerPostId}/supporters`, `Bearer ${token}`, body)
+    patchRequest(`/posts/runner/${runnerPostId}/supporters`, token, body)
       .then(async () => {
         showCompletionToast({ description: '서포터 선택을 완료했습니다', title: '작성 완료' });
 

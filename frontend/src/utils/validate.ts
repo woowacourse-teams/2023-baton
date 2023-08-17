@@ -36,7 +36,7 @@ export const validateDeadline = (deadline: string) => {
 
   const date = new Date(deadline);
   if (isPastTime(date)) {
-    throw new Error('최소한 현재보다 1시간 이후의 시간을 입력해주세요');
+    throw new Error('현재보다 1시간 이후의 시간을 입력해주세요');
   }
 };
 
@@ -56,4 +56,8 @@ export const validateIntroduction = (introduction: string | null) => {
   if (!introduction) {
     throw new Error('자기소개를 입력해주세요');
   }
+};
+
+export const validateMessage = (message: string) => {
+  if (message.length < 20) throw new Error('메세지는 20자 이상 입력해주세요');
 };

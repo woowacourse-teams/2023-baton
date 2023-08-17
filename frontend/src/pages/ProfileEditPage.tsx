@@ -48,7 +48,7 @@ const ProfileEditPage = () => {
     const token = getToken()?.value;
     if (!token) return;
 
-    getRequest(`/profile/runner/me`, `Bearer ${token}`).then(async (response) => {
+    getRequest(`/profile/runner/me`, token).then(async (response) => {
       const data: GetRunnerProfileResponse = await response.json();
       setRunnerProfile(data);
 
@@ -62,7 +62,7 @@ const ProfileEditPage = () => {
     const token = getToken()?.value;
     if (!token) return;
 
-    getRequest(`/profile/supporter/me`, `Bearer ${token}`).then(async (response) => {
+    getRequest(`/profile/supporter/me`, token).then(async (response) => {
       const data: GetSupporterProfileResponse = await response.json();
       setSupporterProfile(data);
 
@@ -212,7 +212,9 @@ const ProfileEditPage = () => {
 
     const body = JSON.stringify(runnerProfile);
 
-    patchRequest(`/profile/runner/me`, `Bearer ${token}`, body);
+    patchRequest(`/profile/runner/me`, token, body)
+      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE))
+      .catch((error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
@@ -221,7 +223,7 @@ const ProfileEditPage = () => {
 
     const body = JSON.stringify(supporterProfile);
 
-    await patchRequest(`/profile/supporter/me`, `Bearer ${token}`, body)
+    await patchRequest(`/profile/supporter/me`, token, body)
       .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE))
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };

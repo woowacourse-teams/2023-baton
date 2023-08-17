@@ -25,7 +25,7 @@ const SupporterCardList = () => {
     const token = getToken()?.value;
     if (!token) return;
 
-    getRequest(`/posts/runner/${runnerPostId}/supporters`, `Bearer ${token}`)
+    getRequest(`/posts/runner/${runnerPostId}/supporters`, token)
       .then(async (response) => {
         const data = await response.json();
         setSupporterList(data.data);

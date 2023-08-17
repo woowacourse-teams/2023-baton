@@ -48,11 +48,16 @@ export const TOAST_ERROR_MESSAGE = {
 export const TOAST_COMPLETION_MESSAGE = {
   SUBMISSION: {
     title: '제출 완료',
-    description: '제출이 완료 되었습니다',
+    description: '리뷰 제안을 보냈어요',
   },
 
   SAVE: {
     title: '저장 완료',
-    description: '저장이 완료 되었습니다',
+    description: '저장을 완료했어요',
+  },
+
+  DELETE: {
+    title: '삭제 완료',
+    description: '삭제를 완료했어요',
   },
 };

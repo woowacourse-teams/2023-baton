@@ -15,9 +15,10 @@ import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
 import { useToken } from '@/hooks/useToken';
 import { deleteRequest, getRequest, postRequest } from '@/api/fetch';
-import { ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
+import { validateMessage } from '@/utils/validate';
 
 const RunnerPostPage = () => {
   const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
@@ -26,7 +27,7 @@ const RunnerPostPage = () => {
 
   const { getToken, hasToken } = useToken();
 
-  const { showErrorToast } = useContext(ToastContext);
+  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
@@ -57,7 +58,7 @@ const RunnerPostPage = () => {
 
     deleteRequest(`/posts/runner/${runnerPostId}`, token)
       .then(() => {
-        alert('리뷰 요청글을 삭제했습니다.');
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
 
         goToMainPage();
       })
@@ -68,8 +69,12 @@ const RunnerPostPage = () => {
     const token = getToken()?.value;
     if (!token) return;
 
-    if (message.length < 20) {
-      alert('20자 이상 입력해주세요!');
+    try {
+      validateMessage(message);
+    } catch (error) {
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      showErrorToast({ title: ERROR_TITLE.REQUEST, description });
+
       return;
     }
 
@@ -77,7 +82,7 @@ const RunnerPostPage = () => {
 
     postRequest(`/posts/runner/${runnerPostId}/application`, token!, body)
       .then(() => {
-        alert('러너에게 리뷰 제안을 보냈습니다.');
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
 
         goToMyPage();
       })
