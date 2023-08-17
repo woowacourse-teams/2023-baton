@@ -6,7 +6,7 @@ export const GlobalStyle = createGlobalStyle`
 ${ResetStyle}
   @font-face {
       font-family: 'Pretendard Variable';
-      src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css') format("woff2");
+      src: font-url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
   }
 
   :root {
