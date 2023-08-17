@@ -19,6 +19,7 @@ import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
@@ -61,6 +62,37 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
                     softly.assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), supporter.getId())).isTrue();
                     softly.assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(notSavedRunnerPostId, supporter.getId())).isFalse();
                     softly.assertThat(supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), notSavedSupporter)).isFalse();
+                }
+        );
+    }
+
+    @DisplayName("RunnerPostId 로 지원한 서포터의 수를 확인할 수 있다.")
+    @Test
+    void countByRunnerPostIds() {
+        // given
+        final Member ehtanMember = memberRepository.save(MemberFixture.createEthan());
+        final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
+        final RunnerPost firstRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
+                deadline(LocalDateTime.now().plusDays(10))));
+        final RunnerPost twoRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
+                deadline(LocalDateTime.now().plusDays(10))));
+
+        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Supporter hyenaSupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(firstRunnerPost, hyenaSupporter));
+
+        final Member judyMember = memberRepository.save(MemberFixture.createJudy());
+        final Supporter judySupporter = supporterRepository.save(SupporterFixture.create(judyMember));
+        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(firstRunnerPost, judySupporter));
+
+        // when
+        final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIds(List.of(firstRunnerPost.getId(), twoRunnerPost.getId()));
+
+        // when, then
+        assertSoftly(softly -> {
+                    softly.assertThat(applicantCounts.size()).isEqualTo(2);
+                    softly.assertThat(applicantCounts.get(0)).isEqualTo(0L);
+                    softly.assertThat(applicantCounts.get(1)).isEqualTo(2L);
                 }
         );
     }
