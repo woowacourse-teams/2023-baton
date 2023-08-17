@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RunnerPostController.class)
-public class RunnerPostCreateApiTest extends RestdocsConfig {
+class RunnerPostCreateApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;

@@ -47,7 +47,7 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostController.class)
-public class SupporterRunnerPostReadApiTest extends RestdocsConfig {
+class SupporterRunnerPostReadApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;

@@ -197,7 +197,7 @@ public class RunnerPostController {
         return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
     }
 
-    @PostMapping("{runnerPostId}/application")
+    @PostMapping("/{runnerPostId}/application")
     public ResponseEntity<Void> createRunnerPostApplicant(
             @AuthSupporterPrincipal final Supporter supporter,
             @PathVariable final Long runnerPostId,
