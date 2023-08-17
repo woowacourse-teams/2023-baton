@@ -33,7 +33,7 @@ function GithubCallbackPage() {
           const jwt = await response.headers.get('Authorization');
 
           if (!jwt) {
-            return alert('토근을 받아오지 못했습니다.');
+            return alert('토큰을 받아오지 못했습니다.');
           }
 
           saveToken(jwt);
