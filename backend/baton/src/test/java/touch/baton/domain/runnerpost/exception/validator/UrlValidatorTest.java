@@ -35,7 +35,7 @@ class UrlValidatorTest {
             // given
             final UrlValidator urlValidator = new UrlValidator();
             urlValidator.initialize(new MockValidNotUrl());
-            final MockconstraintValidatorContext mockconstraintValidatorContext = new MockconstraintValidatorContext();
+            final MockConstraintValidatorContext mockconstraintValidatorContext = new MockConstraintValidatorContext();
 
             // when, then
             assertThat(urlValidator.isValid(target, mockconstraintValidatorContext)).isTrue();
@@ -54,15 +54,15 @@ class UrlValidatorTest {
             // given
             final UrlValidator urlValidator = new UrlValidator();
             urlValidator.initialize(new MockValidNotUrl());
-            final MockconstraintValidatorContext mockconstraintValidatorContext = new MockconstraintValidatorContext();
+            final MockConstraintValidatorContext mockConstraintValidatorContext = new MockConstraintValidatorContext();
 
             // when, then
-            assertThatThrownBy(() -> urlValidator.isValid(target, mockconstraintValidatorContext))
+            assertThatThrownBy(() -> urlValidator.isValid(target, mockConstraintValidatorContext))
                     .isInstanceOf(ClientRequestException.class);
         }
     }
 
-    private static class MockconstraintValidatorContext implements ConstraintValidatorContext {
+    private static class MockConstraintValidatorContext implements ConstraintValidatorContext {
 
         @Override
         public void disableDefaultConstraintViolation() {
@@ -99,12 +99,12 @@ class UrlValidatorTest {
 
         @Override
         public Class<?>[] groups() {
-            return new Class[0];
+            return null;
         }
 
         @Override
         public Class<? extends Payload>[] payload() {
-            return new Class[0];
+            return null;
         }
 
         @Override
