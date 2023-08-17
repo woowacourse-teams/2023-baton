@@ -22,7 +22,6 @@ export const getRequest = async (url: string, authorization?: string) => {
       ? {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
             Authorization: authorization,
           },
         }
@@ -38,6 +37,7 @@ export const postRequest = async (url: string, authorization: string, body: Body
   const response = await fetchAPI(url, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: authorization,
     },
     body,
