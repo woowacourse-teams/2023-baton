@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,7 +30,6 @@ import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResp
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateTestRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
@@ -61,34 +59,6 @@ public class RunnerPostController {
         return ResponseEntity.created(redirectUri).build();
     }
 
-    @PostMapping("/test")
-    public ResponseEntity<Void> createRunnerPostVersionTest(@AuthRunnerPrincipal final Runner runner,
-                                                            @Valid @RequestBody final RunnerPostCreateTestRequest request
-    ) {
-        final Long savedId = runnerPostService.createRunnerPostTest(runner, request);
-        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
-                .path("/{id}")
-                .buildAndExpand(savedId)
-                .toUri();
-        return ResponseEntity.created(redirectUri).build();
-    }
-
-    @PostMapping("{runnerPostId}/application")
-    public ResponseEntity<Void> createRunnerPostApplicant(
-            @AuthSupporterPrincipal final Supporter supporter,
-            @PathVariable final Long runnerPostId,
-            @RequestBody @Valid final RunnerPostApplicantCreateRequest request
-    ) {
-        runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
-
-        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
-                .path("/{runnerPostId}")
-                .buildAndExpand(runnerPostId)
-                .toUri();
-
-        return ResponseEntity.created(redirectUri).build();
-    }
-
     @GetMapping("/{runnerPostId}")
     public ResponseEntity<RunnerPostResponse.Detail> readByRunnerPostId(
             @AuthMemberPrincipal(required = false) final Member member,
@@ -109,52 +79,12 @@ public class RunnerPostController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{runnerPostId}/supporters")
-    public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(
-            @AuthRunnerPrincipal final Runner runner,
-            @PathVariable final Long runnerPostId
-    ) {
-        final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner, runnerPostId).stream()
-                .map(supporterRunnerPost -> SupporterRunnerPostResponse.Detail.from(supporterRunnerPost))
-                .toList();
-
-        return ResponseEntity.ok(SupporterRunnerPostResponses.Detail.from(responses));
-    }
-
-    @GetMapping("/{runnerPostId}/test")
-    public ResponseEntity<RunnerPostResponse.DetailVersionTest> readByRunnerPostIdVersionTest(@AuthRunnerPrincipal(required = false) final Runner runner,
-                                                                                              @PathVariable final Long runnerPostId
-    ) {
-        final RunnerPost runnerPost = runnerPostService.readByRunnerPostId(runnerPostId);
-        runnerPostService.increaseWatchedCount(runnerPost);
-
-        final RunnerPostResponse.DetailVersionTest response = RunnerPostResponse.DetailVersionTest.ofVersionTest(
-                runnerPost,
-                runnerPost.getRunner().equals(runner)
-        );
-
-        return ResponseEntity.ok(response);
-    }
-
     @DeleteMapping("/{runnerPostId}")
     public ResponseEntity<Void> deleteByRunnerPostId(@AuthRunnerPrincipal final Runner runner,
                                                      @PathVariable final Long runnerPostId
     ) {
         runnerPostService.deleteByRunnerPostId(runnerPostId, runner);
         return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/{runnerPostId}")
-    public ResponseEntity<Void> update(@AuthRunnerPrincipal final Runner runner,
-                                       @PathVariable final Long runnerPostId,
-                                       @Valid @RequestBody final RunnerPostUpdateRequest.Default request
-    ) {
-        final Long updatedId = runnerPostService.updateRunnerPost(runnerPostId, runner, request);
-        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
-                .path("/{runnerPostId}")
-                .buildAndExpand(updatedId)
-                .toUri();
-        return ResponseEntity.created(redirectUri).build();
     }
 
     @GetMapping
@@ -201,6 +131,18 @@ public class RunnerPostController {
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
+    @GetMapping("/{runnerPostId}/supporters")
+    public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(
+            @AuthRunnerPrincipal final Runner runner,
+            @PathVariable final Long runnerPostId
+    ) {
+        final List<SupporterRunnerPostResponse.Detail> responses = runnerPostService.readSupporterRunnerPostsByRunnerPostId(runner, runnerPostId).stream()
+                .map(SupporterRunnerPostResponse.Detail::from)
+                .toList();
+
+        return ResponseEntity.ok(SupporterRunnerPostResponses.Detail.from(responses));
+    }
+
     @GetMapping("/me/supporter")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
             @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
@@ -224,14 +166,6 @@ public class RunnerPostController {
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
 
-    private List<Long> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
-        final List<Long> runnerPostIds = pageRunnerPosts.stream()
-                .map(RunnerPost::getId)
-                .toList();
-
-        return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
-    }
-
     @GetMapping("/me/runner")
     public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(
             @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
@@ -253,6 +187,30 @@ public class RunnerPostController {
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
+    private List<Long> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
+        final List<Long> runnerPostIds = pageRunnerPosts.stream()
+                .map(RunnerPost::getId)
+                .toList();
+
+        return runnerPostService.readCountsByRunnerPostIds(runnerPostIds);
+    }
+
+    @PostMapping("/{runnerPostId}/application")
+    public ResponseEntity<Void> createRunnerPostApplicant(
+            @AuthSupporterPrincipal final Supporter supporter,
+            @PathVariable final Long runnerPostId,
+            @RequestBody @Valid final RunnerPostApplicantCreateRequest request
+    ) {
+        runnerPostService.createRunnerPostApplicant(supporter, request, runnerPostId);
+
+        final URI redirectUri = UriComponentsBuilder.fromPath("/api/v1/posts/runner")
+                .path("/{runnerPostId}")
+                .buildAndExpand(runnerPostId)
+                .toUri();
+
+        return ResponseEntity.created(redirectUri).build();
     }
 
     @PatchMapping("/{runnerPostId}/cancelation")

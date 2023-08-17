@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SchedulerService {
 
-    private static final int CYCLE = 6000;
+    private static final int CYCLE = 60000;
 
     private final RunnerPostDeadlineCheckScheduler runnerPostDeadlineCheckScheduler;
 

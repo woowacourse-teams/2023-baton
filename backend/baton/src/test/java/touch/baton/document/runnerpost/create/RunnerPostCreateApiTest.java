@@ -6,45 +6,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.fixture.domain.RunnerPostFixture;
-import touch.baton.fixture.domain.SupporterFixture;
-import touch.baton.fixture.domain.TagFixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static java.time.LocalDateTime.now;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.apache.http.HttpHeaders.*;
+import static org.mockito.BDDMockito.any;
+import static org.mockito.BDDMockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostController.class)
 class RunnerPostCreateApiTest extends RestdocsConfig {
@@ -54,54 +36,40 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        restdocsSetUp(new RunnerPostController(runnerPostService));
     }
 
-    @DisplayName("Supporter 가 RunnerPost 에 리뷰를 지원한다.")
+    @DisplayName("러너 게시글 등록 API")
     @Test
-    void createRunnerPostApplicant() throws Exception {
+    void createRunnerPost() throws Exception {
         // given
-        final Runner runnerEthan = RunnerFixture.createRunner(MemberFixture.createEthan());
-        final Supporter supporterHyena = SupporterFixture.create(MemberFixture.createHyena());
+        final String socialId = "hongSile";
+        final Member member = MemberFixture.createWithSocialId(socialId);
+        final Runner runner = RunnerFixture.createRunner(member);
+        final String accessToken = getAccessTokenBySocialId(socialId);
 
-        final Deadline deadline = deadline(now().plusHours(100));
-        final Tag javaTag = TagFixture.create(tagName("자바"));
-        final RunnerPost runnerPost = RunnerPostFixture.create(runnerEthan, deadline, List.of(javaTag));
+        final RunnerPostCreateRequest request = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
+                List.of("Java", "Spring"),
+                "https://github.com/cookienc",
+                LocalDateTime.now().plusDays(10),
+                "12345".repeat(200)
+        );
 
         // when
-        final RunnerPost spyRunnerPost = spy(runnerPost);
-        when(spyRunnerPost.getId()).thenReturn(1L);
-        when(runnerPostService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
-
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
-
-        final String token = getAccessTokenBySocialId(supporterHyena.getMember().getSocialId().getValue());
+        when(runnerPostService.createRunnerPost(any(Runner.class), any(RunnerPostCreateRequest.class))).thenReturn(1L);
+        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
 
         // then
-        final RunnerPostApplicantCreateRequest request = new RunnerPostApplicantCreateRequest("안녕하세요, 서포터 헤나입니다.");
-
-        mockMvc.perform(post("/api/v1/posts/runner/{runnerPostId}/application", spyRunnerPost.getId())
-                        .header(AUTHORIZATION, "Bearer " + token)
-                        .contentType(APPLICATION_JSON_VALUE)
+        mockMvc.perform(post("/api/v1/posts/runner")
+                        .header(AUTHORIZATION, "Bearer " + accessToken)
+                        .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
-                .andExpect(header().string(LOCATION, "/api/v1/posts/runner/" + spyRunnerPost.getId()))
+                .andExpect(redirectedUrl("/api/v1/posts/runner/1"))
                 .andDo(restDocs.document(
-                        requestHeaders(
-                                headerWithName(AUTHORIZATION).description("Bearer JWT"),
-                                headerWithName(CONTENT_TYPE).description("application/json")
-                        ),
-                        pathParameters(
-                                parameterWithName("runnerPostId").description("러너 게시글 식별자값")
-                        ),
-                        requestFields(
-                                fieldWithPath("message").type(STRING).description("서포터의 러너 게시글 리뷰 지원 메시지")
-                        ),
-                        responseHeaders(
-                                headerWithName(LOCATION).description("redirect uri")
-                        )
-                ))
-                .andDo(print());
+                        requestHeaders(headerWithName(AUTHORIZATION).description("Bearer Token"),
+                                headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)),
+                        responseHeaders(headerWithName(LOCATION).description("Redirect URI"))
+                ));
     }
 }
