@@ -15,14 +15,14 @@ const fetchAPI = async (url: string, options: RequestInit) => {
   return response;
 };
 
-export const getRequest = async (url: string, authorization?: string) => {
+export const getRequest = async (url: string, token?: string) => {
   const response = await fetchAPI(
     url,
-    authorization
+    token
       ? {
           method: 'GET',
           headers: {
-            Authorization: authorization,
+            Authorization: `Bearer ${token}`,
           },
         }
       : {
@@ -33,12 +33,12 @@ export const getRequest = async (url: string, authorization?: string) => {
   return response;
 };
 
-export const postRequest = async (url: string, authorization: string, body: BodyInit) => {
+export const postRequest = async (url: string, token: string, body: BodyInit) => {
   const response = await fetchAPI(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: authorization,
+      Authorization: `Bearer ${token}`,
     },
     body,
   });
@@ -46,23 +46,23 @@ export const postRequest = async (url: string, authorization: string, body: Body
   return response;
 };
 
-export const deleteRequest = async (url: string, authorization: string) => {
+export const deleteRequest = async (url: string, token: string) => {
   const response = await fetchAPI(url, {
     method: 'DELETE',
     headers: {
-      Authorization: authorization,
+      Authorization: `Bearer ${token}`,
     },
   });
 
   return response;
 };
 
-export const putRequest = async (url: string, authorization: string, body: BodyInit) => {
+export const putRequest = async (url: string, token: string, body: BodyInit) => {
   const response = await fetchAPI(url, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: authorization,
+      Authorization: `Bearer ${token}`,
     },
     body,
   });
@@ -70,16 +70,16 @@ export const putRequest = async (url: string, authorization: string, body: BodyI
   return response;
 };
 
-export const patchRequest = async (url: string, authorization: string, body?: BodyInit) => {
+export const patchRequest = async (url: string, token: string, body?: BodyInit) => {
   const response = await fetchAPI(url, {
     method: 'PATCH',
     headers: body
       ? {
           'Content-Type': 'application/json',
-          Authorization: authorization,
+          Authorization: `Bearer ${token}`,
         }
       : {
-          Authorization: authorization,
+          Authorization: `Bearer ${token}`,
         },
     body,
   });
