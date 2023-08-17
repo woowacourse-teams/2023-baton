@@ -10,7 +10,7 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-==== *서포터의 러너 게시글 리뷰 제안 철회 API*
+==== *서포터 러너 게시글 리뷰 제안 취소 API*
 
 ===== *Http Request*
 
