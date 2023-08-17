@@ -1,7 +1,6 @@
 package touch.baton.domain.runnerpost.controller;
 
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -206,7 +205,7 @@ public class RunnerPostController {
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
             @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
             @AuthSupporterPrincipal final Supporter supporter,
-            @PathParam("reviewStatus") final ReviewStatus reviewStatus
+            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporter.getId(), reviewStatus);
         final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
