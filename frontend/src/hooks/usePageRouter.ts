@@ -36,6 +36,14 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.RUNNER_PROFILE.replace(':runnerId', runnerId.toString()));
   };
 
+  const goToSupportSelectPage = () => {
+    navigate(ROUTER_PATH.SUPPORTER_SELECT);
+  };
+
+  const goToSupporterFeedbackPage = () => {
+    navigate(ROUTER_PATH.SUPPORTER_FEEDBACK);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -49,6 +57,8 @@ export const usePageRouter = () => {
     goToCreationResultPage,
     goToSupporterProfilePage,
     goToRunnerProfilePage,
+    goToSupportSelectPage,
+    goToSupporterFeedbackPage,
     goBack,
   };
 };
