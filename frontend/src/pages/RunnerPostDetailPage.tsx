@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -14,15 +14,13 @@ import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
 import { useToken } from '@/hooks/useToken';
-import { deleteRequest, getRequest } from '@/api/fetch';
-import { ERROR_TITLE } from '@/constants/message';
+import { deleteRequest, getRequest, postRequest } from '@/api/fetch';
+import { ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 
 const RunnerPostPage = () => {
-  const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const { goToMainPage, goBack, goToRunnerProfilePage } = usePageRouter();
+  const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
 
   const { runnerPostId } = useParams();
 
@@ -30,60 +28,86 @@ const RunnerPostPage = () => {
 
   const { showErrorToast } = useContext(ToastContext);
 
+  const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>('');
+
   useEffect(() => {
-    getRunnerPostDetail();
-  }, [runnerPostId]);
+    getRunnerPost();
+  }, []);
 
-  const getRunnerPostDetail = () => {
-    if (!isLogin) {
-      getRequest(`/posts/runner/${runnerPostId}/test`)
-        .then(async (response) => {
-          const data: GetDetailedRunnerPostResponse = await response.json();
+  const getRunnerPost = () => {
+    const token = isLogin ? getToken()?.value : undefined;
 
-          setRunnerPost(data);
-        })
-        .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
-
-      return;
-    }
-
-    const token = getToken()?.value;
-
-    getRequest(`/posts/runner/${runnerPostId}/test`, `Bearer ${token}`)
+    getRequest(`/posts/runner/${runnerPostId}`, token)
       .then(async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
-
         setRunnerPost(data);
       })
       .catch((error: Error) => {
         showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message });
+        goBack();
       });
   };
 
   const deleteRunnerPost = () => {
     const token = getToken()?.value;
-
     if (!token) return;
 
-    deleteRequest(`/posts/runner/${runnerPostId}/test`, `Bearer ${token}`)
+    deleteRequest(`/posts/runner/${runnerPostId}`, token)
       .then(() => {
+        alert('리뷰 요청글을 삭제했습니다.');
+
         goToMainPage();
       })
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
+  const sendMessage = () => {
+    const token = getToken()?.value;
+    if (!token) return;
+
+    if (message.length < 20) {
+      alert('20자 이상 입력해주세요!');
+      return;
+    }
+
+    const body = JSON.stringify({ message: message });
+
+    postRequest(`/posts/runner/${runnerPostId}/application`, token!, body)
+      .then(() => {
+        alert('러너에게 리뷰 제안을 보냈습니다.');
+
+        goToMyPage();
+      })
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+  };
+
+  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
   const handleClickDeleteButton = () => {
-    setIsModalOpen(false);
+    setIsConfirmModalOpen(false);
 
     deleteRunnerPost();
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openConfirmModal = () => {
+    setIsConfirmModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+  };
+
+  const openMessageModal = () => {
+    setIsMessageModalOpen(true);
+  };
+
+  const closeMessageModal = () => {
+    setIsMessageModalOpen(false);
   };
 
   const viewProfile = () => {
@@ -115,7 +139,7 @@ const RunnerPostPage = () => {
               <S.PostDeadlineContainer>
                 <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
                 <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
-                  <S.EditLink>{/*수정 기능 구현 필요*/}</S.EditLink> <S.EditLink onClick={openModal}>삭제</S.EditLink>
+                  <S.EditLink onClick={openConfirmModal}>삭제</S.EditLink>
                 </S.EditLinkContainer>
               </S.PostDeadlineContainer>
               <S.PostTitleContainer>
@@ -150,9 +174,11 @@ const RunnerPostPage = () => {
                       <S.GoToGitHub>코드 보러가기</S.GoToGitHub>
                     </S.Anchor>
                   </Button>
-                  {/* <Button colorTheme="WHITE" fontWeight={700}>
-                    1:1 대화하기
-                  </Button> */}
+                  {runnerPost.isOwner || runnerPost.isApplied || runnerPost.reviewStatus !== 'NOT_STARTED' ? null : (
+                    <Button colorTheme="WHITE" fontWeight={700} onClick={openMessageModal}>
+                      리뷰 제안하기
+                    </Button>
+                  )}
                 </S.RightSideContainer>
               </S.BottomContentContainer>
             </S.PostBodyContainer>
@@ -164,11 +190,22 @@ const RunnerPostPage = () => {
           </S.PostContainer>
         )}
       </S.RunnerPostContainer>
-      {isModalOpen && (
+
+      {isConfirmModalOpen && (
         <ConfirmModal
           contents="정말 삭제하시겠습니까?"
-          closeModal={closeModal}
+          closeModal={closeConfirmModal}
           handleClickConfirmButton={handleClickDeleteButton}
+        />
+      )}
+
+      {isMessageModalOpen && (
+        <SendMessageModal
+          messageState={message}
+          handleChangeMessage={handleChangeMessage}
+          placeholder="러너에게 보낼 메세지를 입력해주세요."
+          closeModal={closeMessageModal}
+          handleClickSendButton={sendMessage}
         />
       )}
     </Layout>
@@ -321,7 +358,7 @@ const S = {
   BottomContentContainer: styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: end; // 1:1 대화버튼 추가시 center로 수정
+    align-items: end;
   `,
 
   LeftSideContainer: styled.div`

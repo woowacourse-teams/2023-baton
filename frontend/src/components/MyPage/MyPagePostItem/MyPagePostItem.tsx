@@ -1,4 +1,3 @@
-import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -7,9 +6,10 @@ import styled from 'styled-components';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
 import { MyPagePost } from '@/types/myPage';
+import MyPagePostButton from '../MyPagePostButton/MyPagePostButton';
 
 interface Props extends MyPagePost {
-  isRunner?: boolean;
+  isRunner: boolean;
 }
 
 const MyPagePostItem = ({
@@ -21,17 +21,8 @@ const MyPagePostItem = ({
   watchedCount,
   applicantCount,
   isRunner,
+  supporterId,
 }: Props) => {
-  const handleClickSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    alert('준비중인 서포터 선택 기능입니다');
-  };
-
-  const handleClickFeedbackButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    alert('준비중인 후기 작성 기능입니다');
-  };
-
   const { goToRunnerPostPage } = usePageRouter();
 
   const handlePostClick = () => {
@@ -63,33 +54,12 @@ const MyPagePostItem = ({
             <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
-        {isRunner ? (
-          reviewStatus === 'NOT_STARTED' ? (
-            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
-              서포터 선택하기
-            </Button>
-          ) : reviewStatus === 'IN_PROGRESS' ? (
-            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
-              코드 보러가기
-            </Button>
-          ) : (
-            <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
-              서포터 후기 작성
-            </Button>
-          )
-        ) : reviewStatus === 'NOT_STARTED' ? (
-          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
-            제안 취소하기
-          </Button>
-        ) : reviewStatus === 'IN_PROGRESS' ? (
-          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickSelectButton}>
-            코드 보러가기
-          </Button>
-        ) : (
-          <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFeedbackButton}>
-            러너 후기 작성
-          </Button>
-        )}
+        <MyPagePostButton
+          runnerPostId={runnerPostId}
+          isRunner={isRunner}
+          reviewStatus={reviewStatus}
+          supporterId={supporterId}
+        />
       </S.RightSideContainer>
     </S.RunnerPostItemContainer>
   );

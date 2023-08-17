@@ -4,7 +4,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import { GetMyPagePostResponse, GetMyPageProfileResponse } from '@/types/myPage';
+import { GetMyPagePostResponse, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
@@ -14,7 +14,7 @@ import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/po
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
-  const [myPagePostList, setMyPagePostList] = useState<GetMyPagePostResponse | null>(null);
+  const [myPagePostList, setMyPagePostList] = useState<MyPagePost[]>([]);
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
   const [isRunner, setIsRunner] = useState(true);
 
@@ -31,29 +31,43 @@ const MyPage = () => {
     };
 
     fetchMyPageData(isRunner ? 'runner' : 'supporter');
-  }, [isRunner]);
+  }, [isRunner, postOptions]);
 
   const getProfile = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
     if (!token) return;
 
-    getRequest(`/profile/${role}/me`, `Bearer ${token}`).then(async (response) => {
-      const data: GetMyPageProfileResponse = await response.json();
+    getRequest(`/profile/${role}/me`, `Bearer ${token}`)
+      .then(async (response) => {
+        const data: GetMyPageProfileResponse = await response.json();
 
-      setMyPageProfile(data);
-    });
+        setMyPageProfile(data);
+      })
+      .catch((err: Error) => {
+        alert(err.message);
+      });
   };
 
   const getPostList = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
     if (!token) return;
 
-    const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
-    getRequest(`/posts/${rolePath}`, `Bearer ${token}`).then(async (response) => {
-      const data: GetMyPagePostResponse = await response.json();
+    const selectedPostOption = postOptions.filter((option) => option.selected)[0].value;
 
-      setMyPagePostList(data);
-    });
+    const rolePath =
+      role === 'runner'
+        ? `runner/me/runner?reviewStatus=${selectedPostOption}`
+        : `runner/me/supporter?reviewStatus=${selectedPostOption}`;
+
+    getRequest(`/posts/${rolePath}`, `Bearer ${token}`)
+      .then(async (response) => {
+        const data: GetMyPagePostResponse = await response.json();
+
+        setMyPagePostList(data.data);
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   const selectOptions = (value: string | number) => {
@@ -66,17 +80,6 @@ const MyPage = () => {
     });
 
     setPostOptions(newOptions);
-  };
-
-  const filterList = (postList: GetMyPagePostResponse | null, options: PostOptions) => {
-    const posts = postList?.data || [];
-
-    const selectedOption = options.filter((option) => option.selected)[0];
-    if (!selectedOption) return [];
-
-    const filteredPosts = posts.filter((post) => post.reviewStatus === selectedOption.value);
-
-    return filteredPosts;
   };
 
   const handleClickSupporterButton = () => {
@@ -126,7 +129,7 @@ const MyPage = () => {
         <S.FilterWrapper>
           <ListFilter options={postOptions} selectOption={selectOptions} />
         </S.FilterWrapper>
-        <MyPagePostList filterList={() => filterList(myPagePostList, postOptions)} isRunner={isRunner} />
+        <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
       </S.PostsContainer>
     </Layout>
   );

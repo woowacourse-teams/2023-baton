@@ -108,7 +108,7 @@ const RunnerPostCreatePage = () => {
 
     const body = JSON.stringify(data);
 
-    postRequest(`/posts/runner/test`, `Bearer ${token}`, body)
+    postRequest(`/posts/runner`, `Bearer ${token}`, body)
       .then(async () => {
         goToCreationResultPage();
       })

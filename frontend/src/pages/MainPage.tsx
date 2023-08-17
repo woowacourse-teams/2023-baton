@@ -1,17 +1,22 @@
+import { getRequest } from '@/api/fetch';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import Button from '@/components/common/Button/Button';
-import Tag from '@/components/common/Tag/Tag';
-import { TOAST_ERROR_MESSAGE } from '@/constants/message';
-import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import React, { useContext } from 'react';
+import { GetRunnerPostResponse, RunnerPost } from '@/types/runnerPost';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
   const { getToken } = useToken();
+  const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
+  const [isLast, setIsLast] = useState<boolean>(true);
+
+  useEffect(() => {
+    getRunnerPost();
+  }, []);
 
   const handleClickPostButton = () => {
     const token = getToken()?.value;
@@ -20,6 +25,18 @@ const MainPage = () => {
     }
 
     goToRunnerPostCreatePage();
+  };
+
+  const getRunnerPost = () => {
+    getRequest('/posts/runner')
+      .then(async (response) => {
+        const data: GetRunnerPostResponse = await response.json();
+        setRunnerPostList([...runnerPostList, ...data.data]);
+        setIsLast(data.pageInfo.isLast);
+      })
+      .catch((error: Error) => {
+        alert(error.message);
+      });
   };
 
   return (
@@ -44,9 +61,14 @@ const MainPage = () => {
           리뷰 요청 글 작성하기
         </Button>
       </S.ControlPanelContainer>
-      <S.RunnerPostWrapper>
-        <RunnerPostList />
-      </S.RunnerPostWrapper>
+      <S.RunnerPostContainer>
+        <RunnerPostList posts={runnerPostList} />
+        {!isLast && (
+          <Button colorTheme="RED" width="720px" onClick={getRunnerPost}>
+            더보기
+          </Button>
+        )}
+      </S.RunnerPostContainer>
     </Layout>
   );
 };
@@ -105,5 +127,10 @@ const S = {
     gap: 10px;
   `,
 
-  RunnerPostWrapper: styled.div``,
+  RunnerPostContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+  `,
 };

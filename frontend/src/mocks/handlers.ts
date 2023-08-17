@@ -1,23 +1,23 @@
 import { rest } from 'msw';
 import runnerPostList from './data/runnerPostList.json';
 import runnerPostDetails from './data/runnerPostDetails.json';
-import supporterCardList from './data/supporterCardList.json';
 import myPageRunnerProfile from './data/myPageRunnerProfile.json';
 import myPageSupporterProfile from './data/myPageSupporterProfile.json';
-import myPageRunnerPost from './data/myPageRunnerPost.json';
-import myPageSupporterPost from './data/myPageSupporterPost.json';
 import runnerProfileInfo from './data/runnerProfileInfo.json';
 import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
 import headerProfile from './data/headerProfile.json';
 import supporterProfilePost from './data/supporterProfilePost.json';
+import notStarted from './data/myPagePost/notStarted.json';
+import inProgress from './data/myPagePost/inProgress.json';
+import done from './data/myPagePost/done.json';
 
 export const handlers = [
-  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+  rest.post('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.get('*/posts/runner/test', async (req, res, ctx) => {
+  rest.get('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
   }),
 
@@ -25,15 +25,15 @@ export const handlers = [
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
   }),
 
-  rest.put('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.put('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.delete('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.delete('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(204));
   }),
 
-  rest.get('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
+  rest.get('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
     return res(
       ctx.delay(300),
       ctx.status(200),
@@ -42,11 +42,7 @@ export const handlers = [
     );
   }),
 
-  rest.get('*/supporters/test', async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCardList));
-  }),
-
-  rest.post('*/posts/runner/test', async (req, res, ctx) => {
+  rest.post('*/posts/runner', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
@@ -58,12 +54,40 @@ export const handlers = [
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterProfile));
   }),
 
-  rest.get('*/posts/runner/me/runner', async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerPost));
+  rest.get('*/posts/runner/me/runner?reviewStatus', async (req, res, ctx) => {
+    const reviewStatus = req.url.searchParams.get('reviewStatus');
+
+    switch (reviewStatus) {
+      case 'NOT_STARTED':
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(notStarted));
+
+      case 'IN_PROGRESS':
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(inProgress));
+
+      case 'DONE':
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done));
+
+      default:
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({}));
+    }
   }),
 
-  rest.get('*/posts/runner/me/supporter', async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterPost));
+  rest.get('*/posts/runner/me/supporter?reviewStatus', async (req, res, ctx) => {
+    const reviewStatus = req.url.searchParams.get('reviewStatus');
+
+    switch (reviewStatus) {
+      case 'NOT_STARTED':
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(notStarted));
+
+      case 'IN_PROGRESS':
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(inProgress));
+
+      case 'DONE':
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done));
+
+      default:
+        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({}));
+    }
   }),
 
   rest.get('*/profile/runner/me', async (req, res, ctx) => {
@@ -116,5 +140,9 @@ export const handlers = [
 
   rest.get('*/posts/runner/search/:supporterId', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterProfilePost));
+  }),
+
+  rest.post('*/posts/runner/:runnerPostId/application', async (req, res, ctx) => {
+    return res(ctx.status(201));
   }),
 ];

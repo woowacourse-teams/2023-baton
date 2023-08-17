@@ -22,7 +22,6 @@ export const getRequest = async (url: string, authorization?: string) => {
       ? {
           method: 'GET',
           headers: {
-            'Content-Type': 'application/json',
             Authorization: authorization,
           },
         }
@@ -38,6 +37,7 @@ export const postRequest = async (url: string, authorization: string, body: Body
   const response = await fetchAPI(url, {
     method: 'POST',
     headers: {
+      'Content-Type': 'application/json',
       Authorization: authorization,
     },
     body,
@@ -70,13 +70,17 @@ export const putRequest = async (url: string, authorization: string, body: BodyI
   return response;
 };
 
-export const patchRequest = async (url: string, authorization: string, body: BodyInit) => {
+export const patchRequest = async (url: string, authorization: string, body?: BodyInit) => {
   const response = await fetchAPI(url, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: authorization,
-    },
+    headers: body
+      ? {
+          'Content-Type': 'application/json',
+          Authorization: authorization,
+        }
+      : {
+          Authorization: authorization,
+        },
     body,
   });
 

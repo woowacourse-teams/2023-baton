@@ -1,33 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import RunnerPostItem from '../RunnerPostItem/RunnerPostItem';
-import { GetRunnerPostResponse } from '@/types/runnerPost';
-import { getRequest } from '@/api/fetch';
-import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { RunnerPost } from '@/types/runnerPost';
 
-const RunnerPostList = () => {
-  const { showErrorToast } = useContext(ToastContext);
+interface Props {
+  posts: RunnerPost[];
+}
 
-  const [runnerPostList, setRunnerPostList] = useState<GetRunnerPostResponse | null>(null);
-
-  useEffect(() => {
-    getRunnerPost();
-  }, []);
-
-  const getRunnerPost = () => {
-    getRequest('/posts/runner/test')
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
-
-        setRunnerPostList(data);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.ERROR }));
-  };
-
+const RunnerPostList = ({ posts }: Props) => {
   return (
     <S.RunnerPostWrapper>
-      {runnerPostList?.data.map((runnerPostData) => (
+      {posts.map((runnerPostData) => (
         <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
       ))}
     </S.RunnerPostWrapper>
