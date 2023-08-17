@@ -14,6 +14,7 @@ public enum ClientErrorCode {
     TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP008", "태그 목록을 빈 값이라도 입력해주세요."),
     ASSIGN_SUPPORTER_ID_IS_NULL(HttpStatus.BAD_REQUEST, "RP009", "선택한 서포터의 식별자를 입력해주세요."),
     APPLICANT_MESSAGE_IS_OVERFLOW(HttpStatus.BAD_REQUEST, "RP010", "서포터 지원 메시지는 500자 까지 입력해주세요."),
+    PULL_REQUEST_URL_IS_NOT_URL(HttpStatus.BAD_REQUEST, "RP011", "올바른 PR 주소를 입력해주세요."),
 
     REVIEW_TYPE_IS_NULL(HttpStatus.BAD_REQUEST, "FB001", "만족도를 입력해주세요."),
     SUPPORTER_ID_IS_NULL(HttpStatus.BAD_REQUEST, "FB002", "서포터 식별자를 입력해주세요."),
@@ -21,10 +22,8 @@ public enum ClientErrorCode {
 
     NAME_IS_NULL(HttpStatus.BAD_REQUEST, "MB001", "사용자의 이름을 입력해주세요."),
     COMPANY_IS_NULL(HttpStatus.BAD_REQUEST, "MB002", "사용자의 회사 정보를 입력해주세요."),
-
     SUPPORTER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB003", "서포터 기술 태그 목록을 빈 값이라도 입력해주세요."),
     RUNNER_TECHNICAL_TAGS_ARE_NULL(HttpStatus.BAD_REQUEST, "MB004", "러너 기술 태그 목록을 빈 값이라도 입력해주세요."),
-
     RUNNER_INTRODUCTION_IS_NULL(HttpStatus.BAD_REQUEST, "MB005", "러너의 정보를 입력해주세요."),
     SUPPORTER_INTRODUCTION_IS_NULL(HttpStatus.BAD_REQUEST, "MB006", "서포터의 정보를 입력해주세요."),
 

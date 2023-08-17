@@ -30,6 +30,7 @@ import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -249,6 +250,13 @@ public class RunnerPostService {
         return runnerPostRepository.findByRunnerId(runnerId);
     }
 
+    public Page<RunnerPost> readRunnerPostsByRunnerIdAndReviewStatus(final Pageable pageable,
+                                                                     final Long runnerId,
+                                                                     final ReviewStatus reviewStatus
+    ) {
+        return runnerPostRepository.findByRunnerIdAndReviewStatus(pageable, runnerId, reviewStatus);
+    }
+
     public Page<RunnerPost> readRunnerPostsBySupporterIdAndReviewStatus(final Pageable pageable,
                                                                         final Long supporterId,
                                                                         final ReviewStatus reviewStatus
@@ -260,18 +268,9 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        final List<Long> applicantCounts = supporterRunnerPostRepository.countByRunnerPostIdIn(runnerPostIds);
-        if (applicantCounts.isEmpty()) {
-            initApplicantCounts(runnerPostIds, applicantCounts);
-        }
+        final List<Long> longs = supporterRunnerPostRepository.countByRunnerPostIds(runnerPostIds);
+        return supporterRunnerPostRepository.countByRunnerPostIds(runnerPostIds);
 
-        return applicantCounts;
-    }
-
-    private void initApplicantCounts(final List<Long> runnerPostIds, final List<Long> applicantCounts) {
-        for (int i = 0; i < runnerPostIds.size(); i++) {
-            applicantCounts.add(0L);
-        }
     }
 
     @Transactional
@@ -291,7 +290,7 @@ public class RunnerPostService {
     }
 
     public long readCountByRunnerPostId(final Long runnerPostId) {
-        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0);
+        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElseGet(() -> 0L);
     }
 
     @Transactional

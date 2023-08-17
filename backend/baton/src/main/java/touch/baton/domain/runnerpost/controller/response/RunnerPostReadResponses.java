@@ -11,6 +11,13 @@ public record RunnerPostReadResponses() {
         }
     }
 
+    public record SimpleInMyPage(List<RunnerPostResponse.SimpleInMyPage> data) {
+
+        public static SimpleInMyPage from(final List<RunnerPostResponse.SimpleInMyPage> data) {
+            return new SimpleInMyPage(data);
+        }
+    }
+
     public record LoginedSupporter(List<RunnerPostResponse.LoginedSupporter> data) {
 
         public static LoginedSupporter from(final List<RunnerPostResponse.LoginedSupporter> data) {
