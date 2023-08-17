@@ -176,7 +176,11 @@ const ProfileEditPage = () => {
     closeModal();
   };
 
-  const handleClickRunnerButton = () => {
+  const handleClickRunnerButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (isRunner) return;
+
     if (!runnerProfile) return showErrorToast(TOAST_ERROR_MESSAGE.NO_PROFILE);
 
     if (isModified) {
@@ -187,7 +191,11 @@ const ProfileEditPage = () => {
     updateProfileInputValue(runnerProfile);
   };
 
-  const handleClickSupporterButton = () => {
+  const handleClickSupporterButton = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+
+    if (!isRunner) return;
+
     if (!supporterProfile) return showErrorToast(TOAST_ERROR_MESSAGE.NO_PROFILE);
 
     if (isModified) {
@@ -234,14 +242,6 @@ const ProfileEditPage = () => {
         <S.Title>프로필 수정</S.Title>
       </S.TitleWrapper>
       <S.ProfileContainer>
-        <S.ButtonContainer>
-          <S.RunnerSupporterButton $isSelected={isRunner} onClick={isRunner ? undefined : handleClickRunnerButton}>
-            러너
-          </S.RunnerSupporterButton>
-          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={isRunner ? handleClickSupporterButton : undefined}>
-            서포터
-          </S.RunnerSupporterButton>
-        </S.ButtonContainer>
         {isLoading ? (
           <S.Form>
             <S.AvatarWrapper>
@@ -251,6 +251,17 @@ const ProfileEditPage = () => {
                 imageUrl={runnerProfile?.imageUrl ?? 'https://via.placeholder.com/150'}
               />
             </S.AvatarWrapper>
+            <S.ButtonContainer>
+              <S.RunnerSupporterButton $isSelected={isRunner} onClick={isRunner ? undefined : handleClickRunnerButton}>
+                러너
+              </S.RunnerSupporterButton>
+              <S.RunnerSupporterButton
+                $isSelected={!isRunner}
+                onClick={isRunner ? handleClickSupporterButton : undefined}
+              >
+                서포터
+              </S.RunnerSupporterButton>
+            </S.ButtonContainer>
             <S.SaveButtonWrapper>
               <Button
                 width="100px"
@@ -412,7 +423,7 @@ const S = {
     justify-content: center;
     gap: 15px;
 
-    margin: 50px;
+    margin-bottom: 10px;
   `,
 
   InputWrapper: styled.div`
