@@ -12,7 +12,7 @@ endif::[]
 
 == *[사용자(러너와 서포터 공통)]*
 
-include::MemberLoginProfileReadApi.adoc[]
+include::MemberLoginReadApi.adoc[]
 
 == *[ 게시글 ]*
 
@@ -24,13 +24,13 @@ include::RunnerPostDeleteApi.adoc[]
 
 == *[ 러너 ]*
 
-include::RunnerProfileReadApi.adoc[]
-include::RunnerLoginProfileReadApi.adoc[]
-include::RunnerProfileUpdateApi.adoc[]
+include::RunneReadApi.adoc[]
+include::RunnerLoginReadApi.adoc[]
+include::RunnerUpdateApi.adoc[]
 include::RunnerPostCreateApi.adoc[]
 
 == *[ 서포터 ]*
 
-include::SupporterProfileReadApi.adoc[]
-include::SupporterProfileUpdateApi.adoc[]
+include::SupporterReadApi.adoc[]
+include::SupporterUpdateApi.adoc[]
 include::RunnerPostUpdateApi.adoc[]

@@ -167,9 +167,9 @@ public record RunnerPostResponse() {
 
         private static Long getSupporterIdByRunnerPost(final RunnerPost runnerPost) {
             if (Objects.isNull(runnerPost.getSupporter())) {
-                return runnerPost.getSupporter().getId();
+                return null;
             }
-            return null;
+            return runnerPost.getSupporter().getId();
         }
     }
 
