@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "runnerPostId": 1,
+      "title": "끝난 리뷰입니다.",
+      "deadline": "마감기한",
+      "tags": ["java", "JAVA"],
+      "reviewStatus": "DONE",
+      "applicantCount": 4,
+      "watchedCount": 125,
+      "supporterId": 1
+    }
+  ]
+}

@@ -2,35 +2,35 @@
   "data": [
     {
       "runnerPostId": 1,
-      "title": "끝난 리뷰입니다.",
+      "title": "진행중인 리뷰",
       "deadline": "마감기한",
       "tags": ["java", "JAVA"],
-      "reviewStatus": "DONE",
+      "reviewStatus": "IN_PROGRESS",
       "applicantCount": 4,
       "watchedCount": 125,
       "supporterId": 1
     },
     {
       "runnerPostId": 2,
-      "title": "서포터를 선택해야하는 리뷰",
+      "title": "진행중인 리뷰",
       "deadline": "마감기한2",
       "tags": ["java", "자바"],
-      "reviewStatus": "NOT_STARTED",
+      "reviewStatus": "IN_PROGRESS",
       "applicantCount": 4,
       "watchedCount": 125
     },
     {
       "runnerPostId": 3,
-      "title": "서포터를 선택해야하는 리뷰2",
+      "title": "진행중인 리뷰2",
       "deadline": "마감기한3",
       "tags": ["java", "자바"],
-      "reviewStatus": "NOT_STARTED",
+      "reviewStatus": "IN_PROGRESS",
       "applicantCount": 4,
       "watchedCount": 125
     },
     {
       "runnerPostId": 4,
-      "title": "서포터가 이 리뷰를 진행중이에요.",
+      "title": "진행중인 리뷰4",
       "deadline": "마감기한3",
       "tags": ["java", "자바"],
       "reviewStatus": "IN_PROGRESS",
