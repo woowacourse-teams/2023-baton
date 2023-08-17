@@ -44,8 +44,8 @@ class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void updateAllPassedDeadline_success() {
         // given
-        final Deadline passedDeadlineOne = deadline(LocalDateTime.now().minusHours(10));
-        final Deadline passedDeadlineTwo = deadline(LocalDateTime.now().minusHours(5));
+        final Deadline passedDeadlineOne = deadline(LocalDateTime.now().minusMinutes(1));
+        final Deadline passedDeadlineTwo = deadline(LocalDateTime.now().minusMinutes(1));
         final RunnerPost runnerPostOne = RunnerPostFixture.create(runner, passedDeadlineOne);
         final RunnerPost runnerPostTwo = RunnerPostFixture.create(runner, passedDeadlineTwo);
         em.persist(runnerPostOne);

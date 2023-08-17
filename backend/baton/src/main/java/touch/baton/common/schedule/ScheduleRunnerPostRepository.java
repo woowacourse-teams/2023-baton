@@ -11,7 +11,7 @@ public interface ScheduleRunnerPostRepository extends JpaRepository<RunnerPost, 
     @Query("""
             update RunnerPost rp
             set rp.reviewStatus = 'OVERDUE'
-            where rp.deadline.value <= current_timestamp
+            where rp.deadline.value <= local_datetime()
             and rp.reviewStatus = 'NOT_STARTED'
             """)
     void updateAllPassedDeadline();
