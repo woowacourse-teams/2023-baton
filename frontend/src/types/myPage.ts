@@ -15,4 +15,5 @@ export interface MyPagePost {
   watchedCount: number;
   applicantCount: number;
   reviewStatus: ReviewStatus;
+  supporterId: number;
 }

@@ -37,11 +37,15 @@ const MyPage = () => {
     const token = getToken()?.value;
     if (!token) return alert('로그인이 필요합니다 🥺');
 
-    getRequest(`/profile/${role}/me`, `Bearer ${token}`).then(async (response) => {
-      const data: GetMyPageProfileResponse = await response.json();
+    getRequest(`/profile/${role}/me`, `Bearer ${token}`)
+      .then(async (response) => {
+        const data: GetMyPageProfileResponse = await response.json();
 
-      setMyPageProfile(data);
-    });
+        setMyPageProfile(data);
+      })
+      .catch((err: Error) => {
+        alert(err.message);
+      });
   };
 
   const getPostList = (role: 'runner' | 'supporter') => {
@@ -49,11 +53,15 @@ const MyPage = () => {
     if (!token) return alert('로그인이 필요합니다 🥺');
 
     const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
-    getRequest(`/posts/${rolePath}`, `Bearer ${token}`).then(async (response) => {
-      const data: GetMyPagePostResponse = await response.json();
+    getRequest(`/posts/${rolePath}`, `Bearer ${token}`)
+      .then(async (response) => {
+        const data: GetMyPagePostResponse = await response.json();
 
-      setMyPagePostList(data);
-    });
+        setMyPagePostList(data);
+      })
+      .catch((err: Error) => {
+        alert(err.message);
+      });
   };
 
   const selectOptions = (value: string | number) => {

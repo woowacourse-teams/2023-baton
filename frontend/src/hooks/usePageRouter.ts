@@ -36,6 +36,19 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.RUNNER_PROFILE.replace(':runnerId', runnerId.toString()));
   };
 
+  const goToSupportSelectPage = (runnerPostId: number) => {
+    navigate(ROUTER_PATH.SUPPORTER_SELECT.replace(':runnerPostId', runnerPostId.toString()));
+  };
+
+  const goToSupporterFeedbackPage = (runnerPostId: number, supporterId: number) => {
+    navigate(
+      ROUTER_PATH.SUPPORTER_FEEDBACK.replace(':runnerPostId', runnerPostId.toString()).replace(
+        ':supporterId',
+        supporterId.toString(),
+      ),
+    );
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -49,6 +62,8 @@ export const usePageRouter = () => {
     goToCreationResultPage,
     goToSupporterProfilePage,
     goToRunnerProfilePage,
+    goToSupportSelectPage,
+    goToSupporterFeedbackPage,
     goBack,
   };
 };
