@@ -159,7 +159,7 @@ public class RunnerPostController {
 
     @GetMapping
     public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable
     ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readAllRunnerPosts(pageable);
         final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
@@ -180,7 +180,7 @@ public class RunnerPostController {
 
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @RequestParam("supporterId") final Long supporterId,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
@@ -203,7 +203,7 @@ public class RunnerPostController {
 
     @GetMapping("/me/supporter")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @AuthSupporterPrincipal final Supporter supporter,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
@@ -234,7 +234,7 @@ public class RunnerPostController {
 
     @GetMapping("/me/runner")
     public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @AuthRunnerPrincipal final Runner runner,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
