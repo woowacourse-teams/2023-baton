@@ -108,9 +108,30 @@ public class RunnerPostController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable
+    ) {
+        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readAllRunnerPosts(pageable);
+        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
+        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
+        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
+                .mapToObj(index -> {
+                    final RunnerPost runnerPost = foundRunnerPosts.get(index);
+                    final Long applicantCount = applicantCounts.get(index);
+
+                    return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
+                }).toList();
+
+        final Page<RunnerPostResponse.Simple> pageResponse
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+
+        return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @RequestParam("supporterId") final Long supporterId,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
@@ -145,7 +166,7 @@ public class RunnerPostController {
 
     @GetMapping("/me/supporter")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @AuthSupporterPrincipal final Supporter supporter,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
@@ -168,7 +189,7 @@ public class RunnerPostController {
 
     @GetMapping("/me/runner")
     public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(
-            @PageableDefault(size = 10, page = 1, sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @AuthRunnerPrincipal final Runner runner,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
