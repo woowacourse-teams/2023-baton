@@ -96,10 +96,10 @@ export const handlers = [
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 
-
   rest.patch('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
-    
+  }),
+
   rest.post('*/feedback/supporter', async (req, res, ctx) => {
     const { reviewType, descriptions, supporterId, runnerPostId } = await req.json();
 
@@ -116,6 +116,5 @@ export const handlers = [
 
   rest.get('*/posts/runner/search/:supporterId', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterProfilePost));
-
   }),
 ];
