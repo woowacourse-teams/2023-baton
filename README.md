@@ -100,6 +100,7 @@ PR을 올리고, 간단한 설명과 함께 리뷰 요청 글을 작성합니다
 
 <br>
 
+![image](https://github.com/woowacourse-teams/2023-baton/assets/82203978/e0dac232-bb9d-4770-a3cf-f94ae31adbf2)
 
 
 
