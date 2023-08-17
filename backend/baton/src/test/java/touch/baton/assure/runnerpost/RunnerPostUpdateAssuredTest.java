@@ -21,7 +21,7 @@ import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class RunnerPostAssuredUpdateTest extends AssuredTestConfig {
+public class RunnerPostUpdateAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너가_서포터_목록에서_서포터를_선택할_수_있다() {

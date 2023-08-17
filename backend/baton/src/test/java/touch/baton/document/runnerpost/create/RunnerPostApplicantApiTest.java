@@ -54,7 +54,7 @@ class RunnerPostApplicantApiTest extends RestdocsConfig {
         restdocsSetUp(runnerPostController);
     }
 
-    @DisplayName("Supporter 가 RunnerPost 에 리뷰를 지원한다.")
+    @DisplayName("Supporter 가 RunnerPost 에 리뷰를 제안한다.")
     @Test
     void createRunnerPostApplicant() throws Exception {
         // given
