@@ -9,6 +9,7 @@ import myPageSupporterPost from './data/myPageSupporterPost.json';
 import runnerProfileInfo from './data/runnerProfileInfo.json';
 import supporterProfileInfo from './data/supporterProfileInfo.json';
 import supporterCandidate from './data/supporterCandidate.json';
+import headerProfile from './data/headerProfile.json';
 import supporterProfilePost from './data/supporterProfilePost.json';
 
 export const handlers = [
@@ -18,6 +19,10 @@ export const handlers = [
 
   rest.get('*/posts/runner/test', async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
+  }),
+
+  rest.get('*/profile/me', async (req, res, ctx) => {
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
   }),
 
   rest.put('*/posts/runner/:runnerPostId/test', async (req, res, ctx) => {
@@ -88,6 +93,10 @@ export const handlers = [
   }),
 
   rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
+  }),
+
+  rest.patch('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 

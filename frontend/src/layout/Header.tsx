@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import { useToken } from '@/hooks/useToken';
-import { GetRunnerProfileResponse } from '@/types/profile';
-import { BATON_BASE_URL } from '@/constants';
+import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
+import { getRequest } from '@/api/fetch';
 
 const Header = () => {
+  const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
+
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
   const { getToken, removeToken } = useToken();
   const [isLogin, setIsLogin] = useState(false);
@@ -15,36 +17,18 @@ const Header = () => {
   useEffect(() => {
     setIsLogin(!!getToken());
 
-    const fetchRunnerProfile = async () => {
-      const result = await getRunnerProfile();
-      setRunnerProfile(result);
-    };
-
-    if (isLogin) fetchRunnerProfile();
+    if (isLogin) getProfile();
   }, [isLogin]);
 
-  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
+  const getProfile = () => {
+    const token = getToken()?.value;
+    if (!token) return alert('토큰이 존재하지 않습니다');
 
-  const getRunnerProfile = async () => {
-    try {
-      const token = getToken()?.value;
-      if (!token) throw new Error('토큰이 존재하지 않습니다');
+    getRequest(`/profile/me`, `Bearer ${token}`).then(async (response) => {
+      const data: GetHeaderProfileResponse = await response.json();
 
-      const response = await fetch(`${BATON_BASE_URL}/profile/runner`, {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
-
-      const supporterCardList = await response.json();
-
-      return supporterCardList;
-    } catch (error) {
-      console.error(error);
-    }
+      setProfile(data);
+    });
   };
 
   const handleClickLogoutButton = () => {
@@ -66,12 +50,8 @@ const Header = () => {
           {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
-                <Avatar
-                  width="35px"
-                  height="35px"
-                  imageUrl={runnerProfile?.profile.imageUrl || 'https://via.placeholder.com/150'}
-                />
-                <p>{runnerProfile?.profile.name}</p>
+                <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
+                <p>{profile?.name}</p>
               </S.AvatarContainer>
               <S.LoginButton onClick={handleClickLogoutButton}>로그아웃</S.LoginButton>
             </>

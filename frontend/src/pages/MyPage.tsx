@@ -26,33 +26,34 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
-      const profileResult = await getProfile(role);
-      const postResult = await getPostList(role);
-
-      setMyPageProfile(profileResult);
-      setMyPagePostList(postResult);
+      getProfile(role);
+      getPostList(role);
     };
 
     fetchMyPageData(isRunner ? 'runner' : 'supporter');
   }, [isRunner]);
 
-  const getProfile = async (role: 'runner' | 'supporter') => {
+  const getProfile = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) return alert('로그인이 필요합니다 🥺');
 
-    const data = await getRequest<GetMyPageProfileResponse>(`/profile/${role}/me`, `Bearer ${token}`);
+    getRequest(`/profile/${role}/me`, `Bearer ${token}`).then(async (response) => {
+      const data: GetMyPageProfileResponse = await response.json();
 
-    return data;
+      setMyPageProfile(data);
+    });
   };
 
-  const getPostList = async (role: 'runner' | 'supporter') => {
+  const getPostList = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) return alert('로그인이 필요합니다 🥺');
 
     const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
-    const data = await getRequest<GetMyPagePostResponse>(`/posts/${rolePath}`, `Bearer ${token}`);
+    getRequest(`/posts/${rolePath}`, `Bearer ${token}`).then(async (response) => {
+      const data: GetMyPagePostResponse = await response.json();
 
-    return data;
+      setMyPagePostList(data);
+    });
   };
 
   const selectOptions = (value: string | number) => {
