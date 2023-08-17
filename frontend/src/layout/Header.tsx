@@ -14,19 +14,21 @@ const Header = () => {
 
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
 
-  const { getToken, removeToken, isLogin } = useToken();
+  const { getToken, removeToken, hasToken } = useToken();
 
   const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
-    if (!isLogin) getProfile();
-  }, [isLogin]);
+    const isLogin = hasToken();
+
+    if (isLogin) getProfile();
+  }, []);
 
   const getProfile = () => {
     const token = getToken()?.value;
     if (!token) return;
 
-    getRequest(`/profile/me`, `Bearer ${token}`)
+    getRequest(`/profile/me`, token)
       .then(async (response) => {
         const data: GetHeaderProfileResponse = await response.json();
 
@@ -55,7 +57,7 @@ const Header = () => {
       <S.HeaderContainer>
         <S.Logo src={LogoImage} onClick={goToMainPage} alt="바톤로고" />
         <S.MenuContainer>
-          {isLogin ? (
+          {hasToken() ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />

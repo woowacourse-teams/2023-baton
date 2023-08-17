@@ -10,7 +10,12 @@ export interface LoginToken {
 
 export const useToken = () => {
   const { showErrorToast } = useContext(ToastContext);
-  const [isLogin, setIsLogin] = useState(false);
+
+  const hasToken = () => {
+    const token = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+
+    return !!token;
+  };
 
   const getToken = (): LoginToken | null => {
     try {
@@ -19,16 +24,11 @@ export const useToken = () => {
       if (!item) {
         showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
 
-        setIsLogin(false);
         return null;
       }
 
-      setIsLogin(true);
-
       return JSON.parse(item);
     } catch {
-      setIsLogin(false);
-
       return null;
     }
   };
@@ -58,5 +58,5 @@ export const useToken = () => {
     }
   };
 
-  return { getToken, removeToken, saveToken, validateToken, isLogin };
+  return { getToken, removeToken, saveToken, validateToken, hasToken };
 };

@@ -24,7 +24,7 @@ const RunnerPostPage = () => {
 
   const { runnerPostId } = useParams();
 
-  const { getToken, isLogin } = useToken();
+  const { getToken, hasToken } = useToken();
 
   const { showErrorToast } = useContext(ToastContext);
 
@@ -38,7 +38,7 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = () => {
-    const token = isLogin ? getToken()?.value : undefined;
+    const token = hasToken() ? getToken()?.value : undefined;
 
     getRequest(`/posts/runner/${runnerPostId}`, token)
       .then(async (response) => {
