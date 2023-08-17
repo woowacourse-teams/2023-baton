@@ -1,10 +1,12 @@
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import Button from '@/components/common/Button/Button';
 import Tag from '@/components/common/Tag/Tag';
+import { TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
-import React from 'react';
+import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 
 const MainPage = () => {
@@ -12,14 +14,9 @@ const MainPage = () => {
   const { getToken } = useToken();
 
   const handleClickPostButton = () => {
-    const isLogin = !!getToken();
-
-    if (!isLogin) {
-      alert('로그인이 필요한 서비스입니다.🥺');
-
+    const token = getToken()?.value;
+    if (!token) {
       goToLoginPage();
-
-      return;
     }
 
     goToRunnerPostCreatePage();

@@ -4,11 +4,13 @@ import CheckBox from '@/components/CheckBox/CheckBox';
 import ReviewTypeButton from '@/components/ReviewTypeButton/ReviewTypeButton';
 import Button from '@/components/common/Button/Button';
 import { DESCRIPTION_OPTIONS_BAD, DESCRIPTION_OPTIONS_GOOD, REVIEW_TYPE_OPTIONS } from '@/constants/feedback';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { DescriptionOptions, PostFeedbackRequest, ReviewType, ReviewTypeOptions } from '@/types/feedback';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -18,6 +20,8 @@ const SupporterFeedbackPage = () => {
   const { getToken } = useToken();
 
   const { goToMyPage } = usePageRouter();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   const [reviewTypeOptions, setReviewTypeOptions] = useState<ReviewTypeOptions>(structuredClone(REVIEW_TYPE_OPTIONS));
   const [descriptionOptions, setDescriptionOptions] = useState<DescriptionOptions>(
@@ -72,19 +76,29 @@ const SupporterFeedbackPage = () => {
 
   const postSupporterProfile = async (feedback: PostFeedbackRequest) => {
     const token = getToken()?.value;
-    if (!token) {
-      return alert('토큰이 존재하지 않습니다');
-    }
+    if (!token) return;
 
     const body = JSON.stringify(feedback);
     const authorization = `Bearer ${token}`;
-    postRequest(`/feedback/supporter`, authorization, body).catch(() => alert('제출 과정에서 오류가 발생했습니다'));
+    postRequest(`/feedback/supporter`, authorization, body).catch((error) =>
+      showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }),
+    );
+  };
+
+  const validateIds = () => {
+    if (!Number(supporterId)) throw new Error(ERROR_DESCRIPTION.NO_SUPPORTER);
+    if (!Number(runnerPostId)) throw new Error(ERROR_DESCRIPTION.NO_POST);
   };
 
   const handleClickSubmit = async () => {
     if (!reviewType) return;
-    if (!Number(supporterId)) return alert('해당 서포터가 존재하지 않습니다');
-    if (!Number(runnerPostId)) return alert('해당 게시물이 존재하지 않습니다');
+
+    try {
+      validateIds();
+    } catch (error) {
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      return showErrorToast({ title: ERROR_TITLE.REQUEST, description });
+    }
 
     await postSupporterProfile({
       reviewType,
@@ -95,6 +109,17 @@ const SupporterFeedbackPage = () => {
 
     goToMyPage();
   };
+
+  useEffect(() => {
+    getToken();
+
+    try {
+      validateIds();
+    } catch (error) {
+      const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+      return showErrorToast({ title: ERROR_TITLE.REQUEST, description });
+    }
+  }, []);
 
   const descriptionSubTitle = `코드 리뷰를 받으며 ${reviewType === 'BAD' ? '아쉬웠던' : '좋았던'} 점을 체크해주세요.`;
 

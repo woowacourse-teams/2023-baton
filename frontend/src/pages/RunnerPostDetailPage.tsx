@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -15,33 +15,39 @@ import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
 import { useToken } from '@/hooks/useToken';
 import { deleteRequest, getRequest } from '@/api/fetch';
+import { ERROR_TITLE } from '@/constants/message';
+import { ToastContext } from '@/contexts/ToastContext';
 
 const RunnerPostPage = () => {
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { goToMainPage, goBack, goToRunnerProfilePage } = usePageRouter();
+
   const { runnerPostId } = useParams();
-  const { getToken } = useToken();
+
+  const { getToken, isLogin } = useToken();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
     getRunnerPostDetail();
   }, [runnerPostId]);
 
   const getRunnerPostDetail = () => {
-    const token = getToken()?.value;
-
-    if (!token) {
+    if (!isLogin) {
       getRequest(`/posts/runner/${runnerPostId}/test`)
         .then(async (response) => {
           const data: GetDetailedRunnerPostResponse = await response.json();
 
           setRunnerPost(data);
         })
-        .catch((error: Error) => {
-          alert(error.message);
-        });
+        .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+
+      return;
     }
+
+    const token = getToken()?.value;
 
     getRequest(`/posts/runner/${runnerPostId}/test`, `Bearer ${token}`)
       .then(async (response) => {
@@ -50,22 +56,20 @@ const RunnerPostPage = () => {
         setRunnerPost(data);
       })
       .catch((error: Error) => {
-        alert(error.message);
+        showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message });
       });
   };
 
   const deleteRunnerPost = () => {
     const token = getToken()?.value;
 
-    if (!token) throw new Error('토큰이 존재하지 않습니다');
+    if (!token) return;
 
     deleteRequest(`/posts/runner/${runnerPostId}/test`, `Bearer ${token}`)
       .then(() => {
         goToMainPage();
       })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
   const handleClickDeleteButton = () => {

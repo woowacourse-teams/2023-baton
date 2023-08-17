@@ -35,7 +35,7 @@ const MyPage = () => {
 
   const getProfile = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
-    if (!token) return alert('로그인이 필요합니다 🥺');
+    if (!token) return;
 
     getRequest(`/profile/${role}/me`, `Bearer ${token}`).then(async (response) => {
       const data: GetMyPageProfileResponse = await response.json();
@@ -46,7 +46,7 @@ const MyPage = () => {
 
   const getPostList = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
-    if (!token) return alert('로그인이 필요합니다 🥺');
+    if (!token) return;
 
     const rolePath = role === 'runner' ? 'runner/me/runner' : 'runner/me/supporter';
     getRequest(`/posts/${rolePath}`, `Bearer ${token}`).then(async (response) => {

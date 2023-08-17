@@ -4,15 +4,19 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
 import { GetRunnerProfileResponse } from '@/types/profile';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 const RunnerProfilePage = () => {
   const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
 
   const { runnerId } = useParams();
+
+  const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
     getProfile();
@@ -25,9 +29,12 @@ const RunnerProfilePage = () => {
 
         setRunnerProfile(data);
       })
-      .catch((error: Error) => {
-        alert(error.message);
-      });
+      .catch((error: Error) =>
+        showErrorToast({
+          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
+          title: ERROR_TITLE.REQUEST,
+        }),
+      );
   };
 
   return (
