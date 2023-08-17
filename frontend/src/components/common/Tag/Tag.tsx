@@ -9,7 +9,7 @@ interface Props extends React.HTMLProps<HTMLButtonElement> {
 const Tag = ({ children, onClick }: Props) => {
   return (
     <S.TagWrapper>
-      <S.Tag onClick={onClick}>
+      <S.Tag onClick={onClick} type="button">
         {`#${children}`}
         <S.CloseTagIcon src={closeIcon} />
       </S.Tag>
