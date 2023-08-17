@@ -28,10 +28,12 @@ public interface SupporterRunnerPostRepository extends JpaRepository<SupporterRu
 
     @Query("""
             select case when exists (
-            select 1 from SupporterRunnerPost srp
-            where srp.runnerPost.id = rp.id)
-            then (select count(srp.id) from SupporterRunnerPost srp
-            where srp.runnerPost.id = rp.id) else 0 end
+                select 1 from SupporterRunnerPost srp
+                where srp.runnerPost.id = rp.id)
+            then (
+                select count(srp.id) from SupporterRunnerPost srp
+                where srp.runnerPost.id = rp.id
+            ) else 0 end
             from RunnerPost rp
             where rp.id in :runnerPostIds
             order by rp.id desc

@@ -268,6 +268,7 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
+        final List<Long> longs = supporterRunnerPostRepository.countByRunnerPostIds(runnerPostIds);
         return supporterRunnerPostRepository.countByRunnerPostIds(runnerPostIds);
 
     }
