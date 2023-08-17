@@ -8,6 +8,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import { getRequest } from '@/api/fetch';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import Button from '@/components/common/Button/Button';
 
 const Header = () => {
   const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
@@ -63,10 +64,14 @@ const Header = () => {
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
                 <p>{profile?.name}</p>
               </S.AvatarContainer>
-              <S.LoginButton onClick={handleClickLogoutButton}>로그아웃</S.LoginButton>
+              <Button fontSize="14px" width="76px" height="35px" colorTheme="WHITE" onClick={handleClickLogoutButton}>
+                로그아웃
+              </Button>
             </>
           ) : (
-            <S.LoginButton onClick={goToLoginPage}>로그인</S.LoginButton>
+            <Button fontSize="14px" width="76px" height="35px" colorTheme="RED" onClick={goToLoginPage}>
+              로그인
+            </Button>
           )}
         </S.MenuContainer>
       </S.HeaderContainer>
