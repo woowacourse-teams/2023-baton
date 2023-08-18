@@ -81,7 +81,7 @@ const SupporterFeedbackPage = () => {
     const body = JSON.stringify(feedback);
     const authorization = token;
     postRequest(`/feedback/supporter`, authorization, body)
-      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT))
+      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMIT_FEEDBACK))
       .catch((error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
