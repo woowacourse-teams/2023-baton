@@ -24,7 +24,7 @@ const MyPage = () => {
   const [isRunner, setIsRunner] = useState<boolean>(true);
 
   const [page, setPage] = useState<number>(1);
-  const [isLast, setIsLast] = useState<boolean>(false);
+  const [isLast, setIsLast] = useState<boolean>(true);
 
   const { getToken } = useToken();
   const { goToProfileEditPage } = usePageRouter();
@@ -32,7 +32,7 @@ const MyPage = () => {
 
   useEffect(() => {
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
-      setMyPagePostList([]);
+      setIsLast(() => true);
       setPage(1);
 
       getProfile(role);
@@ -55,8 +55,6 @@ const MyPage = () => {
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
-  const removePostList = (postListId: number) => {};
-
   const getPostList = (role: 'runner' | 'supporter') => {
     const token = getToken()?.value;
     if (!token) return;
@@ -72,8 +70,8 @@ const MyPage = () => {
       .then(async (response) => {
         const data: GetMyPagePostResponse = await response.json();
 
-        setMyPagePostList((current) => [...current, ...data.data]);
-        setPage(page + 1);
+        setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
+        setPage(data.pageInfo.currentPage + 1);
         setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
@@ -259,7 +257,7 @@ const S = {
       position: absolute;
       content: '';
 
-      left: -40px;
+      left: -30px;
       height: 100%;
       width: 4.5px;
       border-radius: 2px;
