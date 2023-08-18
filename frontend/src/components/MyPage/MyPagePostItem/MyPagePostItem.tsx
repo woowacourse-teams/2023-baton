@@ -35,7 +35,9 @@ const MyPagePostItem = ({
         <S.PostTitle>{title}</S.PostTitle>
         <S.DeadLineContainer>
           <S.DeadLine>{deadline} 까지</S.DeadLine>
-          <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'WHITE'}>
+          <Label
+            colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+          >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
         </S.DeadLineContainer>

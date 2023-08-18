@@ -143,7 +143,13 @@ const RunnerPostPage = () => {
               </Label>
               <S.PostDeadlineContainer>
                 <S.PostDeadline>{runnerPost.deadline.replace('T', ' ')} 까지</S.PostDeadline>
-                <S.EditLinkContainer $isOwner={runnerPost.isOwner}>
+                <S.EditLinkContainer
+                  $isOwner={
+                    runnerPost.isOwner &&
+                    runnerPost.reviewStatus !== 'IN_PROGRESS' &&
+                    runnerPost.reviewStatus !== 'DONE'
+                  }
+                >
                   <S.EditLink onClick={openConfirmModal}>삭제</S.EditLink>
                 </S.EditLinkContainer>
               </S.PostDeadlineContainer>
