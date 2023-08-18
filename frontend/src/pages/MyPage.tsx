@@ -71,7 +71,7 @@ const MyPage = () => {
         const data: GetMyPagePostResponse = await response.json();
 
         setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
-        setPage(data.pageInfo.currentPage + 1);
+        setPage(() => data.pageInfo.currentPage);
         setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
@@ -97,6 +97,7 @@ const MyPage = () => {
   const handleClickMoreButton = () => {
     const role = isRunner ? 'runner' : 'supporter';
 
+    setPage(() => page + 1);
     getPostList(role);
   };
 
