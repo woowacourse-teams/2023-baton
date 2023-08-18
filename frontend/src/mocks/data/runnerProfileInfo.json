@@ -1,0 +1,9 @@
+{
+  "runnerId": 1,
+  "name": "헤나(러너)",
+  "company": "우아한테크코스",
+  "imageUrl": "https://via.placeholder.com/150",
+  "githubUrl": "https://",
+  "introduction": "안녕하세요 헤나입니다.",
+  "technicalTags": ["java", "spring"]
+}

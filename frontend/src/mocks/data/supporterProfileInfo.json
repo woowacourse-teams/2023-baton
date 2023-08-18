@@ -1,0 +1,9 @@
+{
+  "supporterId": 1,
+  "name": "헤나(서포터)",
+  "company": "우아한테크코스",
+  "imageUrl": "https://",
+  "githubUrl": "https://",
+  "introduction": "안녕하세요 스프링 고수 헤나입니다.",
+  "technicalTags": ["java", "spring"]
+}
