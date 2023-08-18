@@ -30,7 +30,8 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
     patchRequest(`/posts/runner/${runnerPostId}/cancelation`, token)
       .then(() => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
-        goToMyPage();
+
+        setTimeout(window.location.reload, 2000);
       })
       .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
@@ -44,7 +45,7 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
     patchRequest(`/posts/runner/${runnerPostId}/done`, token)
       .then(() => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPETE);
-        goToMyPage();
+        setTimeout(window.location.reload, 2000);
       })
       .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
