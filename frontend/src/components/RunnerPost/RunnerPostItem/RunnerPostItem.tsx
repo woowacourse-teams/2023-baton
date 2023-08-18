@@ -25,7 +25,9 @@ const RunnerPostItem = ({
         <S.PostTitle>{title}</S.PostTitle>
         <S.DeadLineContainer>
           <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
-          <Label colorTheme={reviewStatus === 'DONE' ? 'GRAY' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'WHITE'}>
+          <Label
+            colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+          >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
         </S.DeadLineContainer>
@@ -128,7 +130,10 @@ const S = {
   `,
 
   ProfileName: styled.p`
+    min-width: 50px;
+
     font-size: 14px;
+    text-align: center;
   `,
 
   ChatViewContainer: styled.div`
