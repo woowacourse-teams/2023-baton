@@ -1,0 +1,33 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: investment
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+==== *서포터 러너 게시글 리뷰 제안 취소 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/request-headers.adoc[]
+
+===== *Http Path Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/path-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/http-response.adoc[]
+
+===== *Http Response Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-update-applicant-cancelation-api-test/update-supporter-cancel-runner-post/response-headers.adoc[]

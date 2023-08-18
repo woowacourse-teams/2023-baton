@@ -1,0 +1,48 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: investment
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+==== *서포터 프로필 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-profile-by-supporter-id/http-request.adoc[]
+
+===== *Http Request Path Parameters*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-profile-by-supporter-id/path-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-profile-by-supporter-id/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-profile-by-supporter-id/response-fields.adoc[]
+
+==== *서포터 마이페이지 프로필 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-my-profile-by-token/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-my-profile-by-token/request-headers.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-my-profile-by-token/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/supporter-read-by-guest-api-test/read-my-profile-by-token/response-fields.adoc[]
+
