@@ -19,7 +19,6 @@ include::MemberLoginReadApi.adoc[]
 === *러너 프로필 조회*
 
 include::RunneReadApi.adoc[]
-include::RunnerLoginReadApi.adoc[]
 
 === *러너 프로필 수정*
 
@@ -28,6 +27,7 @@ include::RunnerUpdateApi.adoc[]
 === *서포터 프로필 조회*
 
 include::SupporterReadApi.adoc[]
+include::RunnerLoginReadApi.adoc[]
 
 === *서포터 프로필 수정*
 
