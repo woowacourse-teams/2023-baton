@@ -10,30 +10,28 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-=== *러너 게시글 생성 API*
-
-==== *러너 게시글에 서포터 리뷰 지원 API*
+==== *서포터 러너 게시글 리뷰 신청 API*
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post-applicant/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/http-request.adoc[]
 
 ===== *Http Request Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post-applicant/request-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/request-headers.adoc[]
 
 ===== *Http Request Path Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post-applicant/path-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/path-parameters.adoc[]
 
 ===== *Http Request Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post-applicant/request-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/request-fields.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post-applicant/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/http-response.adoc[]
 
 ===== *Http Response Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-post-create-api-test/create-runner-post-applicant/response-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/response-headers.adoc[]

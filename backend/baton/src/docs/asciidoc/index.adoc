@@ -10,27 +10,45 @@ endif::[]
 
 = Baton-API
 
-== *[사용자(러너와 서포터 공통)]*
+== *[ 프로필 ]*
+
+=== *사용자 프로필 조회*
 
 include::MemberLoginReadApi.adoc[]
 
-== *[ 게시글 ]*
-
-include::RunnerPostCreateReadApi.adoc[]
-include::RunnerPostReadApi.adoc[]
-include::RunnerPostUpdateApi.adoc[]
-include::RunnerPostUpdateApplicantCancelationApi.adoc[]
-include::RunnerPostDeleteApi.adoc[]
-
-== *[ 러너 ]*
+=== *러너 프로필 조회*
 
 include::RunneReadApi.adoc[]
-include::RunnerLoginReadApi.adoc[]
-include::RunnerUpdateApi.adoc[]
-include::RunnerPostCreateApi.adoc[]
 
-== *[ 서포터 ]*
+=== *러너 프로필 수정*
+
+include::RunnerUpdateApi.adoc[]
+
+=== *서포터 프로필 조회*
 
 include::SupporterReadApi.adoc[]
+include::RunnerLoginReadApi.adoc[]
+
+=== *서포터 프로필 수정*
+
 include::SupporterUpdateApi.adoc[]
+
+== *[ 러너 - 게시글 ]*
+
+=== *러너 게시글 생성*
+
+include::RunnerPostCreateApi.adoc[]
+
+=== *러너 게시글 조회*
+
+include::RunnerPostReadApi.adoc[]
+
+=== *러너 게시글 수정*
+
 include::RunnerPostUpdateApi.adoc[]
+include::RunnerPostCreateReadApi.adoc[]
+include::RunnerPostUpdateApplicantCancelationApi.adoc[]
+
+=== *러너 게시글 삭제*
+
+include::RunnerPostDeleteApi.adoc[]

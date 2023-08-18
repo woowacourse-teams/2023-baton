@@ -10,8 +10,6 @@ endif::[]
 :operation-http-request-title: Example Request
 :operation-http-response-title: Example Response
 
-=== *서포터 프로필 수정*
-
 ==== *서포터 프로필 수정 API*
 
 ===== *Http Request*
