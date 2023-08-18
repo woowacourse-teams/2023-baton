@@ -145,4 +145,8 @@ export const handlers = [
   rest.post('*/posts/runner/:runnerPostId/application', async (req, res, ctx) => {
     return res(ctx.status(201));
   }),
+
+  rest.patch('*/posts/runner/:runnerPostId/cancelation', async (req, res, ctx) => {
+    return res(ctx.status(201));
+  }),
 ];

@@ -135,16 +135,33 @@ const S = {
 
     padding: 0 10px;
     margin-bottom: 50px;
-
-    border-left: 3px solid var(--gray-600);
   `,
 
   Introduction: styled.div`
-    width: 700px;
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 7px;
+
+    margin-left: 40px;
+    width: 75%;
+
+    &::before {
+      position: absolute;
+      content: '';
+
+      left: -30px;
+      height: 100%;
+      width: 4.5px;
+      border-radius: 2px;
+
+      background-color: var(--gray-400);
+    }
 
     font-size: 18px;
+    line-height: 1.8;
 
-    white-space: no-wrap;
+    white-space: pre-line;
   `,
 
   Anchor: styled.a`

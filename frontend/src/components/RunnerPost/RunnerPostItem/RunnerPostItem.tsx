@@ -39,7 +39,7 @@ const RunnerPostItem = ({
         {runnerProfile ? (
           <>
             <S.ProfileContainer>
-              <Avatar width="60px" height="60px" imageUrl={runnerProfile.imageUrl} />
+              <Avatar width="50px" height="50px" imageUrl={runnerProfile.imageUrl} />
               <S.ProfileName>{runnerProfile.name}</S.ProfileName>
             </S.ProfileContainer>
           </>
@@ -121,7 +121,7 @@ const S = {
   ProfileContainer: styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
 
     margin-bottom: 30px;
     gap: 10px;

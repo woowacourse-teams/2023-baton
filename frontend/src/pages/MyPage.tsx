@@ -18,22 +18,21 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
   const [myPagePostList, setMyPagePostList] = useState<MyPagePost[]>([]);
+
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
-  const [page, setPage] = useState<number>(1);
-  const [isLast, setIsLast] = useState<boolean>(false);
+
   const [isRunner, setIsRunner] = useState<boolean>(true);
+
+  const [page, setPage] = useState<number>(1);
+  const [isLast, setIsLast] = useState<boolean>(true);
 
   const { getToken } = useToken();
   const { goToProfileEditPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
 
-  // useEffect(() => {
-  //   setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
-  // }, []); 오류 수정 해야함
-
   useEffect(() => {
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
-      setMyPagePostList([]);
+      setIsLast(() => true);
       setPage(1);
 
       getProfile(role);
@@ -71,8 +70,8 @@ const MyPage = () => {
       .then(async (response) => {
         const data: GetMyPagePostResponse = await response.json();
 
-        setMyPagePostList((current) => [...current, ...data.data]);
-        setPage(page + 1);
+        setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
+        setPage(data.pageInfo.currentPage + 1);
         setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
@@ -91,6 +90,7 @@ const MyPage = () => {
   };
 
   const handleClickSupporterButton = () => {
+    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
     setIsRunner(!isRunner);
   };
 
@@ -102,17 +102,6 @@ const MyPage = () => {
 
   return (
     <Layout>
-      <S.TitleContainer>
-        <S.Title>마이페이지</S.Title>
-        <S.ButtonContainer>
-          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-            러너
-          </S.RunnerSupporterButton>
-          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-            서포터
-          </S.RunnerSupporterButton>
-        </S.ButtonContainer>
-      </S.TitleContainer>
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
@@ -130,25 +119,27 @@ const MyPage = () => {
             </S.TechLabel>
           </S.InfoDetailContainer>
         </S.InfoContainer>
-        <Button
-          width="80px"
-          height="35px"
-          colorTheme="WHITE"
-          fontSize="12px"
-          fontWeight={700}
-          onClick={goToProfileEditPage}
-        >
-          프로필 수정
-        </Button>
+        <S.ButtonContainer>
+          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
+            러너
+          </S.RunnerSupporterButton>
+          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
+            서포터
+          </S.RunnerSupporterButton>
+        </S.ButtonContainer>
       </S.ProfileContainer>
 
       <S.IntroductionContainer>
         <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
-        <Button width="127px" height="43px" colorTheme="BLACK" fontWeight={700}>
-          <S.Anchor href={myPageProfile?.githubUrl} target="_blank">
-            <img src={githubIcon} />
-            <S.GoToGitHub>Github</S.GoToGitHub>
-          </S.Anchor>
+        <Button
+          width="95px"
+          height="38px"
+          colorTheme="WHITE"
+          fontSize="16px"
+          fontWeight={400}
+          onClick={goToProfileEditPage}
+        >
+          수정하기
         </Button>
       </S.IntroductionContainer>
 
@@ -182,12 +173,14 @@ const S = {
     font-size: 36px;
     font-weight: 700;
   `,
+
   ProfileContainer: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 
-    padding: 50px 0;
+    margin-top: 70px;
+    margin-bottom: 50px;
   `,
 
   InfoContainer: styled.div`
@@ -201,6 +194,8 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 10px;
+
+    margin: 30px 0;
   `,
 
   Name: styled.div`
@@ -211,6 +206,7 @@ const S = {
   Company: styled.div`
     font-size: 18px;
   `,
+
   TechLabel: styled.div`
     display: flex;
     gap: 8px;
@@ -222,7 +218,7 @@ const S = {
     justify-content: space-between;
     gap: 10px;
 
-    margin-top: 50px;
+    margin-top: 30px;
   `,
 
   RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
@@ -243,30 +239,37 @@ const S = {
   IntroductionContainer: styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: end;
 
-    padding: 0 10px;
     margin-bottom: 50px;
-
-    border-left: 3px solid var(--gray-600);
   `,
 
   Introduction: styled.div`
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px 7px;
+
+    margin-left: 40px;
     width: 75%;
 
+    &::before {
+      position: absolute;
+      content: '';
+
+      left: -30px;
+      height: 100%;
+      width: 4.5px;
+      border-radius: 2px;
+
+      background-color: var(--gray-400);
+    }
+
     font-size: 18px;
-    line-height: 1.5;
+    line-height: 1.8;
 
-    white-space: no-wrap;
+    white-space: pre-line;
   `,
-
-  Anchor: styled.a`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-  `,
-
-  GoToGitHub: styled.p``,
 
   PostsContainer: styled.div`
     display: flex;
@@ -275,7 +278,7 @@ const S = {
   `,
 
   FilterWrapper: styled.div`
-    padding: 70px 20px;
+    padding: 80px 20px;
   `,
 
   MoreButtonWrapper: styled.div`

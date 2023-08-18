@@ -65,4 +65,14 @@ export const TOAST_COMPLETION_MESSAGE = {
     title: '선택 완료',
     description: '서포터 선택을 완료했어요',
   },
+
+  REVIEW_CANCEL: {
+    title: '취소 완료',
+    description: '취소를 완료했어요',
+  },
+
+  REVIEW_COMPETE: {
+    title: '리뷰 완료',
+    description: '리뷰를 완료했어요',
+  },
 };

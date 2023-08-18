@@ -38,7 +38,7 @@ function GithubCallbackPage() {
           const jwt = await response.headers.get('Authorization');
 
           if (!jwt) {
-            showErrorToast({ description: '토큰이 존재하지 않습니다', title: '권한 없음' });
+            showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
 
             return;
           }

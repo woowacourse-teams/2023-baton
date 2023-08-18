@@ -140,6 +140,7 @@ const RunnerPostCreatePage = () => {
               handleInputTextState={changeTitle}
               maxLength={30}
               width="800px"
+              height="40px"
               fontSize="38px"
               fontWeight="700"
               placeholder="제목을 입력해주세요"

@@ -1,5 +1,6 @@
 import { patchRequest } from '@/api/fetch';
 import Button from '@/components/common/Button/Button';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
@@ -22,34 +23,31 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
 
   const cancelReview = () => {
     if (!token) {
-      showErrorToast({ title: '권한 오류', description: '로그인이 필요합니다.' });
+      showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
       return;
     }
 
     patchRequest(`/posts/runner/${runnerPostId}/cancelation`, token)
       .then(() => {
-        showCompletionToast({ title: '취소 완료', description: '리뷰 제안을 취소했습니다.' });
-        goToMyPage();
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
+
+        setTimeout(window.location.reload, 2000);
       })
-      .catch((error: Error) => {
-        showErrorToast({ title: '요청 실패', description: error.message });
-      });
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   const finishReview = () => {
     if (!token) {
-      showErrorToast({ title: '권한 오류', description: '로그인이 필요합니다.' });
+      showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
       return;
     }
 
     patchRequest(`/posts/runner/${runnerPostId}/done`, token)
       .then(() => {
-        showCompletionToast({ title: '리뷰 완료', description: '리뷰가 완료되었습니다.' });
-        goToMyPage();
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPETE);
+        setTimeout(window.location.reload, 2000);
       })
-      .catch((error: Error) => {
-        showErrorToast({ title: '요청 실패', description: error.message });
-      });
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   const handleClickCancelReviewButton = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -72,7 +70,7 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
   const handleClickSupportFeedbackButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (!supporterId) {
-      showErrorToast({ title: '요청 실패', description: '서포터 정보가 없습니다.' });
+      showErrorToast({ title: ERROR_TITLE.ERROR, description: ERROR_DESCRIPTION.NO_SUPPORTER });
       return;
     }
 
@@ -92,13 +90,13 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
           {isRunner ? '서포터 선택하기' : '리뷰 제안 취소'}
         </Button>
       );
-    case 'IN_PROGRESS': // 코드 보러가기 기능 추가 필요
+    case 'IN_PROGRESS':
       return isRunner ? null : (
         <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFinishButton}>
           리뷰 완료
         </Button>
       );
-    case 'DONE': // 러너 피드백 기능 추가 필요
+    case 'DONE':
       return isRunner ? (
         <Button
           colorTheme="WHITE"

@@ -131,7 +131,7 @@ export const ReactIconWhite = (props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 256 256" {...props}>
       <g fill="none">
-        <rect width="256" height="256" fill="#00D8FF" rx="60"></rect>
+        <rect width="256" height="256" fill={props.color ?? '#00D8FF'} rx="60"></rect>
         <path
           fill="#ffffff"
           d="M128.001 146.951c10.304 0 18.656-8.353 18.656-18.656c0-10.303-8.352-18.656-18.656-18.656c-10.303 0-18.656 8.353-18.656 18.656c0 10.303 8.353 18.656 18.656 18.656Z"
