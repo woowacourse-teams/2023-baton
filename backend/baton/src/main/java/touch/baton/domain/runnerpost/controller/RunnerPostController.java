@@ -71,7 +71,7 @@ public class RunnerPostController {
         runnerPostService.increaseWatchedCount(foundRunnerPost);
         final RunnerPostResponse.Detail response = RunnerPostResponse.Detail.of(
                 foundRunnerPost,
-                foundRunnerPost.isNotOwner(member),
+                foundRunnerPost.isOwner(member),
                 isApplicantHistoryExist,
                 applicantCount
         );

@@ -257,8 +257,8 @@ public class RunnerPost extends BaseEntity {
         return !runner.equals(targetRunner);
     }
 
-    public boolean isNotOwner(final Member targetMember) {
-        return !runner.getMember().equals(targetMember);
+    public boolean isOwner(final Member targetMember) {
+        return runner.getMember().equals(targetMember);
     }
 
     public boolean isReviewStatusStarted() {
