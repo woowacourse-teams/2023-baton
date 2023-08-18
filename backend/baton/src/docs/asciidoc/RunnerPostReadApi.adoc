@@ -76,23 +76,23 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-supporter-runner-posts-by-runner-post-id/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/supporter-runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/http-request.adoc[]
 
 ===== *Http Request Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-supporter-runner-posts-by-runner-post-id/request-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/supporter-runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/request-headers.adoc[]
 
 ===== *Http Request Path Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-supporter-runner-posts-by-runner-post-id/path-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/supporter-runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/path-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-supporter-runner-posts-by-runner-post-id/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/supporter-runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-supporter-runner-posts-by-runner-post-id/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/supporter-runner-post-read-api-test/read-supporter-runner-posts-by-runner-post-id/response-fields.adoc[]
 
 ==== *서포터 마이페이지 러너 게시글 조회 API (queryParam)*
 
