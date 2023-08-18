@@ -32,12 +32,13 @@ const MainPage = () => {
   }, []);
 
   const handleClickPostButton = () => {
-    const token = getToken()?.value;
-    if (!token) {
-      goToLoginPage();
+    if (getToken()) {
+      goToRunnerPostCreatePage();
+
+      return;
     }
 
-    goToRunnerPostCreatePage();
+    goToLoginPage();
   };
 
   const getRunnerPost = () => {
