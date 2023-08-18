@@ -1,0 +1,37 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+==== *서포터 러너 게시글 리뷰 신청 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/request-headers.adoc[]
+
+===== *Http Request Path Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/path-parameters.adoc[]
+
+===== *Http Request Fields*
+
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/request-fields.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/http-response.adoc[]
+
+===== *Http Response Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-applicant-api-test/create-runner-post-applicant/response-headers.adoc[]
