@@ -264,10 +264,12 @@ const ProfileEditPage = () => {
             </S.ButtonContainer>
             <S.SaveButtonWrapper>
               <Button
-                width="100px"
+                width="80px"
+                height="37px"
                 colorTheme={isModified ? 'WHITE' : 'GRAY'}
                 onClick={handleClickSaveButton}
-                fontWeight={700}
+                fontSize="16px"
+                fontWeight={400}
               >
                 저장
               </Button>
