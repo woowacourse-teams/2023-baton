@@ -75,4 +75,9 @@ export const TOAST_COMPLETION_MESSAGE = {
     title: '리뷰 완료',
     description: '리뷰를 완료했어요',
   },
+
+  SUBMIT_FEEDBACK: {
+    title: '제출 완료',
+    description: '피드백을 제출했어요'
+  }
 };
