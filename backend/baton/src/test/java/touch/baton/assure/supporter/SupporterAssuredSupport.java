@@ -4,11 +4,14 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.PathParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.controller.response.SupporterResponse;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
+
+import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -32,13 +35,13 @@ public class SupporterAssuredSupport {
 
         private String accessToken;
 
-        public SupporterClientRequestBuilder 로그인_한다(final String 토큰) {
-            accessToken = 토큰;
+        public SupporterClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
+            accessToken = 액세스_토큰;
             return this;
         }
 
         public SupporterClientRequestBuilder 서포터_프로필을_서포터_식별자값으로_조회한다(final Long 서포터_식별자값) {
-            response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", "supporterId", 서포터_식별자값);
+            response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", new PathParams(Map.of("supporterId", 서포터_식별자값)));
             return this;
         }
 
@@ -47,7 +50,7 @@ public class SupporterAssuredSupport {
             return this;
         }
 
-        public SupporterClientRequestBuilder 서포터_마이페이지를_토큰으로_조회한다() {
+        public SupporterClientRequestBuilder 서포터_마이페이지를_액세스_토큰으로_조회한다() {
             response = AssuredSupport.get("/api/v1/profile/supporter/me", accessToken);
             return this;
         }

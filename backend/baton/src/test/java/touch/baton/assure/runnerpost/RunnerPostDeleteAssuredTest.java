@@ -24,13 +24,13 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
     private Runner 러너_디투;
-    private String 로그인용_토큰;
+    private String 액세스_토큰;
 
     @BeforeEach
     void setUp() {
         final Member 사용자_디투 = memberRepository.save(MemberFixture.createDitoo());
         러너_디투 = runnerRepository.save(RunnerFixture.createRunner(사용자_디투));
-        로그인용_토큰 = login(사용자_디투.getSocialId().getValue());
+        액세스_토큰 = login(사용자_디투.getSocialId().getValue());
     }
 
     @Test
@@ -39,7 +39,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()
@@ -52,7 +52,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(존재하지_않는_러너_게시글의_식별자값)
 
                 .서버_응답()
@@ -69,7 +69,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()
@@ -86,7 +86,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()
@@ -106,7 +106,7 @@ class RunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_삭제한다(러너_게시글.getId())
 
                 .서버_응답()

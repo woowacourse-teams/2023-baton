@@ -32,13 +32,13 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
         final Runner 러너_에단 = 러너를_저장한다(MemberFixture.createEthan());
         final Supporter 서포터_헤나 = 서포터_헤나를_저장한다();
 
-        final String 에단_로그인_토큰 = login(러너_에단.getMember().getSocialId().getValue());
-        final String 헤나_로그인_토큰 = login(서포터_헤나.getMember().getSocialId().getValue());
+        final String 에단_로그인_액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
+        final String 헤나_로그인_액세스_토큰 = login(서포터_헤나.getMember().getSocialId().getValue());
 
         final RunnerPostCreateRequest 러너_게시글_생성_요청 = 러너_게시글_생성_요청을_생성한다();
         final Long 에단의_러너_게시글_식별자값 = RunnerPostAssuredCreateSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(에단_로그인_토큰)
+                .액세스_토큰으로_로그인한다(에단_로그인_액세스_토큰)
                 .러너가_러너_게시글을_작성한다(러너_게시글_생성_요청)
 
                 .서버_응답()
@@ -48,7 +48,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
         final RunnerPostResponse.Detail 리뷰가_시작되지_않은_에단의_러너_게시글_Detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_에단, 러너_게시글_생성_요청, NOT_STARTED, 에단의_러너_게시글_식별자값, 1, 0L, false);
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(에단_로그인_토큰)
+                .액세스_토큰으로_로그인한다(에단_로그인_액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(에단의_러너_게시글_식별자값)
 
                 .서버_응답()
@@ -56,7 +56,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
 
         RunnerPostAssuredCreateSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(헤나_로그인_토큰)
+                .액세스_토큰으로_로그인한다(헤나_로그인_액세스_토큰)
                 .서포터가_러너_게시글에_리뷰를_신청한다(에단의_러너_게시글_식별자값, "안녕하세요. 서포터 헤나입니다.")
 
                 .서버_응답()

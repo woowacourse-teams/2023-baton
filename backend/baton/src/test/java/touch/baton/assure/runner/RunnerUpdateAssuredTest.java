@@ -2,6 +2,7 @@ package touch.baton.assure.runner;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
@@ -12,10 +13,7 @@ import touch.baton.fixture.domain.RunnerFixture;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_INTRODUCTION_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_TECHNICAL_TAGS_ARE_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class RunnerUpdateAssuredTest extends AssuredTestConfig {
@@ -38,11 +36,11 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
 
         RunnerAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
 
                 .서버_응답()
-                .러너_본인_프로필_수정_성공을_검증한다(NO_CONTENT, 러너_디투.getId());
+                .러너_본인_프로필_수정_성공을_검증한다(new HttpStatusAndLocationHeader(NO_CONTENT, "/api/v1/profile/runner/me"));
     }
 
     @Test
@@ -51,7 +49,7 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
 
         RunnerAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
 
                 .서버_응답()
@@ -64,7 +62,7 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
 
         RunnerAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
 
                 .서버_응답()
@@ -77,7 +75,7 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
 
         RunnerAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
 
                 .서버_응답()
@@ -90,7 +88,7 @@ public class RunnerUpdateAssuredTest extends AssuredTestConfig {
 
         RunnerAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_본인_프로필을_수정한다(러너_업데이트_요청)
 
                 .서버_응답()

@@ -40,13 +40,13 @@ class SupporterReadBySupporterIdAssuredTest extends AssuredTestConfig {
         final TechnicalTag 리액트_태그 = technicalTagRepository.save(TechnicalTagFixture.createReact());
 
         final Supporter 서포터_디투 = supporterRepository.save(SupporterFixture.create(사용자_디투, List.of(자바_태그, 리액트_태그)));
-        final String 서포터_디투_토큰 = login(디투_소셜_아이디);
+        final String 서포터_디투_액세스_토큰 = login(디투_소셜_아이디);
 
         // when, then
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(서포터_디투_토큰)
-                .서포터_마이페이지를_토큰으로_조회한다()
+                .액세스_토큰으로_로그인_한다(서포터_디투_액세스_토큰)
+                .서포터_마이페이지를_액세스_토큰으로_조회한다()
 
                 .서버_응답()
                 .서포터_마이페이지_프로필_조회_성공을_검증한다(응답(서포터_디투));

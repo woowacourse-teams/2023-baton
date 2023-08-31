@@ -18,14 +18,14 @@ import static org.springframework.http.HttpStatus.CREATED;
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostCreateAssuredTest extends AssuredTestConfig {
 
-    private static String 토큰;
+    private static String 액세스_토큰;
 
     @BeforeEach
     void setUp() {
         final String 소셜_아이디 = "hongSile";
         final Member 사용자 = memberRepository.save(MemberFixture.createWithSocialId(소셜_아이디));
         runnerRepository.save(RunnerFixture.createRunner(사용자));
-        토큰 = login(소셜_아이디);
+        액세스_토큰 = login(소셜_아이디);
     }
 
     @Test
@@ -41,7 +41,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -61,7 +61,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -81,7 +81,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -101,7 +101,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -121,7 +121,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -141,7 +141,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -161,7 +161,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -181,7 +181,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()

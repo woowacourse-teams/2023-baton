@@ -53,7 +53,7 @@ class RunnerPostReadWithSupporterIdAndReviewStatusAssuredTest extends AssuredTes
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(헤나_액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .서포터와_연관된_러너_게시글_페이징을_조회한다(서포터_헤나.getId(), ReviewStatus.DONE, 페이징_정보)
 
                 .서버_응답()

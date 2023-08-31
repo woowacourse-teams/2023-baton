@@ -25,13 +25,13 @@ public class SupporterFeedbackAssuredSupport {
 
         private String accessToken;
 
-        public SupporterFeedbackClientRequestBuilder 토큰으로_로그인한다(final String 토큰) {
-            this.accessToken = 토큰;
+        public SupporterFeedbackClientRequestBuilder 액세스_토큰으로_로그인한다(final String 액세스_토큰) {
+            this.accessToken = 액세스_토큰;
             return this;
         }
 
         public SupporterFeedbackClientRequestBuilder 서포터_피드백을_등록한다(final SupporterFeedBackCreateRequest 서포터_피드백_정보) {
-            response = AssuredSupport.post("/api/v1/feedback/supporter", 서포터_피드백_정보, accessToken);
+            response = AssuredSupport.post("/api/v1/feedback/supporter", accessToken, 서포터_피드백_정보);
             return this;
         }
 

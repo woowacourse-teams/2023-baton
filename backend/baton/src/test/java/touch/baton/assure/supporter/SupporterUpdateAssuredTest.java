@@ -12,10 +12,7 @@ import touch.baton.fixture.domain.SupporterFixture;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_INTRODUCTION_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_TECHNICAL_TAGS_ARE_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class SupporterUpdateAssuredTest extends AssuredTestConfig {
@@ -36,7 +33,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
 
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(디투_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(서포터_수정_요청_값)
 
                 .서버_응답()
@@ -49,7 +46,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
 
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(디투_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(서포터_수정_요청_값)
 
                 .서버_응답()
@@ -62,7 +59,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
 
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(디투_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(서포터_수정_요청_값)
 
                 .서버_응답()
@@ -75,7 +72,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
 
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(디투_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(서포터_수정_요청_값)
 
                 .서버_응답()
@@ -88,7 +85,7 @@ public class SupporterUpdateAssuredTest extends AssuredTestConfig {
 
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(디투_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(서포터_수정_요청_값)
 
                 .서버_응답()
