@@ -4,11 +4,14 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.PathParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.controller.response.SupporterResponse;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
+
+import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -38,7 +41,7 @@ public class SupporterAssuredSupport {
         }
 
         public SupporterClientRequestBuilder 서포터_프로필을_서포터_식별자값으로_조회한다(final Long 서포터_식별자값) {
-            response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", "supporterId", 서포터_식별자값);
+            response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", new PathParams(Map.of("supporterId", 서포터_식별자값)));
             return this;
         }
 

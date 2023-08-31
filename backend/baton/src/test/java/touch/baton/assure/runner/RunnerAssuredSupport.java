@@ -4,12 +4,15 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.PathParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
+
+import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -44,7 +47,7 @@ public class RunnerAssuredSupport {
         }
 
         public RunnerClientRequestBuilder 러너_프로필을_상세_조회한다(final Long 러너_식별자) {
-            response = AssuredSupport.get("/api/v1/profile/runner/{runnerId}", "runnerId", 러너_식별자);
+            response = AssuredSupport.get("/api/v1/profile/runner/{runnerId}", new PathParams(Map.of("runnerId", 러너_식별자)));
             return this;
         }
 

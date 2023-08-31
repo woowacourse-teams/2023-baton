@@ -4,6 +4,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.PathParams;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 
@@ -52,7 +53,7 @@ public class RunnerPostAssuredCreateSupport {
         public RunnerPostClientRequestBuilder 서포터가_러너_게시글에_리뷰를_신청한다(final Long 러너_게시글_식별자값, final String 리뷰_지원_메시지) {
             response = AssuredSupport.post("/api/v1/posts/runner/{runnerPostId}/application",
                     accessToken,
-                    Map.of("runnerPostId", 러너_게시글_식별자값),
+                    new PathParams(Map.of("runnerPostId", 러너_게시글_식별자값)),
                     new RunnerPostApplicantCreateRequest(리뷰_지원_메시지)
             );
             return this;

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
+import touch.baton.assure.common.PathParams;
+import touch.baton.assure.common.QueryParams;
 import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runner.Runner;
@@ -105,17 +107,23 @@ public class RunnerPostAssuredSupport {
         }
 
         public RunnerPostClientRequestBuilder 러너_게시글_등록_요청한다(final RunnerPostCreateRequest 게시글_생성_요청) {
-            response = AssuredSupport.post("/api/v1/posts/runner", 게시글_생성_요청, accessToken);
+            response = AssuredSupport.post("/api/v1/posts/runner", accessToken, 게시글_생성_요청);
             return this;
         }
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}", "runnerPostId", 러너_게시글_식별자값, accessToken);
+            response = AssuredSupport.get(
+                    "/api/v1/posts/runner/{runnerPostId}",
+                    accessToken,
+                    new PathParams(Map.of("runnerPostId", 러너_게시글_식별자값)));
             return this;
         }
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_서포터_러너_게시글을_조회한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.get("/api/v1/posts/runner/{runnerPostId}/supporters", "runnerPostId", 러너_게시글_식별자값, accessToken);
+            response = AssuredSupport.get(
+                    "/api/v1/posts/runner/{runnerPostId}/supporters",
+                    accessToken,
+                    new PathParams(Map.of("runnerPostId", 러너_게시글_식별자값)));
             return this;
         }
 
@@ -130,7 +138,7 @@ public class RunnerPostAssuredSupport {
                     "page", 페이징_정보.getPageNumber()
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/search", queryParams);
+            response = AssuredSupport.get("/api/v1/posts/runner/search", new QueryParams(queryParams));
             return this;
         }
 
@@ -143,7 +151,7 @@ public class RunnerPostAssuredSupport {
                     "page", 페이징_정보.getPageNumber()
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/me/runner", queryParams, accessToken);
+            response = AssuredSupport.get("/api/v1/posts/runner/me/runner", accessToken, new QueryParams(queryParams));
             return this;
         }
 
@@ -153,17 +161,17 @@ public class RunnerPostAssuredSupport {
                     "page", 페이징_정보.getPageNumber()
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner", queryParams);
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
             return this;
         }
 
         public RunnerPostClientRequestBuilder 서포터가_리뷰를_완료하고_리뷰완료_버튼을_누른다(final Long 게시글_식별자) {
-            response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/done", "runnerPostId", 게시글_식별자, accessToken);
+            response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/done", accessToken, new PathParams(Map.of("runnerPostId", 게시글_식별자)));
             return this;
         }
 
         public RunnerPostClientRequestBuilder 러너_게시글_식별자값으로_러너_게시글을_삭제한다(final Long 러너_게시글_식별자값) {
-            response = AssuredSupport.delete("/api/v1/posts/runner/{runnerPostId}", accessToken, "runnerPostId", 러너_게시글_식별자값);
+            response = AssuredSupport.delete("/api/v1/posts/runner/{runnerPostId}", accessToken, new PathParams(Map.of("runnerPostId", 러너_게시글_식별자값)));
             return this;
         }
 
@@ -171,9 +179,9 @@ public class RunnerPostAssuredSupport {
                                                             final RunnerPostUpdateRequest.SelectSupporter 서포터_선택_요청_정보
         ) {
             response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/supporters",
-                    "runnerPostId", 게시글_식별자값,
-                    서포터_선택_요청_정보,
-                    accessToken
+                    accessToken,
+                    new PathParams(Map.of("runnerPostId", 게시글_식별자값)),
+                    서포터_선택_요청_정보
             );
             return this;
         }
@@ -187,7 +195,7 @@ public class RunnerPostAssuredSupport {
                     "page", 페이징_정보.getPageNumber()
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/me/supporter", accessToken, queryParams);
+            response = AssuredSupport.get("/api/v1/posts/runner/me/supporter", accessToken, new QueryParams(queryParams));
             return this;
         }
 
