@@ -29,7 +29,7 @@ public class RunnerPostUpdateAssuredTest extends AssuredTestConfig {
         final String 디투_소셜_아이디 = "hongSile";
         final Member 사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(디투_소셜_아이디));
         final Runner 러너_디투 = runnerRepository.save(RunnerFixture.createRunner(사용자_디투));
-        final String 디투_토큰 = login(디투_소셜_아이디);
+        final String 디투_액세스_토큰 = login(디투_소셜_아이디);
 
         final RunnerPost 디투_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_디투, deadline(LocalDateTime.now().plusDays(10))));
 
@@ -43,7 +43,7 @@ public class RunnerPostUpdateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(디투_토큰)
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너가_서포터를_선택한다(디투_게시글.getId(), 서포터_선택_요청_정보)
 
                 .서버_응답()
@@ -63,14 +63,14 @@ public class RunnerPostUpdateAssuredTest extends AssuredTestConfig {
         final String 디투_소셜_아이디 = "hongSile";
         final Member 사용자_디투 = memberRepository.save(MemberFixture.createWithSocialId(디투_소셜_아이디));
         final Supporter 선택된_서포터 = supporterRepository.save(SupporterFixture.create(사용자_디투));
-        final String 서포터_디투_토큰 = login(디투_소셜_아이디);
+        final String 서포터_디투_액세스_토큰 = login(디투_소셜_아이디);
 
         final RunnerPost 서포터가_배정된_게시글 = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(글_쓴_러너, 선택된_서포터, IN_PROGRESS));
 
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(서포터_디투_토큰)
+                .액세스_토큰으로_로그인한다(서포터_디투_액세스_토큰)
                 .서포터가_리뷰를_완료하고_리뷰완료_버튼을_누른다(서포터가_배정된_게시글.getId())
 
                 .서버_응답()

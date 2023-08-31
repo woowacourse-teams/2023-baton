@@ -35,8 +35,8 @@ public class SupporterAssuredSupport {
 
         private String accessToken;
 
-        public SupporterClientRequestBuilder 로그인_한다(final String 토큰) {
-            accessToken = 토큰;
+        public SupporterClientRequestBuilder 로그인_한다(final String 액세스_토큰) {
+            accessToken = 액세스_토큰;
             return this;
         }
 
@@ -50,7 +50,7 @@ public class SupporterAssuredSupport {
             return this;
         }
 
-        public SupporterClientRequestBuilder 서포터_마이페이지를_토큰으로_조회한다() {
+        public SupporterClientRequestBuilder 서포터_마이페이지를_액세스_토큰으로_조회한다() {
             response = AssuredSupport.get("/api/v1/profile/supporter/me", accessToken);
             return this;
         }

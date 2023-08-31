@@ -30,17 +30,15 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
         final RunnerPost 러너_에단의_게시글 = 러너_게시글을_등록한다(러너_에단);
         runnerPostRepository.save(러너_에단의_게시글);
 
-        final String 에단_액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
+        final String 액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
 
         final PageRequest 페이징_정보 = PageRequest.of(1, 10);
-        final RunnerPostResponse.Simple 게시글_응답
-                = RunnerPostResponse.Simple.from(러너_에단의_게시글, 0);
-        final PageResponse<RunnerPostResponse.Simple> 페이징된_게시글_응답
-                = 러너_게시글_전체_조회_응답(페이징_정보, List.of(게시글_응답));
+        final RunnerPostResponse.Simple 게시글_응답 = RunnerPostResponse.Simple.from(러너_에단의_게시글, 0);
+        final PageResponse<RunnerPostResponse.Simple> 페이징된_게시글_응답 = 러너_게시글_전체_조회_응답(페이징_정보, List.of(게시글_응답));
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(에단_액세스_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .전체_러너_게시글_페이징을_조회한다(페이징_정보)
 
                 .서버_응답()
@@ -53,7 +51,7 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
         final Runner 러너_에단 = 러너를_저장한다(멤버_에단);
         final RunnerPost 러너_에단의_게시글 = 러너_게시글을_등록한다(러너_에단);
 
-        final String 에단_액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
+        final String 액세스_토큰 = login(러너_에단.getMember().getSocialId().getValue());
 
         final PageRequest 페이징_정보 = PageRequest.of(1, 10);
         final RunnerPostResponse.SimpleInMyPage 마이페이지_러너_게시글_응답
@@ -63,7 +61,7 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(에단_액세스_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .마이페이지_러너_게시글_페이징을_조회한다(ReviewStatus.NOT_STARTED, 페이징_정보)
 
                 .서버_응답()

@@ -40,8 +40,8 @@ public class RunnerPostAssuredCreateSupport {
 
         private String accessToken;
 
-        public RunnerPostClientRequestBuilder 토큰으로_로그인한다(final String accessToken) {
-            this.accessToken = accessToken;
+        public RunnerPostClientRequestBuilder 액세스_토큰으로_로그인한다(final String 액세스_토큰) {
+            this.accessToken = 액세스_토큰;
             return this;
         }
 

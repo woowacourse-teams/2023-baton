@@ -1,6 +1,5 @@
 package touch.baton.assure.feedback;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
@@ -23,20 +22,14 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 @SuppressWarnings("NonAsciiCharacters")
 class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
 
-    private static String 토큰;
-    private Runner 피드백할_러너;
-
-    @BeforeEach
-    void setUp() {
-        final String 소셜_아이디 = "hongSile";
-        final Member 사용자 = memberRepository.save(MemberFixture.createWithSocialId(소셜_아이디));
-        피드백할_러너 = runnerRepository.save(RunnerFixture.createRunner(사용자));
-        토큰 = login(소셜_아이디);
-    }
-
     @Test
     void 러너가_서포터_피드백을_등록한다() {
         // given
+        final String 소셜_아이디 = "hongSile";
+        final Member 사용자 = memberRepository.save(MemberFixture.createWithSocialId(소셜_아이디));
+        final Runner 피드백할_러너 = runnerRepository.save(RunnerFixture.createRunner(사용자));
+        final String 액세스_토큰 = login(소셜_아이디);
+        
         final Member 사용자_에단 = memberRepository.save(MemberFixture.createEthan());
         final Supporter 리뷰해준_서포터 = supporterRepository.save(create(사용자_에단));
         final RunnerPost 리뷰_완료한_게시글 = runnerPostRepository.save(RunnerPostFixture.create(피드백할_러너, 리뷰해준_서포터, deadline(LocalDateTime.now().plusHours(100))));
@@ -46,7 +39,7 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
         // when, then
         SupporterFeedbackAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .서포터_피드백을_등록한다(서포터_피드백_요청)
 
                 .서버_응답()

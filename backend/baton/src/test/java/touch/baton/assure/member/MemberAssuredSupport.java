@@ -28,12 +28,12 @@ public class MemberAssuredSupport {
 
         private String accessToken;
 
-        public MemberClientRequestBuilder 로그인_한다(final String 토큰) {
-            accessToken = 토큰;
+        public MemberClientRequestBuilder 로그인_한다(final String 액세스_토큰) {
+            accessToken = 액세스_토큰;
             return this;
         }
 
-        public MemberClientRequestBuilder 사용자_본인_프로필을_가지고_있는_토큰으로_조회한다() {
+        public MemberClientRequestBuilder 사용자_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다() {
             response = AssuredSupport.get("api/v1/profile/me", accessToken);
             return this;
         }

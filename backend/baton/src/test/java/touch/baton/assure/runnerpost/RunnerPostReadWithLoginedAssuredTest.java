@@ -34,12 +34,12 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
         final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 사용자_헤나));
         final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(now().plusHours(100))));
-        final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
+        final String 액세스_토큰 = login(사용자_헤나.getSocialId().getValue());
 
         final RunnerPostResponse.Detail 러너_게시글_detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_헤나, 러너_게시글, ReviewStatus.NOT_STARTED, 러너_게시글.getId(), 1, 0, false);
 
         클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(러너_게시글.getId())
 
                 .서버_응답()
@@ -77,7 +77,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         final Member 사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
         final Runner 러너_헤나 = runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 사용자_헤나));
         final RunnerPost 러너_게시글 = runnerPostRepository.save(RunnerPostFixture.create(러너_헤나, deadline(LocalDateTime.now().plusHours(100))));
-        final String 로그인용_토큰 = login(사용자_헤나.getSocialId().getValue());
+        final String 로그인용_액세스_토큰 = login(사용자_헤나.getSocialId().getValue());
 
         final Member 사용자_주디 = memberRepository.save(MemberFixture.createJudy());
         final Supporter 서포터_주디 = supporterRepository.save(SupporterFixture.create(사용자_주디));
@@ -88,7 +88,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
 
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .토큰으로_로그인한다(로그인용_토큰)
+                .액세스_토큰으로_로그인한다(로그인용_액세스_토큰)
                 .러너_게시글_식별자값으로_서포터_러너_게시글을_조회한다(러너_게시글.getId())
 
                 .서버_응답()
