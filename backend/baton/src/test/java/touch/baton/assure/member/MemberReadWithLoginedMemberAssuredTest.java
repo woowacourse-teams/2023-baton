@@ -18,7 +18,7 @@ class MemberReadWithLoginedMemberAssuredTest extends AssuredTestConfig {
 
         MemberAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(디투_액세스_토큰)
                 .사용자_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다()
 
                 .서버_응답()

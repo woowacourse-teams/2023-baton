@@ -35,7 +35,7 @@ public class SupporterAssuredSupport {
 
         private String accessToken;
 
-        public SupporterClientRequestBuilder 로그인_한다(final String 액세스_토큰) {
+        public SupporterClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
             accessToken = 액세스_토큰;
             return this;
         }

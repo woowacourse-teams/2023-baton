@@ -45,7 +45,7 @@ class SupporterReadBySupporterIdAssuredTest extends AssuredTestConfig {
         // when, then
         SupporterAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(서포터_디투_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(서포터_디투_액세스_토큰)
                 .서포터_마이페이지를_액세스_토큰으로_조회한다()
 
                 .서버_응답()

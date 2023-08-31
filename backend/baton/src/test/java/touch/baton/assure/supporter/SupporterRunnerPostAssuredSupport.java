@@ -26,7 +26,7 @@ public class SupporterRunnerPostAssuredSupport {
 
         private String accessToken;
 
-        public SupporterRunnerPostClientRequestBuilder 로그인_한다(final String 액세스_토큰) {
+        public SupporterRunnerPostClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
             accessToken = 액세스_토큰;
             return this;
         }

@@ -37,7 +37,7 @@ public class SupporterRunnerPostDeleteAssuredTest extends AssuredTestConfig {
 
         SupporterRunnerPostAssuredSupport
                 .클라이언트_요청()
-                .로그인_한다(로그인한_서포터의_액세스_토큰)
+                .액세스_토큰으로_로그인_한다(로그인한_서포터의_액세스_토큰)
                 .서포터가_리뷰_제안을_취소한다(리뷰_받을_게시글.getId())
 
                 .서버_응답()

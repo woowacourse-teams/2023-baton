@@ -28,7 +28,7 @@ public class MemberAssuredSupport {
 
         private String accessToken;
 
-        public MemberClientRequestBuilder 로그인_한다(final String 액세스_토큰) {
+        public MemberClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
             accessToken = 액세스_토큰;
             return this;
         }
