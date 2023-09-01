@@ -7,6 +7,7 @@ import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
 import { MyPagePost } from '@/types/myPage';
 import MyPagePostButton from '../MyPagePostButton/MyPagePostButton';
+import useViewport from '@/hooks/useViewPort';
 
 interface Props extends MyPagePost {
   isRunner: boolean;
@@ -25,6 +26,8 @@ const MyPagePostItem = ({
 }: Props) => {
   const { goToRunnerPostPage } = usePageRouter();
 
+  const { isMobile } = useViewport();
+
   const handlePostClick = () => {
     goToRunnerPostPage(runnerPostId);
   };
@@ -37,6 +40,7 @@ const MyPagePostItem = ({
           <S.DeadLine>{deadline} 까지</S.DeadLine>
           <Label
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+            fontSize={isMobile ? '10px' : ''}
           >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>

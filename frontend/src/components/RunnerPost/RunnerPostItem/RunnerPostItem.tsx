@@ -7,12 +7,15 @@ import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
+import useViewport from '@/hooks/useViewPort';
 
 const RunnerPostItem = ({
   runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, applicantCount, reviewStatus },
 }: {
   runnerPostData: RunnerPost;
 }) => {
+  const { isMobile } = useViewport();
+
   const { goToRunnerPostPage } = usePageRouter();
 
   const handlePostClick = () => {
@@ -27,7 +30,7 @@ const RunnerPostItem = ({
           <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
           <Label
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
-            mobileFontSize="10px"
+            fontSize={isMobile ? '10px' : ''}
           >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>

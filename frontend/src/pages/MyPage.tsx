@@ -7,13 +7,13 @@ import Layout from '@/layout/Layout';
 import { GetMyPagePostResponse, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import githubIcon from '@/assets/github-icon.svg';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { getRequest } from '@/api/fetch';
 import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_TITLE } from '@/constants/message';
 import { usePageRouter } from '@/hooks/usePageRouter';
+import useViewport from '@/hooks/useViewPort';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
@@ -29,6 +29,7 @@ const MyPage = () => {
   const { getToken } = useToken();
   const { goToProfileEditPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
+  const { isMobile } = useViewport();
 
   useEffect(() => {
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
@@ -151,7 +152,12 @@ const MyPage = () => {
         <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
         <S.MoreButtonWrapper>
           {!isLast && (
-            <Button colorTheme="RED" width="1200px" height="55px" onClick={handleClickMoreButton}>
+            <Button
+              colorTheme="RED"
+              width={isMobile ? '375px' : '1150px'}
+              height="55px"
+              onClick={handleClickMoreButton}
+            >
               더보기
             </Button>
           )}
@@ -283,6 +289,13 @@ const S = {
   `,
 
   MoreButtonWrapper: styled.div`
+    max-width: 1200px;
+    width: 100%;
+
     margin-top: 50px;
+
+    @media (max-width: 768px) {
+      max-width: 375px;
+    }
   `,
 };

@@ -1,10 +1,11 @@
 import { getRequest } from '@/api/fetch';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import Button from '@/components/common/Button/Button';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
+import useViewport from '@/hooks/useViewPort';
 import Layout from '@/layout/Layout';
 import { GetRunnerPostResponse, RunnerPost } from '@/types/runnerPost';
 import React, { useContext, useEffect, useState } from 'react';
@@ -16,6 +17,8 @@ const MainPage = () => {
   const { getToken } = useToken();
 
   const { showErrorToast } = useContext(ToastContext);
+
+  const { isMobile } = useViewport();
 
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
   const [isLast, setIsLast] = useState<boolean>(true);
@@ -69,14 +72,19 @@ const MainPage = () => {
           </S.TagContainer> */}
         </S.LeftSideContainer>
 
-        <Button onClick={handleClickPostButton} colorTheme="WHITE" fontSize="18px" ariaLabel="리뷰 요청 글 작성하기">
+        <Button
+          onClick={handleClickPostButton}
+          colorTheme="WHITE"
+          fontSize={isMobile ? '14px' : '18px'}
+          ariaLabel="리뷰 요청 글 작성하기"
+        >
           리뷰 요청 글 작성하기
         </Button>
       </S.ControlPanelContainer>
       <S.RunnerPostContainer>
         <RunnerPostList posts={runnerPostList} />
         {!isLast && (
-          <Button colorTheme="RED" width="1200px" height="55px" onClick={handleClickMoreButton}>
+          <Button colorTheme="RED" width={isMobile ? '360px' : '1150px'} height="55px" onClick={handleClickMoreButton}>
             더보기
           </Button>
         )}
@@ -92,9 +100,10 @@ const S = {
     margin: 72px 0 53px 0;
 
     @media (max-width: 768px) {
-      margin-top: 10px;
+      margin: 10px 0 40px 0;
     }
   `,
+
   Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
@@ -103,12 +112,17 @@ const S = {
       font-size: 28px;
     }
   `,
+
   ControlPanelContainer: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: end;
 
     margin-bottom: 36px;
+
+    @media (max-height: 768px) {
+      margin-bottom: 24px;
+    }
   `,
 
   LeftSideContainer: styled.div`
