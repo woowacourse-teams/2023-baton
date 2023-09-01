@@ -8,11 +8,12 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import touch.baton.config.converter.ConverterConfig;
+import touch.baton.config.infra.auth.MockAuthTestConfig;
 import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
@@ -25,7 +26,8 @@ import java.util.UUID;
 
 import static org.mockito.BDDMockito.when;
 
-@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class})
+@ActiveProfiles("test")
+@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class, MockAuthTestConfig.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -49,7 +51,6 @@ public abstract class AssuredTestConfig {
     @Autowired
     protected TechnicalTagRepository technicalTagRepository;
 
-    @MockBean
     private JwtDecoder jwtDecoder;
 
     @BeforeEach
