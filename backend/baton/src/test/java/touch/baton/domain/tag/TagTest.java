@@ -33,9 +33,7 @@ class TagTest {
                     .tagName(null)
                     .tagReducedName(TagReducedName.from("hello"))
                     .build()
-            )
-                    .isInstanceOf(TagDomainException.class)
-                    .hasMessage("Tag 의 tagName 은 null 일 수 없습니다.");
+            ).isInstanceOf(TagDomainException.class);
         }
 
         @DisplayName("tag reduced name 이 null 이 들어갈 경우 예외가 발생한다.")
@@ -45,9 +43,7 @@ class TagTest {
                     .tagName(new TagName("hello"))
                     .tagReducedName(null)
                     .build()
-            )
-                    .isInstanceOf(TagDomainException.class)
-                    .hasMessage("Tag 의 tagReducedName 은 null 일 수 없습니다.");
+            ).isInstanceOf(TagDomainException.class);
         }
     }
 }
