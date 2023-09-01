@@ -6,12 +6,14 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Date;
 import java.util.Map;
 
+@Profile("!test")
 @RequiredArgsConstructor
 @Component
 public class JwtEncoder {
