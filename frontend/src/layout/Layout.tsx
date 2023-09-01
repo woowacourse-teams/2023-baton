@@ -28,7 +28,7 @@ const S = {
     max-width: 1200px;
     width: 100%;
 
-    padding: 0 25px;
+    padding: 25px;
 
     @media (max-width: 768px) {
       padding: 25px;

@@ -83,11 +83,18 @@ const MainPage = () => {
       </S.ControlPanelContainer>
       <S.RunnerPostContainer>
         <RunnerPostList posts={runnerPostList} />
-        {!isLast && (
-          <Button colorTheme="RED" width={isMobile ? '360px' : '1150px'} height="55px" onClick={handleClickMoreButton}>
-            더보기
-          </Button>
-        )}
+        <S.MoreButtonWrapper>
+          {!isLast && (
+            <Button
+              colorTheme="RED"
+              width={isMobile ? '375px' : '1150px'}
+              height="55px"
+              onClick={handleClickMoreButton}
+            >
+              더보기
+            </Button>
+          )}
+        </S.MoreButtonWrapper>
       </S.RunnerPostContainer>
     </Layout>
   );
@@ -159,6 +166,15 @@ const S = {
 
     margin-bottom: 3px;
     gap: 10px;
+  `,
+
+  MoreButtonWrapper: styled.div`
+    max-width: 1200px;
+    width: 100%;
+
+    @media (max-width: 768px) {
+      max-width: 375px;
+    }
   `,
 
   RunnerPostContainer: styled.div`
