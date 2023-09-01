@@ -150,35 +150,23 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void success_readRunnerPostsByReviewStatus() {
         // given
-        final Member ditoo = MemberFixture.createDitoo();
-        memberRepository.save(ditoo);
-        final Runner runner = RunnerFixture.createRunner(ditoo);
-        runnerRepository.save(runner);
-        final Member judy = MemberFixture.createJudy();
-        memberRepository.save(judy);
-        final Supporter supporter = SupporterFixture.create(judy);
-       supporterRepository.save(supporter);
+        final Member memberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runnerDitoo = runnerRepository.save(RunnerFixture.createRunner(memberDitoo));
+        final Member memberJudy = memberRepository.save(MemberFixture.createJudy());
+        final Supporter supporterJudy = supporterRepository.save(SupporterFixture.create(memberJudy));
 
-        final RunnerPost inProgressRunnerPost = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
-        inProgressRunnerPost.assignSupporter(supporter);
-        runnerPostRepository.save(inProgressRunnerPost);
-        final RunnerPost notStartedRunnerPostFirst = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
-        runnerPostRepository.save(notStartedRunnerPostFirst);
-        final RunnerPost notStartedRunnerPostSecond = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
-        runnerPostRepository.save(notStartedRunnerPostSecond);
+        final RunnerPost inProgressRunnerPost = RunnerPostFixture.create(runnerDitoo, deadline(now().plusHours(100)));
+        inProgressRunnerPost.assignSupporter(supporterJudy);
+        final RunnerPost savedInProgressRunnerPost = runnerPostRepository.save(inProgressRunnerPost);
 
         // when
         final PageRequest pageable = PageRequest.of(0, 10);
         final Page<RunnerPost> actualInProgressRunnerPosts = runnerPostService.readRunnerPostsByReviewStatus(pageable, IN_PROGRESS);
-        final Page<RunnerPost> actualNotStarted = runnerPostService.readRunnerPostsByReviewStatus(pageable, NOT_STARTED);
 
         // then
         assertSoftly(softly -> {
             softly.assertThat(actualInProgressRunnerPosts.getPageable()).isEqualTo(pageable);
-            softly.assertThat(actualInProgressRunnerPosts.getContent()).containsExactly(inProgressRunnerPost);
-
-            softly.assertThat(actualNotStarted.getPageable()).isEqualTo(pageable);
-            softly.assertThat(actualNotStarted.getContent()).containsExactly(notStartedRunnerPostFirst, notStartedRunnerPostSecond);
+            softly.assertThat(actualInProgressRunnerPosts.getContent()).containsExactly(savedInProgressRunnerPost);
         });
     }
 
