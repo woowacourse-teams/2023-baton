@@ -21,6 +21,7 @@ class TagTest {
         void success() {
             assertThatCode(() -> Tag.builder()
                     .tagName(new TagName("자바"))
+                    .tagReducedName(TagReducedName.from("자바"))
                     .build()
             ).doesNotThrowAnyException();
         }

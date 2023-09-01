@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
@@ -78,9 +77,7 @@ class RunnerPostTagTest {
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
 
-        private final Tag tag = Tag.builder()
-                .tagName(new TagName("자바"))
-                .build();
+        private final Tag tag = Tag.newInstance("자바");
 
         @DisplayName("성공한다.")
         @Test
