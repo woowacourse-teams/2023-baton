@@ -43,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
@@ -145,6 +146,42 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         });
     }
 
+    @DisplayName("ReviewStatus 로 RunnerPost 를 전체 조회한다.")
+    @Test
+    void success_readRunnerPostsByReviewStatus() {
+        // given
+        final Member ditoo = MemberFixture.createDitoo();
+        memberRepository.save(ditoo);
+        final Runner runner = RunnerFixture.createRunner(ditoo);
+        runnerRepository.save(runner);
+        final Member judy = MemberFixture.createJudy();
+        memberRepository.save(judy);
+        final Supporter supporter = SupporterFixture.create(judy);
+       supporterRepository.save(supporter);
+
+        final RunnerPost inProgressRunnerPost = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
+        inProgressRunnerPost.assignSupporter(supporter);
+        runnerPostRepository.save(inProgressRunnerPost);
+        final RunnerPost notStartedRunnerPostFirst = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
+        runnerPostRepository.save(notStartedRunnerPostFirst);
+        final RunnerPost notStartedRunnerPostSecond = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
+        runnerPostRepository.save(notStartedRunnerPostSecond);
+
+        // when
+        final PageRequest pageable = PageRequest.of(0, 10);
+        final Page<RunnerPost> actualInProgressRunnerPosts = runnerPostService.readRunnerPostsByReviewStatus(pageable, IN_PROGRESS);
+        final Page<RunnerPost> actualNotStarted = runnerPostService.readRunnerPostsByReviewStatus(pageable, NOT_STARTED);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actualInProgressRunnerPosts.getPageable()).isEqualTo(pageable);
+            softly.assertThat(actualInProgressRunnerPosts.getContent()).containsExactly(inProgressRunnerPost);
+
+            softly.assertThat(actualNotStarted.getPageable()).isEqualTo(pageable);
+            softly.assertThat(actualNotStarted.getContent()).containsExactly(notStartedRunnerPostFirst, notStartedRunnerPostSecond);
+        });
+    }
+
     @DisplayName("Supporter 외래키와 ReviewStatus 가 NOT_STARTED 가 아닌 것으로 러너 게시글을 조회한다.")
     @Test
     void readRunnerPostsBySupporterIdAndReviewStatusIsNot_NOT_STARTED() {
@@ -164,7 +201,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         // when
         final PageRequest pageable = PageRequest.of(0, 10);
         final Page<RunnerPost> pageRunnerPosts
-                = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), ReviewStatus.IN_PROGRESS);
+                = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), IN_PROGRESS);
 
         // then
         assertAll(
