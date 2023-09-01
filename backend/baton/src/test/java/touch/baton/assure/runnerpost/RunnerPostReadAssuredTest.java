@@ -11,7 +11,6 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Simple_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_전체_Simple_페이징_응답;
@@ -39,7 +38,7 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
         RunnerPostAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
-                .전체_러너_게시글_페이징을_조회한다(페이징_정보)
+                .리뷰_상태로_전체_러너_게시글_페이징을_조회한다(페이징_정보, ReviewStatus.NOT_STARTED)
 
                 .서버_응답()
                 .전체_러너_게시글_페이징_조회_성공을_검증한다(
