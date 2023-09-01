@@ -2,6 +2,7 @@ package touch.baton.fixture.domain;
 
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.vo.TagNameFixture;
 
 public abstract class TagFixture {
@@ -12,6 +13,7 @@ public abstract class TagFixture {
     public static Tag create(final TagName tagName) {
         return Tag.builder()
                 .tagName(tagName)
+                .tagReducedName(TagReducedName.from(tagName.getValue()))
                 .build();
     }
 

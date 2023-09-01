@@ -27,6 +27,7 @@ import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -97,6 +98,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
 
         final Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
+                .tagReducedName(TagReducedName.from("자바"))
                 .build();
         tagRepository.save(tag);
 

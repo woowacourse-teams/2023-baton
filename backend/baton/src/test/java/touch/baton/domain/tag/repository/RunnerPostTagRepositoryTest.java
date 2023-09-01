@@ -26,6 +26,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
@@ -87,6 +88,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
 
         final Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
+                .tagReducedName(TagReducedName.from("자바"))
                 .build();
         tagRepository.save(tag);
 
