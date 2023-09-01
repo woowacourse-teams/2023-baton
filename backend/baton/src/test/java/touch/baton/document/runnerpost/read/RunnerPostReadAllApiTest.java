@@ -27,6 +27,7 @@ import java.util.Optional;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.when;
@@ -63,32 +64,36 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
 
     @DisplayName("러너 게시글 전체 조회 API")
     @Test
-    void readAllRunnerPosts() throws Exception {
+    void readRunnerPostsByReviewStatus() throws Exception {
         // given
         final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena());
         final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
         final Tag javaTag = TagFixture.create(tagName("자바"));
         final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline, List.of(javaTag));
         final RunnerPost spyRunnerPost = spy(runnerPost);
+        final ReviewStatus reviewStatus = ReviewStatus.IN_PROGRESS;
         given(spyRunnerPost.getId()).willReturn(1L);
 
         // when
         final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
         final PageRequest pageOne = PageRequest.of(1, 10);
         final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
-        when(runnerPostService.readAllRunnerPosts(any())).thenReturn(pageRunnerPosts);
+        when(spyRunnerPost.getReviewStatus()).thenReturn(reviewStatus);
+        when(runnerPostService.readRunnerPostsByReviewStatus(any(), any())).thenReturn(pageRunnerPosts);
         when(runnerPostService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner")
                         .queryParam("size", String.valueOf(pageOne.getPageSize()))
-                        .queryParam("page", String.valueOf(pageOne.getPageNumber())))
+                        .queryParam("page", String.valueOf(pageOne.getPageNumber()))
+                        .queryParam("reviewStatus", String.valueOf(reviewStatus)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
                         queryParameters(
                                 parameterWithName("size").description("페이지 사이즈"),
-                                parameterWithName("page").description("페이지 번호")
+                                parameterWithName("page").description("페이지 번호"),
+                                parameterWithName("reviewStatus").description("리뷰 상태")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
