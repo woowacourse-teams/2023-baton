@@ -6,12 +6,20 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
   colorTheme: 'RED' | 'WHITE' | 'GRAY';
   fontSize?: string | number;
   fontWeight?: number;
+  mobileFontSize?: string;
 }
 
-const Label = ({ children, width, height, colorTheme, fontSize, fontWeight }: Props) => {
+const Label = ({ children, width, height, colorTheme, fontSize, fontWeight, mobileFontSize }: Props) => {
   return (
     <S.LabelWrapper>
-      <S.Label $width={width} $height={height} $colorTheme={colorTheme} $fontSize={fontSize} $fontWeight={fontWeight}>
+      <S.Label
+        $width={width}
+        $height={height}
+        $colorTheme={colorTheme}
+        $fontSize={fontSize}
+        $fontWeight={fontWeight}
+        $mobileFontSize={mobileFontSize}
+      >
         {children}
       </S.Label>
     </S.LabelWrapper>
@@ -29,6 +37,7 @@ const S = {
     $height?: string | number;
     $fontSize?: string | number;
     $fontWeight?: number;
+    $mobileFontSize?: string;
   }>`
     ${({ $colorTheme }) => themeStyles[$colorTheme]}
 
@@ -43,6 +52,12 @@ const S = {
 
     font-size: ${({ $fontSize }) => $fontSize || '12px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
+
+    @media (max-width: 768px) {
+      padding: 5px 7px;
+
+      font-size: ${({ $mobileFontSize }) => $mobileFontSize};
+    }
   `,
 };
 

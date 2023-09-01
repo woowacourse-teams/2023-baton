@@ -25,8 +25,14 @@ const S = {
   `,
 
   ChildrenWrapper: styled.article`
-    width: 1200px;
+    max-width: 1200px;
+    width: 100%;
 
     margin-bottom: 80px;
+    padding: 0 25px;
+
+    @media (max-width: 768px) {
+      padding: 25px;
+    }
   `,
 };

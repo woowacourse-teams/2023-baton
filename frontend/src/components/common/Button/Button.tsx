@@ -50,6 +50,11 @@ const S = {
 
     font-size: ${({ $fontSize }) => $fontSize || '18px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
+
+    @media (max-width: 768px) {
+      width: 100%;
+      height: 100%;
+    }
   `,
 };
 

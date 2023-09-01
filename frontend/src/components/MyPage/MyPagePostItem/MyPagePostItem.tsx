@@ -74,7 +74,8 @@ const S = {
     display: flex;
     justify-content: space-between;
 
-    width: 1200px;
+    min-width: 360px;
+    width: 100%;
     height: 206px;
     padding: 35px 40px;
 
@@ -83,6 +84,10 @@ const S = {
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      padding: 25px 30px;
+    }
   `,
 
   PostTitle: styled.p`
@@ -90,6 +95,10 @@ const S = {
 
     font-size: 28px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   DeadLineContainer: styled.div`
@@ -102,6 +111,12 @@ const S = {
     margin-bottom: 60px;
 
     color: var(--gray-600);
+
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+
+      font-size: 12px;
+    }
   `,
 
   TagContainer: styled.div`

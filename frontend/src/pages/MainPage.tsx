@@ -90,10 +90,18 @@ export default MainPage;
 const S = {
   TitleWrapper: styled.header`
     margin: 72px 0 53px 0;
+
+    @media (max-width: 768px) {
+      margin-top: 10px;
+    }
   `,
   Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
   `,
   ControlPanelContainer: styled.div`
     display: flex;
