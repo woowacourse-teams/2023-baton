@@ -11,6 +11,7 @@ import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.time.LocalDateTime.now;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Simple_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_전체_Simple_페이징_응답;

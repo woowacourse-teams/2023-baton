@@ -234,10 +234,11 @@ public class RunnerPostAssuredSupport {
             return this;
         }
 
-        public RunnerPostClientRequestBuilder 전체_러너_게시글_페이징을_조회한다(final Pageable 페이징_정보) {
+        public RunnerPostClientRequestBuilder 리뷰_상태로_전체_러너_게시글_페이징을_조회한다(final Pageable 페이징_정보, final ReviewStatus 리뷰_상태) {
             final Map<String, Object> queryParams = Map.of(
                     "size", 페이징_정보.getPageSize(),
-                    "page", 페이징_정보.getPageNumber()
+                    "page", 페이징_정보.getPageNumber(),
+                    "reviewStatus", 리뷰_상태
             );
 
             response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
