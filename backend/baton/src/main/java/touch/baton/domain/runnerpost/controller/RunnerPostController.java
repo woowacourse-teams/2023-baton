@@ -103,7 +103,7 @@ public class RunnerPostController {
                 }).toList();
 
         final Page<RunnerPostResponse.Simple> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
@@ -126,7 +126,7 @@ public class RunnerPostController {
                 }).toList();
 
         final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
@@ -161,7 +161,7 @@ public class RunnerPostController {
                 }).toList();
 
         final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
@@ -184,7 +184,7 @@ public class RunnerPostController {
                 ).toList();
 
         final Page<RunnerPostResponse.SimpleInMyPage> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalPages());
+                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
     }
