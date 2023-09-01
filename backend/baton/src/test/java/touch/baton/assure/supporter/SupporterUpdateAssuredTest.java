@@ -19,10 +19,8 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보를_수정한다() {
         // given
-        // given
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
-        // when, then
         // when, then
         SupporterAssuredSupport
                 .클라이언트_요청()
