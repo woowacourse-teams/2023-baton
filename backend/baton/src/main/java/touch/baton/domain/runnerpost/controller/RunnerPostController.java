@@ -88,7 +88,7 @@ public class RunnerPostController {
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readAllRunnerPosts(
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostsByReviewStatus(
             @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
