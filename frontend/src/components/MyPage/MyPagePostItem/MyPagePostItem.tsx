@@ -7,7 +7,7 @@ import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
 import { MyPagePost } from '@/types/myPage';
 import MyPagePostButton from '../MyPagePostButton/MyPagePostButton';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 
 interface Props extends MyPagePost {
   isRunner: boolean;

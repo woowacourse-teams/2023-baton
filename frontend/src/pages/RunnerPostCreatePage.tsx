@@ -13,7 +13,7 @@ import { postRequest } from '@/api/fetch';
 import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();

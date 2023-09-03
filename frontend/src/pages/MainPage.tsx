@@ -5,7 +5,7 @@ import { ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
 import { GetRunnerPostResponse, RunnerPost } from '@/types/runnerPost';
 import React, { useContext, useEffect, useState } from 'react';

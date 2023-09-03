@@ -13,7 +13,7 @@ import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/po
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_TITLE } from '@/constants/message';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);

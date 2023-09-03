@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import TextArea from '../Textarea/Textarea';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 
 interface Props {
   messageState: string;

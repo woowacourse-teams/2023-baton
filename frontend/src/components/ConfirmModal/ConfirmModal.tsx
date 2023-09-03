@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import { styled } from 'styled-components';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 
 interface Props {
   contents: string;

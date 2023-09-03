@@ -19,7 +19,7 @@ import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_M
 import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 import { validateMessage } from '@/utils/validate';
-import useViewport from '@/hooks/useViewPort';
+import useViewport from '@/hooks/useViewport';
 
 const RunnerPostPage = () => {
   const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
