@@ -116,8 +116,8 @@ const S = {
   `,
 
   Logo: styled.div`
-    width: 226px;
-    height: 40px;
+    width: 197px;
+    height: 35px;
 
     background-image: url(${LogoImage});
     background-size: cover;
