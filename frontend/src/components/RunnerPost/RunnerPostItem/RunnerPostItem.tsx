@@ -189,13 +189,17 @@ const S = {
     width: 20px;
 
     margin-left: 8px;
+
+    @media (max-width: 768px) {
+      width: 15px;
+    }
   `,
 
   statisticsText: styled.p`
     font-size: 14px;
 
     @media (max-width: 768px) {
-      font-size: 12px;
+      font-size: 10px;
     }
   `,
 };
