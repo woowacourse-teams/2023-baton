@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import { styled } from 'styled-components';
+import useViewport from '@/hooks/useViewPort';
 
 interface Props {
   contents: string;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmText, cancelText }: Props) => {
+  const { isMobile } = useViewport();
+
   useEffect(() => {
     const handleEscapeKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeModal();
@@ -25,7 +28,7 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
   }, []);
 
   return (
-    <Modal width="495px" height="211px" closeModal={closeModal}>
+    <Modal width={isMobile ? '120px' : '495px'} height="211px" closeModal={closeModal}>
       <S.ConfirmModalContainer>
         <S.ConfirmMessage>{contents}</S.ConfirmMessage>
         <S.ButtonContainer>
@@ -36,7 +39,7 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
             colorTheme="WHITE"
             width="134px"
             height="35px"
-            fontSize="16px"
+            fontSize={isMobile ? '12px' : '14px'}
             fontWeight={700}
             onClick={handleClickConfirmButton}
           >

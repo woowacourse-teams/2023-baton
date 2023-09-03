@@ -8,19 +8,20 @@ import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
-import { addDays, addHours, getDatetime, getDayLastTime, isPastTime } from '@/utils/date';
+import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
 import { postRequest } from '@/api/fetch';
 import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import useViewport from '@/hooks/useViewPort';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
   const { goBack, goToCreationResultPage } = usePageRouter();
   const { getToken } = useToken();
-
   const { showErrorToast } = useContext(ToastContext);
+  const { isMobile } = useViewport();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
@@ -139,23 +140,30 @@ const RunnerPostCreatePage = () => {
               inputTextState={title}
               handleInputTextState={changeTitle}
               maxLength={30}
-              width="800px"
+              width={isMobile ? '300px' : '800px'}
               height="40px"
-              fontSize="38px"
+              fontSize={isMobile ? '20px' : '38px'}
+              maxLengthFontSize={isMobile ? '14px' : '18px'}
               fontWeight="700"
               placeholder="제목을 입력해주세요"
               autoFocus={true}
             />
           </S.InputContainer>
           <S.InputContainer>
-            <TagInput tags={tags} pushTag={pushTag} popTag={removeTag} width="100%" />
+            <TagInput
+              tags={tags}
+              pushTag={pushTag}
+              popTag={removeTag}
+              width="100%"
+              fontSize={isMobile ? '14px' : '18px'}
+            />
           </S.InputContainer>
 
           <S.InputContainer>
             <InputBox
               inputTextState={pullRequestUrl}
               handleInputTextState={changePullRequestUrl}
-              width="500px"
+              width={isMobile ? '300px' : '500px'}
               placeholder="코드 리뷰받을 PR 주소를 입력해주세요"
             />
           </S.InputContainer>
@@ -172,7 +180,7 @@ const RunnerPostCreatePage = () => {
           </S.InputContainer>
           <TextArea
             inputTextState={contents}
-            width="1200px"
+            width={isMobile ? '300px' : '1200px'}
             height="340px"
             maxLength={500}
             handleInputTextState={changeContents}
@@ -210,6 +218,10 @@ const S = {
     gap: 20px;
 
     padding: 0 20px;
+
+    @media (max-width: 768px) {
+      padding: 0;
+    }
   `,
 
   InputContainer: styled.div`

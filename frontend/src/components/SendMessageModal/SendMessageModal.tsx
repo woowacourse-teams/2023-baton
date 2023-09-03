@@ -3,6 +3,7 @@ import { styled } from 'styled-components';
 import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import TextArea from '../Textarea/Textarea';
+import useViewport from '@/hooks/useViewPort';
 
 interface Props {
   messageState: string;
@@ -19,13 +20,15 @@ const SendMessageModal = ({
   closeModal,
   handleClickSendButton,
 }: Props) => {
+  const { isMobile } = useViewport();
+
   return (
-    <Modal width="900px" height="500px" closeModal={closeModal}>
+    <Modal width={isMobile ? '90%' : '900px'} height="500px" closeModal={closeModal}>
       <S.SendMessageModalContainer>
         <TextArea
           width="100%"
           height="100%"
-          fontSize="28px"
+          fontSize={isMobile ? '18px' : '28px'}
           lineHeight={1.2}
           maxLength={500}
           padding="0"
@@ -34,10 +37,15 @@ const SendMessageModal = ({
           inputTextState={messageState}
         />
         <S.ButtonContainer>
-          <Button colorTheme="GRAY" fontWeight={700} onClick={closeModal}>
+          <Button colorTheme="GRAY" fontSize={isMobile ? '12px' : '14px'} fontWeight={700} onClick={closeModal}>
             취소
           </Button>
-          <Button colorTheme="WHITE" fontWeight={700} onClick={handleClickSendButton}>
+          <Button
+            colorTheme="WHITE"
+            fontSize={isMobile ? '12px' : '14px'}
+            fontWeight={700}
+            onClick={handleClickSendButton}
+          >
             전송
           </Button>
         </S.ButtonContainer>
