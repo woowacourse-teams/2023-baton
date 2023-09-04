@@ -52,6 +52,10 @@ const RunnerPostSearchBox = ({
     searchPosts(reviewStatus, tag);
   };
 
+  const handleClickSearchedTag = (e: React.MouseEvent<HTMLLIElement>) => {
+    searchPosts(reviewStatus, e.currentTarget.id);
+  };
+
   return (
     <S.SearchBoxContainer onSubmit={handleSubmit}>
       <RunnerPostFilter reviewStatus={reviewStatus} handleClickRadioButton={handleClickRadioButton} />
@@ -60,17 +64,13 @@ const RunnerPostSearchBox = ({
           <S.Icon src={TagIcon} />
           <S.Title>Tags</S.Title>
         </S.TitleContainer>
-        <S.InputContainer>
-          <S.TagInput
-            placeholder="태그명 검색"
-            value={tag}
-            onChange={handleChangeInput}
-            onFocus={onFocus}
-            onBlur={outFocus}
-          />
+        <S.InputContainer onFocus={onFocus} onBlur={outFocus}>
+          <S.TagInput placeholder="태그명 검색" value={tag} onChange={handleChangeInput} />
           <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
             {searchedTags.map((tag) => (
-              <S.searchedTagItem key={tag}>{tag}</S.searchedTagItem>
+              <S.searchedTagItem key={tag} id={tag} onMouseDown={handleClickSearchedTag}>
+                {tag}
+              </S.searchedTagItem>
             ))}
           </S.SearchedTagList>
         </S.InputContainer>
