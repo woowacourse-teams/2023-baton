@@ -13,6 +13,7 @@ import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -27,8 +28,51 @@ public class RunnerAssuredSupport {
         return new RunnerClientRequestBuilder();
     }
 
-    public static RunnerResponse.MyProfile 러너_본인_프로필_응답(final Runner 러너) {
-        return RunnerResponse.MyProfile.from(러너);
+    public static RunnerResponse.MyProfile 러너_본인_프로필_응답(final Runner 러너, final List<String> 러너_태그_목록) {
+        return new RunnerResponse.MyProfile(
+                러너.getMember().getMemberName().getValue(),
+                러너.getMember().getCompany().getValue(),
+                러너.getMember().getImageUrl().getValue(),
+                러너.getMember().getGithubUrl().getValue(),
+                러너.getIntroduction().getValue(),
+                러너_태그_목록
+        );
+    }
+
+    public static RunnerUpdateRequest 러너_본인_프로필_수정_요청(final String 러너_이름,
+                                                      final String 회사,
+                                                      final String 러너_소개글,
+                                                      final List<String> 러너_기술태그_목록
+    ) {
+        return new RunnerUpdateRequest(러너_이름, 회사, 러너_소개글, 러너_기술태그_목록);
+    }
+
+    public static RunnerProfileResponse.Detail 러너_프로필_상세_응답(final Runner 러너) {
+        final List<String> 태그_목록 = 러너.getRunnerTechnicalTags().getRunnerTechnicalTags().stream()
+                .map(runnerTechnicalTag -> runnerTechnicalTag.getTechnicalTag().getTagName().getValue())
+                .toList();
+
+        return new RunnerProfileResponse.Detail(
+                러너.getId(),
+                러너.getMember().getMemberName().getValue(),
+                러너.getMember().getImageUrl().getValue(),
+                러너.getMember().getGithubUrl().getValue(),
+                러너.getIntroduction().getValue(),
+                러너.getMember().getCompany().getValue(),
+                태그_목록
+        );
+    }
+
+    public static RunnerProfileResponse.Detail 러너_프로필_상세_응답(final Runner 러너, final RunnerUpdateRequest 러너_본인_프로필_수정_요청) {
+        return new RunnerProfileResponse.Detail(
+                러너.getId(),
+                러너_본인_프로필_수정_요청.name(),
+                러너.getMember().getImageUrl().getValue(),
+                러너.getMember().getGithubUrl().getValue(),
+                러너_본인_프로필_수정_요청.introduction(),
+                러너_본인_프로필_수정_요청.company(),
+                러너_본인_프로필_수정_요청.technicalTags()
+        );
     }
 
     public static class RunnerClientRequestBuilder {
@@ -89,7 +133,7 @@ public class RunnerAssuredSupport {
 
         public void 러너_프로필_상세_조회를_검증한다(final RunnerProfileResponse.Detail 러너_프로필_상세_응답) {
             final RunnerProfileResponse.Detail actual = this.response.as(RunnerProfileResponse.Detail.class);
-            
+
             assertSoftly(softly -> {
                         softly.assertThat(actual.runnerId()).isNotNull();
                         softly.assertThat(actual.name()).isEqualTo(러너_프로필_상세_응답.name());

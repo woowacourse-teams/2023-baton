@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
 
     @Query(value = """
-            select rp
+            select rp, r, m
             from RunnerPost rp
             join fetch Runner r on r.id = rp.runner.id
             join fetch Member m on m.id = r.member.id

@@ -1,14 +1,11 @@
 package touch.baton.assure.runnerpost;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
+import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.common.response.ErrorResponse;
-import touch.baton.domain.member.Member;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
-import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.fixture.domain.RunnerFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,19 +15,11 @@ import static org.springframework.http.HttpStatus.CREATED;
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostCreateAssuredTest extends AssuredTestConfig {
 
-    private static String 액세스_토큰;
-
-    @BeforeEach
-    void setUp() {
-        final String 소셜_아이디 = "hongSile";
-        final Member 사용자 = memberRepository.save(MemberFixture.createWithSocialId(소셜_아이디));
-        runnerRepository.save(RunnerFixture.createRunner(사용자));
-        액세스_토큰 = login(소셜_아이디);
-    }
-
     @Test
     void 러너_게시글_등록이_성공한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
@@ -41,7 +30,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -51,6 +40,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_제목이_null이면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest(null,
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
@@ -61,7 +52,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -71,6 +62,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_태그가_null이면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 null,
                 "https://github.com/cookienc",
@@ -81,7 +74,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -91,6 +84,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_PR_URL이_null이면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 null,
@@ -101,7 +96,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -111,6 +106,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_마감기한이_null이면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
@@ -121,7 +118,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -131,6 +128,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_마감기한이_현재보다_과거면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
@@ -141,7 +140,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -151,6 +150,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_내용이_null이면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
@@ -161,7 +162,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
@@ -171,6 +172,8 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_내용이_1000자_보다_길면_러너_게시글_등록_실패한다() {
         // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
@@ -181,7 +184,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         // when, then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
-                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()

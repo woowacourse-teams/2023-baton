@@ -7,6 +7,8 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
 
+import java.util.List;
+
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -17,6 +19,14 @@ public class SupporterFeedbackAssuredSupport {
 
     public static SupporterFeedbackClientRequestBuilder 클라이언트_요청() {
         return new SupporterFeedbackClientRequestBuilder();
+    }
+
+    public static SupporterFeedBackCreateRequest 서포터_피드백_요청(final String 리뷰_타입,
+                                                            final List<String> 디스크립션,
+                                                            final Long 서포터_식별자값,
+                                                            final Long 러너_게시글_식별자값
+    ) {
+        return new SupporterFeedBackCreateRequest(리뷰_타입, 디스크립션, 서포터_식별자값, 러너_게시글_식별자값);
     }
 
     public static class SupporterFeedbackClientRequestBuilder {

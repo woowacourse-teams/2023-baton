@@ -8,10 +8,12 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.MissingClaimException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 
+@Profile("!test")
 @RequiredArgsConstructor
 @Component
 public class JwtDecoder {
