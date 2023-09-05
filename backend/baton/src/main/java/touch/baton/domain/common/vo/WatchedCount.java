@@ -18,7 +18,7 @@ public class WatchedCount {
     private static final String DEFAULT_VALUE = "0";
 
     @ColumnDefault(DEFAULT_VALUE)
-    @Column(name = "watch_count", nullable = false)
+    @Column(name = "watched_count", nullable = false)
     private int value;
 
     public WatchedCount(final int value) {
