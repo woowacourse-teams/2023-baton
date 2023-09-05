@@ -25,7 +25,7 @@ class RunnerReadByRunnerIdAssuredTest extends AssuredTestConfig {
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Runner 러너_헤나 = runnerRepository.getBySocialId(헤나_소셜_아이디);
 
-        final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = 러너_본인_프로필_수정_요청("수정돤_헤나", "수정된_회사", "수정된_러너_소개글", List.of("자바", "스프링"));
+        final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = 러너_본인_프로필_수정_요청("수정된_헤나", "수정된_회사", "수정된_러너_소개글", List.of("자바", "스프링"));
         RunnerAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
