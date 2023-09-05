@@ -43,8 +43,8 @@ public class OauthAssuredSupport {
         public OauthClientRequestBuilder AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(final OauthType 소셜_타입, final String 사용자의_AuthCode) {
             response = AssuredSupport.get(
                     "/api/v1/oauth/login/{oauthType}",
-                    new QueryParams(Map.of("code", 사용자의_AuthCode)),
-                    new PathParams(Map.of("oauthType", 소셜_타입))
+                    new PathParams(Map.of("oauthType", 소셜_타입)),
+                    new QueryParams(Map.of("code", 사용자의_AuthCode))
             );
 
             return this;

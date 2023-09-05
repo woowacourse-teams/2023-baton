@@ -93,7 +93,7 @@ public class AssuredSupport {
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final QueryParams queryParams, final PathParams pathParams) {
+    public static ExtractableResponse<Response> get(final String uri, final PathParams pathParams, final QueryParams queryParams) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .pathParams(pathParams.getValues())
