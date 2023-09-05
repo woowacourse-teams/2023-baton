@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import TagIcon from '@/assets/tag-icon.svg';
 import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
@@ -24,9 +24,14 @@ const RunnerPostSearchBox = ({
   searchPosts,
 }: Props) => {
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
+  const [inputIndex, setInputIndex] = useState<number>(0);
+  const [inputBuffer, setInputBuffer] = useState<string>('');
+
+  const inputRefs = useRef<HTMLElement[]>([]);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTag(e.target.value);
+    setInputBuffer(e.target.value);
   };
 
   const handleClickRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,11 +43,11 @@ const RunnerPostSearchBox = ({
     setReviewStatus(clickedStatus);
   };
 
-  const onFocus = () => {
+  const handleInputFocus = () => {
     setIsInputFocused(true);
   };
 
-  const outFocus = () => {
+  const handleInputBlur = () => {
     setIsInputFocused(false);
   };
 
@@ -50,10 +55,55 @@ const RunnerPostSearchBox = ({
     e.preventDefault();
 
     searchPosts(reviewStatus, tag);
+
+    (document.activeElement as HTMLElement).blur();
   };
 
   const handleClickSearchedTag = (e: React.MouseEvent<HTMLLIElement>) => {
     searchPosts(reviewStatus, e.currentTarget.id);
+
+    (document.activeElement as HTMLElement).blur();
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) return;
+
+    e.preventDefault();
+
+    switch (e.key) {
+      case 'ArrowUp':
+        handleArrowUp();
+        break;
+      case 'ArrowDown':
+        handleArrowDown();
+        break;
+      case 'Enter':
+        handleEnter();
+    }
+  };
+
+  const handleArrowUp = () => {
+    const nextIndex = inputIndex >= 1 ? inputIndex - 1 : searchedTags.length;
+
+    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1]);
+    setInputIndex(nextIndex);
+
+    inputRefs.current[nextIndex].focus();
+  };
+
+  const handleArrowDown = () => {
+    const nextIndex = inputIndex < searchedTags.length ? inputIndex + 1 : 0;
+
+    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1]);
+    setInputIndex(nextIndex);
+
+    inputRefs.current[nextIndex].focus();
+  };
+
+  const handleEnter = () => {
+    searchPosts(reviewStatus, tag);
+
+    (document.activeElement as HTMLElement).blur();
   };
 
   return (
@@ -64,11 +114,26 @@ const RunnerPostSearchBox = ({
           <S.Icon src={TagIcon} />
           <S.Title>Tags</S.Title>
         </S.TitleContainer>
-        <S.InputContainer onFocus={onFocus} onBlur={outFocus}>
-          <S.TagInput placeholder="태그명 검색" value={tag} onChange={handleChangeInput} />
+        <S.InputContainer onFocus={handleInputFocus} onBlur={handleInputBlur} onKeyDown={handleKeyDown}>
+          <S.TagInput
+            placeholder="태그명 검색"
+            value={tag}
+            ref={(element) => {
+              if (element) inputRefs.current[0] = element;
+            }}
+            onChange={handleChangeInput}
+          />
           <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
-            {searchedTags.map((tag) => (
-              <S.searchedTagItem key={tag} id={tag} onMouseDown={handleClickSearchedTag}>
+            {searchedTags.map((tag, idx) => (
+              <S.searchedTagItem
+                key={tag}
+                id={tag}
+                tabIndex={idx}
+                ref={(element) => {
+                  if (element) inputRefs.current[idx + 1] = element;
+                }}
+                onMouseDown={handleClickSearchedTag}
+              >
                 {tag}
               </S.searchedTagItem>
             ))}
@@ -149,6 +214,12 @@ const S = {
 
     &:hover {
       background: var(--gray-200);
+    }
+
+    &:focus {
+      background: var(--gray-200);
+
+      outline: none;
     }
   `,
 };
