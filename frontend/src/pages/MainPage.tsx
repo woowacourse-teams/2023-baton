@@ -52,7 +52,7 @@ const MainPage = () => {
     ]);
 
     if (tag) {
-      params.set('tag', tag);
+      params.set('tagName', tag);
     }
 
     setPage(page + 1);
@@ -74,7 +74,7 @@ const MainPage = () => {
     ]);
 
     if (tag) {
-      params.set('tag', tag);
+      params.set('tagName', tag);
       setTag(tag);
     }
 
