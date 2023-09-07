@@ -1,16 +1,20 @@
-import React, { useRef, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import TagIcon from '@/assets/tag-icon.svg';
 import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
 import { ReviewStatus } from '@/types/runnerPost';
+import { getRequest } from '@/api/fetch';
+import { GetSearchTagResponse, Tag } from '@/types/tags';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_TITLE } from '@/constants/message';
 
 interface Props {
   reviewStatus: ReviewStatus;
   setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus>>;
   tag: string;
   setTag: React.Dispatch<React.SetStateAction<string>>;
-  searchedTags: string[];
-  setSearchedTags: React.Dispatch<React.SetStateAction<string[]>>;
+  searchedTags: Tag[];
+  setSearchedTags: React.Dispatch<React.SetStateAction<Tag[]>>;
   searchPosts: (reviewStatus: ReviewStatus, tag?: string) => void;
 }
 
@@ -28,10 +32,19 @@ const RunnerPostSearchBox = ({
   const [inputBuffer, setInputBuffer] = useState<string>('');
 
   const inputRefs = useRef<HTMLElement[]>([]);
+  const timer = useRef<number | null>(null);
+
+  const { showErrorToast } = useContext(ToastContext);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTag(e.target.value);
     setInputBuffer(e.target.value);
+
+    if (timer.current) window.clearTimeout(timer.current);
+
+    timer.current = window.setTimeout(() => {
+      searchTags(e.target.value);
+    }, 500);
   };
 
   const handleClickRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +98,7 @@ const RunnerPostSearchBox = ({
   const handleArrowUp = () => {
     const nextIndex = inputIndex >= 1 ? inputIndex - 1 : searchedTags.length;
 
-    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1]);
+    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1].tagName);
     setInputIndex(nextIndex);
 
     inputRefs.current[nextIndex].focus();
@@ -94,7 +107,7 @@ const RunnerPostSearchBox = ({
   const handleArrowDown = () => {
     const nextIndex = inputIndex < searchedTags.length ? inputIndex + 1 : 0;
 
-    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1]);
+    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1].tagName);
     setInputIndex(nextIndex);
 
     inputRefs.current[nextIndex].focus();
@@ -104,6 +117,16 @@ const RunnerPostSearchBox = ({
     searchPosts(reviewStatus, tag);
 
     (document.activeElement as HTMLElement).blur();
+  };
+
+  const searchTags = (keyword: string) => {
+    getRequest(`/posts/runner/tags/search?name=${keyword}`)
+      .then(async (response) => {
+        const data: GetSearchTagResponse = await response.json();
+
+        setSearchedTags(data.data);
+      })
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
   };
 
   return (
@@ -126,15 +149,15 @@ const RunnerPostSearchBox = ({
           <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
             {searchedTags.map((tag, idx) => (
               <S.searchedTagItem
-                key={tag}
-                id={tag}
+                key={tag.tagId}
+                id={tag.tagId.toString()}
                 tabIndex={idx}
                 ref={(element) => {
                   if (element) inputRefs.current[idx + 1] = element;
                 }}
                 onMouseDown={handleClickSearchedTag}
               >
-                {tag}
+                {tag.tagName}
               </S.searchedTagItem>
             ))}
           </S.SearchedTagList>

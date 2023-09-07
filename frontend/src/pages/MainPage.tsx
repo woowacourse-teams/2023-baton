@@ -8,6 +8,7 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetRunnerPostResponse, ReviewStatus, RunnerPost } from '@/types/runnerPost';
+import { Tag } from '@/types/tags';
 import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
@@ -23,7 +24,7 @@ const MainPage = () => {
   const [page, setPage] = useState<number>(1);
   const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
   const [tag, setTag] = useState<string>('');
-  const [searchedTags, setSearchedTags] = useState<string[]>([]);
+  const [searchedTags, setSearchedTags] = useState<Tag[]>([]);
 
   const handleClickMoreButton = () => {
     getRunnerPosts();
