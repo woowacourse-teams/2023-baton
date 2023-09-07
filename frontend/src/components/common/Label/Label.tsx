@@ -29,6 +29,7 @@ const S = {
     $height?: string | number;
     $fontSize?: string | number;
     $fontWeight?: number;
+    $mobileFontSize?: string;
   }>`
     ${({ $colorTheme }) => themeStyles[$colorTheme]}
 
@@ -43,6 +44,12 @@ const S = {
 
     font-size: ${({ $fontSize }) => $fontSize || '12px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
+
+    @media (max-width: 768px) {
+      padding: 5px 7px;
+
+      font-size: ${({ $fontSize }) => $fontSize};
+    }
   `,
 };
 

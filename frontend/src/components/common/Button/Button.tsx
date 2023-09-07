@@ -43,13 +43,20 @@ const S = {
   }>`
     ${({ $colorTheme }) => themeStyles[$colorTheme]}
 
-    width: ${({ $width }) => $width || '180px'};
+    max-width: ${({ $width }) => $width || '180px'};
+    width: 100%;
     height: ${({ $height }) => $height || '40px'};
 
     padding: 10px 10px;
 
     font-size: ${({ $fontSize }) => $fontSize || '18px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
+
+    @media (max-width: 768px) {
+      max-width: ${({ $width }) => $width};
+      width: 100%;
+      height: 100%;
+    }
   `,
 };
 

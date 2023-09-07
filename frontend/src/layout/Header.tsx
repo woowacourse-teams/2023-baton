@@ -2,6 +2,7 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
+import LogoImageMobile from '@/assets/logo-image-mobile.svg';
 import { useToken } from '@/hooks/useToken';
 import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
@@ -56,7 +57,7 @@ const Header = () => {
   return (
     <S.HeaderWrapper>
       <S.HeaderContainer>
-        <S.Logo src={LogoImage} onClick={goToMainPage} alt="바톤로고" />
+        <S.Logo onClick={goToMainPage} />
         <S.MenuContainer>
           {hasToken() ? (
             <>
@@ -97,7 +98,8 @@ const S = {
     justify-content: space-between;
     align-items: center;
 
-    width: 1200px;
+    max-width: 1200px;
+    width: 100%;
     height: 80px;
   `,
 
@@ -107,19 +109,38 @@ const S = {
     gap: 10px;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      gap: 5px;
+    }
   `,
 
-  Logo: styled.img`
-    width: 140px;
-    height: 40px;
+  Logo: styled.div`
+    width: 197px;
+    height: 35px;
+
+    background-image: url(${LogoImage});
+    background-size: cover;
+    background-repeat: no-repeat;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      background-image: url(${LogoImageMobile});
+
+      width: 53px;
+      height: 30px;
+    }
   `,
 
   MenuContainer: styled.div`
     display: flex;
     align-items: center;
     gap: 30px;
+
+    @media (max-width: 768px) {
+      gap: 13px;
+    }
   `,
 
   LoginButton: styled.button`

@@ -7,6 +7,7 @@ import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
 import { MyPagePost } from '@/types/myPage';
 import MyPagePostButton from '../MyPagePostButton/MyPagePostButton';
+import useViewport from '@/hooks/useViewport';
 
 interface Props extends MyPagePost {
   isRunner: boolean;
@@ -25,6 +26,8 @@ const MyPagePostItem = ({
 }: Props) => {
   const { goToRunnerPostPage } = usePageRouter();
 
+  const { isMobile } = useViewport();
+
   const handlePostClick = () => {
     goToRunnerPostPage(runnerPostId);
   };
@@ -37,6 +40,7 @@ const MyPagePostItem = ({
           <S.DeadLine>{deadline} 까지</S.DeadLine>
           <Label
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+            fontSize={isMobile ? '10px' : ''}
           >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
@@ -74,7 +78,8 @@ const S = {
     display: flex;
     justify-content: space-between;
 
-    width: 1200px;
+    min-width: 360px;
+    width: 100%;
     height: 206px;
     padding: 35px 40px;
 
@@ -83,6 +88,10 @@ const S = {
     box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.2);
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      padding: 25px 30px;
+    }
   `,
 
   PostTitle: styled.p`
@@ -90,6 +99,10 @@ const S = {
 
     font-size: 28px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   DeadLineContainer: styled.div`
@@ -102,6 +115,12 @@ const S = {
     margin-bottom: 60px;
 
     color: var(--gray-600);
+
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+
+      font-size: 12px;
+    }
   `,
 
   TagContainer: styled.div`
