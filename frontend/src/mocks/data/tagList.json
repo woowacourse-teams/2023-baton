@@ -1,0 +1,32 @@
+{
+  "data": [
+    {
+      "tagId": 1,
+      "tagName": "java"
+    },
+    {
+      "tagId": 2,
+      "tagName": "java1"
+    },
+    {
+      "tagId": 3,
+      "tagName": "java17"
+    },
+    {
+      "tagId": 4,
+      "tagName": "javascript"
+    },
+    {
+      "tagId": 5,
+      "tagName": "javascript map"
+    },
+    {
+      "tagId": 6,
+      "tagName": "react"
+    },
+    {
+      "tagId": 7,
+      "tagName": "react 18"
+    }
+  ]
+}
