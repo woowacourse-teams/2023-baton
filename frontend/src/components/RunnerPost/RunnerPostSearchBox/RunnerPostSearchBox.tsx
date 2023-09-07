@@ -79,7 +79,12 @@ const RunnerPostSearchBox = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) return;
+    if (!['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+      inputRefs.current[0].focus();
+      setInputIndex(0);
+
+      return;
+    }
 
     e.preventDefault();
 
