@@ -3,6 +3,7 @@ package touch.baton.domain.tag.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import touch.baton.domain.runnerpost.controller.response.TagSearchResponse;
 import touch.baton.domain.tag.RunnerPostTag;
 
 import java.util.List;
