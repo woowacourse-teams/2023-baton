@@ -7,7 +7,7 @@ export const REVIEW_STATUS_LABEL_TEXT: { [key in ReviewStatus]: string } = {
   NOT_STARTED: '리뷰 대기중',
   IN_PROGRESS: '리뷰 진행중',
   DONE: '리뷰 완료',
-  OVERDUE: '마감기한 지남',
+  OVERDUE: '기간 만료',
 };
 
 export const REVIEW_STATUS: ReviewStatus[] = Object.keys(REVIEW_STATUS_LABEL_TEXT) as ReviewStatus[];
