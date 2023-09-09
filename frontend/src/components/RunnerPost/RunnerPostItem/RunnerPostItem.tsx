@@ -7,12 +7,15 @@ import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
+import useViewport from '@/hooks/useViewport';
 
 const RunnerPostItem = ({
   runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, applicantCount, reviewStatus },
 }: {
   runnerPostData: RunnerPost;
 }) => {
+  const { isMobile } = useViewport();
+
   const { goToRunnerPostPage } = usePageRouter();
 
   const handlePostClick = () => {
@@ -27,6 +30,7 @@ const RunnerPostItem = ({
           <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
           <Label
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+            fontSize={isMobile ? '10px' : ''}
           >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
@@ -66,8 +70,9 @@ const S = {
     display: flex;
     justify-content: space-between;
 
-    width: 1200px;
-    height: 206px;
+    min-width: 360px;
+    width: 100%;
+    height: max-content;
     padding: 35px 40px;
 
     border: 0.5px solid var(--gray-500);
@@ -81,6 +86,10 @@ const S = {
       transform: scale(1.015);
       outline: 1.5px solid var(--baton-red);
     }
+
+    @media (max-width: 768px) {
+      padding: 25px 30px;
+    }
   `,
 
   PostTitle: styled.p`
@@ -88,6 +97,10 @@ const S = {
 
     font-size: 28px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   DeadLineContainer: styled.div`
@@ -100,6 +113,12 @@ const S = {
     margin-bottom: 60px;
 
     color: var(--gray-600);
+
+    @media (max-width: 768px) {
+      margin-bottom: 40px;
+
+      font-size: 12px;
+    }
   `,
 
   TagContainer: styled.div`
@@ -110,9 +129,11 @@ const S = {
       color: var(--gray-600);
     }
   `,
+
   Tag: styled.span``,
 
   LeftSideContainer: styled.div``,
+
   RightSideContainer: styled.div`
     display: flex;
     flex-direction: column;
@@ -134,6 +155,10 @@ const S = {
 
     font-size: 14px;
     text-align: center;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   `,
 
   ChatViewContainer: styled.div`
@@ -154,15 +179,27 @@ const S = {
     & > p {
       color: #a4a4a4;
     }
+
+    @media (max-width: 768px) {
+      gap: 2px;
+    }
   `,
 
   statisticsImage: styled.img`
     width: 20px;
 
     margin-left: 8px;
+
+    @media (max-width: 768px) {
+      width: 15px;
+    }
   `,
 
   statisticsText: styled.p`
     font-size: 14px;
+
+    @media (max-width: 768px) {
+      font-size: 10px;
+    }
   `,
 };

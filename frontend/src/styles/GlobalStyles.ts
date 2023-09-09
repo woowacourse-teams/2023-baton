@@ -19,8 +19,6 @@ ${ResetStyle}
     color: #333333;
   }
   
-  html,
-
   /* Colors *****************************************/
   :root {
     --baton-red: #F64545;

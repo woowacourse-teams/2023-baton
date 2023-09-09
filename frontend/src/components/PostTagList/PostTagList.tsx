@@ -24,6 +24,10 @@ const S = {
 
     li:not(:last-child) {
       margin-right: 10px;
+
+      @media (max-width: 768px) {
+        margin-right: 5px;
+      }
     }
   `,
 };

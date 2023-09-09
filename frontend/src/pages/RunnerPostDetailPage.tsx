@@ -19,6 +19,7 @@ import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_M
 import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 import { validateMessage } from '@/utils/validate';
+import useViewport from '@/hooks/useViewport';
 
 const RunnerPostPage = () => {
   const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
@@ -26,6 +27,8 @@ const RunnerPostPage = () => {
   const { runnerPostId } = useParams();
 
   const { getToken, hasToken } = useToken();
+
+  const { isMobile } = useViewport();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
@@ -179,14 +182,19 @@ const RunnerPostPage = () => {
                   <PostTagList tags={runnerPost.tags} />
                 </S.LeftSideContainer>
                 <S.RightSideContainer>
-                  <Button colorTheme="BLACK" fontWeight={700}>
+                  <Button colorTheme="BLACK" fontSize={isMobile ? '14px' : ''} fontWeight={700}>
                     <S.Anchor href={runnerPost.pullRequestUrl} target="_blank">
                       <img src={githubIcon} />
                       <S.GoToGitHub>코드 보러가기</S.GoToGitHub>
                     </S.Anchor>
                   </Button>
                   {runnerPost.isOwner || runnerPost.isApplied || runnerPost.reviewStatus !== 'NOT_STARTED' ? null : (
-                    <Button colorTheme="WHITE" fontWeight={700} onClick={openMessageModal}>
+                    <Button
+                      colorTheme="WHITE"
+                      fontSize={isMobile ? '14px' : ''}
+                      fontWeight={700}
+                      onClick={openMessageModal}
+                    >
                       리뷰 제안하기
                     </Button>
                   )}
@@ -194,7 +202,7 @@ const RunnerPostPage = () => {
               </S.BottomContentContainer>
             </S.PostBodyContainer>
             <S.PostFooterContainer>
-              <Button colorTheme="GRAY" fontWeight={700} onClick={goBack}>
+              <Button colorTheme="GRAY" fontSize={isMobile ? '14px' : ''} fontWeight={700} onClick={goBack}>
                 목록
               </Button>
             </S.PostFooterContainer>
@@ -231,6 +239,10 @@ const S = {
     margin: 72px 0 53px 0;
 
     background-color: white;
+
+    @media (max-width: 768px) {
+      margin: 10px 0 30px 0;
+    }
   `,
 
   Title: styled.div`
@@ -286,6 +298,10 @@ const S = {
   PostTitle: styled.h1`
     font-size: 38px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
   `,
 
   PostDeadline: styled.div`
@@ -330,10 +346,18 @@ const S = {
   Name: styled.p`
     font-size: 18px;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+    }
   `,
 
   Job: styled.p`
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+    }
   `,
 
   statisticsContainer: styled.div`
@@ -364,12 +388,20 @@ const S = {
     font-size: 18px;
     line-height: 200%;
     white-space: pre-wrap;
+
+    @media (max-width: 768px) {
+      min-height: 300px;
+    }
   `,
 
   BottomContentContainer: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: end;
+
+    @media (max-width: 768px) {
+      gap: 8px;
+    }
   `,
 
   LeftSideContainer: styled.div`
@@ -381,7 +413,6 @@ const S = {
   RightSideContainer: styled.div`
     display: flex;
     flex-direction: column;
-
     gap: 24px;
   `,
 
@@ -393,6 +424,10 @@ const S = {
 
     font-size: 20px;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   `,
 
   Anchor: styled.a`
