@@ -7,6 +7,7 @@ import { getRequest } from '@/api/fetch';
 import { GetSearchTagResponse, Tag } from '@/types/tags';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_TITLE } from '@/constants/message';
+import useViewport from '@/hooks/useViewport';
 
 interface Props {
   reviewStatus: ReviewStatus;
@@ -35,6 +36,7 @@ const RunnerPostSearchBox = ({
   const timer = useRef<number | null>(null);
 
   const { showErrorToast } = useContext(ToastContext);
+  const { isMobile } = useViewport();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTag(e.target.value);
@@ -140,7 +142,7 @@ const RunnerPostSearchBox = ({
       <S.TagContainer>
         <S.TitleContainer>
           <S.Icon src={TagIcon} />
-          <S.Title>Tags</S.Title>
+          {isMobile ? null : <S.Title>Tags</S.Title>}
         </S.TitleContainer>
         <S.InputContainer onFocus={handleInputFocus} onBlur={handleInputBlur} onKeyDown={handleKeyDown}>
           <S.TagInput
@@ -194,6 +196,10 @@ const S = {
     gap: 5px;
 
     width: 70px;
+
+    @media (max-width: 768px) {
+      width: fit-content;
+    }
   `,
 
   Icon: styled.img`

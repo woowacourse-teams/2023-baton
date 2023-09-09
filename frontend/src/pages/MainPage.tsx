@@ -110,15 +110,16 @@ const MainPage = () => {
             searchPosts={searchPosts}
           />
         </S.LeftSideContainer>
-
-        <Button
-          onClick={handleClickPostButton}
-          colorTheme="WHITE"
-          fontSize={isMobile ? '14px' : '18px'}
-          ariaLabel="리뷰 요청 글 작성하기"
-        >
-          리뷰 요청 글 작성하기
-        </Button>
+        <S.RightSideContainer>
+          <Button
+            onClick={handleClickPostButton}
+            colorTheme="WHITE"
+            fontSize={isMobile ? '14px' : '18px'}
+            ariaLabel="리뷰 요청 글 작성하기"
+          >
+            리뷰 요청 글 작성하기
+          </Button>
+        </S.RightSideContainer>
       </S.ControlPanelContainer>
       <S.RunnerPostContainer>
         <RunnerPostList posts={runnerPostList} />
@@ -166,6 +167,13 @@ const S = {
 
     margin-bottom: 36px;
 
+    @media (max-width: 768px) {
+      align-items: start;
+      flex-direction: column;
+
+      gap: 18px;
+    }
+
     @media (max-height: 768px) {
       margin-bottom: 24px;
     }
@@ -175,6 +183,10 @@ const S = {
     display: flex;
     align-items: end;
     gap: 20px;
+  `,
+
+  RightSideContainer: styled.div`
+    align-self: flex-end;
   `,
 
   SearchInput: styled.input`

@@ -3,6 +3,7 @@ import FilterIcon from '@/assets/filter-icon.svg';
 import { styled } from 'styled-components';
 import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
+import useViewport from '@/hooks/useViewport';
 
 interface Props {
   reviewStatus: string;
@@ -10,11 +11,13 @@ interface Props {
 }
 
 const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
+  const { isMobile } = useViewport();
+
   return (
     <S.FilterContainer>
       <S.TitleContainer>
         <S.Icon src={FilterIcon} />
-        <S.Title>Filter</S.Title>
+        {isMobile ? null : <S.Title>Filter</S.Title>}
       </S.TitleContainer>
       <S.LabelList>
         {Object.entries(REVIEW_STATUS_LABEL_TEXT).map(([value, text]) => (
@@ -26,7 +29,12 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
               checked={reviewStatus === value}
               onChange={handleClickRadioButton}
             />
-            <Label colorTheme={reviewStatus === value ? 'RED' : 'WHITE'} width="100px" height="30px">
+            <Label
+              colorTheme={reviewStatus === value ? 'RED' : 'WHITE'}
+              width={isMobile ? '72px' : ''}
+              height={isMobile ? '22px' : '30px'}
+              fontSize={isMobile ? '12px' : '18px'}
+            >
               {text}
             </Label>
           </S.StatusLabel>
@@ -52,6 +60,10 @@ const S = {
     gap: 5px;
 
     width: 70px;
+
+    @media (max-width: 768px) {
+      width: fit-content;
+    }
   `,
 
   Icon: styled.img`
@@ -67,6 +79,10 @@ const S = {
     gap: 10px;
 
     list-style: none;
+
+    @media (max-width: 768px) {
+      gap: 5px;
+    }
   `,
 
   StatusLabel: styled.label`
