@@ -4,14 +4,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagReducedName;
+import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.RunnerPostServerResponseBuilder.태그_검색_Detail_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Simple_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_전체_Simple_페이징_응답;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.마이페이지_러너_게시글_SimpleInMyPage_응답;
@@ -90,5 +95,26 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
                 .서버_응답()
                 .러너_게시글_생성_성공을_검증한다()
                 .생성한_러너_게시글의_식별자값을_반환한다();
+    }
+
+    @Test
+    void 태그_검색에_성공한다() {
+        // given
+        tagRepository.save(TagFixture.create(new TagName("java")));
+        tagRepository.save(TagFixture.create(new TagName("javascript")));
+        tagRepository.save(TagFixture.create(new TagName("script")));
+
+        final List<Tag> 검색된_태그_목록 = tagRepository.findTop10ByTagReducedNameValueContainingOrderByTagReducedNameValueAsc("ja");
+        System.out.println(검색된_태그_목록.size());
+
+        // when, then
+        RunnerPostAssuredSupport
+                .클라이언트_요청()
+                .태그를_검색한다("ja")
+
+                .서버_응답()
+                .태그_검색_성공을_검증한다(
+                        태그_검색_Detail_응답(검색된_태그_목록)
+                );
     }
 }

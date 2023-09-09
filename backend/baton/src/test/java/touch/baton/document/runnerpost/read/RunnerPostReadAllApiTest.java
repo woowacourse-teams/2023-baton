@@ -14,6 +14,7 @@ import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -27,7 +28,6 @@ import java.util.Optional;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.notNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.when;
@@ -177,6 +177,43 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
                                 fieldWithPath("pageInfo.totalElements").type(NUMBER).description("총 데이터 수"),
                                 fieldWithPath("pageInfo.currentPage").type(NUMBER).description("현재 페이지 번호"),
                                 fieldWithPath("pageInfo.currentSize").type(NUMBER).description("현재 페이지 데이터 수")
+                        ))
+                );
+    }
+
+    @DisplayName("태그 검색 API")
+    @Test
+    void readTags() throws Exception {
+        // given
+        final Tag javaTag = TagFixture.create(tagName("java"));
+        final Tag javascriptTag = TagFixture.create(tagName("javascript"));
+        final Tag javaTagSpy = spy(javaTag);
+        final Tag javascriptTagSpy = spy(javascriptTag);
+
+        // when
+        when(tagRepository.findTop10ByTagReducedNameValueContainingOrderByTagReducedNameValueAsc(any()))
+                .thenReturn(List.of(javaTagSpy, javascriptTagSpy));
+        when(runnerPostService.readTagsByTagName("java"))
+                .thenReturn(List.of(javaTagSpy, javascriptTagSpy));
+        when(javaTagSpy.getId())
+                .thenReturn(1L);
+        when(javascriptTagSpy.getId())
+                .thenReturn(2L);
+
+        // then
+        mockMvc.perform(get("/api/v1/posts/runner/tags/search")
+                        .characterEncoding(UTF_8)
+                        .accept(APPLICATION_JSON)
+                        .queryParam("name", "java"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(APPLICATION_JSON))
+                .andDo(restDocs.document(
+                        queryParameters(
+                                parameterWithName("name").description("태그 이름")
+                        ),
+                        responseFields(
+                                fieldWithPath("data.[].id").type(NUMBER).description("태그 식별자값(id)"),
+                                fieldWithPath("data.[].tagName").type(STRING).optional().description("태그 이름")
                         ))
                 );
     }
