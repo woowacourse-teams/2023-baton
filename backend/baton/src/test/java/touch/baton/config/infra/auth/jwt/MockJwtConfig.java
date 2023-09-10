@@ -20,6 +20,6 @@ public abstract class MockJwtConfig {
     }
 
     private JwtConfig mockJwtConfig() {
-        return new JwtConfig("test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key", "test_issuer");
+        return new JwtConfig("test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key", "test_issuer", 30);
     }
 }

@@ -43,8 +43,7 @@ public class OauthController {
      * - [] access Token 이 만료되면 refresh + access token으로 재발급 받는 로직 추가
      *  - [] test
      * - [x] access Token 만료 기간 변경 -> 30분
-     * - [] access Token이 만료되었을 때 검증 로직 추가
-     *  - [] test
+     *  - [x] test
      */
     @GetMapping("/login/{oauthType}")
     public ResponseEntity<Void> login(@PathVariable final OauthType oauthType,

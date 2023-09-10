@@ -14,6 +14,7 @@ public class JwtConfig {
 
     private final String secretKey;
     private final String issuer;
+    private final int expireMinutes;
 
     public Key getSecretKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes(UTF_8));
@@ -21,5 +22,9 @@ public class JwtConfig {
 
     public String getIssuer() {
         return this.issuer;
+    }
+
+    public int getExpireMinutes() {
+        return expireMinutes;
     }
 }

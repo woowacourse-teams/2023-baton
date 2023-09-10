@@ -1,6 +1,7 @@
 package touch.baton.infra.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.IncorrectClaimException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -18,6 +19,8 @@ import touch.baton.domain.oauth.exception.OauthRequestException;
 @Component
 public class JwtDecoder {
 
+    private static final String EXPIRATION = "exp";
+
     private final JwtConfig jwtConfig;
 
     public Claims parseJwtToken(final String token) {
@@ -28,11 +31,13 @@ public class JwtDecoder {
                     .build();
 
             return jwtParser.parseClaimsJws(token).getBody();
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
-        } catch (MalformedJwtException e) {
+        } catch (final ExpiredJwtException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_ALREADY_EXPIRED);
+        } catch (final MalformedJwtException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_FORM_IS_WRONG);
-        } catch (MissingClaimException | IncorrectClaimException e) {
+        } catch (final MissingClaimException | IncorrectClaimException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_WRONG);
         }
     }
