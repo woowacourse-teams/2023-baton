@@ -13,6 +13,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 public class OauthAssuredSupport {
 
@@ -75,6 +76,7 @@ public class OauthAssuredSupport {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
                 softly.assertThat(response.header(AUTHORIZATION)).isNotBlank();
+                softly.assertThat(response.header(SET_COOKIE)).isNotBlank();
             });
 
             return this;

@@ -1,6 +1,5 @@
 package touch.baton.domain.oauth;
 
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

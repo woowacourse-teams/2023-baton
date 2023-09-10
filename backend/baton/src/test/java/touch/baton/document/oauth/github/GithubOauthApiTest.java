@@ -9,12 +9,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.Member;
+import touch.baton.domain.oauth.AccessToken;
+import touch.baton.domain.oauth.RefreshToken;
+import touch.baton.domain.oauth.Token;
+import touch.baton.domain.oauth.Tokens;
 import touch.baton.domain.oauth.controller.OauthController;
 import touch.baton.domain.oauth.service.OauthService;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.BDDMockito.when;
+import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
@@ -67,8 +73,14 @@ class GithubOauthApiTest extends RestdocsConfig {
     @Test
     void github_login() throws Exception {
         // given & when
+        final RefreshToken refreshToken = RefreshToken.builder()
+                .member(mock(Member.class))
+                .token(new Token("mock refresh token"))
+                .build();
+        final Tokens tokens = new Tokens(new AccessToken("Bearer Jwt"), refreshToken);
+
         when(oauthService.login(GITHUB, "authcode"))
-                .thenReturn("Bearer Jwt");
+                .thenReturn(tokens);
 
         // then
         mockMvc.perform(get("/api/v1/oauth/login/{oauthType}", "github")
@@ -78,16 +90,18 @@ class GithubOauthApiTest extends RestdocsConfig {
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("oauthType").description("소셜 로그인 타입")
-                        ),
-                        queryParameters(
-                                parameterWithName("code").description("소셜로부터 redirect 하여 받은 AuthCode")
-                        ),
-                        responseHeaders(
-                                headerWithName("Authorization").description("Json Web Token")
+                                pathParameters(
+                                        parameterWithName("oauthType").description("소셜 로그인 타입")
+                                ),
+                                queryParameters(
+                                        parameterWithName("code").description("소셜로부터 redirect 하여 받은 AuthCode")
+                                ),
+                                responseHeaders(
+                                        headerWithName("Authorization").description("Json Web Token"),
+                                        headerWithName("Set-Cookie").description("refreshToken=RefreshToken; Max-Age=Max-Age; Expires=Expires-Date; Secure; HttpOnly")
+                                )
                         )
-                ))
+                )
                 .andDo(print());
     }
 }

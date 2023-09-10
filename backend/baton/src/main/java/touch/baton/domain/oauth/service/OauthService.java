@@ -2,16 +2,20 @@ package touch.baton.domain.oauth.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
+import touch.baton.domain.oauth.AccessToken;
 import touch.baton.domain.oauth.OauthInformation;
 import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.RefreshToken;
+import touch.baton.domain.oauth.Token;
+import touch.baton.domain.oauth.Tokens;
 import touch.baton.domain.oauth.authcode.AuthCodeRequestUrlProviderComposite;
 import touch.baton.domain.oauth.client.OauthInformationClientComposite;
 import touch.baton.domain.oauth.repository.OauthMemberRepository;
 import touch.baton.domain.oauth.repository.OauthRunnerRepository;
 import touch.baton.domain.oauth.repository.OauthSupporterRepository;
+import touch.baton.domain.oauth.repository.RefreshTokenRepository;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
@@ -21,6 +25,7 @@ import touch.baton.infra.auth.jwt.JwtEncoder;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -31,13 +36,14 @@ public class OauthService {
     private final OauthMemberRepository oauthMemberRepository;
     private final OauthRunnerRepository oauthRunnerRepository;
     private final OauthSupporterRepository oauthSupporterRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtEncoder jwtEncoder;
 
     public String readAuthCodeRedirect(final OauthType oauthType) {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);
     }
 
-    public String login(final OauthType oauthType, final String code) {
+    public Tokens login(final OauthType oauthType, final String code) {
         final OauthInformation oauthInformation = oauthInformationClientComposite.fetchInformation(oauthType, code);
 
         final Optional<Member> maybeMember = oauthMemberRepository.findMemberByOauthId(oauthInformation.getOauthId());
@@ -45,11 +51,10 @@ public class OauthService {
             final Member savedMember = signUpMember(oauthInformation);
             saveNewRunner(savedMember);
             saveNewSupporter(savedMember);
+            return createTokens(oauthInformation, savedMember);
         }
 
-        return jwtEncoder.jwtToken(Map.of(
-                "socialId", oauthInformation.getSocialId().getValue())
-        );
+        return createTokens(oauthInformation, maybeMember.get());
     }
 
     private Member signUpMember(final OauthInformation oauthInformation) {
@@ -81,5 +86,21 @@ public class OauthService {
                 .build();
 
         return oauthSupporterRepository.save(newSupporter);
+    }
+
+    private Tokens createTokens(final OauthInformation oauthInformation, final Member member) {
+        final String jwtToken = jwtEncoder.jwtToken(Map.of(
+                "socialId", oauthInformation.getSocialId().getValue())
+        );
+        final AccessToken accessToken = new AccessToken(jwtToken);
+
+        final String randomTokens = UUID.randomUUID().toString();
+        final Token token = new Token(randomTokens);
+        final RefreshToken refreshToken = RefreshToken.builder()
+                .member(member)
+                .token(token)
+                .build();
+
+        return new Tokens(accessToken, refreshToken);
     }
 }
