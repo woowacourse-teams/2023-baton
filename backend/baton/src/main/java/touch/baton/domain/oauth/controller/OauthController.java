@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.RefreshToken;
-import touch.baton.domain.oauth.Tokens;
 import touch.baton.domain.oauth.service.OauthService;
+import touch.baton.domain.oauth.token.RefreshToken;
+import touch.baton.domain.oauth.token.Tokens;
 
 import java.io.IOException;
 import java.time.Duration;

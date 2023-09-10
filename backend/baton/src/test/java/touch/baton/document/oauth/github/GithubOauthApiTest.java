@@ -10,12 +10,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.oauth.AccessToken;
-import touch.baton.domain.oauth.RefreshToken;
-import touch.baton.domain.oauth.Token;
-import touch.baton.domain.oauth.Tokens;
 import touch.baton.domain.oauth.controller.OauthController;
 import touch.baton.domain.oauth.service.OauthService;
+import touch.baton.domain.oauth.token.AccessToken;
+import touch.baton.domain.oauth.token.RefreshToken;
+import touch.baton.domain.oauth.token.Token;
+import touch.baton.domain.oauth.token.Tokens;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 
 import static java.nio.charset.StandardCharsets.UTF_8;

@@ -1,15 +1,15 @@
-package touch.baton.domain.oauth;
+package touch.baton.domain.oauth.token;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @EqualsAndHashCode
 @Getter
-public class AccessToken {
+public final class SocialToken {
 
     private final String value;
 
-    public AccessToken(final String value) {
+    public SocialToken(final String value) {
         this.value = value;
     }
 }

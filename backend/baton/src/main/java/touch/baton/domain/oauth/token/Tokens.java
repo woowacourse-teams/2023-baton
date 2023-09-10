@@ -1,4 +1,4 @@
-package touch.baton.domain.oauth;
+package touch.baton.domain.oauth.token;
 
 public record Tokens(
         AccessToken accessToken,
