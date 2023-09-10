@@ -161,7 +161,7 @@ class RunnerPostTest {
                     .hasMessage("RunnerPost 의 title 은 null 일 수 없습니다.");
         }
 
-        @DisplayName("contents 에 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("implementedContents 에 null 이 들어갈 경우 예외가 발생한다.")
         @Test
         void fail_if_contents_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
@@ -176,7 +176,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostDomainException.class)
-                    .hasMessage("RunnerPost 의 contents 는 null 일 수 없습니다.");
+                    .hasMessage("RunnerPost 의 implementedContents 는 null 일 수 없습니다.");
         }
 
         @DisplayName("pull request url 에 null 이 들어갈 경우 예외가 발생한다.")

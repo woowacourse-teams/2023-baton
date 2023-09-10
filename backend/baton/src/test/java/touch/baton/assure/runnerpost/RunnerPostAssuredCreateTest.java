@@ -98,7 +98,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
         return 러너_게시글_Detail_응답(
                 러너_게시글_식별자값,
                 러너_게시글_생성_요청.title(),
-                러너_게시글_생성_요청.contents(),
+                러너_게시글_생성_요청.implementedContents(),
                 러너_게시글_생성_요청.pullRequestUrl(),
                 러너_게시글_생성_요청.deadline(),
                 조회수,

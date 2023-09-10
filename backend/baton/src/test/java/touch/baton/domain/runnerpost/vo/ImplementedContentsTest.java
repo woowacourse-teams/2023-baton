@@ -1,8 +1,7 @@
-package touch.baton.domain.common.vo;
+package touch.baton.domain.runnerpost.vo;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.runnerpost.vo.ImplementedContents;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

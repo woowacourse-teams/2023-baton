@@ -26,7 +26,7 @@ public class CuriousContents {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("CuriousContents 객체 내부에 contents 는 null 일 수 없습니다.");
+            throw new IllegalArgumentException("CuriousContents 객체 내부에 implementedContents 는 null 일 수 없습니다.");
         }
     }
 }
