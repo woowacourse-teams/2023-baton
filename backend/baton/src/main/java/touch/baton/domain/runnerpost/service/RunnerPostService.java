@@ -146,8 +146,8 @@ public class RunnerPostService {
         return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
     }
 
-    public Page<RunnerPost> readAllRunnerPosts(final Pageable pageable) {
-        return runnerPostRepository.findAll(pageable);
+    public Page<RunnerPost> readRunnerPostsByReviewStatus(final Pageable pageable, final ReviewStatus reviewStatus) {
+        return runnerPostRepository.findByReviewStatus(pageable, reviewStatus);
     }
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {

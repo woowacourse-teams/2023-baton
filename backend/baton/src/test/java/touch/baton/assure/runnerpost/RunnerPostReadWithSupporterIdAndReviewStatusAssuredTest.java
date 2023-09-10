@@ -2,96 +2,112 @@ package touch.baton.assure.runnerpost;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.domain.common.response.PageResponse;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.technicaltag.TechnicalTag;
-import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.fixture.domain.RunnerPostFixture;
-import touch.baton.fixture.domain.SupporterFixture;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static java.time.LocalDateTime.now;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.서포터가_리뷰_완료한_러너_게시글_응답;
-import static touch.baton.fixture.domain.TechnicalTagFixture.createJava;
-import static touch.baton.fixture.domain.TechnicalTagFixture.createSpring;
-import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.IntroductionFixture.introduction;
-import static touch.baton.fixture.vo.MessageFixture.message;
-import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너의_서포터_선택_요청;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.서포터와_연관된_러너_게시글_응답;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.서포터와_연관된_러너_게시글_페이징_응답;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostReadWithSupporterIdAndReviewStatusAssuredTest extends AssuredTestConfig {
 
     @Test
     void 서포터가_리뷰_완료한_러너_게시글_페이징_조회에_성공한다() {
-        final Runner 러너_에단 = 러너를_저장한다(MemberFixture.createEthan());
-        final Supporter 서포터_헤나 = 서포터_헤나를_저장한다();
-        final RunnerPost 러너_에단의_게시글 = 러너_게시글을_등록한다(러너_에단);
-        러너_게시글에_서포터를_할당한다(서포터_헤나, 러너_에단의_게시글);
-        서포터를_러너_게시글에_저장한다(서포터_헤나, 러너_에단의_게시글);
+        // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
+        final Supporter 서포터_헤나 = supporterRepository.getBySocialId(헤나_소셜_아이디);
 
-        // FIXME: 2023/08/13 러너 게시글 리뷰 완료 요청 기능 구현시 아래 ReviewStatus.DONE 테스트를 수정해야한다.
-        러너_에단의_게시글.updateReviewStatus(ReviewStatus.DONE);
-        runnerPostRepository.save(러너_에단의_게시글);
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 
-        final String 헤나_액세스_토큰 = login(서포터_헤나.getMember().getSocialId().getValue());
+        // when
+        서포터가_러너_게시글에_리뷰_신청을_성공한다(헤나_액세스_토큰, 디투_러너_게시글_식별자값);
+        러너가_서포터의_리뷰_신청_선택에_성공한다(서포터_헤나, 디투_액세스_토큰, 디투_러너_게시글_식별자값);
+        서포터가_러너_게시글의_리뷰를_완료로_변경하는_것을_성공한다(헤나_액세스_토큰, 디투_러너_게시글_식별자값);
 
         final PageRequest 페이징_정보 = PageRequest.of(1, 10);
-        final RunnerPostResponse.ReferencedBySupporter 서포터가_리뷰_완료한_러너_게시글_응답
-                = RunnerPostResponse.ReferencedBySupporter.of(러너_에단의_게시글, 1);
-        final PageResponse<RunnerPostResponse.ReferencedBySupporter> 페이징된_서포터가_리뷰_완료한_러너_게시글_응답
-                = 서포터가_리뷰_완료한_러너_게시글_응답(페이징_정보, List.of(서포터가_리뷰_완료한_러너_게시글_응답));
+        final RunnerPost 리뷰_신청을_대기중인_디투_러너_게시글 = runnerPostRepository.getByRunnerPostId(디투_러너_게시글_식별자값);
+        final Long 디투_러너_게시글에_지원한_서포터_수 = supporterRunnerPostRepository.getApplicantCountByRunnerPostId(디투_러너_게시글_식별자값);
 
+        final RunnerPostResponse.ReferencedBySupporter 서포터가_리뷰를_지원한_대기중인_러너_게시글_응답 = 서포터와_연관된_러너_게시글_응답(
+                리뷰_신청을_대기중인_디투_러너_게시글,
+                List.of("자바", "스프링"),
+                0,
+                디투_러너_게시글에_지원한_서포터_수,
+                ReviewStatus.DONE
+        );
+
+        // then
         RunnerPostAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .서포터와_연관된_러너_게시글_페이징을_조회한다(서포터_헤나.getId(), ReviewStatus.DONE, 페이징_정보)
 
                 .서버_응답()
-                .서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(페이징된_서포터가_리뷰_완료한_러너_게시글_응답);
+                .서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(
+                        서포터와_연관된_러너_게시글_페이징_응답(페이징_정보, List.of(서포터가_리뷰를_지원한_대기중인_러너_게시글_응답))
+                );
     }
 
-    private RunnerPost 러너_게시글에_서포터를_할당한다(final Supporter 서포터_헤나, final RunnerPost 러너_에단의_게시글) {
-        러너_에단의_게시글.assignSupporter(서포터_헤나);
-        return runnerPostRepository.save(러너_에단의_게시글);
+    private Long 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(final String 헤나_액세스_토큰) {
+        return RunnerPostAssuredCreateSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
+                .러너가_러너_게시글을_작성한다(
+                        러너_게시글_생성_요청(
+                                "테스트용_러너_게시글_제목",
+                                List.of("자바", "스프링"),
+                                "https://test-pull-request.com",
+                                LocalDateTime.now().plusHours(100),
+                                "테스트용_러너_게시글_내용"
+                        )
+                )
+
+                .서버_응답()
+                .러너_게시글_생성_성공을_검증한다()
+                .생성한_러너_게시글의_식별자값을_반환한다();
     }
 
-    private RunnerPost 러너_게시글을_등록한다(final Runner 러너) {
+    private void 서포터가_러너_게시글에_리뷰_신청을_성공한다(final String 헤나_액세스_토큰, final Long 디투_러너_게시글_식별자값) {
+        RunnerPostAssuredCreateSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
+                .서포터가_러너_게시글에_리뷰를_신청한다(디투_러너_게시글_식별자값, "안녕하세요. 서포터 헤나입니다.")
 
-        return runnerPostRepository.save(RunnerPostFixture.create(러너, deadline(now().plusHours(100))));
+                .서버_응답()
+                .서포터가_러너_게시글에_리뷰_신청_성공을_검증한다(디투_러너_게시글_식별자값);
     }
 
-    private Runner 러너를_저장한다(final Member member) {
-        final Member 저장된_사용자 = memberRepository.save(member);
+    private void 러너가_서포터의_리뷰_신청_선택에_성공한다(final Supporter 서포터_헤나, final String 디투_액세스_토큰, final Long 디투_러너_게시글_식별자값) {
+        RunnerPostAssuredSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(디투_액세스_토큰)
+                .러너가_서포터를_선택한다(디투_러너_게시글_식별자값, 러너의_서포터_선택_요청(서포터_헤나.getId()))
 
-        return runnerRepository.save(RunnerFixture.createRunner(introduction("안녕하세요"), 저장된_사용자));
+                .서버_응답()
+                .러너_게시글에_서포터가_성공적으로_선택되었는지_확인한다(new HttpStatusAndLocationHeader(HttpStatus.NO_CONTENT, "/api/v1/posts/runner"));
     }
 
-    private Supporter 서포터_헤나를_저장한다() {
-        final TechnicalTag 자바_기술_태그 = technicalTagRepository.save(createJava());
-        final TechnicalTag 스프링_기술_태그 = technicalTagRepository.save(createSpring());
-        final List<TechnicalTag> 기술_태그_목록 = List.of(자바_기술_태그, 스프링_기술_태그);
-        final Member 저장된_사용자_헤나 = memberRepository.save(MemberFixture.createHyena());
+    private void 서포터가_러너_게시글의_리뷰를_완료로_변경하는_것을_성공한다(final String 헤나_액세스_토큰, final Long 디투_러너_게시글_식별자값) {
+        RunnerPostAssuredSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
+                .서포터가_리뷰를_완료하고_리뷰완료_버튼을_누른다(디투_러너_게시글_식별자값)
 
-        return supporterRepository.save(SupporterFixture.create(reviewCount(0), 저장된_사용자_헤나, 기술_태그_목록));
-    }
-
-    private SupporterRunnerPost 서포터를_러너_게시글에_저장한다(final Supporter 서포터, final RunnerPost 러너_게시글) {
-        final SupporterRunnerPost 서포터_러너_게시글 = SupporterRunnerPost.builder()
-                .runnerPost(러너_게시글)
-                .supporter(서포터)
-                .message(message("안녕하세요. 서포터 헤나입니다."))
-                .build();
-
-        return supporterRunnerPostRepository.save(서포터_러너_게시글);
+                .서버_응답()
+                .러너_게시글이_성공적으로_리뷰_완료_상태인지_확인한다(new HttpStatusAndLocationHeader(HttpStatus.NO_CONTENT, "/api/v1/posts/runner"));
     }
 }

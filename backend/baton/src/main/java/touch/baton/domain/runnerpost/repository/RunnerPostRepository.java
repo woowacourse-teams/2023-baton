@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
 
     @Query(value = """
-            select rp
+            select rp, r, m
             from RunnerPost rp
             join fetch Runner r on r.id = rp.runner.id
             join fetch Member m on m.id = r.member.id
@@ -22,7 +22,7 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
             """)
     Optional<RunnerPost> joinMemberByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
-    Page<RunnerPost> findAll(final Pageable pageable);
+    Page<RunnerPost> findByReviewStatus(final Pageable pageable, final ReviewStatus reviewStatus);
 
     @Query(countQuery = """
             select count(1)
