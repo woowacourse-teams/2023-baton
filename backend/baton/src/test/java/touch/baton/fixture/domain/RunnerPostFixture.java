@@ -1,11 +1,11 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
@@ -24,7 +24,7 @@ public abstract class RunnerPostFixture {
     }
 
     public static RunnerPost create(final Title title,
-                                    final Contents contents,
+                                    final ImplementedContents implementedContents,
                                     final PullRequestUrl pullRequestUrl,
                                     final Deadline deadline,
                                     final WatchedCount watchedCount,
@@ -35,7 +35,7 @@ public abstract class RunnerPostFixture {
     ) {
         return RunnerPost.builder()
                 .title(title)
-                .contents(contents)
+                .contents(implementedContents)
                 .pullRequestUrl(pullRequestUrl)
                 .deadline(deadline)
                 .watchedCount(watchedCount)
@@ -49,7 +49,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
@@ -63,7 +63,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final Deadline deadline, final ReviewStatus reviewStatus) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
@@ -77,7 +77,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final Deadline deadline, List<Tag> tags) {
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
@@ -100,7 +100,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final RunnerPostTags runnerPostTags, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
@@ -113,7 +113,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final Supporter supporter) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(DeadlineFixture.deadline(LocalDateTime.now().plusHours(100)))
                 .watchedCount(new WatchedCount(0))
@@ -127,7 +127,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost createWithReviewStatus(final Runner runner, final Supporter supporter, final ReviewStatus reviewStatus) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(DeadlineFixture.deadline(LocalDateTime.now().plusHours(100)))
                 .watchedCount(new WatchedCount(0))
@@ -141,7 +141,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final Supporter supporter, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
@@ -159,7 +159,7 @@ public abstract class RunnerPostFixture {
     ) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
@@ -173,7 +173,7 @@ public abstract class RunnerPostFixture {
     public static RunnerPost create(final Runner runner, final Supporter supporter, final RunnerPostTags runnerPostTags, final Deadline deadline) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))
-                .contents(new Contents("테스트 내용"))
+                .contents(new ImplementedContents("테스트 내용"))
                 .pullRequestUrl(new PullRequestUrl("https://테스트"))
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))

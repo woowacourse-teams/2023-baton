@@ -1,4 +1,4 @@
-package touch.baton.domain.common.vo;
+package touch.baton.domain.runnerpost.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -14,19 +14,19 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class Contents {
+public class ImplementedContents {
 
-    @Column(name = "contents", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "implemented_contents", nullable = false, columnDefinition = "TEXT")
     private String value;
 
-    public Contents(final String value) {
+    public ImplementedContents(final String value) {
         validateNotNull(value);
         this.value = value;
     }
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("Contents 객체 내부에 contents 는 null 일 수 없습니다.");
+            throw new IllegalArgumentException("ImplementedContents 객체 내부에 contents 는 null 일 수 없습니다.");
         }
     }
 }

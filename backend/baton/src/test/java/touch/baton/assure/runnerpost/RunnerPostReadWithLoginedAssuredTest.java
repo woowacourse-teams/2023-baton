@@ -57,7 +57,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         return 러너_게시글_Detail_응답(
                 러너_게시글_식별자값,
                 러너_게시글.getTitle().getValue(),
-                러너_게시글.getContents().getValue(),
+                러너_게시글.getImplementedContents().getValue(),
                 러너_게시글.getPullRequestUrl().getValue(),
                 러너_게시글.getDeadline().getValue(),
                 조회수,

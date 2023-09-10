@@ -4,7 +4,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -21,6 +20,7 @@ import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -75,7 +75,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
         final LocalDateTime deadline = LocalDateTime.now();
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("제 코드 리뷰 좀 해주세요!!"))
-                .contents(new Contents("제 코드는 클린코드가 맞을까요?"))
+                .contents(new ImplementedContents("제 코드는 클린코드가 맞을까요?"))
                 .deadline(new Deadline(deadline))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(1))
@@ -130,7 +130,7 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
         final LocalDateTime deadline = LocalDateTime.now();
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("제 코드 리뷰 좀 해주세요!!"))
-                .contents(new Contents("제 코드는 클린코드가 맞을까요?"))
+                .contents(new ImplementedContents("제 코드는 클린코드가 맞을까요?"))
                 .deadline(new Deadline(deadline))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(1))

@@ -1,13 +1,13 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.common.vo.Contents;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
 
 public abstract class ContentsFixture {
 
     private ContentsFixture() {
     }
 
-    public static Contents contents(final String value) {
-        return new Contents(value);
+    public static ImplementedContents contents(final String value) {
+        return new ImplementedContents(value);
     }
 }

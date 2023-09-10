@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
@@ -14,6 +13,7 @@ import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.SupporterRunnerPost;
@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
-import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -78,7 +77,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         final RunnerPost actual = maybeActual.get();
         assertAll(
                 () -> assertThat(actual.getTitle()).isEqualTo(new Title(TITLE)),
-                () -> assertThat(actual.getContents()).isEqualTo(new Contents(CONTENTS)),
+                () -> assertThat(actual.getImplementedContents()).isEqualTo(new ImplementedContents(CONTENTS)),
                 () -> assertThat(actual.getPullRequestUrl()).isEqualTo(new PullRequestUrl(PULL_REQUEST_URL)),
                 () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(DEADLINE)),
                 () -> assertThat(actual.getWatchedCount()).isEqualTo(new WatchedCount(0)),

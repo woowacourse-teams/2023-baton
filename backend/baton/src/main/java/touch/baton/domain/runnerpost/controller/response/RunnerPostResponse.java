@@ -32,7 +32,7 @@ public record RunnerPostResponse() {
             return new Detail(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
-                    runnerPost.getContents().getValue(),
+                    runnerPost.getImplementedContents().getValue(),
                     runnerPost.getPullRequestUrl().getValue(),
                     runnerPost.getDeadline().getValue(),
                     runnerPost.getWatchedCount().getValue(),
@@ -63,7 +63,7 @@ public record RunnerPostResponse() {
             return new DetailVersionTest(
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
-                    runnerPost.getContents().getValue(),
+                    runnerPost.getImplementedContents().getValue(),
                     runnerPost.getPullRequestUrl().getValue(),
                     runnerPost.getDeadline().getValue(),
                     runnerPost.getWatchedCount().getValue(),

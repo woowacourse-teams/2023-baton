@@ -13,13 +13,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
@@ -35,10 +35,7 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.DONE;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -53,7 +50,7 @@ public class RunnerPost extends BaseEntity {
     private Title title;
 
     @Embedded
-    private Contents contents;
+    private ImplementedContents implementedContents;
 
     @Embedded
     private PullRequestUrl pullRequestUrl;
@@ -81,7 +78,7 @@ public class RunnerPost extends BaseEntity {
 
     @Builder
     private RunnerPost(final Title title,
-                       final Contents contents,
+                       final ImplementedContents implementedContents,
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
@@ -90,12 +87,12 @@ public class RunnerPost extends BaseEntity {
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        this(null, title, contents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, supporter, runnerPostTags);
+        this(null, title, implementedContents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, supporter, runnerPostTags);
     }
 
     private RunnerPost(final Long id,
                        final Title title,
-                       final Contents contents,
+                       final ImplementedContents implementedContents,
                        final PullRequestUrl pullRequestUrl,
                        final Deadline deadline,
                        final WatchedCount watchedCount,
@@ -104,10 +101,10 @@ public class RunnerPost extends BaseEntity {
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        validateNotNull(title, contents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, runnerPostTags);
+        validateNotNull(title, implementedContents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, runnerPostTags);
         this.id = id;
         this.title = title;
-        this.contents = contents;
+        this.implementedContents = implementedContents;
         this.pullRequestUrl = pullRequestUrl;
         this.deadline = deadline;
         this.watchedCount = watchedCount;
@@ -125,7 +122,7 @@ public class RunnerPost extends BaseEntity {
     ) {
         return RunnerPost.builder()
                 .title(new Title(title))
-                .contents(new Contents(contents))
+                .contents(new ImplementedContents(contents))
                 .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
                 .deadline(new Deadline(deadline))
                 .runner(runner)
@@ -136,7 +133,7 @@ public class RunnerPost extends BaseEntity {
     }
 
     private void validateNotNull(final Title title,
-                                 final Contents contents,
+                                 final ImplementedContents implementedContents,
                                  final PullRequestUrl pullRequestUrl,
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
@@ -148,7 +145,7 @@ public class RunnerPost extends BaseEntity {
             throw new RunnerPostDomainException("RunnerPost 의 title 은 null 일 수 없습니다.");
         }
 
-        if (Objects.isNull(contents)) {
+        if (Objects.isNull(implementedContents)) {
             throw new RunnerPostDomainException("RunnerPost 의 contents 는 null 일 수 없습니다.");
         }
 
@@ -189,8 +186,8 @@ public class RunnerPost extends BaseEntity {
         this.title = title;
     }
 
-    public void updateContents(final Contents contents) {
-        this.contents = contents;
+    public void updateContents(final ImplementedContents implementedContents) {
+        this.implementedContents = implementedContents;
     }
 
     public void updatePullRequestUrl(final PullRequestUrl pullRequestUrl) {
