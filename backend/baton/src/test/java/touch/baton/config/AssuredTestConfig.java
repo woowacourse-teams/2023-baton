@@ -52,7 +52,7 @@ public abstract class AssuredTestConfig {
     protected OauthLoginTestManager oauthLoginTestManager = new OauthLoginTestManager();
 
     @BeforeEach
-    void assuredTestSetUp(@LocalServerPort int port) {
+    void assuredTestSetUp(@LocalServerPort final int port) {
         RestAssured.port = port;
     }
 }

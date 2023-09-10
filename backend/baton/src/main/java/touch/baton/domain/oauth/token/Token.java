@@ -1,5 +1,6 @@
 package touch.baton.domain.oauth.token;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class Token {
 
+    @Column(name = "token", nullable = false, columnDefinition = "text")
     private String value;
 
     public Token(final String value) {

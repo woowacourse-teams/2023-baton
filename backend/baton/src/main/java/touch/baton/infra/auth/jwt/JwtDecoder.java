@@ -19,8 +19,6 @@ import touch.baton.domain.oauth.exception.OauthRequestException;
 @Component
 public class JwtDecoder {
 
-    private static final String EXPIRATION = "exp";
-
     private final JwtConfig jwtConfig;
 
     public Claims parseJwtToken(final String token) {

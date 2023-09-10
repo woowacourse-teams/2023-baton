@@ -11,6 +11,7 @@ import touch.baton.domain.oauth.OauthType;
 
 import java.util.Map;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
@@ -27,6 +28,13 @@ public class OauthAssuredSupport {
     public static class OauthClientRequestBuilder {
 
         private ExtractableResponse<Response> response;
+        private String accessToken;
+
+        public OauthClientRequestBuilder 엑세스_토큰으로_로그인_한다(final String 엑세스_토큰) {
+            accessToken = 엑세스_토큰;
+
+            return this;
+        }
 
         public OauthClientRequestBuilder 소셜_로그인을_위한_리다이렉트_URL을_요청한다(final OauthType 소셜_타입) {
             response = RestAssured
@@ -47,6 +55,12 @@ public class OauthAssuredSupport {
                     new PathParams(Map.of("oauthType", 소셜_타입)),
                     new QueryParams(Map.of("code", 사용자의_AuthCode))
             );
+
+            return this;
+        }
+
+        public OauthClientRequestBuilder 기간이_만료된_엑세스_토큰으로_프로필_조회하려한다() {
+            response = AssuredSupport.get("/api/v1/profile/runner/me", accessToken);
 
             return this;
         }
@@ -84,6 +98,10 @@ public class OauthAssuredSupport {
 
         public String 액세스_토큰을_반환한다() {
             return response.header(AUTHORIZATION);
+        }
+
+        public void 토큰_기간_만료_오류가_발생한다() {
+            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
         }
     }
 }

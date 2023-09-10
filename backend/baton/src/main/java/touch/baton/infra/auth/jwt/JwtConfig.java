@@ -3,11 +3,13 @@ package touch.baton.infra.auth.jwt;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Profile;
 
 import java.security.Key;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Profile("!test")
 @RequiredArgsConstructor
 @ConfigurationProperties("jwt.token")
 public class JwtConfig {
