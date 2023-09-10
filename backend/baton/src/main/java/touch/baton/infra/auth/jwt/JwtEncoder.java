@@ -21,7 +21,7 @@ public class JwtEncoder {
 
     public String jwtToken(final Map<String, Object> payload) {
         final Date now = new Date();
-        final Date expiration = new Date(now.getTime() + Duration.ofDays(30).toMillis());
+        final Date expiration = new Date(now.getTime() + Duration.ofMinutes(30).toMillis());
         final Claims claims = Jwts.claims();
 
         final JwtBuilder jwtBuilder = Jwts.builder()
