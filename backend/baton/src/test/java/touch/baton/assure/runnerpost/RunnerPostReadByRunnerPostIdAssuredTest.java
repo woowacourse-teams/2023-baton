@@ -52,6 +52,8 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
                 러너_게시글_식별자값,
                 러너_게시글.getTitle().getValue(),
                 러너_게시글.getImplementedContents().getValue(),
+                러너_게시글.getCuriousContents().getValue(),
+                러너_게시글.getPostscriptContents().getValue(),
                 러너_게시글.getPullRequestUrl().getValue(),
                 러너_게시글.getDeadline().getValue(),
                 조회수,

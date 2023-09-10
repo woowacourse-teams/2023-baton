@@ -35,7 +35,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 LocalDateTime.now().plusDays(10),
-                "싸게 부탁드려요."
+                "싸게 부탁드려요.",
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
         );
 
         // when, then
@@ -55,7 +57,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 LocalDateTime.now().plusDays(10),
-                "싸게 부탁드려요."
+                "싸게 부탁드려요.",
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
         );
 
         // when, then
@@ -75,7 +79,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 null,
                 "https://github.com/cookienc",
                 LocalDateTime.now().plusDays(10),
-                "싸게 부탁드려요."
+                "싸게 부탁드려요.",
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
         );
 
         // when, then
@@ -95,7 +101,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 List.of("Java", "Spring"),
                 null,
                 LocalDateTime.now().plusDays(10),
-                "싸게 부탁드려요."
+                "싸게 부탁드려요.",
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
         );
 
         // when, then
@@ -115,7 +123,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 null,
-                "싸게 부탁드려요."
+                "싸게 부탁드려요.",
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
         );
 
         // when, then
@@ -135,7 +145,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 LocalDateTime.now().minusDays(1),
-                "싸게 부탁드려요."
+                "싸게 부탁드려요.",
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
         );
 
         // when, then
@@ -149,12 +161,58 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     }
 
     @Test
-    void 게시글_내용이_null이면_러너_게시글_등록_실패한다() {
+    void 구현_내용이_null이면_러너_게시글_등록_실패한다() {
         // given
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 LocalDateTime.now().plusDays(10),
+                null,
+                "이거 궁금해요.",
+                "잘 부탁드립니다."
+        );
+
+        // when, then
+        RunnerPostAssuredSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .러너_게시글_등록_요청한다(게시글_생성_요청)
+
+                .서버_응답()
+                .러너_게시글_등록_실패를_검증한다(new ErrorResponse("RP004", "구현 내용을 입력해주세요."));
+    }
+
+    @Test
+    void 궁금한_내용이_null이면_러너_게시글_등록_실패한다() {
+        // given
+        final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
+                List.of("Java", "Spring"),
+                "https://github.com/cookienc",
+                LocalDateTime.now().plusDays(10),
+                "이거 해줘요.",
+                null,
+                "잘 부탁드립니다."
+        );
+
+        // when, then
+        RunnerPostAssuredSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(액세스_토큰)
+                .러너_게시글_등록_요청한다(게시글_생성_요청)
+
+                .서버_응답()
+                .러너_게시글_등록_실패를_검증한다(new ErrorResponse("RP012", "궁금한 내용을 입력해주세요."));
+    }
+
+    @Test
+    void 참고_사항이_null이면_러너_게시글_등록_실패한다() {
+        // given
+        final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
+                List.of("Java", "Spring"),
+                "https://github.com/cookienc",
+                LocalDateTime.now().plusDays(10),
+                "잘 부탁드립니다.",
+                "이거 궁금해요.",
                 null
         );
 
@@ -165,7 +223,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
 
                 .서버_응답()
-                .러너_게시글_등록_실패를_검증한다(new ErrorResponse("RP004", "내용을 입력해주세요."));
+                .러너_게시글_등록_실패를_검증한다(new ErrorResponse("RP013", "참고 사항을 입력해주세요."));
     }
 
     @Test
@@ -175,7 +233,9 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 LocalDateTime.now().plusDays(10),
-                "12345".repeat(200) + "1"
+                "12345".repeat(200) + "1",
+                "",
+                ""
         );
 
         // when, then

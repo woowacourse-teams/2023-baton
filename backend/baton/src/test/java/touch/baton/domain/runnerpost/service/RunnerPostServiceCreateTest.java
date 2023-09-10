@@ -12,8 +12,10 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.SupporterRunnerPost;
@@ -40,7 +42,9 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
     private static final String OTHER_TAG = "Spring";
     private static final String PULL_REQUEST_URL = "https://github.com/cookienc";
     private static final LocalDateTime DEADLINE = LocalDateTime.now().plusDays(10);
-    private static final String CONTENTS = "싸게 부탁드려요.";
+    private static final String IMPLEMENTED_CONTENTS = "이것 구현했어요.";
+    private static final String CURIOUS_CONTENTS = "궁금해.";
+    private static final String POSTSCRIPT_CONTENTS = "싸게 부탁드려요.";
 
     private RunnerPostService runnerPostService;
 
@@ -63,7 +67,9 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
                 List.of(TAG, OTHER_TAG),
                 PULL_REQUEST_URL,
                 DEADLINE,
-                CONTENTS);
+                IMPLEMENTED_CONTENTS,
+                CURIOUS_CONTENTS,
+                POSTSCRIPT_CONTENTS);
         final Member ethanMember = memberRepository.save(MemberFixture.createEthan());
         final Runner runner = runnerRepository.save(RunnerFixture.createRunner(ethanMember));
 
@@ -77,7 +83,9 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         final RunnerPost actual = maybeActual.get();
         assertAll(
                 () -> assertThat(actual.getTitle()).isEqualTo(new Title(TITLE)),
-                () -> assertThat(actual.getImplementedContents()).isEqualTo(new ImplementedContents(CONTENTS)),
+                () -> assertThat(actual.getImplementedContents()).isEqualTo(new ImplementedContents(IMPLEMENTED_CONTENTS)),
+                () -> assertThat(actual.getCuriousContents()).isEqualTo(new CuriousContents(CURIOUS_CONTENTS)),
+                () -> assertThat(actual.getPostscriptContents()).isEqualTo(new PostscriptContents(POSTSCRIPT_CONTENTS)),
                 () -> assertThat(actual.getPullRequestUrl()).isEqualTo(new PullRequestUrl(PULL_REQUEST_URL)),
                 () -> assertThat(actual.getDeadline()).isEqualTo(new Deadline(DEADLINE)),
                 () -> assertThat(actual.getWatchedCount()).isEqualTo(new WatchedCount(0)),

@@ -84,7 +84,9 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
                 List.of("java", "spring"),
                 "https://github.com",
                 now().plusHours(10),
-                "러너 게시글 내용");
+                "러너 게시글 내용",
+                "게시글 궁금한 내용",
+                "참고 사항");
     }
 
     private RunnerPostResponse.Detail 러너_게시글_Detail_응답을_생성한다(final Runner 러너,
@@ -99,6 +101,8 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
                 러너_게시글_식별자값,
                 러너_게시글_생성_요청.title(),
                 러너_게시글_생성_요청.implementedContents(),
+                러너_게시글_생성_요청.curiousContents(),
+                러너_게시글_생성_요청.postscriptContents(),
                 러너_게시글_생성_요청.pullRequestUrl(),
                 러너_게시글_생성_요청.deadline(),
                 조회수,

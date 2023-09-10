@@ -12,7 +12,9 @@ public record RunnerPostResponse() {
 
     public record Detail(Long runnerPostId,
                          String title,
-                         String contents,
+                         String implementedContents,
+                         String curiousContents,
+                         String postscriptContents,
                          String pullRequestUrl,
                          LocalDateTime deadline,
                          int watchedCount,
@@ -33,6 +35,8 @@ public record RunnerPostResponse() {
                     runnerPost.getId(),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getImplementedContents().getValue(),
+                    runnerPost.getCuriousContents().getValue(),
+                    runnerPost.getPostscriptContents().getValue(),
                     runnerPost.getPullRequestUrl().getValue(),
                     runnerPost.getDeadline().getValue(),
                     runnerPost.getWatchedCount().getValue(),
@@ -42,36 +46,6 @@ public record RunnerPostResponse() {
                     isApplied,
                     convertToTags(runnerPost),
                     RunnerResponse.Detail.from(runnerPost.getRunner())
-            );
-        }
-    }
-
-    public record DetailVersionTest(Long runnerPostId,
-                                    String title,
-                                    String contents,
-                                    String pullRequestUrl,
-                                    LocalDateTime deadline,
-                                    Integer watchedCount,
-                                    ReviewStatus reviewStatus,
-                                    RunnerResponse.Detail runnerProfile,
-                                    SupporterResponseTestVersion.Simple supporterProfile,
-                                    boolean isOwner,
-                                    List<String> tags
-    ) {
-
-        public static DetailVersionTest ofVersionTest(final RunnerPost runnerPost, final boolean isOwner) {
-            return new DetailVersionTest(
-                    runnerPost.getId(),
-                    runnerPost.getTitle().getValue(),
-                    runnerPost.getImplementedContents().getValue(),
-                    runnerPost.getPullRequestUrl().getValue(),
-                    runnerPost.getDeadline().getValue(),
-                    runnerPost.getWatchedCount().getValue(),
-                    runnerPost.getReviewStatus(),
-                    RunnerResponse.Detail.from(runnerPost.getRunner()),
-                    SupporterResponseTestVersion.Simple.fromTestVersion(runnerPost.getSupporter()),
-                    isOwner,
-                    convertToTags(runnerPost)
             );
         }
     }
