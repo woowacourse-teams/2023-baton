@@ -5,6 +5,7 @@ import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.oauth.OauthType;
 
+@SuppressWarnings("NonAsciiCharacters")
 class OauthCreateAssuredTest extends AssuredTestConfig {
 
     @Test
