@@ -4,6 +4,7 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class RunnerPostTags {
 
+    @BatchSize(size = 10)
     @OneToMany(mappedBy = "runnerPost", cascade = PERSIST, orphanRemoval = true)
     private List<RunnerPostTag> runnerPostTags = new ArrayList<>();
 
