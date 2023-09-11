@@ -6,6 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -13,6 +14,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.Objects;
 
 @Slf4j
+@Profile("!test")
 @Aspect
 @Component
 public class LoggerAspect {
@@ -35,7 +37,7 @@ public class LoggerAspect {
                 + request.getRequestURI());
 
         final long startTime = System.currentTimeMillis();
-        Object proceed = process(joinPoint, request, signatureName);
+        final Object proceed = process(joinPoint, request, signatureName);
         final long timeDiff = System.currentTimeMillis() - startTime;
         log.info("시간차이(m) : {}", timeDiff);
         return proceed;
@@ -52,7 +54,7 @@ public class LoggerAspect {
     private Object process(final ProceedingJoinPoint joinPoint, final HttpServletRequest request, final String signatureName) {
         try {
             return joinPoint.proceed();
-        } catch (Throwable e) {
+        } catch (final Throwable e) {
             log.error(">>>>> controller start [" + signatureName + "() from " + request.getRemoteAddr() + "] with Error[" + e.getMessage() + "]");
             throw new RuntimeException("에러 나요.");
         }
