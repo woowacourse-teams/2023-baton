@@ -245,6 +245,18 @@ public class RunnerPostAssuredSupport {
             return this;
         }
 
+        public RunnerPostClientRequestBuilder 태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징을_조회한다(final Pageable 페이징_정보, final String 태그_이름, final ReviewStatus 리뷰_상태) {
+            final Map<String, Object> queryParams = Map.of(
+                    "size", 페이징_정보.getPageSize(),
+                    "page", 페이징_정보.getPageNumber(),
+                    "tagName", 태그_이름,
+                    "reviewStatus", 리뷰_상태
+            );
+
+            response = AssuredSupport.get("/api/v1/posts/runner/tags/search", new QueryParams(queryParams));
+            return this;
+        }
+
         public RunnerPostClientRequestBuilder 서포터가_리뷰를_완료하고_리뷰완료_버튼을_누른다(final Long 게시글_식별자) {
             response = AssuredSupport.patch("/api/v1/posts/runner/{runnerPostId}/done", accessToken, new PathParams(Map.of("runnerPostId", 게시글_식별자)));
             return this;
@@ -355,6 +367,17 @@ public class RunnerPostAssuredSupport {
             assertSoftly(softly -> {
                         softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
                         softly.assertThat(actual.data()).isEqualTo(전체_러너_게시글_페이징_응답.data());
+                    }
+            );
+        }
+
+        public void 태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.Simple> 러너_게시글_페이징_응답) {
+            final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<>() {
+            });
+
+            assertSoftly(softly -> {
+                        softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
+                        softly.assertThat(actual.data()).isEqualTo(러너_게시글_페이징_응답.data());
                     }
             );
         }

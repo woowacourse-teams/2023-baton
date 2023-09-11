@@ -73,6 +73,38 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
                 );
     }
 
+    @Test
+    void 태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징을_조회에_성공한다() {
+        // given
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
+        final Long 헤나_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(헤나_액세스_토큰);
+
+        final RunnerPost 헤나_러너_게시글 = runnerPostRepository.getByRunnerPostId(헤나_러너_게시글_식별자값);
+        final Long 서포터_지원자_수 = runnerPostReadRepository.countApplicantByRunnerPostId(헤나_러너_게시글_식별자값);
+
+        final PageRequest 페이징_정보 = PageRequest.of(1, 10);
+
+        // when, then
+        final RunnerPostResponse.Simple 기대된_헤나_러너_게시글_Simple_응답 = 러너_게시글_Simple_응답(
+                헤나_러너_게시글,
+                0,
+                서포터_지원자_수,
+                ReviewStatus.NOT_STARTED,
+                List.of("자바", "스프링")
+        );
+
+        RunnerPostAssuredSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
+                .태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징을_조회한다(페이징_정보, "자바", ReviewStatus.NOT_STARTED)
+
+                .서버_응답()
+                .태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(
+                        러너_게시글_전체_Simple_페이징_응답(페이징_정보, List.of(기대된_헤나_러너_게시글_Simple_응답))
+                );
+    }
+
     private Long 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(final String 사용자_액세스_토큰) {
         return RunnerPostAssuredCreateSupport
                 .클라이언트_요청()
