@@ -27,6 +27,9 @@ import static org.springframework.http.HttpStatus.FOUND;
 @RestController
 public class OauthController {
 
+    private static final String REFRESH_TOKEN_KEY = "refreshToken";
+    private static final int REFRESH_TOKEN_LIFECYCLE = 30;
+
     private final OauthService oauthService;
 
     @GetMapping("/{oauthType}")
@@ -77,11 +80,10 @@ public class OauthController {
     }
 
     private void setCookie(final HttpServletResponse response, final RefreshToken refreshToken) {
-        final Cookie cookie = new Cookie("refreshToken", refreshToken.getToken().getValue());
+        final Cookie cookie = new Cookie(REFRESH_TOKEN_KEY, refreshToken.getToken().getValue());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        // FIXME: 2023/09/10 적절한 값으로 수명 설정
-        cookie.setMaxAge(Duration.ofDays(14).toSecondsPart());
+        cookie.setMaxAge(Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSecondsPart());
 
         response.addCookie(cookie);
     }
