@@ -4,34 +4,43 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import touch.baton.infra.exception.InfraException;
 import touch.baton.infra.github.request.CreateBranchRequest;
 import touch.baton.infra.github.response.ReadBranchInfoResponse;
+
+import java.util.Objects;
 
 @Service
 public class GithubApiService {
 
     private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission";
     private static final String CREATE_BRANCH_API_POSTFIX = "/git/refs";
-    private static final String CREATE_BRANCH_API_POSTFIX = "/git/refs";
+    private static final String NEW_BRANCH_HEAD_PREFIX = "/refs/heads/";
     private static final String READ_BRANCH_API_POSTFIX = "/git/refs/heads/main";
+    private static final String DUPLICATED_BRANCH_ERROR_MESSAGE = "Reference already exists";
 
     @Value("${github.personal_access_token}")
     private String token;
 
-    public void createBranch(final String repoName, final String newBranchName) {
+    public boolean createBranch(final String repoName, final String newBranchName) {
+        final RestTemplate restTemplate = new RestTemplate();
         final ReadBranchInfoResponse branchInfoResponse = readMainBranch(repoName);
-        final String commitSha = branchInfoResponse.object().sha();
 
-        // 새 브랜치 생성
         final HttpHeaders httpHeaders = setBearerAuth();
         final String requestUrl = GITHUB_API_URL + repoName + CREATE_BRANCH_API_POSTFIX;
-        final String ref = ""
-        new CreateBranchRequest()
-        String body = String.format("{\"ref\": \"refs/heads/%s\", \"sha\": \"%s\"}", newBranchName, commitSha);
-        entity = new HttpEntity<>(body, headers);
-        restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+        final String ref = NEW_BRANCH_HEAD_PREFIX + newBranchName;
+        final String sha = branchInfoResponse.object().sha();
+        final CreateBranchRequest createBranchRequest = new CreateBranchRequest(ref, sha);
+        final HttpEntity<CreateBranchRequest> entity = new HttpEntity<>(createBranchRequest, httpHeaders);
+        final ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.POST, entity, String.class);
+        validateCreateResponseMessage(response);
+
+        return response.getStatusCode() == HttpStatus.CREATED;
     }
 
     private HttpHeaders setBearerAuth() {
@@ -40,11 +49,25 @@ public class GithubApiService {
         return headers;
     }
 
+    private void validateCreateResponseMessage(final ResponseEntity<String> response) {
+        if (response.getStatusCode() != HttpStatus.UNPROCESSABLE_ENTITY) {
+            return;
+        }
+        if (Objects.requireNonNull(response.getBody()).contains(DUPLICATED_BRANCH_ERROR_MESSAGE)) {
+            return;
+        }
+        throw new InfraException();
+    }
+
     private ReadBranchInfoResponse readMainBranch(final String repoName) {
-        final RestTemplate restTemplate = new RestTemplate();
-        final String requestUrl =  GITHUB_API_URL + repoName + READ_BRANCH_API_POSTFIX;
-        final HttpHeaders httpHeaders = setBearerAuth();
-        final HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-        return restTemplate.exchange(requestUrl, HttpMethod.GET, entity, ReadBranchInfoResponse.class).getBody();
+        try {
+            final RestTemplate restTemplate = new RestTemplate();
+            final String requestUrl =  GITHUB_API_URL + repoName + READ_BRANCH_API_POSTFIX;
+            final HttpHeaders httpHeaders = setBearerAuth();
+            final HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+            return restTemplate.exchange(requestUrl, HttpMethod.GET, entity, ReadBranchInfoResponse.class).getBody();
+        } catch (RestClientException e) {
+            throw new InfraException();
+        }
     }
 }
