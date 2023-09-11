@@ -11,6 +11,7 @@ import supporterProfilePost from './data/supporterProfilePost.json';
 import notStarted from './data/myPagePost/notStarted.json';
 import inProgress from './data/myPagePost/inProgress.json';
 import done from './data/myPagePost/done.json';
+import tagList from './data/tagList.json';
 
 export const handlers = [
   rest.post('*/posts/runner', async (req, res, ctx) => {
@@ -148,5 +149,13 @@ export const handlers = [
 
   rest.patch('*/posts/runner/:runnerPostId/cancelation', async (req, res, ctx) => {
     return res(ctx.status(201));
+  }),
+
+  rest.get('*/posts/runner/tags/search', async (req, res, ctx) => {
+    const name = req.url.searchParams.get('name');
+
+    const searchedTags = name ? tagList.data.filter((tag) => tag.tagName.includes(name)) : [];
+
+    return res(ctx.status(200), ctx.json({ data: searchedTags }));
   }),
 ];

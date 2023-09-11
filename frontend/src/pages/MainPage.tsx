@@ -1,5 +1,6 @@
 import { getRequest } from '@/api/fetch';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
+import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/RunnerPostSearchBox';
 import Button from '@/components/common/Button/Button';
 import { ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
@@ -7,7 +8,8 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
-import { GetRunnerPostResponse, RunnerPost } from '@/types/runnerPost';
+import { GetRunnerPostResponse, ReviewStatus, RunnerPost } from '@/types/runnerPost';
+import { Tag } from '@/types/tags';
 import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 
@@ -23,15 +25,16 @@ const MainPage = () => {
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
   const [isLast, setIsLast] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
+  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
+  const [tag, setTag] = useState<string>('');
+  const [searchedTags, setSearchedTags] = useState<Tag[]>([]);
 
   const handleClickMoreButton = () => {
-    setPage(page + 1);
-
-    getRunnerPost();
+    getRunnerPosts();
   };
 
   useEffect(() => {
-    getRunnerPost();
+    getRunnerPosts();
   }, []);
 
   const handleClickPostButton = () => {
@@ -44,11 +47,47 @@ const MainPage = () => {
     goToLoginPage();
   };
 
-  const getRunnerPost = () => {
-    getRequest(`/posts/runner?size=10&page=${page}`)
+  const getRunnerPosts = () => {
+    const params = new URLSearchParams([
+      ['size', '10'],
+      ['page', page.toString()],
+      ['reviewStatus', reviewStatus],
+    ]);
+
+    if (tag) {
+      params.set('tagName', tag);
+    }
+
+    setPage(page + 1);
+
+    getRequest(`/posts/runner?${params.toString()}`)
       .then(async (response) => {
         const data: GetRunnerPostResponse = await response.json();
         setRunnerPostList([...runnerPostList, ...data.data]);
+        setIsLast(data.pageInfo.isLast);
+      })
+      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+  };
+
+  const searchPosts = (reviewStatus: ReviewStatus, tag?: string) => {
+    const params = new URLSearchParams([
+      ['size', '10'],
+      ['page', '1'],
+      ['reviewStatus', reviewStatus],
+    ]);
+
+    if (tag) {
+      params.set('tagName', tag);
+      setTag(tag);
+    }
+
+    setPage(2);
+    setReviewStatus(reviewStatus);
+
+    getRequest(`/posts/runner?${params.toString()}`)
+      .then(async (response) => {
+        const data: GetRunnerPostResponse = await response.json();
+        setRunnerPostList([...data.data]);
         setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
@@ -61,25 +100,26 @@ const MainPage = () => {
       </S.TitleWrapper>
       <S.ControlPanelContainer>
         <S.LeftSideContainer>
-          {/* <S.FormContainer>
-            <S.SearchLabel htmlFor="search-tag">#tags</S.SearchLabel>
-            <S.SearchInput id="search-tag" type="text" placeholder="태그명 검색 (최대 5개 설정 가능)" />
-          </S.FormContainer>
-          <S.TagContainer>
-            <Tag>자바</Tag>
-            <Tag>javascript</Tag>
-            <Tag>react</Tag>
-          </S.TagContainer> */}
+          <RunnerPostSearchBox
+            tag={tag}
+            setTag={setTag}
+            reviewStatus={reviewStatus}
+            setReviewStatus={setReviewStatus}
+            searchedTags={searchedTags}
+            setSearchedTags={setSearchedTags}
+            searchPosts={searchPosts}
+          />
         </S.LeftSideContainer>
-
-        <Button
-          onClick={handleClickPostButton}
-          colorTheme="WHITE"
-          fontSize={isMobile ? '14px' : '18px'}
-          ariaLabel="리뷰 요청 글 작성하기"
-        >
-          리뷰 요청 글 작성하기
-        </Button>
+        <S.RightSideContainer>
+          <Button
+            onClick={handleClickPostButton}
+            colorTheme="WHITE"
+            fontSize={isMobile ? '14px' : '18px'}
+            ariaLabel="리뷰 요청 글 작성하기"
+          >
+            리뷰 요청 글 작성하기
+          </Button>
+        </S.RightSideContainer>
       </S.ControlPanelContainer>
       <S.RunnerPostContainer>
         <RunnerPostList posts={runnerPostList} />
@@ -127,6 +167,13 @@ const S = {
 
     margin-bottom: 36px;
 
+    @media (max-width: 768px) {
+      align-items: start;
+      flex-direction: column;
+
+      gap: 18px;
+    }
+
     @media (max-height: 768px) {
       margin-bottom: 24px;
     }
@@ -138,10 +185,8 @@ const S = {
     gap: 20px;
   `,
 
-  FormContainer: styled.form`
-    display: flex;
-    flex-direction: column;
-    align-items: start;
+  RightSideContainer: styled.div`
+    align-self: flex-end;
   `,
 
   SearchInput: styled.input`
