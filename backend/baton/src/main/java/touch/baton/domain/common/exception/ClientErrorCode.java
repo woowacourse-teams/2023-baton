@@ -36,7 +36,11 @@ public enum ClientErrorCode {
     JWT_FORM_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW002", "잘못 생성된 JWT 로 디코딩 할 수 없습니다."),
     JWT_CLAIM_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW003", "JWT 에 기대한 정보를 모두 포함하고 있지 않습니다."),
     JWT_CLAIM_SOCIAL_ID_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW004", "사용자의 잘못된 소셜 아이디(SocialId) 정보를 가진 JWT 입니다."),
-    JWT_CLAIM_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW005", "기간이 만료된 JWT 입니다.");
+    JWT_CLAIM_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW005", "기간이 만료된 JWT 입니다."),
+    JWT_CLAIM_IS_NOT_EXPIRED(HttpStatus.UNAUTHORIZED, "JW006", "만료되지 않은 JWT로 새로운 JWT를 발급 받을 수 없습니다."),
+    REFRESH_TOKEN_IS_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JW007", "해당 사용자의 Refresh Token이 존재하지 않습니다."),
+    ACCESS_TOKEN_AND_REFRESH_TOKEN_HAVE_DIFFERENT_OWNER(HttpStatus.UNAUTHORIZED, "JW008", "Access Token 과 Refresh Token 의 주인이 다릅니다."),
+    REFRESH_TOKEN_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW009", "기간이 만료된 Refresh Token 입니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;

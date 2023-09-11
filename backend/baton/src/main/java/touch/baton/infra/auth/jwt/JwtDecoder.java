@@ -39,4 +39,25 @@ public class JwtDecoder {
             throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_WRONG);
         }
     }
+
+    public Claims parseExpiredJwtToken(final String token) {
+        try {
+            final JwtParser jwtParser = Jwts.parserBuilder()
+                    .setSigningKey(jwtConfig.getSecretKey())
+                    .requireIssuer(jwtConfig.getIssuer())
+                    .build();
+
+            jwtParser.parseClaimsJws(token).getBody();
+
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_NOT_EXPIRED);
+        } catch (final SignatureException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
+        } catch (final MalformedJwtException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_FORM_IS_WRONG);
+        } catch (final MissingClaimException | IncorrectClaimException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_WRONG);
+        } catch (final ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
 }

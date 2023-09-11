@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,7 +42,7 @@ public class OauthController {
     /*
      * - [x] access Token 을 발급할 때 refresh Token 도 쿠키로 반환 하게 함
      *  - [x] test
-     * - [] access Token 이 만료되면 refresh + access token으로 재발급 받는 로직 추가
+     * - [x] access Token 이 만료되면 refresh + access token으로 재발급 받는 로직 추가
      *  - [] test
      * - [x] access Token 만료 기간 변경 -> 30분
      *  - [x] test
@@ -51,6 +53,21 @@ public class OauthController {
                                       final HttpServletResponse response
     ) {
         final Tokens tokens = oauthService.login(oauthType, code);
+
+        setCookie(response, tokens.refreshToken());
+
+        return ResponseEntity.ok()
+                .header(AUTHORIZATION, tokens.accessToken().getValue())
+                .build();
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<Void> refreshJwt(@RequestBody final String refreshToken,
+                                           final HttpServletResponse response
+    ) {
+        final String jwtToken = response.getHeader(AUTHORIZATION);
+
+        final Tokens tokens = oauthService.reissueAccessToken(jwtToken, refreshToken);
 
         setCookie(response, tokens.refreshToken());
 
