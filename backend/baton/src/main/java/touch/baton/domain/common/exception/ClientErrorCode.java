@@ -38,7 +38,8 @@ public enum ClientErrorCode {
     JWT_CLAIM_SOCIAL_ID_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW004", "사용자의 잘못된 소셜 아이디(SocialId) 정보를 가진 JWT 입니다."),
 
     DUPLICATED_BRANCH_NAME(HttpStatus.BAD_REQUEST, "BR001", "이미 존재하는 이름의 브랜치입니다."),
-    REPO_NAME_IS_NULL(HttpStatus.BAD_REQUEST, "BR002", "레포지토리 이름을 입력해주세요.");
+    REPO_NAME_IS_NULL(HttpStatus.BAD_REQUEST, "BR002", "레포지토리 이름을 입력해주세요."),
+    REPO_NOT_FOUND(HttpStatus.NOT_FOUND, "BR003", "레포지토리를 찾을 수 없습니다."),;
 
     private final HttpStatus httpStatus;
     private final String errorCode;

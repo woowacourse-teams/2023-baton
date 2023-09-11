@@ -1,13 +1,13 @@
 package touch.baton.infra.github;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
@@ -17,6 +17,7 @@ import touch.baton.infra.github.response.ReadBranchInfoResponse;
 
 import java.util.Objects;
 
+@Profile("!test")
 @Service
 public class GithubBranchService {
 
@@ -64,14 +65,22 @@ public class GithubBranchService {
     }
 
     private ReadBranchInfoResponse readMainBranch(final String repoName) {
-        try {
-            final RestTemplate restTemplate = new RestTemplate();
-            final String requestUrl =  GITHUB_API_URL + repoName + READ_BRANCH_API_POSTFIX;
-            final HttpHeaders httpHeaders = setBearerAuth();
-            final HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-            return restTemplate.exchange(requestUrl, HttpMethod.GET, entity, ReadBranchInfoResponse.class).getBody();
-        } catch (RestClientException e) {
-            throw new InfraException();
+        final RestTemplate restTemplate = new RestTemplate();
+        final String requestUrl = GITHUB_API_URL + repoName + READ_BRANCH_API_POSTFIX;
+        final HttpHeaders httpHeaders = setBearerAuth();
+        final HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+        final ResponseEntity<ReadBranchInfoResponse> response = restTemplate.exchange(requestUrl, HttpMethod.GET, entity, ReadBranchInfoResponse.class);
+        validateReadBranchInfoResponse(response);
+        return response.getBody();
+    }
+
+    private void validateReadBranchInfoResponse(final ResponseEntity<ReadBranchInfoResponse> response) {
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return;
         }
+        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            throw new ClientRequestException(ClientErrorCode.REPO_NOT_FOUND);
+        }
+        throw new InfraException();
     }
 }
