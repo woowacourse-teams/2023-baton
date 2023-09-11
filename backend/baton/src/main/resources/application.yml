@@ -26,6 +26,9 @@ oauth:
     redirect_uri: ${OAUTH_GITHUB_REDIRECT_URI}
     client_secret: ${OAUTH_GITHUB_CLIENT_SECRET}
     scope: ${OAUTH_GITHUB_SCOPE}
+    
+github:
+  personal_access_token: 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
 
 cors:
   allowed-origin: http://localhost:3000

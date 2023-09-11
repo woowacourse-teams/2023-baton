@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.common.exception.ClientRequestException;
 import touch.baton.infra.exception.InfraException;
 import touch.baton.infra.github.request.CreateBranchRequest;
 import touch.baton.infra.github.response.ReadBranchInfoResponse;
@@ -16,18 +18,22 @@ import touch.baton.infra.github.response.ReadBranchInfoResponse;
 import java.util.Objects;
 
 @Service
-public class GithubApiService {
+public class GithubBranchService {
 
-    private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission";
+    private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission/";
     private static final String CREATE_BRANCH_API_POSTFIX = "/git/refs";
-    private static final String NEW_BRANCH_HEAD_PREFIX = "/refs/heads/";
+    private static final String NEW_BRANCH_HEAD_PREFIX = "refs/heads/";
     private static final String READ_BRANCH_API_POSTFIX = "/git/refs/heads/main";
     private static final String DUPLICATED_BRANCH_ERROR_MESSAGE = "Reference already exists";
 
-    @Value("${github.personal_access_token}")
-    private String token;
 
-    public boolean createBranch(final String repoName, final String newBranchName) {
+    private final String token;
+
+    public GithubBranchService(@Value("${github.personal_access_token}") final String token) {
+        this.token = token;
+    }
+
+    public void createBranch(final String repoName, final String newBranchName) {
         final RestTemplate restTemplate = new RestTemplate();
         final ReadBranchInfoResponse branchInfoResponse = readMainBranch(repoName);
 
@@ -39,8 +45,6 @@ public class GithubApiService {
         final HttpEntity<CreateBranchRequest> entity = new HttpEntity<>(createBranchRequest, httpHeaders);
         final ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.POST, entity, String.class);
         validateCreateResponseMessage(response);
-
-        return response.getStatusCode() == HttpStatus.CREATED;
     }
 
     private HttpHeaders setBearerAuth() {
@@ -54,7 +58,7 @@ public class GithubApiService {
             return;
         }
         if (Objects.requireNonNull(response.getBody()).contains(DUPLICATED_BRANCH_ERROR_MESSAGE)) {
-            return;
+            throw new ClientRequestException(ClientErrorCode.DUPLICATED_BRANCH_NAME);
         }
         throw new InfraException();
     }
