@@ -2,6 +2,7 @@ import { DownArrowIcon, UpArrowIcon } from '@/assets/arrow-icon';
 import React, { useState } from 'react';
 import { css, keyframes, styled } from 'styled-components';
 import Modal from '../common/Modal/Modal';
+import useViewport from '@/hooks/useViewport';
 
 interface Props extends React.HTMLProps<HTMLTextAreaElement> {
   inputTextState: string;
@@ -39,6 +40,8 @@ const GuideTextarea = ({
   const [isTextareaOpen, setIsTextareaOpen] = useState(!isOptional);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [IsAnimated, setIsAnimated] = useState(false);
+
+  const { isMobile } = useViewport();
 
   const handleBlur = () => {
     if (isOptional) return;
@@ -129,7 +132,7 @@ const GuideTextarea = ({
         </S.InputConfig>
       </S.TextareaContainer>
       {isModalOpen && (
-        <Modal closeModal={closeModal} width="500px" height="620px">
+        <Modal closeModal={closeModal} width={isMobile ? '90%' : '70%'} height="620px">
           <S.ModalContainer>
             <S.ModalTitle>{title}</S.ModalTitle>
             <S.ModalContents>
@@ -224,6 +227,13 @@ const S = {
     font-size: 14px;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      width: 45px;
+      height: 23px;
+
+      font-size: 12px;
+    }
   `,
 
   TitleContainer: styled.div<{ $isOptional: boolean }>`
@@ -232,11 +242,25 @@ const S = {
     gap: 8px;
 
     cursor: ${({ $isOptional }) => ($isOptional ? 'pointer' : '')};
+
+    @media (max-width: 768px) {
+      gap: 4px;
+    }
   `,
 
   Title: styled.div`
     font-size: 20px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 18px;
+
+      height: 20px;
+    }
+
+    @media (max-width: 400px) {
+      font-size: 16px;
+    }
   `,
 
   RequiredIcon: styled.div`
@@ -245,6 +269,10 @@ const S = {
 
     color: var(--baton-red);
     font-size: 20px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   TextareaContainer: styled.div<{
@@ -294,6 +322,14 @@ const S = {
     &:focus {
       outline: 0;
     }
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+
+      &::placeholder {
+        font-size: 16px;
+      }
+    }
   `,
 
   InputConfig: styled.div`
@@ -334,8 +370,12 @@ const S = {
     padding-bottom: 25px;
     border-bottom: 1px solid var(--gray-400);
 
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
   `,
 
   ModalContents: styled.div`
@@ -345,6 +385,12 @@ const S = {
 
     height: 480px;
     padding: 30px 10px;
+
+    @media (max-width: 768px) {
+      gap: 20px;
+
+      padding: 20px 0;
+    }
   `,
 
   GuideText: styled.div`
@@ -355,9 +401,13 @@ const S = {
     margin-left: 30px;
     margin-right: 10px;
 
-    font-size: 20px;
+    font-size: 19px;
     line-height: 1.4;
     color: var(--gray-700);
+
+    @media (max-width: 768px) {
+      font-size: 18px;
+    }
 
     &::before {
       content: '•';
@@ -387,5 +437,9 @@ const S = {
     color: var(--baton-red);
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 };
