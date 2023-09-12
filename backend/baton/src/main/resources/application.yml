@@ -1,12 +1,13 @@
 spring:
   flyway:
-    enabled: false
+    enabled: true
+    baseline-on-migrate: true
   jpa:
     properties:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
 
   data:
     web:
@@ -26,7 +27,7 @@ oauth:
     redirect_uri: ${OAUTH_GITHUB_REDIRECT_URI}
     client_secret: ${OAUTH_GITHUB_CLIENT_SECRET}
     scope: ${OAUTH_GITHUB_SCOPE}
-    
+
 github:
   personal_access_token: ${PERSONAL_MISSION_ACCESS_TOKEN}
 
@@ -37,3 +38,4 @@ jwt:
   token:
     secret_key: ${JWT_SECRET_KEY}
     issuer: ${JWT_ISSUER}
+    expire_minutes: ${JWT_EXPIRE_MINUTES}
