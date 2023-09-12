@@ -16,4 +16,4 @@ export const SUPPORTER_POST_OPTIONS = ['신청한 리뷰', '진행중인 리뷰'
 
 export const ACCESS_TOKEN_LOCAL_STORAGE_KEY = 'ACCESS_TOKEN';
 
-export const CHANNEL_SERVICE_KEY = process.env.NODE_ENV === 'development' ? '' : process.env.REACT_APP_CHANNELTALK_KEY;
+export const CHANNEL_SERVICE_KEY = process.env.REACT_APP_CHANNELTALK_KEY;

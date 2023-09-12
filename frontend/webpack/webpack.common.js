@@ -1,5 +1,6 @@
 const dotenv = require('dotenv');
 dotenv.config();
+console.log(process.env.REACT_APP_CHANNELTALK_KEY);
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
@@ -25,6 +26,9 @@ module.exports = {
     }),
     new webpack.ProvidePlugin({
       React: 'react',
+    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
     }),
   ],
   resolve: {
