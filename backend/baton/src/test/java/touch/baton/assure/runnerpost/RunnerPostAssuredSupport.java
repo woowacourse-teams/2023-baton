@@ -19,16 +19,12 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
-import touch.baton.domain.runnerpost.controller.response.TagSearchResponse;
-import touch.baton.domain.runnerpost.controller.response.TagSearchResponses;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.Tag;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -283,11 +279,6 @@ public class RunnerPostAssuredSupport {
             return this;
         }
 
-        public RunnerPostClientRequestBuilder 태그를_검색한다(final String 태그_이름) {
-            response = AssuredSupport.get("/api/v1/posts/runner/tags/search", new QueryParams(Map.of("name", 태그_이름)));
-            return this;
-        }
-
         public RunnerPostServerResponseBuilder 서버_응답() {
             return new RunnerPostServerResponseBuilder(response);
         }
@@ -326,6 +317,7 @@ public class RunnerPostAssuredSupport {
 
         public void 마이페이지_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.SimpleInMyPage> 마이페이지_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.SimpleInMyPage> actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
@@ -337,6 +329,7 @@ public class RunnerPostAssuredSupport {
 
         public void 서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터와_연관된_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.ReferencedBySupporter> actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
@@ -348,6 +341,7 @@ public class RunnerPostAssuredSupport {
 
         public void 전체_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.Simple> 전체_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
@@ -357,28 +351,9 @@ public class RunnerPostAssuredSupport {
             );
         }
 
-        public void 태그_검색_성공을_검증한다(final TagSearchResponses.Detail 검색된_태그_목록) {
-            final TagSearchResponses.Detail actual = this.response.as(new TypeRef<>() {
-            });
-
-            assertSoftly(softly -> {
-                        softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
-                        softly.assertThat(actual.data()).isEqualTo(검색된_태그_목록.data());
-                    }
-            );
-        }
-
-        public static TagSearchResponses.Detail 태그_검색_Detail_응답(final List<Tag> 검색된_태그_목록) {
-            List<TagSearchResponse.TagResponse> 태그_목록_응답 =검색된_태그_목록.stream()
-                    .map(tag -> TagSearchResponse.TagResponse.of(tag.getId(), tag.getTagName().getValue()))
-                    .toList();
-            final TagSearchResponses.Detail 검색된_태그_목록_응답들 = TagSearchResponses.Detail.from(태그_목록_응답);
-
-            return 검색된_태그_목록_응답들;
-        }
-
         public void 지원한_서포터_목록_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 전체_러너_게시글_페이징_응답) {
             final SupporterRunnerPostResponses.Detail actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {

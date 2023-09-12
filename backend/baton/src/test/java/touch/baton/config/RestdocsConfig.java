@@ -71,9 +71,6 @@ public abstract class RestdocsConfig {
     @MockBean
     protected OauthSupporterRepository oauthSupporterRepository;
 
-    @MockBean
-    protected TagRepository tagRepository;
-
     @Autowired
     protected MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
 

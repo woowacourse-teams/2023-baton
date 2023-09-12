@@ -230,8 +230,4 @@ public class RunnerPostService {
     public boolean existsRunnerPostApplicantByRunnerPostIdAndMemberId(final Long runnerPostId, final Long memberId) {
         return supporterRunnerPostRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
     }
-
-    public List<Tag> readTagsByTagName(final String name) {
-        return tagRepository.findTop10ByTagReducedNameValueContainingOrderByTagReducedNameValueAsc(name);
-    }
 }

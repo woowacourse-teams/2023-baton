@@ -27,15 +27,12 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponses;
-import touch.baton.domain.runnerpost.controller.response.TagSearchResponse;
-import touch.baton.domain.runnerpost.controller.response.TagSearchResponses;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.Tag;
 
 import java.net.URI;
 import java.util.List;
@@ -191,17 +188,6 @@ public class RunnerPostController {
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
-    }
-
-    @GetMapping("/tags/search")
-    public ResponseEntity<TagSearchResponses.Detail> readTags(@RequestParam String name) {
-        String reducedName = name.replaceAll(" ", "");
-        List<Tag> tags = runnerPostService.readTagsByTagName(reducedName);
-        List<TagSearchResponse.TagResponse> tagSearchResponses = tags.stream()
-                .map(tag -> TagSearchResponse.TagResponse.of(tag.getId(), tag.getTagReducedName().getValue()))
-                .toList();
-
-        return ResponseEntity.ok(TagSearchResponses.Detail.from(tagSearchResponses));
     }
 
     private List<Long> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
