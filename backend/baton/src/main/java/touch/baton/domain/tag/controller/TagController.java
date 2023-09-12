@@ -21,10 +21,10 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping("/search")
-    public ResponseEntity<TagSearchResponses.Detail> readTags(@RequestParam String name) {
-        String reducedName = name.replaceAll(" ", "");
-        List<Tag> tags = tagService.readTagsByTagName(reducedName);
-        List<TagSearchResponse.TagResponse> tagSearchResponses = tags.stream()
+    public ResponseEntity<TagSearchResponses.Detail> readTagsByTagName(@RequestParam String tagName) {
+        final String reducedName = tagName.replaceAll(" ", "");
+        final List<Tag> tags = tagService.readTagsByReducedName(reducedName);
+        final List<TagSearchResponse.TagResponse> tagSearchResponses = tags.stream()
                 .map(tag -> TagSearchResponse.TagResponse.of(tag.getId(), tag.getTagReducedName().getValue()))
                 .toList();
 

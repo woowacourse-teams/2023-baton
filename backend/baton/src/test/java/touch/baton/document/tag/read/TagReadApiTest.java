@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.controller.TagController;
-import touch.baton.domain.tag.repository.TagRepository;
 import touch.baton.domain.tag.service.TagService;
 import touch.baton.fixture.domain.TagFixture;
 
@@ -54,7 +52,7 @@ class TagReadApiTest extends RestdocsConfig {
         final Tag javascriptTagSpy = spy(javascriptTag);
 
         // when
-        when(tagService.readTagsByTagName("java"))
+        when(tagService.readTagsByReducedName("java"))
                 .thenReturn(List.of(javaTagSpy, javascriptTagSpy));
         when(javaTagSpy.getId())
                 .thenReturn(1L);

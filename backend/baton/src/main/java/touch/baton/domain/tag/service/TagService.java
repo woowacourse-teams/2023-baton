@@ -15,7 +15,7 @@ public class TagService {
 
     private final TagRepository tagRepository;
 
-    public List<Tag> readTagsByTagName(final String name) {
+    public List<Tag> readTagsByReducedName(final String name) {
         return tagRepository.findTop10ByTagReducedNameValueContainingOrderByTagReducedNameValueAsc(name);
     }
 }
