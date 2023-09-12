@@ -28,7 +28,7 @@ oauth:
     scope: ${OAUTH_GITHUB_SCOPE}
     
 github:
-  personal_access_token: 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
+  personal_access_token: ${PERSONAL_MISSION_ACCESS_TOKEN}
 
 cors:
   allowed-origin: http://localhost:3000
