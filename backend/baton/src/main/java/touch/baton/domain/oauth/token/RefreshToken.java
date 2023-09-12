@@ -24,6 +24,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 public class RefreshToken extends BaseEntity {
 
+    private static final int EXPIRE_DATE = 14;
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -35,14 +36,18 @@ public class RefreshToken extends BaseEntity {
     @Embedded
     private Token token;
 
+    private LocalDateTime expireDate;
+
     @Builder
-    private RefreshToken(final Member member, final Token token) {
+    private RefreshToken(final Member member, final Token token, final LocalDateTime expireDate) {
         this.member = member;
         this.token = token;
+        this.expireDate = expireDate;
     }
 
     public void updateToken(final Token token) {
         this.token = token;
+        this.expireDate = expireDate.plusDays(14);
     }
 
     public boolean isNotOwner(final Member member) {
@@ -50,6 +55,6 @@ public class RefreshToken extends BaseEntity {
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isBefore(getUpdatedAt().plusDays(EXPIRE_DATE));
+        return LocalDateTime.now().isAfter(expireDate);
     }
 }

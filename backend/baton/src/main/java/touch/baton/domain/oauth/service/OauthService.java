@@ -27,6 +27,7 @@ import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -102,6 +103,7 @@ public class OauthService {
         final RefreshToken refreshToken = RefreshToken.builder()
                 .member(member)
                 .token(token)
+                .expireDate(LocalDateTime.now().plusDays(14))
                 .build();
 
         refreshTokenRepository.save(refreshToken);

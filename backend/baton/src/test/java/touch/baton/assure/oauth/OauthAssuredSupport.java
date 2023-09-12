@@ -7,11 +7,17 @@ import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.assure.common.QueryParams;
+import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.member.Member;
 import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.token.AccessToken;
+import touch.baton.domain.oauth.token.RefreshToken;
+import touch.baton.domain.oauth.token.Token;
+import touch.baton.domain.oauth.token.Tokens;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.SET_COOKIE;
@@ -25,6 +31,7 @@ public class OauthAssuredSupport {
         return new OauthClientRequestBuilder();
     }
 
+    @SuppressWarnings("NonAsciiCharacters")
     public static class OauthClientRequestBuilder {
 
         private ExtractableResponse<Response> response;
@@ -59,8 +66,14 @@ public class OauthAssuredSupport {
             return this;
         }
 
-        public OauthClientRequestBuilder 기간이_만료된_엑세스_토큰으로_프로필_조회하려한다() {
+        public OauthClientRequestBuilder 기간이_만료된_엑세스_토큰으로_프로필_조회하려_한다() {
             response = AssuredSupport.get("/api/v1/profile/runner/me", accessToken);
+
+            return this;
+        }
+
+        public OauthClientRequestBuilder 기간_만료_액세스_토큰과_리프레시_토큰으로_리프레시_요청한다(final String 기간_만료_액세스_토큰, final String 리프레시_토큰) {
+            response = AssuredSupport.post("/api/v1/oauth/refresh", 기간_만료_액세스_토큰, 리프레시_토큰);
 
             return this;
         }
@@ -100,8 +113,37 @@ public class OauthAssuredSupport {
             return response.header(AUTHORIZATION);
         }
 
+        public Tokens 액세스_토큰과_리프레시_토큰을_반환한다(final Member ethan) {
+            final String accessToken = response.header(AUTHORIZATION);
+
+            final RefreshToken refreshToken = RefreshToken.builder()
+                    .member(ethan)
+                    .token(new Token(response.cookie("refreshToken")))
+                    .expireDate(LocalDateTime.now().plusDays(14))
+                    .build();
+
+            return new Tokens(new AccessToken(accessToken), refreshToken);
+        }
+
         public void 토큰_기간_만료_오류가_발생한다() {
-            assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+            });
+        }
+
+        public void 새로운_액세스_토큰과_리프레시_토큰을_반환한다() {
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
+                softly.assertThat(response.header(AUTHORIZATION)).isNotBlank();
+                softly.assertThat(response.header(SET_COOKIE)).isNotBlank();
+            });
+        }
+
+        public void 오류가_발생한다(final ClientErrorCode clientErrorCode) {
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getHttpStatus().value());
+                softly.assertThat(response.jsonPath().getString("errorCode")).isEqualTo(clientErrorCode.getErrorCode());
+            });
         }
     }
 }
