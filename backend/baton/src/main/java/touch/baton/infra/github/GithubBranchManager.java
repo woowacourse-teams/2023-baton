@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
@@ -19,7 +19,7 @@ import touch.baton.infra.github.response.ReadBranchInfoResponse;
 import java.util.Objects;
 
 @Profile("!test")
-@Service
+@Component
 public class GithubBranchManager implements GithubBranchService {
 
     private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission/";
