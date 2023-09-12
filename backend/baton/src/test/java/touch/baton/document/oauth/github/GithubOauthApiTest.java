@@ -13,10 +13,13 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.oauth.controller.OauthController;
 import touch.baton.domain.oauth.service.OauthService;
 import touch.baton.domain.oauth.token.AccessToken;
+import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.RefreshToken;
 import touch.baton.domain.oauth.token.Token;
 import touch.baton.domain.oauth.token.Tokens;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
+
+import java.time.LocalDateTime;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.BDDMockito.when;
@@ -76,6 +79,7 @@ class GithubOauthApiTest extends RestdocsConfig {
         final RefreshToken refreshToken = RefreshToken.builder()
                 .member(mock(Member.class))
                 .token(new Token("mock refresh token"))
+                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
                 .build();
         final Tokens tokens = new Tokens(new AccessToken("Bearer Jwt"), refreshToken);
 
