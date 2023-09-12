@@ -14,7 +14,7 @@ public interface TestRefreshTokenRepository extends JpaRepository<RefreshToken, 
     @Modifying
     @Transactional
     @Query("""
-            update RefreshToken  rt
+            update RefreshToken rt
             set rt.expireDate = :expireDate
             where rt.token = :token
             """)
