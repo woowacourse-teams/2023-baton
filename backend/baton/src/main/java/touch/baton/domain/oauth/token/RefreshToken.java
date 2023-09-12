@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.oauth.token.exception.RefreshTokenDomainException;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -40,9 +41,22 @@ public class RefreshToken extends BaseEntity {
 
     @Builder
     private RefreshToken(final Member member, final Token token, final ExpireDate expireDate) {
+        validateNotNull(member, token, expireDate);
         this.member = member;
         this.token = token;
         this.expireDate = expireDate;
+    }
+
+    private void validateNotNull(final Member member, final Token token, final ExpireDate expireDate) {
+        if (member == null) {
+            throw new RefreshTokenDomainException("RefreshToken 의 member 는 null 일 수 없습니다.");
+        }
+        if (token == null) {
+            throw new RefreshTokenDomainException("RefreshToken 의 token 은 null 일 수 없습니다.");
+        }
+        if (expireDate == null) {
+            throw new RefreshTokenDomainException("RefreshToken 의 expireDate 는 null 일 수 없습니다.");
+        }
     }
 
     public void updateToken(final Token token) {
