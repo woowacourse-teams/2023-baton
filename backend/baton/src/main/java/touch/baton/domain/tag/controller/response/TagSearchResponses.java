@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.controller.response;
+package touch.baton.domain.tag.controller.response;
 
 import java.util.List;
 
