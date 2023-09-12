@@ -43,14 +43,6 @@ public class OauthController {
         return ResponseEntity.status(FOUND).build();
     }
 
-    /*
-     * - [x] access Token 을 발급할 때 refresh Token 도 쿠키로 반환 하게 함
-     *  - [x] test
-     * - [x] access Token 이 만료되면 refresh + access token으로 재발급 받는 로직 추가
-     *  - [] test
-     * - [x] access Token 만료 기간 변경 -> 30분
-     *  - [x] test
-     */
     @GetMapping("/login/{oauthType}")
     public ResponseEntity<Void> login(@PathVariable final OauthType oauthType,
                                       @RequestParam final String code,
