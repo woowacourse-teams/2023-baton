@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(MemberBranchController.class)
-public class GithubBranchApiTest extends RestdocsConfig {
+class GithubBranchApiTest extends RestdocsConfig {
 
     @MockBean
     private GithubBranchService githubBranchService;

@@ -10,7 +10,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MemberBranchAssuredSupport {
+class MemberBranchAssuredSupport {
 
     private MemberBranchAssuredSupport() {
     }

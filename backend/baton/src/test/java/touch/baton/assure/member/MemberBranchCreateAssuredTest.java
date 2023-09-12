@@ -9,7 +9,7 @@ import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MemberBranchCreateAssuredTest extends AssuredTestConfig {
+class MemberBranchCreateAssuredTest extends AssuredTestConfig {
 
     @Test
     void 로그인_한_사용자가_요청한_레포의_브랜치를_생성한다() {
