@@ -27,7 +27,6 @@ public class GithubBranchService {
     private static final String READ_BRANCH_API_POSTFIX = "/git/refs/heads/main";
     private static final String DUPLICATED_BRANCH_ERROR_MESSAGE = "Reference already exists";
 
-
     private final String token;
 
     public GithubBranchService(@Value("${github.personal_access_token}") final String token) {

@@ -12,7 +12,7 @@ import static org.mockito.Mockito.doNothing;
 public abstract class MockGithubBranchServiceConfig {
 
     @Bean
-    GithubBranchService githubBranchService() {
+    public GithubBranchService githubBranchService() {
         final GithubBranchService mock = Mockito.mock(GithubBranchService.class);
         doNothing().when(mock).createBranch(any(String.class), any(String.class));
 

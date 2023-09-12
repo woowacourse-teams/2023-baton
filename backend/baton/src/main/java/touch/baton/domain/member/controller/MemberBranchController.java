@@ -21,9 +21,9 @@ public class MemberBranchController {
 
     private final GithubBranchService githubBranchService;
 
-    @PostMapping()
-    ResponseEntity<Void> createMemberBranch(@AuthMemberPrincipal final Member member,
-                                            @Valid @RequestBody final GithubRepoNameRequest githubRepoNameRequest
+    @PostMapping
+    public ResponseEntity<Void> createMemberBranch(@AuthMemberPrincipal final Member member,
+                                                   @Valid @RequestBody final GithubRepoNameRequest githubRepoNameRequest
     ) {
         githubBranchService.createBranch(githubRepoNameRequest.repoName(), member.getSocialId().getValue());
         final URI redirectUri = URI.create("/api/v1/profile/me");
