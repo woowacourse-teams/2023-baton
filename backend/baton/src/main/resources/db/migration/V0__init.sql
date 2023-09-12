@@ -22,7 +22,7 @@ create table runner
     updated_at   datetime(6) not null,
     deleted_at   datetime(6) null,
     member_id    bigint       not null,
-    constraint UK_lk1nbff3heosfroj0h6joq0a7
+    constraint uk_runner_in_member_id
         unique (member_id),
     constraint fk_runner_to_member
         foreign key (member_id) references member (id)
@@ -38,7 +38,7 @@ create table supporter
     updated_at   datetime(6) not null,
     deleted_at   datetime(6) null,
     member_id    bigint       not null,
-    constraint UK_113bhk4mjpi996rm5uyj7eva9
+    constraint uk_supporter_in_member_id
         unique (member_id),
     constraint fk_supporter_to_member
         foreign key (member_id) references member (id)
@@ -77,7 +77,7 @@ create table supporter_feedback
     supporter_id   bigint not null,
     runner_id      bigint not null,
     runner_post_id bigint not null,
-    constraint UK_h2msmse508dwfs8uevwhq2xsn
+    constraint uk_supporter_feedback_in_runner_post_id
         unique (runner_post_id),
     constraint fk_supporter_feed_back_to_runner
         foreign key (runner_id) references runner (id),
@@ -109,7 +109,7 @@ create table tag
         primary key,
     name         varchar(255) not null,
     reduced_name varchar(255) not null,
-    constraint UK_1wdpsed5kna2y38hnbgrnhi5b
+    constraint uk_tag_in_name
         unique (name)
 );
 
@@ -130,7 +130,7 @@ create table technical_tag
     id   bigint auto_increment
         primary key,
     name varchar(255) not null,
-    constraint UK_cocro1c4s00vt166wkg6assr
+    constraint uk_technical_tag_in_name
         unique (name)
 );
 
