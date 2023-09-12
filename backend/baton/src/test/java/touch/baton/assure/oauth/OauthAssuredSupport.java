@@ -127,12 +127,6 @@ public class OauthAssuredSupport {
             return new Tokens(new AccessToken(accessToken), refreshToken);
         }
 
-        public void 토큰_기간_만료_오류가_발생한다() {
-            assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
-            });
-        }
-
         public void 새로운_액세스_토큰과_리프레시_토큰을_반환한다() {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
