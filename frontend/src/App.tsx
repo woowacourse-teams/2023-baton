@@ -9,12 +9,11 @@ import { CHANNEL_SERVICE_KEY } from './constants';
 const App = () => {
   ChannelService.loadScript();
 
-  if (!CHANNEL_SERVICE_KEY) {
-    console.error('Channel Service Key not found');
-  } else
+  if (CHANNEL_SERVICE_KEY) {
     ChannelService.boot({
       pluginKey: CHANNEL_SERVICE_KEY,
     });
+  }
 
   const { validateToken } = useToken();
 
