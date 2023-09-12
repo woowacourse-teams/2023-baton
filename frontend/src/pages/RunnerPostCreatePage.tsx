@@ -1,6 +1,5 @@
 import InputBox from '@/components/InputBox/InputBox';
 import TagInput from '@/components/TagInput/TagInput';
-import TextArea from '@/components/Textarea/Textarea';
 import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
@@ -10,24 +9,35 @@ import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
 import { postRequest } from '@/api/fetch';
-import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
+import {
+  validateCuriousContents,
+  validateDeadline,
+  validateImplementContents,
+  validatePullRequestUrl,
+  validateTags,
+  validateTitle,
+} from '@/utils/validate';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
+import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToCreationResultPage } = usePageRouter();
+  const { goBack, goToMainPage } = usePageRouter();
   const { getToken } = useToken();
   const { showErrorToast } = useContext(ToastContext);
+
   const { isMobile } = useViewport();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
   const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 1)));
-  const [contents, setContents] = useState<string>('');
+  const [implementedContents, setImplementedContents] = useState<string>('');
+  const [curiousContents, setCuriousContents] = useState<string>('');
+  const [postscriptContents, setPostscriptContents] = useState<string>('');
 
   const pushTag = (newTag: string) => {
     const newTags = [...tags, newTag];
@@ -75,8 +85,16 @@ const RunnerPostCreatePage = () => {
     setDeadline(e.target.value);
   };
 
-  const changeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContents(e.target.value);
+  const changeImplementedContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setImplementedContents(e.target.value);
+  };
+
+  const changeCuriousContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCuriousContents(e.target.value);
+  };
+
+  const changePostscriptContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPostscriptContents(e.target.value);
   };
 
   const cancelPostWrite = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -101,6 +119,8 @@ const RunnerPostCreatePage = () => {
     validateTags(tags);
     validatePullRequestUrl(pullRequestUrl);
     validateDeadline(deadline);
+    validateImplementContents(implementedContents);
+    validateCuriousContents(curiousContents);
   };
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {
@@ -111,7 +131,7 @@ const RunnerPostCreatePage = () => {
 
     postRequest(`/posts/runner`, token, body)
       .then(async () => {
-        goToCreationResultPage();
+        goToMainPage();
       })
       .catch((error: Error) => {
         const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
@@ -125,7 +145,9 @@ const RunnerPostCreatePage = () => {
       title,
       pullRequestUrl,
       deadline,
-      contents,
+      implementedContents,
+      curiousContents,
+      postscriptContents,
     };
 
     await postRunnerForm(postData);
@@ -178,15 +200,46 @@ const RunnerPostCreatePage = () => {
               onChange={changeDeadline}
             />
           </S.InputContainer>
-          <TextArea
-            inputTextState={contents}
-            width={isMobile ? '300px' : '1200px'}
-            height="340px"
-            maxLength={500}
-            handleInputTextState={changeContents}
-            placeholder="> 리뷰어가 작성된 코드의 의미를 파악할 수 있도록 내용을 작성해주시면 더 나은 리뷰가 될 수 있어요 :)"
+          <GuideTextarea
+            title="무엇을 구현하였나요?"
+            inputTextState={implementedContents}
+            maxLength={200}
+            guideTexts={[
+              '로또 추첨 어플리케이션을 객체지향적으로 구현했습니다.',
+              '바톤 미션중에 플레이어가 몬스터와 대결하는 콘솔 애플리케이션을 구현했습니다.',
+              '개인 프로젝트로 CRUD 기능이 있는 게시판을 만들었습니다.',
+            ]}
+            handleInputTextState={changeImplementedContents}
+            placeholder="구현 기능에 대한 설명을 해주세요"
           />
-
+          <GuideTextarea
+            title="아쉬운 점이나 궁금한 점이 있나요?"
+            inputTextState={curiousContents}
+            maxLength={200}
+            guideTexts={[
+              '설계 위주로 리뷰받고 싶어요. 어떻게 더 좋은 설계로 바꿀 수 있나요?',
+              '현재 코드에서 어떻게 수정해야 객체지향에 가까워 질 수 있나요?',
+              '컴포넌트를 어떤 기준으로 나누면 좋을까요?',
+              '커밋 단위 조절하는 것이 어려웠어요. 잘게 커밋하려면 어떻게 해야할까요?',
+              '코드의 가독성을 개선하는 팁을 알려주세요.',
+              '서비스가 모든 걸 처리하다보니 하는 역할이 많아진것 같아요. 어떻게 개선할 수 있을까요?',
+            ]}
+            handleInputTextState={changeCuriousContents}
+            placeholder="궁금한 점을 적어주세요"
+          />
+          <GuideTextarea
+            title="서포터에게 하고싶은 말이 있나요?"
+            inputTextState={postscriptContents}
+            maxLength={200}
+            guideTexts={[
+              '3년차 이상 개발자께서 리뷰해주시면 좋을 것 같아요.',
+              '최대한 빨리 리뷰해주세요.',
+              'Best Practice나 공부할 키워드를 많이 알려주시면 좋을 것 같아요.',
+            ]}
+            handleInputTextState={changePostscriptContents}
+            placeholder="서포터에게 하고 싶은 말을 적어주세요"
+            isOptional={true}
+          />
           <S.ButtonContainer>
             <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
               취소

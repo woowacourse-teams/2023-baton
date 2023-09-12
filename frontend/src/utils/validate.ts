@@ -61,3 +61,11 @@ export const validateIntroduction = (introduction: string | null) => {
 export const validateMessage = (message: string) => {
   if (message.length < 20) throw new Error('메세지는 20자 이상 입력해주세요');
 };
+
+export const validateImplementContents = (contents: string, maxLength: number = 20) => {
+  if (contents.length < maxLength) throw new Error(`구현한 내용을 ${maxLength}자 이상 입력해주세요`);
+};
+
+export const validateCuriousContents = (contents: string, maxLength: number = 20) => {
+  if (contents.length < maxLength) throw new Error(`아쉽거나 궁금한 내용을 ${maxLength}자 이상 입력해주세요`);
+};
