@@ -3,6 +3,7 @@ package touch.baton.domain.oauth.service;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
@@ -37,6 +38,7 @@ import java.util.UUID;
 import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
 
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class OauthService {
 
@@ -53,6 +55,7 @@ public class OauthService {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);
     }
 
+    @Transactional
     public Tokens login(final OauthType oauthType, final String code) {
         final OauthInformation oauthInformation = oauthInformationClientComposite.fetchInformation(oauthType, code);
 
@@ -115,6 +118,7 @@ public class OauthService {
         return new Tokens(accessToken, refreshToken);
     }
 
+    @Transactional
     public Tokens reissueAccessToken(final String jwtToken, final String refreshToken) {
         final Claims claims = jwtDecoder.parseExpiredJwtToken(jwtToken);
         final SocialId socialId = new SocialId(claims.get("socialId", String.class));
