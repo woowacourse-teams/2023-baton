@@ -31,8 +31,6 @@ import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
-;
-
 class SupporterFeedbackTest {
 
     @DisplayName("생성 테스트")

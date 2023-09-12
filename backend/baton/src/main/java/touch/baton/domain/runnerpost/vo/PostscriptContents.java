@@ -26,7 +26,7 @@ public class PostscriptContents {
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("PostscriptContents 객체 내부에 implementedContents 는 null 일 수 없습니다.");
+            throw new IllegalArgumentException("PostscriptContents 객체 내부에 value 는 null 일 수 없습니다.");
         }
     }
 }

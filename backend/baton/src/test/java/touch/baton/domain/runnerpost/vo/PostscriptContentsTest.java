@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class PostscriptContentsTest {
+class PostscriptContentsTest {
 
     @DisplayName("value 가 null 이면 예외가 발생한다.")
     @Test
