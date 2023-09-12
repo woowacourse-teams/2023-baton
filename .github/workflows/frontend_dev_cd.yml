@@ -24,12 +24,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: "npm"
-          cache-dependency-path: "**/package-lock.json"
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
 
       - name: Setup environment variables
         run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_DEV_BASE_URL }}" >> .env
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_DEV_BASE_URL }}
+          CHANNEL_SERVICE_KEY=${{ secrets.REACT_APP_CHANNELTALK_KEY }}
+          " >> .env
 
       - name: Install Dependancies
         run: npm install

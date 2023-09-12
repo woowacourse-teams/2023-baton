@@ -3,8 +3,19 @@ import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import { useToken } from './hooks/useToken';
 import ToastProvider from './contexts/ToastContext';
+import ChannelService from './ChannelService';
+import { CHANNEL_SERVICE_KEY } from './constants';
 
 const App = () => {
+  ChannelService.loadScript();
+
+  if (!CHANNEL_SERVICE_KEY) {
+    console.error('Channel Service Key not found');
+  } else
+    ChannelService.boot({
+      pluginKey: CHANNEL_SERVICE_KEY,
+    });
+
   const { validateToken } = useToken();
 
   validateToken();
