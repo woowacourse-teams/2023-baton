@@ -22,6 +22,7 @@ import java.time.Duration;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FOUND;
+import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/oauth")
@@ -29,7 +30,6 @@ import static org.springframework.http.HttpStatus.FOUND;
 public class OauthController {
 
     private static final String REFRESH_TOKEN_KEY = "refreshToken";
-    private static final int REFRESH_TOKEN_LIFECYCLE = 30;
 
     private final OauthService oauthService;
 

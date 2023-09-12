@@ -33,6 +33,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
+import static touch.baton.domain.oauth.token.RefreshToken.builder;
+
 @RequiredArgsConstructor
 @Service
 public class OauthService {
@@ -100,10 +103,10 @@ public class OauthService {
 
         final String randomTokens = UUID.randomUUID().toString();
         final Token token = new Token(randomTokens);
-        final RefreshToken refreshToken = RefreshToken.builder()
+        final RefreshToken refreshToken = builder()
                 .member(member)
                 .token(token)
-                .expireDate(LocalDateTime.now().plusDays(14))
+                .expireDate(LocalDateTime.now().plusDays(REFRESH_TOKEN_LIFECYCLE))
                 .build();
 
         refreshTokenRepository.save(refreshToken);
