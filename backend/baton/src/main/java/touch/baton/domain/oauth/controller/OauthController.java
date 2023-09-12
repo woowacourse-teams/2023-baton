@@ -85,7 +85,7 @@ public class OauthController {
         final Cookie cookie = new Cookie(REFRESH_TOKEN_KEY, refreshToken.getToken().getValue());
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setMaxAge(Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSecondsPart());
+        cookie.setMaxAge((int) Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds());
 
         response.addCookie(cookie);
     }
