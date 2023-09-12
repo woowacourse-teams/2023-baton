@@ -129,21 +129,3 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter
 ===== *Http Response Fields*
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-referenced-by-supporter/response-fields.adoc[]
-
-==== *태그 검색 API*
-
-===== *Http Request*
-
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-tags/http-request.adoc[]
-
-===== *Http Request Query Parameters*
-
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-tags/query-parameters.adoc[]
-
-===== *Http Response*
-
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-tags/http-response.adoc[]
-
-===== *Http Response Fields*
-
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-tags/response-fields.adoc[]
