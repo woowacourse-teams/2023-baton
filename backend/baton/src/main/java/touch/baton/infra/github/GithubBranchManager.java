@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
+import touch.baton.domain.member.service.dto.GithubBranchService;
 import touch.baton.infra.exception.InfraException;
 import touch.baton.infra.github.request.CreateBranchRequest;
 import touch.baton.infra.github.response.ReadBranchInfoResponse;
@@ -19,7 +20,7 @@ import java.util.Objects;
 
 @Profile("!test")
 @Service
-public class GithubBranchService implements touch.baton.domain.member.service.dto.GithubBranchService {
+public class GithubBranchManager implements GithubBranchService {
 
     private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission/";
     private static final String CREATE_BRANCH_API_POSTFIX = "/git/refs";
@@ -29,7 +30,7 @@ public class GithubBranchService implements touch.baton.domain.member.service.dt
 
     private final String token;
 
-    public GithubBranchService(@Value("${github.personal_access_token}") final String token) {
+    public GithubBranchManager(@Value("${github.personal_access_token}") final String token) {
         this.token = token;
     }
 
@@ -55,7 +56,7 @@ public class GithubBranchService implements touch.baton.domain.member.service.dt
     }
 
     private void validateCreateResponseMessage(final ResponseEntity<String> response) {
-        if (response.getStatusCode() != HttpStatus.UNPROCESSABLE_ENTITY) {
+        if (response.getStatusCode() == HttpStatus.CREATED) {
             return;
         }
         if (Objects.requireNonNull(response.getBody()).contains(DUPLICATED_BRANCH_ERROR_MESSAGE)) {

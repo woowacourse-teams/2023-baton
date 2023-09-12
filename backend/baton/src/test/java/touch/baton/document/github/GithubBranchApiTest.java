@@ -8,9 +8,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.controller.MemberBranchController;
+import touch.baton.domain.member.service.dto.GithubBranchService;
 import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
 import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.infra.github.GithubBranchService;
 
 import java.util.Optional;
 

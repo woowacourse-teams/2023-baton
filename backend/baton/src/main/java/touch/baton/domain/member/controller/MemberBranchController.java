@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.member.service.dto.GithubBranchService;
 import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
 import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
-import touch.baton.infra.github.GithubBranchService;
 
 import java.net.URI;
 
