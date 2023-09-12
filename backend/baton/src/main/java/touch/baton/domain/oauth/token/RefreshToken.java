@@ -13,8 +13,6 @@ import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.member.Member;
 
-import java.time.LocalDateTime;
-
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -37,10 +35,11 @@ public class RefreshToken extends BaseEntity {
     @Embedded
     private Token token;
 
-    private LocalDateTime expireDate;
+    @Embedded
+    private ExpireDate expireDate;
 
     @Builder
-    private RefreshToken(final Member member, final Token token, final LocalDateTime expireDate) {
+    private RefreshToken(final Member member, final Token token, final ExpireDate expireDate) {
         this.member = member;
         this.token = token;
         this.expireDate = expireDate;
@@ -48,7 +47,7 @@ public class RefreshToken extends BaseEntity {
 
     public void updateToken(final Token token) {
         this.token = token;
-        this.expireDate = expireDate.plusDays(REFRESH_TOKEN_LIFECYCLE);
+        expireDate.plusDays(REFRESH_TOKEN_LIFECYCLE);
     }
 
     public boolean isNotOwner(final Member member) {
@@ -56,6 +55,6 @@ public class RefreshToken extends BaseEntity {
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expireDate);
+        return expireDate.isExpired();
     }
 }

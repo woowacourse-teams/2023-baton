@@ -5,10 +5,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.RefreshToken;
 import touch.baton.domain.oauth.token.Token;
-
-import java.time.LocalDateTime;
 
 public interface TestRefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 
@@ -19,5 +18,5 @@ public interface TestRefreshTokenRepository extends JpaRepository<RefreshToken, 
             set rt.expireDate = :expireDate
             where rt.token = :token
             """)
-    void changeExpireDateByToken(@Param("token") final Token token, @Param("expireDate") final LocalDateTime expireDate);
+    void changeExpireDateByToken(@Param("token") final Token token, @Param("expireDate") final ExpireDate expireDate);
 }

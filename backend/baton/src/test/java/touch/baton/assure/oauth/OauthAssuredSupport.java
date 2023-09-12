@@ -11,6 +11,7 @@ import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.token.AccessToken;
+import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.RefreshToken;
 import touch.baton.domain.oauth.token.Token;
 import touch.baton.domain.oauth.token.Tokens;
@@ -116,10 +117,11 @@ public class OauthAssuredSupport {
         public Tokens 액세스_토큰과_리프레시_토큰을_반환한다(final Member ethan) {
             final String accessToken = response.header(AUTHORIZATION);
 
+            final LocalDateTime expireDate = LocalDateTime.now().plusDays(30);
             final RefreshToken refreshToken = RefreshToken.builder()
                     .member(ethan)
                     .token(new Token(response.cookie("refreshToken")))
-                    .expireDate(LocalDateTime.now().plusDays(14))
+                    .expireDate(new ExpireDate(expireDate))
                     .build();
 
             return new Tokens(new AccessToken(accessToken), refreshToken);

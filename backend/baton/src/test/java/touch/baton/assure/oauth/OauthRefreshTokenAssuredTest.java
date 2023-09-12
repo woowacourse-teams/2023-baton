@@ -7,9 +7,11 @@ import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.Token;
 import touch.baton.domain.oauth.token.Tokens;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.vo.ExpireDateFixture;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 
 import java.time.LocalDateTime;
@@ -167,7 +169,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
     private String 만료된_리프레시_토큰을_가져온다(final Tokens 액세스_토큰과_리프레시_토큰) {
         final Token 토큰 = 액세스_토큰과_리프레시_토큰.refreshToken().getToken();
-        final LocalDateTime 기간_만료일 = LocalDateTime.now().minusDays(14);
+        final ExpireDate 기간_만료일 = ExpireDateFixture.expireDate(LocalDateTime.now().minusDays(14));
 
         refreshTokenRepository.changeExpireDateByToken(토큰, 기간_만료일);
 
