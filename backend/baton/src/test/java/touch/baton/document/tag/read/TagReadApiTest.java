@@ -63,12 +63,12 @@ class TagReadApiTest extends RestdocsConfig {
         mockMvc.perform(get("/api/v1/tags/search")
                         .characterEncoding(UTF_8)
                         .accept(APPLICATION_JSON)
-                        .queryParam("name", "java"))
+                        .queryParam("tagName", "java"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
                         queryParameters(
-                                parameterWithName("name").description("태그 이름")
+                                parameterWithName("tagName").description("태그 이름")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].id").type(NUMBER).description("태그 식별자값(id)"),
