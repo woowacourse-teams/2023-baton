@@ -19,7 +19,7 @@ import java.util.Objects;
 
 @Profile("!test")
 @Service
-public class GithubBranchService {
+public class GithubBranchService implements touch.baton.domain.member.service.dto.GithubBranchService {
 
     private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission/";
     private static final String CREATE_BRANCH_API_POSTFIX = "/git/refs";
@@ -33,6 +33,7 @@ public class GithubBranchService {
         this.token = token;
     }
 
+    @Override
     public void createBranch(final String repoName, final String newBranchName) {
         final RestTemplate restTemplate = new RestTemplate();
         final ReadBranchInfoResponse branchInfoResponse = readMainBranch(repoName);
