@@ -61,7 +61,7 @@ public class GithubBranchService implements touch.baton.domain.member.service.dt
         if (Objects.requireNonNull(response.getBody()).contains(DUPLICATED_BRANCH_ERROR_MESSAGE)) {
             throw new ClientRequestException(ClientErrorCode.DUPLICATED_BRANCH_NAME);
         }
-        throw new InfraException();
+        throw new InfraException("브랜치 추가가 올바르게 이루어지지 않았습니다. github 응답: " + response.getBody());
     }
 
     private ReadBranchInfoResponse readMainBranch(final String repoName) {
@@ -81,6 +81,6 @@ public class GithubBranchService implements touch.baton.domain.member.service.dt
         if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
             throw new ClientRequestException(ClientErrorCode.REPO_NOT_FOUND);
         }
-        throw new InfraException();
+        throw new InfraException("GITHUB API 내부 오류입니다. api 변경 사항이 있는지 github api docs를 확인해보세요.");
     }
 }
