@@ -10,6 +10,12 @@ endif::[]
 
 = Baton-API
 
+== *[ 깃허브 레포 ]*
+
+=== *사용자 깃허브 브랜치 생성*
+
+include::GithubBranchCreateApi.adoc[]
+
 == *[ 프로필 ]*
 
 === *사용자 프로필 조회*
