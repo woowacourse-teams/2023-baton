@@ -41,7 +41,12 @@ public class RefreshToken extends BaseEntity {
 
     @Builder
     private RefreshToken(final Member member, final Token token, final ExpireDate expireDate) {
+        this(null, member, token, expireDate);
+    }
+
+    private RefreshToken(final Long id, final Member member, final Token token, final ExpireDate expireDate) {
         validateNotNull(member, token, expireDate);
+        this.id = id;
         this.member = member;
         this.token = token;
         this.expireDate = expireDate;
