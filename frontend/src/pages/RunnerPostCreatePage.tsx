@@ -21,6 +21,7 @@ import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
+import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
@@ -204,11 +205,7 @@ const RunnerPostCreatePage = () => {
             title="무엇을 구현하였나요?"
             inputTextState={implementedContents}
             maxLength={200}
-            guideTexts={[
-              '로또 추첨 어플리케이션을 객체지향적으로 구현했습니다.',
-              '바톤 미션중에 플레이어가 몬스터와 대결하는 콘솔 애플리케이션을 구현했습니다.',
-              '개인 프로젝트로 CRUD 기능이 있는 게시판을 만들었습니다.',
-            ]}
+            guideTexts={IMPLEMENTED_GUIDE_MESSAGE}
             handleInputTextState={changeImplementedContents}
             placeholder="구현 기능에 대한 설명을 해주세요"
           />
@@ -216,14 +213,7 @@ const RunnerPostCreatePage = () => {
             title="아쉬운 점이나 궁금한 점이 있나요?"
             inputTextState={curiousContents}
             maxLength={200}
-            guideTexts={[
-              '설계 위주로 리뷰받고 싶어요. 어떻게 더 좋은 설계로 바꿀 수 있나요?',
-              '현재 코드에서 어떻게 수정해야 객체지향에 가까워 질 수 있나요?',
-              '컴포넌트를 어떤 기준으로 나누면 좋을까요?',
-              '커밋 단위 조절하는 것이 어려웠어요. 잘게 커밋하려면 어떻게 해야할까요?',
-              '코드의 가독성을 개선하는 팁을 알려주세요.',
-              '서비스가 모든 걸 처리하다보니 하는 역할이 많아진것 같아요. 어떻게 개선할 수 있을까요?',
-            ]}
+            guideTexts={CURIOUS_GUIDE_MESSAGE}
             handleInputTextState={changeCuriousContents}
             placeholder="궁금한 점을 적어주세요"
           />
@@ -231,11 +221,7 @@ const RunnerPostCreatePage = () => {
             title="서포터에게 하고싶은 말이 있나요?"
             inputTextState={postscriptContents}
             maxLength={200}
-            guideTexts={[
-              '3년차 이상 개발자께서 리뷰해주시면 좋을 것 같아요.',
-              '최대한 빨리 리뷰해주세요.',
-              'Best Practice나 공부할 키워드를 많이 알려주시면 좋을 것 같아요.',
-            ]}
+            guideTexts={POSTSCRIPT_GUIDE_MESSAGE}
             handleInputTextState={changePostscriptContents}
             placeholder="서포터에게 하고 싶은 말을 적어주세요"
             isOptional={true}

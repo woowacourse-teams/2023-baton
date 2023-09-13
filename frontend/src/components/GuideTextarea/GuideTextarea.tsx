@@ -8,7 +8,7 @@ interface Props extends React.HTMLProps<HTMLTextAreaElement> {
   inputTextState: string;
   handleInputTextState: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   title: string;
-  guideTexts?: string[];
+  guideTexts?: readonly string[];
   isOptional?: boolean;
   isErrorOnSubmit?: boolean;
 }
