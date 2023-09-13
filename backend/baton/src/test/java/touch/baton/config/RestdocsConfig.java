@@ -29,7 +29,6 @@ import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipalArgume
 import touch.baton.domain.oauth.repository.OauthMemberRepository;
 import touch.baton.domain.oauth.repository.OauthRunnerRepository;
 import touch.baton.domain.oauth.repository.OauthSupporterRepository;
-import touch.baton.domain.tag.repository.TagRepository;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
 import java.util.UUID;

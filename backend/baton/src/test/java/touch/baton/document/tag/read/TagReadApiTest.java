@@ -41,7 +41,6 @@ class TagReadApiTest extends RestdocsConfig {
         restdocsSetUp(tagController);
     }
 
-
     @DisplayName("태그 검색 API")
     @Test
     void readTags() throws Exception {

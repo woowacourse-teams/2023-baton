@@ -63,7 +63,7 @@ class TagAssuredSupport {
 
     public static TagSearchResponses.Detail 태그_검색_Detail_응답(final List<Tag> 검색된_태그_목록) {
         List<TagSearchResponse.TagResponse> 태그_목록_응답 = 검색된_태그_목록.stream()
-                .map(tag -> TagSearchResponse.TagResponse.of(tag))
+                .map(tag -> TagSearchResponse.TagResponse.from(tag))
                 .toList();
         final TagSearchResponses.Detail 검색된_태그_목록_응답들 = TagSearchResponses.Detail.from(태그_목록_응답);
 
