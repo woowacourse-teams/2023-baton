@@ -12,7 +12,8 @@ endif::[]
 
 == *[ 로그인 ]*
 
-include::RefreshTokenApi.adoc
+include::GithubOauthApi.adoc[]
+include::RefreshTokenApi.adoc[]
 
 == *[ 프로필 ]*
 

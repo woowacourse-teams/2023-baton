@@ -24,6 +24,7 @@ import java.time.LocalDateTime;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.mock;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
@@ -69,6 +70,9 @@ class GithubOauthApiTest extends RestdocsConfig {
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("oauthType").description("소셜 로그인 타입")
+                        ),
+                        responseHeaders(
+                                headerWithName(LOCATION).description("Oauth 서버 리다이렉트 URL")
                         )
                 ))
                 .andDo(print());
@@ -103,10 +107,10 @@ class GithubOauthApiTest extends RestdocsConfig {
                                         parameterWithName("code").description("소셜로부터 redirect 하여 받은 AuthCode")
                                 ),
                                 responseHeaders(
-                                        headerWithName("Authorization").description("새로 발급된 JWT 토큰")
+                                        headerWithName("Authorization").description("발급된 JWT 토큰")
                                 ),
                                 responseCookies(
-                                        cookieWithName("refreshToken").description("새로 발급된 리프레시 토큰")
+                                        cookieWithName("refreshToken").description("발급된 리프레시 토큰")
                                 )
                         )
                 )
