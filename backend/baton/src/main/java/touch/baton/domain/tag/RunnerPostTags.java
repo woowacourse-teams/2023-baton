@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class RunnerPostTags {
 
-    @BatchSize(size = 10)
+    @BatchSize(size = 5)
     @OneToMany(mappedBy = "runnerPost", cascade = PERSIST, orphanRemoval = true)
     private List<RunnerPostTag> runnerPostTags = new ArrayList<>();
 
