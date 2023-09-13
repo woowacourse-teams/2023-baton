@@ -25,6 +25,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -101,8 +103,10 @@ class GithubOauthApiTest extends RestdocsConfig {
                                         parameterWithName("code").description("소셜로부터 redirect 하여 받은 AuthCode")
                                 ),
                                 responseHeaders(
-                                        headerWithName("Authorization").description("Json Web Token"),
-                                        headerWithName("Set-Cookie").description("refreshToken=RefreshToken; Max-Age=Max-Age; Expires=Expires-Date; Secure; HttpOnly")
+                                        headerWithName("Authorization").description("새로 발급된 JWT 토큰")
+                                ),
+                                responseCookies(
+                                        cookieWithName("refreshToken").description("새로 발급된 리프레시 토큰")
                                 )
                         )
                 )
