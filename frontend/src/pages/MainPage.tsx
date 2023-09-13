@@ -87,7 +87,8 @@ const MainPage = () => {
     getRequest(`/posts/runner?${params.toString()}`)
       .then(async (response) => {
         const data: GetRunnerPostResponse = await response.json();
-        setRunnerPostList([...data.data]);
+        setRunnerPostList(() => []);
+        setRunnerPostList(() => [...data.data]);
         setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
