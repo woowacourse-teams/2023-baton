@@ -5,7 +5,6 @@ import MainPage from './pages/MainPage';
 import RunnerPostPage from './pages/RunnerPostDetailPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
-import CreationResultPage from './pages/CreationResultPage';
 import MyPage from './pages/MyPage';
 import GithubCallbackPage from './pages/GithubCallbackPage';
 import ProfileEditPage from './pages/ProfileEditPage';
@@ -22,7 +21,6 @@ export const ROUTER_PATH = {
   MY_PAGE: '/my-page',
   LOGIN: '/login',
   NOT_FOUND: '/*',
-  RESULT: '/result',
   RUNNER_PROFILE: '/runner-profile/:runnerId',
   SUPPORTER_PROFILE: '/supporter-profile/:supporterId',
   PROFILE_EDIT: '/profile-edit',
@@ -50,10 +48,6 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.LOGIN,
           element: <LoginPage />,
-        },
-        {
-          path: ROUTER_PATH.RESULT,
-          element: <CreationResultPage />,
         },
         {
           path: ROUTER_PATH.MY_PAGE,
