@@ -83,12 +83,12 @@ const MainPage = () => {
 
     setPage(2);
     setReviewStatus(reviewStatus);
+    setRunnerPostList([]);
 
     getRequest(`/posts/runner?${params.toString()}`)
       .then(async (response) => {
         const data: GetRunnerPostResponse = await response.json();
-        setRunnerPostList(() => []);
-        setRunnerPostList(() => [...data.data]);
+        setRunnerPostList([...data.data]);
         setIsLast(data.pageInfo.isLast);
       })
       .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
