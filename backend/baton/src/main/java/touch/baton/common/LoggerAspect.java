@@ -2,15 +2,19 @@ package touch.baton.common;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Aspect
@@ -25,36 +29,50 @@ public class LoggerAspect {
     public void logInfo() {
     }
 
-    @Around(value = "logInfo()")
-    public Object printLog(final ProceedingJoinPoint joinPoint) {
+    @Before("logInfo()")
+    public void requestLog(final JoinPoint joinPoint) {
         final HttpServletRequest request = getRequest();
         final String signatureName = getSignatureName(joinPoint);
-        log.info(">>>>> API start [" + signatureName + "() from "
-                + request.getRemoteAddr() + "] by "
-                + request.getMethod() + " "
-                + request.getRequestURI());
+        log.info(">>>>> API start [{}() from {}] by {} {}",
+                signatureName, request.getRemoteAddr(), request.getMethod(), request.getRequestURI());
+    }
 
-        final long startTime = System.currentTimeMillis();
-        Object proceed = process(joinPoint, request, signatureName);
-        final long timeDiff = System.currentTimeMillis() - startTime;
-        log.info("시간차이(m) : {}", timeDiff);
-        return proceed;
+    @AfterReturning(value = "logInfo()", returning = "returnObj")
+    public void after(final JoinPoint joinPoint, final Object returnObj) {
+        final HttpServletRequest request = getRequest();
+        final String signatureName = getSignatureName(joinPoint);
+        log.info("\n>>>>> API finish [{}() from {}] by {} {} \n" +
+                        ">>>>> API return value = {}",
+                signatureName, request, request.getMethod(), request.getRequestURI(),
+                returnObj);
+    }
+
+    @AfterThrowing(value = "logInfo()", throwing = "exception")
+    public void afterThrowing(final JoinPoint joinPoint, final Exception exception) {
+        final HttpServletRequest request = getRequest();
+        final String signatureName = getSignatureName(joinPoint);
+        log.warn("""
+                \n
+                >>>>> API ERROR [{}() from {}] by {} {}
+                >>>>> ERROR MESSAGE = {}
+                >>>>> STACK TRACE = {}
+                """,
+                signatureName, request.getRemoteAddr(), request.getMethod(), request.getRequestURI(),
+                exception.getMessage(),
+                convertPrettyStackTrace(exception.getStackTrace()));
     }
 
     private HttpServletRequest getRequest() {
         return ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
     }
 
-    private String getSignatureName(final ProceedingJoinPoint joinPoint) {
+    private String getSignatureName(final JoinPoint joinPoint) {
         return joinPoint.getSignature().getDeclaringType().getSimpleName() + "." + joinPoint.getSignature().getName();
     }
 
-    private Object process(final ProceedingJoinPoint joinPoint, final HttpServletRequest request, final String signatureName) {
-        try {
-            return joinPoint.proceed();
-        } catch (Throwable e) {
-            log.error(">>>>> controller start [" + signatureName + "() from " + request.getRemoteAddr() + "] with Error[" + e.getMessage() + "]");
-            throw new RuntimeException("에러 나요.");
-        }
+    private String convertPrettyStackTrace(final StackTraceElement[] stackTraceElements) {
+        return Arrays.stream(stackTraceElements)
+                .map(StackTraceElement::toString)
+                .collect(Collectors.joining("\n"));
     }
 }
