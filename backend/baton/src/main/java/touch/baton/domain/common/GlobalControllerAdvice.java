@@ -89,6 +89,6 @@ public class GlobalControllerAdvice {
                                                                final BaseException ex
     ) {
         LoggerUtils.logWarn(httpServletRequest, ex);
-        return ResponseEntity.internalServerError().body(ServerErrorResponse.from(ex));
+        return ResponseEntity.internalServerError().body(ServerErrorResponse.unExpected());
     }
 }
