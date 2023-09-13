@@ -83,6 +83,7 @@ const MainPage = () => {
 
     setPage(2);
     setReviewStatus(reviewStatus);
+    setRunnerPostList([]);
 
     getRequest(`/posts/runner?${params.toString()}`)
       .then(async (response) => {
