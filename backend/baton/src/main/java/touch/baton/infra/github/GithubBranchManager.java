@@ -6,8 +6,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
@@ -15,8 +17,6 @@ import touch.baton.domain.member.service.dto.GithubBranchService;
 import touch.baton.infra.exception.InfraException;
 import touch.baton.infra.github.request.CreateBranchRequest;
 import touch.baton.infra.github.response.ReadBranchInfoResponse;
-
-import java.util.Objects;
 
 @Profile("!test")
 @Component
@@ -45,8 +45,12 @@ public class GithubBranchManager implements GithubBranchService {
         final String sha = branchInfoResponse.object().sha();
         final CreateBranchRequest createBranchRequest = new CreateBranchRequest(ref, sha);
         final HttpEntity<CreateBranchRequest> entity = new HttpEntity<>(createBranchRequest, httpHeaders);
-        final ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.POST, entity, String.class);
-        validateCreateResponseMessage(response);
+        try {
+            restTemplate.exchange(requestUrl, HttpMethod.POST, entity, String.class);
+        } catch (HttpStatusCodeException e) {
+            handleCreateBranch(e.getResponseBodyAsString());
+            throw new InfraException("브랜치 추가가 올바르게 이루어지지 않았습니다. github 응답: " + e.getResponseBodyAsString());
+        }
     }
 
     private HttpHeaders setBearerAuth() {
@@ -55,14 +59,10 @@ public class GithubBranchManager implements GithubBranchService {
         return headers;
     }
 
-    private void validateCreateResponseMessage(final ResponseEntity<String> response) {
-        if (response.getStatusCode() == HttpStatus.CREATED) {
-            return;
-        }
-        if (Objects.requireNonNull(response.getBody()).contains(DUPLICATED_BRANCH_ERROR_MESSAGE)) {
+    private void handleCreateBranch(final String errorBodyMessage) {
+        if (errorBodyMessage.contains(DUPLICATED_BRANCH_ERROR_MESSAGE)) {
             throw new ClientRequestException(ClientErrorCode.DUPLICATED_BRANCH_NAME);
         }
-        throw new InfraException("브랜치 추가가 올바르게 이루어지지 않았습니다. github 응답: " + response.getBody());
     }
 
     private ReadBranchInfoResponse readMainBranch(final String repoName) {
@@ -70,18 +70,18 @@ public class GithubBranchManager implements GithubBranchService {
         final String requestUrl = GITHUB_API_URL + repoName + READ_BRANCH_API_POSTFIX;
         final HttpHeaders httpHeaders = setBearerAuth();
         final HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
-        final ResponseEntity<ReadBranchInfoResponse> response = restTemplate.exchange(requestUrl, HttpMethod.GET, entity, ReadBranchInfoResponse.class);
-        validateReadBranchInfoResponse(response);
-        return response.getBody();
+        try {
+            final ResponseEntity<ReadBranchInfoResponse> response = restTemplate.exchange(requestUrl, HttpMethod.GET, entity, ReadBranchInfoResponse.class);
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            handleReadBranch(e.getStatusCode());
+            throw new InfraException("레포지토리 브랜치 조회가 올바르게 이루어지지 않았습니다. github 응답: " + e.getResponseBodyAsString());
+        }
     }
 
-    private void validateReadBranchInfoResponse(final ResponseEntity<ReadBranchInfoResponse> response) {
-        if (response.getStatusCode() == HttpStatus.OK) {
-            return;
-        }
-        if (response.getStatusCode() == HttpStatus.NOT_FOUND) {
+    private void handleReadBranch(final HttpStatusCode statusCode) {
+        if (statusCode == HttpStatus.NOT_FOUND) {
             throw new ClientRequestException(ClientErrorCode.REPO_NOT_FOUND);
         }
-        throw new InfraException("GITHUB API 내부 오류입니다. api 변경 사항이 있는지 github api docs를 확인해보세요.");
     }
 }
