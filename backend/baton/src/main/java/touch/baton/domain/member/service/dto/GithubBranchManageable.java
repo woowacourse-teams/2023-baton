@@ -1,6 +1,6 @@
 package touch.baton.domain.member.service.dto;
 
-public interface GithubBranchService {
+public interface GithubBranchManageable {
 
     void createBranch(final String repoName, final String newBranchName);
 }

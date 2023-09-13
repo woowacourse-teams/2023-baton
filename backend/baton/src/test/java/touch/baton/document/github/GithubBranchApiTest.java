@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.controller.MemberBranchController;
-import touch.baton.domain.member.service.dto.GithubBranchService;
+import touch.baton.domain.member.service.dto.GithubBranchManageable;
 import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
 import touch.baton.fixture.domain.MemberFixture;
 
@@ -29,11 +29,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class GithubBranchApiTest extends RestdocsConfig {
 
     @MockBean
-    private GithubBranchService githubBranchService;
+    private GithubBranchManageable githubBranchManageable;
 
     @BeforeEach
     void setup() {
-        restdocsSetUp(new MemberBranchController(githubBranchService));
+        restdocsSetUp(new MemberBranchController(githubBranchManageable));
     }
 
     @DisplayName("깃허브 레포 브랜치 생성 API")
@@ -47,7 +47,7 @@ class GithubBranchApiTest extends RestdocsConfig {
 
         // when
         when(oauthMemberRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
-        doNothing().when(githubBranchService).createBranch(eq(socialId), anyString());
+        doNothing().when(githubBranchManageable).createBranch(eq(socialId), anyString());
 
         // then
         mockMvc.perform(post("/api/v1/branch")

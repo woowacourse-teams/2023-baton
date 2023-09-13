@@ -13,14 +13,14 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
-import touch.baton.domain.member.service.dto.GithubBranchService;
+import touch.baton.domain.member.service.dto.GithubBranchManageable;
 import touch.baton.infra.exception.InfraException;
 import touch.baton.infra.github.request.CreateBranchRequest;
 import touch.baton.infra.github.response.ReadBranchInfoResponse;
 
 @Profile("!test")
 @Component
-public class GithubBranchManager implements GithubBranchService {
+public class GithubBranchManager implements GithubBranchManageable {
 
     private static final String GITHUB_API_URL = "https://api.github.com/repos/baton-mission/";
     private static final String CREATE_BRANCH_API_POSTFIX = "/git/refs";
