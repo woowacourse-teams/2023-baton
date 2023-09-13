@@ -82,6 +82,7 @@ const MainPage = () => {
     }
 
     setPage(2);
+    setIsLast(true);
     setReviewStatus(reviewStatus);
     setRunnerPostList([]);
 
