@@ -61,7 +61,6 @@ class TagReadApiTest extends RestdocsConfig {
         // then
         mockMvc.perform(get("/api/v1/tags/search")
                         .characterEncoding(UTF_8)
-                        .accept(APPLICATION_JSON)
                         .queryParam("tagName", "java"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))

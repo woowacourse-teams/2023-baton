@@ -25,7 +25,7 @@ class TagReadAssuredTest extends AssuredTestConfig {
         // when, then
         TagAssuredSupport
                 .클라이언트_요청()
-                .태그를_이름으로_오름차순일때_10개_검색한다("ja")
+                .태그_이름을_오름차순으로_10개_검색한다("ja")
 
                 .서버_응답()
                 .태그_검색_성공을_검증한다(

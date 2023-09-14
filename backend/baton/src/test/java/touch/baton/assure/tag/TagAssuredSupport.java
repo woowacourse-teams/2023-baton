@@ -29,7 +29,7 @@ class TagAssuredSupport {
 
         private ExtractableResponse<Response> response;
 
-        public TagAssuredSupport.TagClientRequestBuilder 태그를_이름으로_오름차순일때_10개_검색한다(final String 태그_이름) {
+        public TagAssuredSupport.TagClientRequestBuilder 태그_이름을_오름차순으로_10개_검색한다(final String 태그_이름) {
             response = AssuredSupport.get("/api/v1/tags/search", new QueryParams(Map.of("tagName", 태그_이름)));
             return this;
         }
@@ -69,5 +69,4 @@ class TagAssuredSupport {
 
         return 검색된_태그_목록_응답들;
     }
-
 }
