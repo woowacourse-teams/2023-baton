@@ -1,9 +1,6 @@
 import React from 'react';
-import FilterIcon from '@/assets/filter-icon.svg';
-import { styled } from 'styled-components';
-import Label from '@/components/common/Label/Label';
+import { css, keyframes, styled } from 'styled-components';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
-import useViewport from '@/hooks/useViewport';
 
 interface Props {
   reviewStatus: string;
@@ -11,14 +8,8 @@ interface Props {
 }
 
 const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
-  const { isMobile } = useViewport();
-
   return (
     <S.FilterContainer>
-      <S.TitleContainer>
-        <S.Icon src={FilterIcon} />
-        {isMobile ? null : <S.Title>Filter</S.Title>}
-      </S.TitleContainer>
       <S.LabelList>
         {Object.entries(REVIEW_STATUS_LABEL_TEXT).map(([value, text]) => (
           <S.StatusLabel key={value}>
@@ -29,14 +20,7 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
               checked={reviewStatus === value}
               onChange={handleClickRadioButton}
             />
-            <Label
-              colorTheme={reviewStatus === value ? 'RED' : 'WHITE'}
-              width={isMobile ? '72px' : ''}
-              height={isMobile ? '22px' : '30px'}
-              fontSize={isMobile ? '12px' : '18px'}
-            >
-              {text}
-            </Label>
+            <S.Label $isSelected={reviewStatus === value}>{text}</S.Label>
           </S.StatusLabel>
         ))}
       </S.LabelList>
@@ -46,13 +30,31 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
 
 export default RunnerPostFilter;
 
+const appear = keyframes`
+ 0% {
+  transform-origin:left;
+  transform: scaleX(0);
+ }
+ 100% {
+  transform-origin:left;
+  transform: scaleX(1);
+ }
+`;
+
+const underLine = css`
+  content: '';
+  margin-top: 5px;
+  height: 3px;
+  width: calc(100% + 4px);
+  border-radius: 1px;
+
+  background-color: var(--baton-red);
+
+  animation: 0.2s ease-in ${appear};
+`;
+
 const S = {
-  FilterContainer: styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-  `,
+  FilterContainer: styled.div``,
 
   TitleContainer: styled.div`
     display: flex;
@@ -76,12 +78,12 @@ const S = {
 
   LabelList: styled.li`
     display: flex;
-    gap: 10px;
+    gap: 20px;
 
     list-style: none;
 
     @media (max-width: 768px) {
-      gap: 5px;
+      gap: 12px;
     }
   `,
 
@@ -95,5 +97,30 @@ const S = {
 
   RadioButton: styled.input`
     appearance: none;
+  `,
+
+  Label: styled.div<{ $isSelected: boolean }>`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: fit-content;
+    height: 30px;
+
+    background-color: transparent;
+
+    font-size: 18px;
+    font-weight: 700;
+    color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'var(--gray-600)')};
+
+    &::after {
+      ${({ $isSelected }) => ($isSelected ? underLine : null)}
+    }
+
+    @media (max-width: 768px) {
+      height: 22px;
+
+      font-size: 14px;
+    }
   `,
 };

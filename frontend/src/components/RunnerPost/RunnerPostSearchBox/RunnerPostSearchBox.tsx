@@ -139,37 +139,31 @@ const RunnerPostSearchBox = ({
   return (
     <S.SearchBoxContainer onSubmit={handleSubmit}>
       <RunnerPostFilter reviewStatus={reviewStatus} handleClickRadioButton={handleClickRadioButton} />
-      <S.TagContainer>
-        <S.TitleContainer>
-          <S.Icon src={TagIcon} />
-          {isMobile ? null : <S.Title>Tags</S.Title>}
-        </S.TitleContainer>
-        <S.InputContainer onFocus={handleInputFocus} onBlur={handleInputBlur} onKeyDown={handleKeyDown}>
-          <S.TagInput
-            placeholder="태그명 검색"
-            value={tag}
-            ref={(element) => {
-              if (element) inputRefs.current[0] = element;
-            }}
-            onChange={handleChangeInput}
-          />
-          <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
-            {searchedTags.map((tag, idx) => (
-              <S.searchedTagItem
-                key={tag.tagId}
-                id={tag.tagName}
-                tabIndex={idx}
-                ref={(element) => {
-                  if (element) inputRefs.current[idx + 1] = element;
-                }}
-                onMouseDown={handleClickSearchedTag}
-              >
-                {tag.tagName}
-              </S.searchedTagItem>
-            ))}
-          </S.SearchedTagList>
-        </S.InputContainer>
-      </S.TagContainer>
+      <S.InputContainer onFocus={handleInputFocus} onBlur={handleInputBlur} onKeyDown={handleKeyDown}>
+        <S.TagInput
+          placeholder="태그명 검색"
+          value={tag}
+          ref={(element) => {
+            if (element) inputRefs.current[0] = element;
+          }}
+          onChange={handleChangeInput}
+        />
+        <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
+          {searchedTags.map((tag, idx) => (
+            <S.searchedTagItem
+              key={tag.tagId}
+              id={tag.tagName}
+              tabIndex={idx}
+              ref={(element) => {
+                if (element) inputRefs.current[idx + 1] = element;
+              }}
+              onMouseDown={handleClickSearchedTag}
+            >
+              {tag.tagName}
+            </S.searchedTagItem>
+          ))}
+        </S.SearchedTagList>
+      </S.InputContainer>
     </S.SearchBoxContainer>
   );
 };
@@ -181,13 +175,6 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 18px;
-  `,
-
-  TagContainer: styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
   `,
 
   TitleContainer: styled.div`
@@ -217,12 +204,25 @@ const S = {
   `,
 
   TagInput: styled.input`
-    width: 300px;
-    height: 34px;
+    width: 320px;
+    height: 40px;
+
+    background-image: url(${TagIcon});
+    background-position: 6px center;
+    background-repeat: no-repeat;
 
     border: 1px solid var(--gray-400);
     border-radius: 5px;
-    padding: 6px 8px;
+    padding: 6px 31px;
+
+    font-size: 18px;
+
+    @media (max-width: 768px) {
+      width: 280px;
+      height: 36px;
+
+      font-size: 16px;
+    }
   `,
 
   SearchedTagList: styled.ul<{ $isVisible: boolean }>`
