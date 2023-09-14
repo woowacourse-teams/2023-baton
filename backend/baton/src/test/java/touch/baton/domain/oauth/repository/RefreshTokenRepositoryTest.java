@@ -51,8 +51,8 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         // then
         assertSoftly(softly -> {
             softly.assertThat(expected).isPresent();
-            softly.assertThat(expected.get().getToken()).isEqualTo(actual.getToken());
-            softly.assertThat(expected.get().getExpireDate()).isEqualTo(actual.getExpireDate());
+            softly.assertThat(expected.get().getToken().getValue()).isEqualTo(actual.getToken().getValue());
+            softly.assertThat(expected.get().getExpireDate().getValue()).isEqualTo(actual.getExpireDate().getValue());
         } );
     }
 
@@ -79,8 +79,8 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         // then
         assertSoftly(softly -> {
             softly.assertThat(expected).isPresent();
-            softly.assertThat(expected.get().getToken()).isEqualTo(actual.getToken());
-            softly.assertThat(expected.get().getExpireDate()).isEqualTo(actual.getExpireDate());
+            softly.assertThat(expected.get().getToken().getValue()).isEqualTo(actual.getToken().getValue());
+            softly.assertThat(expected.get().getExpireDate().getValue()).isEqualTo(actual.getExpireDate().getValue());
         } );
     }
 }
