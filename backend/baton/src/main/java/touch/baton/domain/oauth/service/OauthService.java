@@ -2,6 +2,7 @@ package touch.baton.domain.oauth.service;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
@@ -37,6 +38,7 @@ import java.util.UUID;
 
 import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -113,8 +115,14 @@ public class OauthService {
                 .expireDate(new ExpireDate(expireDate))
                 .build();
 
-        refreshTokenRepository.save(refreshToken);
+        final Optional<RefreshToken> maybeRefreshToken = refreshTokenRepository.findByMember(member);
+        if (maybeRefreshToken.isPresent()) {
+            final RefreshToken findRefreshToken = maybeRefreshToken.get();
+            findRefreshToken.updateToken(new Token(randomTokens));
+            return new Tokens(accessToken, findRefreshToken);
+        }
 
+        refreshTokenRepository.save(refreshToken);
         return new Tokens(accessToken, refreshToken);
     }
 
