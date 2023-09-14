@@ -29,9 +29,11 @@ public class RunnerPostAssuredCreateSupport {
                                                        final List<String> 태그_목록,
                                                        final String 풀_리퀘스트,
                                                        final LocalDateTime 마감기한,
-                                                       final String 러너_게시글_내용
+                                                       final String 구현_내용,
+                                                       final String 궁금한_내용,
+                                                       final String 참고_사항
     ) {
-        return new RunnerPostCreateRequest(러너_게시글_제목, 태그_목록, 풀_리퀘스트, 마감기한, 러너_게시글_내용);
+        return new RunnerPostCreateRequest(러너_게시글_제목, 태그_목록, 풀_리퀘스트, 마감기한, 구현_내용, 궁금한_내용, 참고_사항);
     }
 
     public static class RunnerPostClientRequestBuilder {
