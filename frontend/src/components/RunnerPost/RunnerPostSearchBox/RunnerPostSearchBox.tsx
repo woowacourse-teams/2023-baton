@@ -232,15 +232,23 @@ const S = {
     flex-direction: column;
     position: absolute;
     gap: 5px;
-    top: 34px;
+    top: 40px;
     z-index: 100;
 
-    width: 300px;
+    width: 320px;
 
     border: 1px solid var(--gray-400);
     border-top: none;
     border-radius: 5px;
     background: white;
+
+    font-size: 18px;
+
+    @media (max-width: 768px) {
+      width: 280px;
+
+      font-size: 16px;
+    }
   `,
 
   searchedTagItem: styled.li`
