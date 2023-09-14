@@ -26,8 +26,8 @@ const MyPage = () => {
   const [page, setPage] = useState<number>(1);
   const [isLast, setIsLast] = useState<boolean>(true);
 
-  const { getToken } = useToken();
-  const { goToProfileEditPage } = usePageRouter();
+  const { isLogin, getToken } = useToken();
+  const { goToProfileEditPage, goToLoginPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
   const { isMobile } = useViewport();
 
@@ -44,7 +44,7 @@ const MyPage = () => {
   }, [isRunner, postOptions]);
 
   const getProfile = (role: 'runner' | 'supporter') => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     getRequest(`/profile/${role}/me`, token)
@@ -57,7 +57,7 @@ const MyPage = () => {
   };
 
   const getPostList = (role: 'runner' | 'supporter') => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     const selectedPostOption = postOptions.filter((option) => option.selected)[0].value;

@@ -1,11 +1,10 @@
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
-import { useToken } from '@/hooks/useToken';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { getRequest } from '@/api/fetch';
+import { APIError } from '@/api/fetch';
 import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { login } from '@/api/login';
 
 function GithubCallbackPage() {
   const location = useLocation();
@@ -13,7 +12,6 @@ function GithubCallbackPage() {
   const { showErrorToast } = useContext(ToastContext);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
-  const { saveToken } = useToken();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -27,33 +25,18 @@ function GithubCallbackPage() {
     }
 
     if (code) {
-      getToken(code);
-    }
-  }, [location]);
-
-  const getToken = (code: string) => {
-    if (localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY) === null) {
-      getRequest(`/oauth/login/github?code=${code}`)
-        .then(async (response) => {
-          const jwt = await response.headers.get('Authorization');
-
-          if (!jwt) {
-            showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
-
-            return;
-          }
-
-          saveToken(jwt);
+      login(code)
+        .then(() => {
           goToMainPage();
         })
-        .catch((error: Error) => {
-          const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
+        .catch((error: Error | APIError) => {
+          const description = error instanceof Error ? error.message : error.message;
           showErrorToast({ title: ERROR_TITLE.REQUEST, description });
 
           goToLoginPage();
         });
     }
-  };
+  }, [location]);
 
   return <div>GithubRedirect...</div>;
 }

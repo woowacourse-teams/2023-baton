@@ -26,8 +26,8 @@ import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESS
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToMainPage } = usePageRouter();
-  const { getToken } = useToken();
+  const { goBack, goToMainPage, goToLoginPage } = usePageRouter();
+  const { isLogin, getToken } = useToken();
   const { showErrorToast } = useContext(ToastContext);
 
   const { isMobile } = useViewport();
@@ -125,7 +125,7 @@ const RunnerPostCreatePage = () => {
   };
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     const body = JSON.stringify(data);

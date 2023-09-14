@@ -15,10 +15,6 @@ const App = () => {
     });
   }
 
-  const { validateToken } = useToken();
-
-  validateToken();
-
   return (
     <ToastProvider>
       <S.AppContainer>
