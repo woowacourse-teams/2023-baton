@@ -1,6 +1,8 @@
 package touch.baton.domain.tag.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.Tag;
 
@@ -11,5 +13,12 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Optional<Tag> findByTagName(final TagName tagName);
 
-    List<Tag> findTop10ByTagReducedNameValueContainingOrderByTagReducedNameValueAsc(String tagReducedName);
+    @Query("""
+            SELECT t
+            FROM Tag t
+            WHERE t.tagReducedName.value LIKE :tagReducedName%
+            ORDER BY t.tagReducedName.value ASC
+            LIMIT 10
+            """)
+    List<Tag> readTagsByReducedName(@Param("tagReducedName") String tagReducedName);
 }
