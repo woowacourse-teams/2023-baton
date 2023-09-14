@@ -1,6 +1,7 @@
 spring:
   flyway:
     enabled: false
+
   jpa:
     properties:
       hibernate:

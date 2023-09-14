@@ -30,10 +30,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -100,8 +97,10 @@ class RunnerPostReadOneApiTest extends RestdocsConfig {
                         responseFields(
                                 fieldWithPath("runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
                                 fieldWithPath("title").type(STRING).description("러너 게시글 제목"),
-                                fieldWithPath("contents").type(STRING).description("러너 게시글 내용"),
-                                fieldWithPath("deadline").type(STRING).description("러너 게시글 마감기한"),
+                                fieldWithPath("implementedContents").type(STRING).description("구현 내용"),
+                                fieldWithPath("curiousContents").type(STRING).description("궁금한 점"),
+                                fieldWithPath("postscriptContents").type(STRING).description("참고 사항"),
+                                fieldWithPath("deadline").type(STRING).description("러너 게시글 마감 기한"),
                                 fieldWithPath("isOwner").type(BOOLEAN).description("러너 게시글 주인 여부"),
                                 fieldWithPath("isApplied").type(BOOLEAN).description("로그인한 서포터 리뷰 지원 여부"),
                                 fieldWithPath("applicantCount").type(NUMBER).description("러너 게시글 서포터 지원자수"),

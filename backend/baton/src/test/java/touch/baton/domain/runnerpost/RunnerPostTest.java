@@ -1,14 +1,11 @@
 package touch.baton.domain.runnerpost;
 
-import org.assertj.core.api.SoftAssertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
@@ -20,7 +17,10 @@ import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
+import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
@@ -29,11 +29,7 @@ import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
-import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
-import touch.baton.fixture.vo.DeadlineFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,9 +38,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -84,10 +78,12 @@ class RunnerPostTest {
     void addAllRunnerPostTags() {
         // given
         final String title = "JPA 리뷰 부탁 드려요.";
-        final String contents = "넘나 어려워요.";
+        final String implementedContents = "넘나 어려워요.";
+        final String curiousContents = "이것 궁금해요.";
+        final String postscriptContents = "잘 부탁드립니다.";
         final String pullRequestUrl = "https://github.com/cookienc";
         final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
-        final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
+        final RunnerPost runnerPost = RunnerPost.newInstance(title, implementedContents, curiousContents, postscriptContents, pullRequestUrl, deadline, runner);
         final RunnerPostTag java = RunnerPostTag.builder()
                 .tag(Tag.newInstance("Java"))
                 .runnerPost(runnerPost)
@@ -122,7 +118,9 @@ class RunnerPostTest {
         void success() {
             assertThatCode(() -> RunnerPost.builder()
                     .title(new Title("JPA 정복"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -139,7 +137,9 @@ class RunnerPostTest {
         void success_if_supporter_is_null() {
             assertThatCode(() -> RunnerPost.builder()
                     .title(new Title("아이"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -156,7 +156,9 @@ class RunnerPostTest {
         void fail_if_title_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(null)
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -169,12 +171,14 @@ class RunnerPostTest {
                     .hasMessage("RunnerPost 의 title 은 null 일 수 없습니다.");
         }
 
-        @DisplayName("contents 에 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("implementedContents 에 null 이 들어갈 경우 예외가 발생한다.")
         @Test
         void fail_if_contents_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("헤나"))
-                    .contents(null)
+                    .implementedContents(null)
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -184,7 +188,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostDomainException.class)
-                    .hasMessage("RunnerPost 의 contents 는 null 일 수 없습니다.");
+                    .hasMessage("RunnerPost 의 implementedContents 는 null 일 수 없습니다.");
         }
 
         @DisplayName("pull request url 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -192,7 +196,9 @@ class RunnerPostTest {
         void fail_if_pullRequestUrl_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("하이하이"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(null)
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -210,7 +216,9 @@ class RunnerPostTest {
         void fail_if_deadline_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("아이"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(null)
                     .watchedCount(new WatchedCount(0))
@@ -228,7 +236,9 @@ class RunnerPostTest {
         void fail_if_watchedCount_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("아이"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(null)
@@ -246,7 +256,9 @@ class RunnerPostTest {
         void fail_if_runner_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("아이"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -264,7 +276,9 @@ class RunnerPostTest {
         void fail_if_runnerPostTags_is_null() {
             assertThatThrownBy(() -> RunnerPost.builder()
                     .title(new Title("아이"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
@@ -282,15 +296,19 @@ class RunnerPostTest {
         void createDefaultRunnerPost() {
             // given
             final String title = "JPA 리뷰 부탁 드려요.";
-            final String contents = "넘나 어려워요.";
+            final String implementedContents = "넘나 어려워요.";
+            final String curiousContents = "이것 궁금해요.";
+            final String postscriptContents = "잘 부탁드립니다.";
             final String pullRequestUrl = "https://github.com/cookienc";
             final LocalDateTime deadline = LocalDateTime.of(2099, 12, 12, 0, 0);
-            final RunnerPost runnerPost = RunnerPost.newInstance(title, contents, pullRequestUrl, deadline, runner);
+            final RunnerPost runnerPost = RunnerPost.newInstance(title, implementedContents, curiousContents, postscriptContents, pullRequestUrl, deadline, runner);
 
             // when, then
             assertAll(
                     () -> assertThat(runnerPost.getTitle()).isEqualTo(new Title(title)),
-                    () -> assertThat(runnerPost.getContents()).isEqualTo(new Contents(contents)),
+                    () -> assertThat(runnerPost.getImplementedContents()).isEqualTo(new ImplementedContents(implementedContents)),
+                    () -> assertThat(runnerPost.getCuriousContents()).isEqualTo(new CuriousContents(curiousContents)),
+                    () -> assertThat(runnerPost.getPostscriptContents()).isEqualTo(new PostscriptContents(postscriptContents)),
                     () -> assertThat(runnerPost.getPullRequestUrl()).isEqualTo(new PullRequestUrl(pullRequestUrl)),
                     () -> assertThat(runnerPost.getDeadline()).isEqualTo(new Deadline(deadline)),
                     () -> assertThat(runnerPost.getRunnerPostTags()).isNotNull(),
@@ -309,7 +327,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("JPA 정복"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -330,7 +350,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("JPA 정복"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -351,7 +373,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("JPA 정복"))
-                    .contents(new Contents("김영한 짱짱맨"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                     .deadline(new Deadline(LocalDateTime.now().minusDays(100)))
                     .watchedCount(new WatchedCount(0))
@@ -382,7 +406,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
-                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -405,7 +431,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
-                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -426,7 +454,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
-                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -447,7 +477,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
-                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -468,7 +500,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
-                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
@@ -490,7 +524,9 @@ class RunnerPostTest {
             // given
             final RunnerPost runnerPost = RunnerPost.builder()
                     .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
-                    .contents(new Contents("안녕하세요. 테스트 내용입니다."))
+                    .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                     .pullRequestUrl(new PullRequestUrl("https://github.com"))
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
