@@ -13,6 +13,7 @@ import SupporterSelectPage from './pages/SupporterSelectPage';
 import SupporterFeedbackPage from './pages/SupporterFeedbackPage';
 import SupporterProfilePage from './pages/SupporterProfilePage';
 import RunnerProfilePage from './pages/RunnerProfilePage';
+import NoticePage from './pages/NoticePage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -28,6 +29,7 @@ export const ROUTER_PATH = {
   PROFILE_EDIT: '/profile-edit',
   SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
   GITHUB_CALLBACK: '/oauth/github/callback', // Authorization callback URL?
+  NOTICE: '/notice', // Authorization callback URL?
 };
 
 export const router = createBrowserRouter(
@@ -79,6 +81,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.SUPPORTER_PROFILE,
           element: <SupporterProfilePage />,
+        },
+        {
+          path: ROUTER_PATH.NOTICE,
+          element: <NoticePage />,
         },
       ],
     },

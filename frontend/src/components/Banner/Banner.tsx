@@ -2,11 +2,18 @@ import React from 'react';
 import styled from 'styled-components';
 import bannerBackground from '@/assets/banner/banner_background.png';
 import eventBanner from '@/assets/banner/event_banner.webp';
+import { usePageRouter } from '@/hooks/usePageRouter';
 
 const Banner = () => {
+  const { goToNoticePage } = usePageRouter();
+
+  const handleBannerButton = () => {
+    goToNoticePage();
+  };
+
   return (
     <S.BannerBackground>
-      <S.BannerContents src={eventBanner}></S.BannerContents>
+      <S.BannerContents onClick={handleBannerButton} src={eventBanner}></S.BannerContents>
     </S.BannerBackground>
   );
 };
