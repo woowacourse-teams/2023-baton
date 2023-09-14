@@ -1,5 +1,7 @@
 import { BATON_BASE_URL } from '@/constants';
-interface customError {
+import { silentLogin } from './login';
+
+export interface APIError {
   errorCode: string;
   message: string;
 }
@@ -8,10 +10,17 @@ const fetchAPI = async (url: string, options: RequestInit) => {
   const response = await fetch(`${BATON_BASE_URL}${url}`, options);
 
   if (!response.ok) {
-    const error: customError = await response.json();
+    const error: APIError = await response.json();
 
-    throw new Error(error.message);
+    if (error.errorCode === 'JW005') {
+      silentLogin().then(() => {
+        return fetchAPI(url, options);
+      });
+    }
+
+    throw new Error(error.message, { cause: error.errorCode });
   }
+
   return response;
 };
 
@@ -33,7 +42,7 @@ export const getRequest = async (url: string, token?: string) => {
   return response;
 };
 
-export const postRequest = async (url: string, token: string, body: BodyInit) => {
+export const postRequest = async (url: string, token: string, body?: BodyInit) => {
   const response = await fetchAPI(url, {
     method: 'POST',
     headers: {
@@ -41,6 +50,19 @@ export const postRequest = async (url: string, token: string, body: BodyInit) =>
       Authorization: `Bearer ${token}`,
     },
     body,
+  });
+
+  return response;
+};
+
+export const postRequestWithCookie = async (url: string, token: string) => {
+  const response = await fetchAPI(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+      credentials: 'include',
+    },
   });
 
   return response;
