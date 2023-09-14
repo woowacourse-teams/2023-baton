@@ -1,6 +1,5 @@
 package touch.baton.infra.auth.jwt;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -22,7 +21,7 @@ public class JwtEncoder {
 
     public String jwtToken(final Map<String, Object> payload) {
         final Date now = new Date();
-        final Date expiration = new Date(now.getTime() + Duration.ofDays(30).toMillis());
+        final Date expiration = new Date(now.getTime() + Duration.ofMinutes(jwtConfig.getExpireMinutes()).toMillis());
         final Claims claims = Jwts.claims();
 
         final JwtBuilder jwtBuilder = Jwts.builder()

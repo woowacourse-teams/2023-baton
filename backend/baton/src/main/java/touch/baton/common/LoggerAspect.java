@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -17,6 +18,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Profile("!test")
 @Aspect
 @Component
 public class LoggerAspect {

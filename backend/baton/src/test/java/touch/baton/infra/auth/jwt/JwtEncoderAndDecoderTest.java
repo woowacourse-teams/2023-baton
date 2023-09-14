@@ -25,7 +25,7 @@ class JwtEncoderAndDecoderTest {
 
     @BeforeEach
     void setUp() {
-        this.jwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena");
+        this.jwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena", 30);
         this.jwtDecoder = new JwtDecoder(this.jwtConfig);
         this.jwtEncoder = new JwtEncoder(this.jwtConfig);
     }
@@ -51,11 +51,24 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
-        final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKeywrongSecretKeywrongSecretKey", "hyena");
+        final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKeywrongSecretKeywrongSecretKey", "hyena", 30);
         final JwtDecoder wrongJwtDecoder = new JwtDecoder(wrongJwtConfig);
 
         // then
         assertThatThrownBy(() -> wrongJwtDecoder.parseJwtToken(encodedJwt))
+                .isInstanceOf(OauthRequestException.class);
+    }
+
+    @DisplayName("exp가 만료된 jwt 를 디코드할 때 예외가 발생한다")
+    @Test
+    void fail_decode_when_exp_is_already_expired() {
+        // given
+        final JwtConfig expiredJwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena", -1);
+        final JwtEncoder expiredJwtEncoder = new JwtEncoder(expiredJwtConfig);
+        final String encodedJwt = expiredJwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
+
+        // when, then
+        assertThatThrownBy(() -> jwtDecoder.parseJwtToken(encodedJwt))
                 .isInstanceOf(OauthRequestException.class);
     }
 }

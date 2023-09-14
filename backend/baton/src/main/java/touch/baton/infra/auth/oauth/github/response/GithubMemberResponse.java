@@ -7,7 +7,7 @@ import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.oauth.OauthInformation;
-import touch.baton.domain.oauth.SocialToken;
+import touch.baton.domain.oauth.token.SocialToken;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 

@@ -20,6 +20,15 @@ public abstract class MockJwtConfig {
     }
 
     private JwtConfig mockJwtConfig() {
-        return new JwtConfig("test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key", "test_issuer");
+        return new JwtConfig("test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key", "test_issuer", 30);
+    }
+
+    @Bean
+    JwtEncoder jwtExpireEncoder() {
+        return new JwtEncoder(mockJwtExpireConfig());
+    }
+
+    private JwtConfig mockJwtExpireConfig() {
+        return new JwtConfig("test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key", "test_issuer", -1);
     }
 }

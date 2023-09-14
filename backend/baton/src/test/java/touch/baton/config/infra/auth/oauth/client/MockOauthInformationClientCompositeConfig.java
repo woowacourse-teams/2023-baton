@@ -7,8 +7,8 @@ import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.oauth.OauthInformation;
 import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.SocialToken;
 import touch.baton.domain.oauth.client.OauthInformationClientComposite;
+import touch.baton.domain.oauth.token.SocialToken;
 import touch.baton.fixture.domain.MemberFixture;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -28,7 +28,7 @@ public abstract class MockOauthInformationClientCompositeConfig {
         when(mock.fetchInformation(any(OauthType.class), eq(MockAuthCodes.ethanAuthCode())))
                 .thenReturn(oauthInformation(MemberFixture.createEthan(), "ethan_access_token"));
 
-        when(mock.fetchInformation(any(OauthType.class), eq( MockAuthCodes.hyenaAuthCode())))
+        when(mock.fetchInformation(any(OauthType.class), eq(MockAuthCodes.hyenaAuthCode())))
                 .thenReturn(oauthInformation(MemberFixture.createHyena(), "hyena_access_token"));
 
         when(mock.fetchInformation(any(OauthType.class), eq(MockAuthCodes.judyAuthCode())))
