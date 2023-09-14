@@ -35,18 +35,18 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         em.persist(ethan);
         em.persist(ditoo);
 
-        final Token ethanTokenValue = token("ethan RefreshToken");
-        final RefreshToken actual = RefreshTokenFixture.create(ethan, ethanTokenValue, expireDate(now().plusDays(30)));
-        final Token ditooTokenValue = token("ditoo RefreshToken");
-        final RefreshToken ditooRefreshToken = RefreshTokenFixture.create(ditoo, ditooTokenValue, expireDate(now().plusDays(30)));
+        final Token ethanToken = token("ethan RefreshToken");
+        final RefreshToken actual = RefreshTokenFixture.create(ethan, ethanToken, expireDate(now().plusDays(30)));
+        final Token ditooToken = token("ditoo RefreshToken");
+        final RefreshToken otherToken = RefreshTokenFixture.create(ditoo, ditooToken, expireDate(now().plusDays(30)));
         em.persist(actual);
-        em.persist(ditooRefreshToken);
+        em.persist(otherToken);
 
         em.flush();
         em.clear();
 
         // when
-        final Optional<RefreshToken> expected = refreshTokenRepository.findByToken(ethanTokenValue);
+        final Optional<RefreshToken> expected = refreshTokenRepository.findByToken(ethanToken);
 
         // then
         assertSoftly(softly -> {
@@ -60,21 +60,21 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
     @Test
     void findByMember() {
         // given
-        final Member ethan = MemberFixture.createEthan();
-        final Member ditoo = MemberFixture.createDitoo();
-        em.persist(ethan);
-        em.persist(ditoo);
+        final Member owner = MemberFixture.createEthan();
+        final Member notOwner = MemberFixture.createDitoo();
+        em.persist(owner);
+        em.persist(notOwner);
 
-        final RefreshToken actual = RefreshTokenFixture.create(ethan, token("ethan RefreshToken"), expireDate(now().plusDays(30)));
-        final RefreshToken ditooRefreshToken = RefreshTokenFixture.create(ditoo, token("ditoo RefreshToken"), expireDate(now().plusDays(30)));
+        final RefreshToken actual = RefreshTokenFixture.create(owner, token("ethan RefreshToken"), expireDate(now().plusDays(30)));
+        final RefreshToken differentRefreshToken = RefreshTokenFixture.create(notOwner, token("ditoo RefreshToken"), expireDate(now().plusDays(30)));
         em.persist(actual);
-        em.persist(ditooRefreshToken);
+        em.persist(differentRefreshToken);
 
         em.flush();
         em.clear();
 
         // when
-        final Optional<RefreshToken> expected = refreshTokenRepository.findByMember(ethan);
+        final Optional<RefreshToken> expected = refreshTokenRepository.findByMember(owner);
 
         // then
         assertSoftly(softly -> {
