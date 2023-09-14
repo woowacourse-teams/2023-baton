@@ -26,7 +26,7 @@ const RunnerPostPage = () => {
 
   const { runnerPostId } = useParams();
 
-  const { getToken, hasToken } = useToken();
+  const { getToken, isLogin } = useToken();
 
   const { isMobile } = useViewport();
 
@@ -42,9 +42,10 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = () => {
-    const token = hasToken() ? getToken()?.value : undefined;
+    const token = getToken();
+    if (!token) return;
 
-    getRequest(`/posts/runner/${runnerPostId}`, token)
+    getRequest(`/posts/runner/${runnerPostId}`, token ?? undefined)
       .then(async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
         setRunnerPost(data);
@@ -56,7 +57,7 @@ const RunnerPostPage = () => {
   };
 
   const deleteRunnerPost = () => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     deleteRequest(`/posts/runner/${runnerPostId}`, token)
@@ -69,7 +70,7 @@ const RunnerPostPage = () => {
   };
 
   const sendMessage = () => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     try {
@@ -83,7 +84,7 @@ const RunnerPostPage = () => {
 
     const body = JSON.stringify({ message: message });
 
-    postRequest(`/posts/runner/${runnerPostId}/application`, token!, body)
+    postRequest(`/posts/runner/${runnerPostId}/application`, token, body)
       .then(() => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
 

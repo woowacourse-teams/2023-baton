@@ -2,7 +2,7 @@ import { getRequest } from '@/api/fetch';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/RunnerPostSearchBox';
 import Button from '@/components/common/Button/Button';
-import { ERROR_TITLE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
@@ -16,7 +16,7 @@ import { styled } from 'styled-components';
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
 
-  const { getToken } = useToken();
+  const { isLogin } = useToken();
 
   const { showErrorToast } = useContext(ToastContext);
 
@@ -38,13 +38,14 @@ const MainPage = () => {
   }, []);
 
   const handleClickPostButton = () => {
-    if (getToken()) {
-      goToRunnerPostCreatePage();
+    if (!isLogin) {
+      showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
 
       return;
     }
 
-    goToLoginPage();
+    goToRunnerPostCreatePage();
   };
 
   const getRunnerPosts = () => {

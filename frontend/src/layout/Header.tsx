@@ -15,19 +15,16 @@ const Header = () => {
   const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
 
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
-
-  const { getToken, removeToken, hasToken } = useToken();
+  const { getToken, isLogin, removeToken } = useToken();
 
   const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
-    const isLogin = hasToken();
-
     if (isLogin) getProfile();
   }, []);
 
   const getProfile = () => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     getRequest(`/profile/me`, token)
@@ -59,7 +56,7 @@ const Header = () => {
       <S.HeaderContainer>
         <S.Logo onClick={goToMainPage} />
         <S.MenuContainer>
-          {hasToken() ? (
+          {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />

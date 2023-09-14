@@ -7,6 +7,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import {
@@ -23,7 +24,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const ProfileEditPage = () => {
-  const { getToken } = useToken();
+  const { isLogin, getToken } = useToken();
+  const { goToLoginPage } = usePageRouter();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
@@ -45,7 +47,7 @@ const ProfileEditPage = () => {
   }, []);
 
   const getRunnerProfile = () => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     getRequest(`/profile/runner/me`, token).then(async (response) => {
@@ -59,7 +61,7 @@ const ProfileEditPage = () => {
   };
 
   const getSupporterProfile = () => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     getRequest(`/profile/supporter/me`, token).then(async (response) => {
@@ -215,7 +217,7 @@ const ProfileEditPage = () => {
   };
 
   const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     const body = JSON.stringify(runnerProfile);
@@ -226,7 +228,7 @@ const ProfileEditPage = () => {
   };
 
   const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     const body = JSON.stringify(supporterProfile);

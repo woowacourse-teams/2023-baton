@@ -75,7 +75,7 @@ const SupporterFeedbackPage = () => {
   };
 
   const postSupporterProfile = async (feedback: PostFeedbackRequest) => {
-    const token = getToken()?.value;
+    const token = getToken();
     if (!token) return;
 
     const body = JSON.stringify(feedback);
