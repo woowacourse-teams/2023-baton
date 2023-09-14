@@ -1,6 +1,5 @@
 package touch.baton.domain.oauth;
 
-
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,6 +9,7 @@ import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
 import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
+import touch.baton.domain.oauth.token.SocialToken;
 
 import static lombok.AccessLevel.PROTECTED;
 

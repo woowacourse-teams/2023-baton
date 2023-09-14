@@ -1,7 +1,7 @@
 spring:
   flyway:
     enabled: false
-    baseline-on-migrate: false
+
   jpa:
     properties:
       hibernate:
@@ -15,6 +15,12 @@ spring:
         default-page-size: 10
         one-indexed-parameters: true
 
+logging:
+  config: classpath:logs/log4j2.xml
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
+
 oauth:
   github:
     client_id: ${OAUTH_GITHUB_CLIENT_ID}
@@ -24,8 +30,3 @@ oauth:
 
 cors:
   allowed-origin: http://localhost:3000
-
-jwt:
-  token:
-    secret_key: ${JWT_SECRET_KEY}
-    issuer: ${JWT_ISSUER}

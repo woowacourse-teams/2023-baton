@@ -13,6 +13,7 @@ import org.springframework.test.context.TestExecutionListeners;
 import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
 import touch.baton.assure.repository.TestMemberRepository;
+import touch.baton.assure.repository.TestRefreshTokenRepository;
 import touch.baton.assure.repository.TestRunnerPostReadRepository;
 import touch.baton.assure.repository.TestRunnerPostRepository;
 import touch.baton.assure.repository.TestRunnerRepository;
@@ -51,12 +52,15 @@ public abstract class AssuredTestConfig {
     protected TestTechnicalTagRepository technicalTagRepository;
 
     @Autowired
+    protected TestRefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
     protected JwtTestManager jwtTestManager;
 
     protected OauthLoginTestManager oauthLoginTestManager = new OauthLoginTestManager();
 
     @BeforeEach
-    void assuredTestSetUp(@LocalServerPort int port) {
+    void assuredTestSetUp(@LocalServerPort final int port) {
         RestAssured.port = port;
     }
 }

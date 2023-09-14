@@ -1,6 +1,7 @@
 package touch.baton.infra.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.IncorrectClaimException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -28,12 +29,35 @@ public class JwtDecoder {
                     .build();
 
             return jwtParser.parseClaimsJws(token).getBody();
-        } catch (SignatureException e) {
+        } catch (final SignatureException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
-        } catch (MalformedJwtException e) {
+        } catch (final ExpiredJwtException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_ALREADY_EXPIRED);
+        } catch (final MalformedJwtException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_FORM_IS_WRONG);
-        } catch (MissingClaimException | IncorrectClaimException e) {
+        } catch (final MissingClaimException | IncorrectClaimException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_WRONG);
+        }
+    }
+
+    public Claims parseExpiredJwtToken(final String token) {
+        try {
+            final JwtParser jwtParser = Jwts.parserBuilder()
+                    .setSigningKey(jwtConfig.getSecretKey())
+                    .requireIssuer(jwtConfig.getIssuer())
+                    .build();
+
+            jwtParser.parseClaimsJws(token).getBody();
+
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_NOT_EXPIRED);
+        } catch (final SignatureException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
+        } catch (final MalformedJwtException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_FORM_IS_WRONG);
+        } catch (final MissingClaimException | IncorrectClaimException e) {
+            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_WRONG);
+        } catch (final ExpiredJwtException e) {
+            return e.getClaims();
         }
     }
 }

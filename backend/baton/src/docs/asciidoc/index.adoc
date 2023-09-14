@@ -10,6 +10,11 @@ endif::[]
 
 = Baton-API
 
+== *[ 로그인 ]*
+
+include::GithubOauthApi.adoc[]
+include::RefreshTokenApi.adoc[]
+
 == *[ 프로필 ]*
 
 === *사용자 프로필 조회*
