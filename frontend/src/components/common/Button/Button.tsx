@@ -32,7 +32,10 @@ const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeigh
 export default Button;
 
 const S = {
-  ButtonWrapper: styled.div``,
+  ButtonWrapper: styled.div`
+    display: flex;
+    justify-content: center;
+  `,
 
   Button: styled.button<{
     $colorTheme: 'RED' | 'WHITE' | 'GRAY' | 'BLACK';

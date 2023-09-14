@@ -228,6 +228,7 @@ const S = {
   MoreButtonWrapper: styled.div`
     max-width: 1200px;
     width: 100%;
+    margin-bottom: 20px;
 
     @media (max-width: 768px) {
       max-width: 375px;
