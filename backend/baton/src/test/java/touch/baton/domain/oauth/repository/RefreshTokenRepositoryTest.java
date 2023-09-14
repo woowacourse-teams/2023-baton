@@ -39,8 +39,9 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         final RefreshToken actual = RefreshTokenFixture.create(ethan, ethanTokenValue, expireDate(now().plusDays(30)));
         final Token ditooTokenValue = token("ditoo RefreshToken");
         final RefreshToken ditooRefreshToken = RefreshTokenFixture.create(ditoo, ditooTokenValue, expireDate(now().plusDays(30)));
-        refreshTokenRepository.save(actual);
-        refreshTokenRepository.save(ditooRefreshToken);
+        em.persist(actual);
+        em.persist(ditooRefreshToken);
+
         em.flush();
         em.clear();
 
@@ -66,8 +67,9 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
 
         final RefreshToken actual = RefreshTokenFixture.create(ethan, token("ethan RefreshToken"), expireDate(now().plusDays(30)));
         final RefreshToken ditooRefreshToken = RefreshTokenFixture.create(ditoo, token("ditoo RefreshToken"), expireDate(now().plusDays(30)));
-        refreshTokenRepository.save(actual);
-        refreshTokenRepository.save(ditooRefreshToken);
+        em.persist(actual);
+        em.persist(ditooRefreshToken);
+
         em.flush();
         em.clear();
 
