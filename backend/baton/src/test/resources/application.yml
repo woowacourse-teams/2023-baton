@@ -1,25 +1,19 @@
 spring:
   flyway:
-    enabled: true
-    baseline-on-migrate: true
+    enabled: false
+    baseline-on-migrate: false
   jpa:
     properties:
       hibernate:
         format_sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
 
   data:
     web:
       pageable:
         default-page-size: 10
         one-indexed-parameters: true
-
-logging:
-  config: classpath:logs/log4j2.xml
-  level:
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
 
 oauth:
   github:
