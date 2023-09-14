@@ -19,6 +19,7 @@ import touch.baton.assure.repository.TestRunnerPostRepository;
 import touch.baton.assure.repository.TestRunnerRepository;
 import touch.baton.assure.repository.TestSupporterRepository;
 import touch.baton.assure.repository.TestSupporterRunnerPostRepository;
+import touch.baton.assure.repository.TestTagRepository;
 import touch.baton.assure.repository.TestTechnicalTagRepository;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.infra.auth.MockAuthTestConfig;
@@ -50,7 +51,7 @@ public abstract class AssuredTestConfig {
     protected TestSupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Autowired
-    protected TestTechnicalTagRepository technicalTagRepository;
+    protected TestTagRepository tagRepository;
 
     @Autowired
     protected TestRefreshTokenRepository refreshTokenRepository;

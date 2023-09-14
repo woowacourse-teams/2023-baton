@@ -335,6 +335,7 @@ public class RunnerPostAssuredSupport {
 
         public void 마이페이지_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.SimpleInMyPage> 마이페이지_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.SimpleInMyPage> actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
@@ -346,6 +347,7 @@ public class RunnerPostAssuredSupport {
 
         public void 서포터와_연관된_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.ReferencedBySupporter> 서포터와_연관된_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.ReferencedBySupporter> actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
@@ -357,6 +359,7 @@ public class RunnerPostAssuredSupport {
 
         public void 전체_러너_게시글_페이징_조회_성공을_검증한다(final PageResponse<RunnerPostResponse.Simple> 전체_러너_게시글_페이징_응답) {
             final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
@@ -368,6 +371,7 @@ public class RunnerPostAssuredSupport {
 
         public void 지원한_서포터_목록_조회_성공을_검증한다(final SupporterRunnerPostResponses.Detail 전체_러너_게시글_페이징_응답) {
             final SupporterRunnerPostResponses.Detail actual = this.response.as(new TypeRef<>() {
+
             });
 
             assertSoftly(softly -> {
