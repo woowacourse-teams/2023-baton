@@ -30,7 +30,7 @@ const S = {
     width: 100%;
 
     @media (max-width: 768px) {
-      padding: 25px;
+      padding: 15px;
     }
   `,
 };
