@@ -129,7 +129,7 @@ class OauthServiceUpdateTest {
         assertThatThrownBy(() -> oauthService.reissueAccessToken(expiredJwtToken, refreshTokenValue)).isInstanceOf(OauthRequestException.class);
     }
 
-    @DisplayName("refreshToken 이 없으면 로 재발급 요청하면 오류가 발생한다.")
+    @DisplayName("refreshToken 이 없으면 재발급 요청하면 오류가 발생한다.")
     @Test
     void fail_reissueAccessToken_when_refreshToken_not_exists() {
         // given
