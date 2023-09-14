@@ -6,11 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.Member;
+import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.RefreshToken;
 import touch.baton.domain.oauth.token.Token;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RefreshTokenFixture;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
@@ -35,10 +37,11 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         em.persist(ethan);
         em.persist(ditoo);
 
+        final LocalDateTime expireDate = now().plusDays(30);
         final Token ethanToken = token("ethan RefreshToken");
-        final RefreshToken actual = RefreshTokenFixture.create(ethan, ethanToken, expireDate(now().plusDays(30)));
+        final RefreshToken actual = RefreshTokenFixture.create(ethan, ethanToken, expireDate(expireDate));
         final Token ditooToken = token("ditoo RefreshToken");
-        final RefreshToken otherToken = RefreshTokenFixture.create(ditoo, ditooToken, expireDate(now().plusDays(30)));
+        final RefreshToken otherToken = RefreshTokenFixture.create(ditoo, ditooToken, expireDate(expireDate));
         em.persist(actual);
         em.persist(otherToken);
 
@@ -65,8 +68,9 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         em.persist(owner);
         em.persist(notOwner);
 
-        final RefreshToken actual = RefreshTokenFixture.create(owner, token("ethan RefreshToken"), expireDate(now().plusDays(30)));
-        final RefreshToken differentRefreshToken = RefreshTokenFixture.create(notOwner, token("ditoo RefreshToken"), expireDate(now().plusDays(30)));
+        final ExpireDate expireDate = expireDate(now().plusDays(30));
+        final RefreshToken actual = RefreshTokenFixture.create(owner, token("ethan RefreshToken"), expireDate);
+        final RefreshToken differentRefreshToken = RefreshTokenFixture.create(notOwner, token("ditoo RefreshToken"), expireDate);
         em.persist(actual);
         em.persist(differentRefreshToken);
 
@@ -79,8 +83,8 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
         // then
         assertSoftly(softly -> {
             softly.assertThat(expected).isPresent();
-            softly.assertThat(expected.get().getToken().getValue()).isEqualTo(actual.getToken().getValue());
-            softly.assertThat(expected.get().getExpireDate().getValue()).isEqualTo(actual.getExpireDate().getValue());
+            softly.assertThat(expected.get().getToken()).isEqualTo(actual.getToken());
+            softly.assertThat(expected.get().getExpireDate()).isEqualTo(actual.getExpireDate());
         } );
     }
 }
