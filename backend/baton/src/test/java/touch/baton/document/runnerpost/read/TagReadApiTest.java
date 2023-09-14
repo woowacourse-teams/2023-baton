@@ -1,4 +1,4 @@
-package touch.baton.document.tag.read;
+package touch.baton.document.runnerpost.read;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +43,7 @@ class TagReadApiTest extends RestdocsConfig {
 
     @DisplayName("태그 검색 API")
     @Test
-    void readTags() throws Exception {
+    void readTagsByReducedName() throws Exception {
         // given
         final Tag javaTag = TagFixture.create(tagName("java"));
         final Tag javascriptTag = TagFixture.create(tagName("javascript"));

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-public class TagServiceReadTest extends ServiceTestConfig {
+class TagServiceReadTest extends ServiceTestConfig {
 
     private TagService tagService;
 

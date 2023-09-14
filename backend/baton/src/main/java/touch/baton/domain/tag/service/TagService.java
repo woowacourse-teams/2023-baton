@@ -19,6 +19,6 @@ public class TagService {
     public List<Tag> readTagsByReducedName(final String tagName) {
         final String reducedName = TagReducedName.from(tagName).getValue();
 
-        return tagRepository.readTagsByReducedName(reducedName);
+        return tagRepository.readTagsByReducedName(TagReducedName.from(tagName));
     }
 }

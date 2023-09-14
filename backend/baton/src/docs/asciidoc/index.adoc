@@ -18,7 +18,7 @@ include::MemberLoginReadApi.adoc[]
 
 === *러너 프로필 조회*
 
-include::RunneReadApi.adoc[]
+include::RunnerReadApi.adoc[]
 
 === *러너 프로필 수정*
 
@@ -52,9 +52,3 @@ include::RunnerPostUpdateApplicantCancelationApi.adoc[]
 === *러너 게시글 삭제*
 
 include::RunnerPostDeleteApi.adoc[]
-
-== *[ 태그 ]*
-
-=== *태그 검색*
-
-include::TagReadApi.adoc[]
