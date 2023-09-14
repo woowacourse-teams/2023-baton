@@ -10,7 +10,7 @@ public abstract class RefreshTokenFixture {
     private RefreshTokenFixture() {
     }
 
-    public RefreshToken create(final Member member, final Token refreshToken, final ExpireDate expireDate) {
+    public static RefreshToken create(final Member member, final Token refreshToken, final ExpireDate expireDate) {
         return RefreshToken.builder()
                 .member(member)
                 .token(refreshToken)
