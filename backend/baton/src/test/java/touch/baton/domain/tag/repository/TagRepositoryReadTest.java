@@ -47,17 +47,17 @@ class TagRepositoryReadTest extends RepositoryTestConfig {
     @Test
     void success_readTagsByReducedName() {
         // given
-        persistTag("java");
-        persistTag("java1");
-        persistTag("java2");
-        persistTag("java3");
-        persistTag("java4");
-        persistTag("java5");
-        persistTag("java6");
-        persistTag("java7");
-        persistTag("java8");
-        persistTag("java9");
-        persistTag("assertja");
+        persistTag("ja va");
+        persistTag("j ava1");
+        persistTag("ja va2");
+        persistTag("jav a3");
+        persistTag("java 4");
+        persistTag("ja va5");
+        persistTag("j ava6");
+        persistTag("ja va7");
+        persistTag("jav a8");
+        persistTag("java 9");
+        persistTag("assert ja");
 
         em.flush();
         em.close();
@@ -69,8 +69,8 @@ class TagRepositoryReadTest extends RepositoryTestConfig {
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual).hasSize(10);
-            softly.assertThat(actual.get(0).getTagName().getValue()).isEqualTo("java");
-            softly.assertThat(actual.get(9).getTagName().getValue()).isEqualTo("java9");
+            softly.assertThat(actual.get(0).getTagName().getValue()).isEqualTo("ja va");
+            softly.assertThat(actual.get(9).getTagName().getValue()).isEqualTo("java 9");
         });
 
     }

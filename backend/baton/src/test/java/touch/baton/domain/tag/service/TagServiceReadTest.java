@@ -26,9 +26,17 @@ class TagServiceReadTest extends ServiceTestConfig {
     @Test
     void success_readTagsByReducedName() {
         // given
-        IntStream.iterate(20, i -> i > 0, i -> i - 1)
-                .mapToObj(i -> TagFixture.create(TagNameFixture.tagName("java" + i)))
-                .forEach(tag -> tagRepository.save(tag));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("ja va")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("jav a1")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("j ava2")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("ja va3")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("jav a4")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("java 5")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("j ava6")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("ja va7")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("jav a8")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("java 9")));
+        tagRepository.save(TagFixture.create(TagNameFixture.tagName("ju ja")));
 
         // when
         final List<Tag> actual = tagService.readTagsByReducedName("j a");
@@ -36,8 +44,8 @@ class TagServiceReadTest extends ServiceTestConfig {
         // then
         assertSoftly(softly -> {
             softly.assertThat(actual).hasSize(10);
-            softly.assertThat(actual.get(0).getTagName().getValue()).isEqualTo("java1");
-            softly.assertThat(actual.get(9).getTagName().getValue()).isEqualTo("java18");
+            softly.assertThat(actual.get(0).getTagName().getValue()).isEqualTo("ja va");
+            softly.assertThat(actual.get(9).getTagName().getValue()).isEqualTo("java 9");
         });
     }
 }
