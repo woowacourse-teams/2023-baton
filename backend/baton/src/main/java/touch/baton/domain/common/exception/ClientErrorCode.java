@@ -42,7 +42,11 @@ public enum ClientErrorCode {
     JWT_CLAIM_IS_NOT_EXPIRED(HttpStatus.UNAUTHORIZED, "JW006", "만료되지 않은 JWT로 새로운 JWT를 발급 받을 수 없습니다."),
     REFRESH_TOKEN_IS_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JW007", "해당 사용자의 Refresh Token이 존재하지 않습니다."),
     ACCESS_TOKEN_AND_REFRESH_TOKEN_HAVE_DIFFERENT_OWNER(HttpStatus.UNAUTHORIZED, "JW008", "Access Token 과 Refresh Token 의 주인이 다릅니다."),
-    REFRESH_TOKEN_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW009", "기간이 만료된 Refresh Token 입니다.");
+    REFRESH_TOKEN_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW009", "기간이 만료된 Refresh Token 입니다."),
+
+    DUPLICATED_BRANCH_NAME(HttpStatus.BAD_REQUEST, "BR001", "이미 존재하는 이름의 브랜치입니다."),
+    REPO_NAME_IS_NULL(HttpStatus.BAD_REQUEST, "BR002", "레포지토리 이름을 입력해주세요."),
+    REPO_NOT_FOUND(HttpStatus.NOT_FOUND, "BR003", "레포지토리를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;
