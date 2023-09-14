@@ -38,8 +38,8 @@ public class OauthAssuredSupport {
         private ExtractableResponse<Response> response;
         private String accessToken;
 
-        public OauthClientRequestBuilder 엑세스_토큰으로_로그인_한다(final String 엑세스_토큰) {
-            accessToken = 엑세스_토큰;
+        public OauthClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
+            accessToken = 액세스_토큰;
 
             return this;
         }
@@ -67,7 +67,7 @@ public class OauthAssuredSupport {
             return this;
         }
 
-        public OauthClientRequestBuilder 기간이_만료된_엑세스_토큰으로_프로필_조회하려_한다() {
+        public OauthClientRequestBuilder 기간이_만료된_액세스_토큰으로_프로필_조회하려_한다() {
             response = AssuredSupport.get("/api/v1/profile/runner/me", accessToken);
 
             return this;

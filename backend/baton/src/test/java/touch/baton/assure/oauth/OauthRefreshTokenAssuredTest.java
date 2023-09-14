@@ -44,8 +44,8 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         OauthAssuredSupport
                 .클라이언트_요청()
-                .엑세스_토큰으로_로그인_한다(기간_만료_액세스_토큰)
-                .기간이_만료된_엑세스_토큰으로_프로필_조회하려_한다()
+                .액세스_토큰으로_로그인_한다(기간_만료_액세스_토큰)
+                .기간이_만료된_액세스_토큰으로_프로필_조회하려_한다()
 
                 .서버_응답()
                 .오류가_발생한다(ClientErrorCode.JWT_CLAIM_IS_ALREADY_EXPIRED);
