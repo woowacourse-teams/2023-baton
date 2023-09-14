@@ -52,7 +52,9 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
                 List.of("Java", "Spring"),
                 "https://github.com/cookienc",
                 LocalDateTime.now().plusDays(10),
-                "12345".repeat(200)
+                "12345".repeat(200),
+                "궁금해 궁금해~",
+                "참고 부탁해요."
         );
 
         // when

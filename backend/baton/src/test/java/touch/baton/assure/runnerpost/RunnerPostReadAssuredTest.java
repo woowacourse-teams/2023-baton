@@ -12,10 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Simple_응답;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_전체_Simple_페이징_응답;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.마이페이지_러너_게시글_SimpleInMyPage_응답;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.마이페이지_러너_게시글_응답;
+import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostReadAssuredTest extends AssuredTestConfig {
@@ -115,7 +112,9 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
                                 List.of("자바", "스프링"),
                                 "https://test-pull-request.com",
                                 LocalDateTime.now().plusHours(100),
-                                "테스트용_러너_게시글_내용"
+                                "테스트용_러너_게시글_구현_내용",
+                                "테스트용_러너_게시글_궁금한_내용",
+                                "테스트용_러너_게시글_참고_사항"
                         )
                 )
 
