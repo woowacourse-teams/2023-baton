@@ -1,4 +1,5 @@
 import { getRequest } from '@/api/fetch';
+import Banner from '@/components/Banner/Banner';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/RunnerPostSearchBox';
 import Button from '@/components/common/Button/Button';
@@ -97,48 +98,51 @@ const MainPage = () => {
   };
 
   return (
-    <Layout>
-      <S.TitleWrapper>
-        <S.Title>서포터를 찾고 있어요 👀</S.Title>
-      </S.TitleWrapper>
-      <S.ControlPanelContainer>
-        <S.LeftSideContainer>
-          <RunnerPostSearchBox
-            tag={tag}
-            setTag={setTag}
-            reviewStatus={reviewStatus}
-            setReviewStatus={setReviewStatus}
-            searchedTags={searchedTags}
-            setSearchedTags={setSearchedTags}
-            searchPosts={searchPosts}
-          />
-        </S.LeftSideContainer>
-        <S.RightSideContainer>
-          <Button
-            onClick={handleClickPostButton}
-            colorTheme="WHITE"
-            fontSize={isMobile ? '14px' : '18px'}
-            ariaLabel="리뷰 요청 글 작성하기"
-          >
-            리뷰 요청 글 작성하기
-          </Button>
-        </S.RightSideContainer>
-      </S.ControlPanelContainer>
-      <S.RunnerPostContainer>
-        <RunnerPostList posts={runnerPostList} />
-        <S.MoreButtonWrapper>
-          {!isLast && (
+    <Layout maxWidth="none">
+      <Banner />
+      <S.MainContainer>
+        <S.TitleWrapper>
+          <S.Title>서포터를 찾고 있어요 👀</S.Title>
+        </S.TitleWrapper>
+        <S.ControlPanelContainer>
+          <S.LeftSideContainer>
+            <RunnerPostSearchBox
+              tag={tag}
+              setTag={setTag}
+              reviewStatus={reviewStatus}
+              setReviewStatus={setReviewStatus}
+              searchedTags={searchedTags}
+              setSearchedTags={setSearchedTags}
+              searchPosts={searchPosts}
+            />
+          </S.LeftSideContainer>
+          <S.RightSideContainer>
             <Button
-              colorTheme="RED"
-              width={isMobile ? '375px' : '1150px'}
-              height="55px"
-              onClick={handleClickMoreButton}
+              onClick={handleClickPostButton}
+              colorTheme="WHITE"
+              fontSize={isMobile ? '14px' : '18px'}
+              ariaLabel="리뷰 요청 글 작성하기"
             >
-              더보기
+              리뷰 요청 글 작성하기
             </Button>
-          )}
-        </S.MoreButtonWrapper>
-      </S.RunnerPostContainer>
+          </S.RightSideContainer>
+        </S.ControlPanelContainer>
+        <S.RunnerPostContainer>
+          <RunnerPostList posts={runnerPostList} />
+          <S.MoreButtonWrapper>
+            {!isLast && (
+              <Button
+                colorTheme="RED"
+                width={isMobile ? '375px' : '1150px'}
+                height="55px"
+                onClick={handleClickMoreButton}
+              >
+                더보기
+              </Button>
+            )}
+          </S.MoreButtonWrapper>
+        </S.RunnerPostContainer>
+      </S.MainContainer>
     </Layout>
   );
 };
@@ -146,6 +150,11 @@ const MainPage = () => {
 export default MainPage;
 
 const S = {
+  MainContainer: styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+  `,
+
   TitleWrapper: styled.header`
     margin: 72px 0 53px 0;
 
