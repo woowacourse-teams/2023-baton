@@ -40,13 +40,14 @@ public class RunnerPostReadController {
                 .toList();
 
         final List<Long> foundApplicantCounts = runnerPostReadService.readApplicantCountsByRunnerPostIds(foundRunnerPostIds);
-        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundApplicantCounts.size()).mapToObj(index -> {
-                    final RunnerPost current = pageRunnerPosts.getContent().get(index);
-                    final Long applicantCount = foundApplicantCounts.get(index);
+        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundApplicantCounts.size())
+                .mapToObj(index -> {
+                            final RunnerPost current = pageRunnerPosts.getContent().get(index);
+                            final Long applicantCount = foundApplicantCounts.get(index);
 
-                    return RunnerPostResponse.Simple.from(current, applicantCount);
-                }
-        ).toList();
+                            return RunnerPostResponse.Simple.from(current, applicantCount);
+                        }
+                ).toList();
 
         final PageImpl<RunnerPostResponse.Simple> pageResponse
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());

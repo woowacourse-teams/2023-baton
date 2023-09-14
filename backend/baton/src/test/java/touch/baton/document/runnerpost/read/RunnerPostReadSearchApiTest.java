@@ -46,7 +46,7 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostReadController.class)
-public class RunnerPostReadSearchApiTest extends RestdocsConfig {
+class RunnerPostReadSearchApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostReadService runnerPostReadService;
@@ -86,7 +86,7 @@ public class RunnerPostReadSearchApiTest extends RestdocsConfig {
                         .queryParam("size", String.valueOf(pageOne.getPageSize()))
                         .queryParam("page", String.valueOf(pageOne.getPageNumber()))
                         .queryParam("reviewStatus", ReviewStatus.NOT_STARTED.name())
-                        .queryParam("tagName", javaTag.getTagReducedName().getValue()))
+                        .queryParam("tagName", javaTag.getTagName().getValue()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
