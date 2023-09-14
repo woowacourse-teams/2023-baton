@@ -1,62 +1,46 @@
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
-import { TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { APIError, getRequest, postRequestWithCookie } from '@/api/fetch';
+import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, REFRESH_TOKEN_COOKIE_NAME } from '@/constants';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { deleteCookie, getCookie } from '@/utils/cookie';
 import { useContext, useState } from 'react';
-
-export interface LoginToken {
-  value: string;
-  expirationDate: Date;
-}
+import { usePageRouter } from './usePageRouter';
 
 export const useToken = () => {
+  const [isLogin, setIsLogin] = useState<boolean>(
+    !!(getCookie(REFRESH_TOKEN_COOKIE_NAME) && localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY)),
+  );
   const { showErrorToast } = useContext(ToastContext);
+  const { goToLoginPage } = usePageRouter();
 
-  const hasToken = () => {
-    const token = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+  const getToken = () => {
+    const accessToken = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    const refreshToken = getCookie(REFRESH_TOKEN_COOKIE_NAME);
 
-    return !!token;
-  };
+    if (!accessToken || !refreshToken) {
+      setIsLogin(false);
+      showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
 
-  const getToken = (): LoginToken | null => {
-    try {
-      const item = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-
-      if (!item) {
-        showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
-
-        return null;
-      }
-
-      return JSON.parse(item);
-    } catch {
       return null;
     }
-  };
 
-  const saveToken = (token: string) => {
-    const date = new Date();
-    date.setDate(date.getDate() + 30);
+    setIsLogin(true);
 
-    localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, JSON.stringify({ value: token, expirationDate: date }));
+    return accessToken;
   };
 
   const removeToken = () => {
     localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    deleteCookie('refreshToken');
+
+    setIsLogin(false);
   };
 
-  const validateToken = () => {
-    const item = localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-    if (!item) return;
+  // const saveAccessToken = (token: string) => {
+  //   localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, token);
+  //   setAccessToken(token);
+  // };
 
-    const token: LoginToken = JSON.parse(item);
-    const time = new Date(token.expirationDate);
-
-    if (Number(time) - Date.now() < 0) {
-      removeToken();
-
-      showErrorToast(TOAST_ERROR_MESSAGE.TOKEN_EXPIRATION);
-    }
-  };
-
-  return { getToken, removeToken, saveToken, validateToken, hasToken };
+  return { getToken, isLogin, removeToken };
 };
