@@ -48,7 +48,9 @@ public class RunnerPostAssuredSupport {
 
     public static RunnerPostResponse.Detail 러너_게시글_Detail_응답(final Long 러너_게시글_식별자값,
                                                              final String 제목,
-                                                             final String 내용,
+                                                             final String 구현_내용,
+                                                             final String 궁금한_내용,
+                                                             final String 참고_사항,
                                                              final String 풀_리퀘스트,
                                                              final LocalDateTime 마감기한,
                                                              final int 조회수,
@@ -62,7 +64,9 @@ public class RunnerPostAssuredSupport {
         return new RunnerPostResponse.Detail(
                 러너_게시글_식별자값,
                 제목,
-                내용,
+                구현_내용,
+                궁금한_내용,
+                참고_사항,
                 풀_리퀘스트,
                 마감기한,
                 조회수,
@@ -298,7 +302,9 @@ public class RunnerPostAssuredSupport {
             assertSoftly(softly -> {
                         softly.assertThat(actual.runnerPostId()).isEqualTo(러너_게시글_응답.runnerPostId());
                         softly.assertThat(actual.title()).isEqualTo(러너_게시글_응답.title());
-                        softly.assertThat(actual.contents()).isEqualTo(러너_게시글_응답.contents());
+                        softly.assertThat(actual.implementedContents()).isEqualTo(러너_게시글_응답.implementedContents());
+                        softly.assertThat(actual.curiousContents()).isEqualTo(러너_게시글_응답.curiousContents());
+                        softly.assertThat(actual.postscriptContents()).isEqualTo(러너_게시글_응답.postscriptContents());
                         softly.assertThat(actual.deadline()).isEqualToIgnoringSeconds(러너_게시글_응답.deadline());
                         softly.assertThat(actual.watchedCount()).isEqualTo(러너_게시글_응답.watchedCount());
                         softly.assertThat(actual.applicantCount()).isEqualTo(러너_게시글_응답.applicantCount());

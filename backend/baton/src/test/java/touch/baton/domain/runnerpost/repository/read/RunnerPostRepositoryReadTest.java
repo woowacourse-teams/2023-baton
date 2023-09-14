@@ -19,7 +19,6 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagFixture;
-import touch.baton.fixture.domain.RunnerPostTagsFixture;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
@@ -28,8 +27,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
-import static touch.baton.fixture.vo.ContentsFixture.contents;
+import static touch.baton.fixture.domain.RunnerPostTagsFixture.runnerPostTags;
+import static touch.baton.fixture.vo.CuriousContentsFixture.curiousContents;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.ImplementedContentsFixture.implementedContents;
+import static touch.baton.fixture.vo.PostscriptContentsFixture.postscriptContents;
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
@@ -64,14 +66,16 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         entityManager.persist(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
-                contents("제 코드의 내용은 이렇습니다."),
+                implementedContents("제 코드의 내용은 이렇습니다."),
+                curiousContents("저는 이것이 궁금합니다."),
+                postscriptContents("잘 부탁드립니다."),
                 pullRequestUrl("https://"),
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
                 NOT_STARTED,
                 runner,
                 null,
-                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+                runnerPostTags(new ArrayList<>()));
         runnerPostRepository.save(runnerPost);
 
         final Tag java = TagFixture.createJava();
@@ -100,14 +104,16 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         entityManager.persist(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
-                contents("제 코드의 내용은 이렇습니다."),
+                implementedContents("제 코드의 내용은 이렇습니다."),
+                curiousContents("저는 이것이 궁금합니다."),
+                postscriptContents("잘 부탁드립니다."),
                 pullRequestUrl("https://"),
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
                 NOT_STARTED,
                 runner,
                 null,
-                RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
+                runnerPostTags(new ArrayList<>()));
         runnerPostRepository.save(runnerPost);
 
         // when

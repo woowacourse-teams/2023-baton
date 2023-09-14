@@ -58,7 +58,9 @@ public class RunnerPostService {
 
     private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
         return RunnerPost.newInstance(request.title(),
-                request.contents(),
+                request.implementedContents(),
+                request.curiousContents(),
+                request.postscriptContents(),
                 request.pullRequestUrl(),
                 request.deadline(),
                 runner);

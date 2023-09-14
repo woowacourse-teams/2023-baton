@@ -38,7 +38,7 @@ class RunnerPostTagsTest {
                 .member(member)
                 .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
-        final RunnerPost runnerpost = RunnerPost.newInstance("리뷰해주세요.", "제발요.", "https://github.com/cookienc", LocalDateTime.of(2099, 12, 12, 0, 0), runner);
+        final RunnerPost runnerpost = RunnerPost.newInstance("리뷰해주세요.", "제발요.", "디투가 궁금해요", "참고 해요~", "https://github.com/cookienc", LocalDateTime.of(2099, 12, 12, 0, 0), runner);
 
         final RunnerPostTag runnerPostTag = RunnerPostTag.builder()
                 .runnerPost(runnerpost)

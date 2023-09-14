@@ -57,7 +57,9 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
                                 List.of("자바", "스프링"),
                                 "https://test-pull-request.com",
                                 LocalDateTime.now().plusHours(100),
-                                "테스트용_러너_게시글_내용"
+                                "테스트용_러너_게시글_구현_내용",
+                                "테스트용_러너_게시글_궁금한_내용",
+                                "테스트용_러너_게시글_참고_사항"
                         )
                 )
 
@@ -76,7 +78,9 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
         return 러너_게시글_Detail_응답(
                 러너_게시글.getId(),
                 러너_게시글.getTitle().getValue(),
-                러너_게시글.getContents().getValue(),
+                러너_게시글.getImplementedContents().getValue(),
+                러너_게시글.getCuriousContents().getValue(),
+                러너_게시글.getPostscriptContents().getValue(),
                 러너_게시글.getPullRequestUrl().getValue(),
                 러너_게시글.getDeadline().getValue(),
                 조회수,
