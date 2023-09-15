@@ -2,7 +2,6 @@ package touch.baton.domain.oauth.service;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
@@ -38,7 +37,6 @@ import java.util.UUID;
 
 import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
