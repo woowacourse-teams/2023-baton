@@ -51,6 +51,7 @@ export const useFetch = () => {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${getAccessToken()}`,
+        credentials: 'include',
       },
     });
 
@@ -64,9 +65,11 @@ export const useFetch = () => {
         ? {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${getAccessToken()}`,
+            credentials: 'include',
           }
         : {
             Authorization: `Bearer ${getAccessToken()}`,
+            credentials: 'include',
           },
       body,
     });
@@ -98,6 +101,7 @@ export const useFetch = () => {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${getAccessToken()}`,
+        credentials: 'include',
       },
     });
 
@@ -111,9 +115,11 @@ export const useFetch = () => {
         ? {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${getAccessToken()}`,
+            credentials: 'include',
           }
         : {
             Authorization: `Bearer ${getAccessToken()}`,
+            credentials: 'include',
           },
       body,
     });
@@ -128,9 +134,11 @@ export const useFetch = () => {
         ? {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${getAccessToken()}`,
+            credentials: 'include',
           }
         : {
             Authorization: `Bearer ${getAccessToken()}`,
+            credentials: 'include',
           },
       body,
     });
