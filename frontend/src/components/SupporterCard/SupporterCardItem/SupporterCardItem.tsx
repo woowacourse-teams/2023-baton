@@ -6,7 +6,6 @@ import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useToken } from '@/hooks/useToken';
 import { Candidate } from '@/types/supporterCandidate';
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -19,11 +18,10 @@ interface Props {
 const SupporterCardItem = ({ supporter }: Props) => {
   const { runnerPostId } = useParams();
 
-  const { getToken } = useToken();
   const { goToMyPage, goToSupporterProfilePage } = usePageRouter();
   const { patchRequestWithAuth } = useFetch();
 
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showCompletionToast } = useContext(ToastContext);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 

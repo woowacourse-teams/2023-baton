@@ -4,8 +4,8 @@ import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useToken } from '@/hooks/useToken';
 import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
 import { GetRunnerPostResponse, ReviewStatus, RunnerPost } from '@/types/runnerPost';
@@ -16,7 +16,7 @@ import { styled } from 'styled-components';
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
 
-  const { isLogin } = useToken();
+  const { isLogin } = useLogin();
   const { getRequest } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
   const { isMobile } = useViewport();
