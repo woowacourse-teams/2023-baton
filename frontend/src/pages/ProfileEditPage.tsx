@@ -1,4 +1,3 @@
-import { getRequest, patchRequest } from '@/api/fetch';
 import InputBox from '@/components/InputBox/InputBox';
 import TechLabelButton from '@/components/TechLabelButton/TechLabelButton';
 import TechTagSelectModal from '@/components/TechTagSelectModal/TechTagSelectModal';
@@ -7,8 +6,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
-import { usePageRouter } from '@/hooks/usePageRouter';
-import { useToken } from '@/hooks/useToken';
+import { useFetch } from '@/hooks/useFetch';
 import Layout from '@/layout/Layout';
 import {
   Profile,
@@ -24,8 +22,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const ProfileEditPage = () => {
-  const { isLogin, getToken } = useToken();
-  const { goToLoginPage } = usePageRouter();
+  const { getRequestWithAuth, patchRequestWithAuth } = useFetch();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
@@ -47,10 +44,7 @@ const ProfileEditPage = () => {
   }, []);
 
   const getRunnerProfile = () => {
-    const token = getToken();
-    if (!token) return;
-
-    getRequest(`/profile/runner/me`, token).then(async (response) => {
+    getRequestWithAuth(`/profile/runner/me`, async (response) => {
       const data: GetRunnerProfileResponse = await response.json();
       setRunnerProfile(data);
 
@@ -61,10 +55,7 @@ const ProfileEditPage = () => {
   };
 
   const getSupporterProfile = () => {
-    const token = getToken();
-    if (!token) return;
-
-    getRequest(`/profile/supporter/me`, token).then(async (response) => {
+    getRequestWithAuth(`/profile/supporter/me`, async (response) => {
       const data: GetSupporterProfileResponse = await response.json();
       setSupporterProfile(data);
 
@@ -217,25 +208,27 @@ const ProfileEditPage = () => {
   };
 
   const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
-    const token = getToken();
-    if (!token) return;
-
     const body = JSON.stringify(runnerProfile);
 
-    patchRequest(`/profile/runner/me`, token, body)
-      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE))
-      .catch((error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+    patchRequestWithAuth(
+      `/profile/runner/me`,
+      async () => {
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE);
+      },
+      body,
+    );
   };
 
   const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
-    const token = getToken();
-    if (!token) return;
-
     const body = JSON.stringify(supporterProfile);
 
-    await patchRequest(`/profile/supporter/me`, token, body)
-      .then(() => showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE))
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+    patchRequestWithAuth(
+      `/profile/supporter/me`,
+      async () => {
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE);
+      },
+      body,
+    );
   };
 
   return (

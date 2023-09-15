@@ -1,9 +1,8 @@
-import { patchRequest } from '@/api/fetch';
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useToken } from '@/hooks/useToken';
 import { ReviewStatus } from '@/types/runnerPost';
 import React, { useContext, useMemo } from 'react';
 
@@ -15,39 +14,23 @@ interface Props {
 }
 
 const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }: Props) => {
-  const { goToMyPage, goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
-  const { getToken } = useToken();
+  const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
+  const { patchRequestWithAuth } = useFetch();
   const { showCompletionToast, showErrorToast } = useContext(ToastContext);
 
-  const token = useMemo(() => getToken()?.value, [getToken]);
-
   const cancelReview = () => {
-    if (!token) {
-      showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
-      return;
-    }
+    patchRequestWithAuth(`/posts/runner/${runnerPostId}/cancelation`, async (response) => {
+      showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
 
-    patchRequest(`/posts/runner/${runnerPostId}/cancelation`, token)
-      .then(() => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
-
-        setTimeout(window.location.reload, 2000);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+      setTimeout(window.location.reload, 2000);
+    });
   };
 
   const finishReview = () => {
-    if (!token) {
-      showErrorToast(TOAST_ERROR_MESSAGE.NO_TOKEN);
-      return;
-    }
-
-    patchRequest(`/posts/runner/${runnerPostId}/done`, token)
-      .then(() => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPETE);
-        setTimeout(window.location.reload, 2000);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+    patchRequestWithAuth(`/posts/runner/${runnerPostId}/done`, async (response) => {
+      showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPETE);
+      setTimeout(window.location.reload, 2000);
+    });
   };
 
   const handleClickCancelReviewButton = (e: React.MouseEvent<HTMLButtonElement>) => {

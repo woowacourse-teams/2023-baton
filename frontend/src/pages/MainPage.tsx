@@ -1,9 +1,9 @@
-import { getRequest } from '@/api/fetch';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/RunnerPostSearchBox';
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
 import useViewport from '@/hooks/useViewport';
@@ -17,9 +17,8 @@ const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
 
   const { isLogin } = useToken();
-
+  const { getRequest } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
-
   const { isMobile } = useViewport();
 
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
@@ -61,13 +60,11 @@ const MainPage = () => {
 
     setPage(page + 1);
 
-    getRequest(`/posts/runner?${params.toString()}`)
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
-        setRunnerPostList([...runnerPostList, ...data.data]);
-        setIsLast(data.pageInfo.isLast);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+    getRequest(`/posts/runner?${params.toString()}`, async (response) => {
+      const data: GetRunnerPostResponse = await response.json();
+      setRunnerPostList([...runnerPostList, ...data.data]);
+      setIsLast(data.pageInfo.isLast);
+    });
   };
 
   const searchPosts = (reviewStatus: ReviewStatus, tag?: string) => {
@@ -87,14 +84,12 @@ const MainPage = () => {
     setReviewStatus(reviewStatus);
     setRunnerPostList([]);
 
-    getRequest(`/posts/runner?${params.toString()}`)
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
-        setRunnerPostList(() => []);
-        setRunnerPostList(() => [...data.data]);
-        setIsLast(data.pageInfo.isLast);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+    getRequest(`/posts/runner?${params.toString()}`, async (response) => {
+      const data: GetRunnerPostResponse = await response.json();
+      setRunnerPostList(() => []);
+      setRunnerPostList(() => [...data.data]);
+      setIsLast(data.pageInfo.isLast);
+    });
   };
 
   return (

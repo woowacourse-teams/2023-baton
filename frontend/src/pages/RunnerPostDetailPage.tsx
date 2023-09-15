@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -13,20 +13,20 @@ import Label from '@/components/common/Label/Label';
 import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
-import { useToken } from '@/hooks/useToken';
-import { deleteRequest, getRequest, postRequest } from '@/api/fetch';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 import { validateMessage } from '@/utils/validate';
 import useViewport from '@/hooks/useViewport';
+import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
 
 const RunnerPostPage = () => {
-  const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
+  const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage, goToLoginPage } = usePageRouter();
 
   const { runnerPostId } = useParams();
-
-  const { getToken, isLogin } = useToken();
+  const { getRequest, getRequestWithAuth, postRequestWithAuth, deleteRequestWithAuth } = useFetch();
+  const { isLogin } = useLogin();
 
   const { isMobile } = useViewport();
 
@@ -42,37 +42,30 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = () => {
-    const token = getToken();
-    if (!token) return;
-
-    getRequest(`/posts/runner/${runnerPostId}`, token ?? undefined)
-      .then(async (response) => {
+    if (isLogin) {
+      getRequestWithAuth(`/posts/runner/${runnerPostId}`, async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
         setRunnerPost(data);
-      })
-      .catch((error: Error) => {
-        showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message });
-        goBack();
       });
+
+      return;
+    }
+
+    getRequest(`/posts/runner/${runnerPostId}`, async (response) => {
+      const data: GetDetailedRunnerPostResponse = await response.json();
+      setRunnerPost(data);
+    });
   };
 
   const deleteRunnerPost = () => {
-    const token = getToken();
-    if (!token) return;
+    deleteRequestWithAuth(`/posts/runner/${runnerPostId}`, () => {
+      showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
 
-    deleteRequest(`/posts/runner/${runnerPostId}`, token)
-      .then(() => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
-
-        goToMainPage();
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      goToMainPage();
+    });
   };
 
   const sendMessage = () => {
-    const token = getToken();
-    if (!token) return;
-
     try {
       validateMessage(message);
     } catch (error) {
@@ -82,15 +75,15 @@ const RunnerPostPage = () => {
       return;
     }
 
-    const body = JSON.stringify({ message: message });
-
-    postRequest(`/posts/runner/${runnerPostId}/application`, token, body)
-      .then(() => {
+    postRequestWithAuth(
+      `/posts/runner/${runnerPostId}/application`,
+      () => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
 
         goToMyPage();
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      },
+      JSON.stringify({ message: message }),
+    );
   };
 
   const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -112,6 +105,13 @@ const RunnerPostPage = () => {
   };
 
   const openMessageModal = () => {
+    if (!isLogin) {
+      showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
+
+      return;
+    }
+
     setIsMessageModalOpen(true);
   };
 

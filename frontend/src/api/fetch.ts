@@ -1,10 +1,5 @@
 import { BATON_BASE_URL } from '@/constants';
-import { silentLogin } from './login';
-
-export interface APIError {
-  errorCode: string;
-  message: string;
-}
+import { APIError } from '@/types/error';
 
 const fetchAPI = async (url: string, options: RequestInit) => {
   const response = await fetch(`${BATON_BASE_URL}${url}`, options);
@@ -12,13 +7,7 @@ const fetchAPI = async (url: string, options: RequestInit) => {
   if (!response.ok) {
     const error: APIError = await response.json();
 
-    if (error.errorCode === 'JW005') {
-      silentLogin().then(() => {
-        return fetchAPI(url, options);
-      });
-    }
-
-    throw new Error(error.message, { cause: error.errorCode });
+    throw error;
   }
 
   return response;
