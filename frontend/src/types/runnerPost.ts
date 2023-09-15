@@ -45,7 +45,9 @@ export interface CreateRunnerPostRequest {
   tags: string[];
   pullRequestUrl: string;
   deadline: string;
-  contents: string;
+  implementedContents: string;
+  curiousContents: string;
+  postscriptContents: string;
 }
 
 export interface PageInfo {

@@ -7,51 +7,42 @@ import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
-import { useToken } from '@/hooks/useToken';
+import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import EventImage from '@/assets/banner/event_banner_post.png';
 import { JavaIcon, JavascriptIcon } from '@/assets/technicalLabelIcon';
 import { GetHeaderProfileResponse } from '@/types/profile';
-import { getRequest, postRequest } from '@/api/fetch';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { useFetch } from '@/hooks/useFetch';
 
 const NoticePage = () => {
   const { goBack } = usePageRouter();
-  const { getToken, hasToken } = useToken();
+  const { isLogin } = useLogin();
+  const { getRequestWithAuth, postRequestWithAuth } = useFetch();
   const { isMobile } = useViewport();
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showCompletionToast } = useContext(ToastContext);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
   const [profileName, setProfileName] = useState<string>();
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
 
   useEffect(() => {
-    if (hasToken()) {
+    if (isLogin) {
       getProfile();
     }
   }, []);
 
   const getProfile = () => {
-    const token = getToken()?.value;
-    if (!token) return;
+    getRequestWithAuth(`/profile/me`, async (response) => {
+      const data: GetHeaderProfileResponse = await response.json();
 
-    getRequest(`/profile/me`, token)
-      .then(async (response) => {
-        const data: GetHeaderProfileResponse = await response.json();
-
-        setProfileName(data.name);
-      })
-      .catch((error: Error) =>
-        showErrorToast({
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
-          title: ERROR_TITLE.REQUEST,
-        }),
-      );
+      setProfileName(data.name);
+    });
   };
 
   const openConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (getToken()) {
+    if (isLogin) {
       const targetText = e.currentTarget.getAttribute('data-type');
 
       if (targetText) {
@@ -69,21 +60,15 @@ const NoticePage = () => {
   };
 
   const postRepository = async (selectedLanguage: string) => {
-    const token = getToken()?.value;
-    if (!token) return;
-
     const repositoryName = selectedLanguage === 'java' ? 'java-boss-monster' : 'javascript-boss-monster';
 
-    await postRequest('/branch', token, JSON.stringify({ repoName: repositoryName }))
-      .then(async () => {
+    await postRequestWithAuth(
+      '/branch',
+      () => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.REPO_COMPLETE);
-      })
-      .catch((error: Error) =>
-        showErrorToast({
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
-          title: ERROR_TITLE.REQUEST,
-        }),
-      );
+      },
+      JSON.stringify({ repoName: repositoryName }),
+    );
   };
 
   const handleClickStartButton = () => {

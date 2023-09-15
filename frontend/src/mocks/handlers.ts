@@ -148,7 +148,7 @@ export const handlers = [
   }),
 
   rest.get('*/posts/runner/tags/search', async (req, res, ctx) => {
-    const name = req.url.searchParams.get('name');
+    const name = req.url.searchParams.get('tagName');
 
     const searchedTags = name ? tagList.data.filter((tag) => tag.tagName.includes(name)) : [];
 

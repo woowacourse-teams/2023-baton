@@ -1,40 +1,31 @@
-import { getRequest } from '@/api/fetch';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
 import { GetRunnerProfileResponse } from '@/types/profile';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { useFetch } from '@/hooks/useFetch';
 
 const RunnerProfilePage = () => {
   const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
 
-  const { runnerId } = useParams();
+  const { getRequest } = useFetch();
 
-  const { showErrorToast } = useContext(ToastContext);
+  const { runnerId } = useParams();
 
   useEffect(() => {
     getProfile();
   }, [runnerId]);
 
   const getProfile = async () => {
-    getRequest(`/profile/runner/${runnerId}`)
-      .then(async (response) => {
-        const data: GetRunnerProfileResponse = await response.json();
+    getRequest(`/profile/runner/${runnerId}`, async (response) => {
+      const data: GetRunnerProfileResponse = await response.json();
 
-        setRunnerProfile(data);
-      })
-      .catch((error: Error) =>
-        showErrorToast({
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
-          title: ERROR_TITLE.REQUEST,
-        }),
-      );
+      setRunnerProfile(data);
+    });
   };
 
   return (

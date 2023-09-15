@@ -1,33 +1,43 @@
 import InputBox from '@/components/InputBox/InputBox';
 import TagInput from '@/components/TagInput/TagInput';
-import TextArea from '@/components/Textarea/Textarea';
 import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
-import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
-import { postRequest } from '@/api/fetch';
-import { validateDeadline, validatePullRequestUrl, validateTags, validateTitle } from '@/utils/validate';
+import {
+  validateCuriousContents,
+  validateDeadline,
+  validateImplementContents,
+  validatePullRequestUrl,
+  validateTags,
+  validateTitle,
+} from '@/utils/validate';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
+import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
+import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
+import { useFetch } from '@/hooks/useFetch';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToCreationResultPage } = usePageRouter();
-  const { getToken } = useToken();
+  const { goBack, goToMainPage, goToLoginPage } = usePageRouter();
+  const { postRequestWithAuth } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
+
   const { isMobile } = useViewport();
 
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
   const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 1)));
-  const [contents, setContents] = useState<string>('');
+  const [implementedContents, setImplementedContents] = useState<string>('');
+  const [curiousContents, setCuriousContents] = useState<string>('');
+  const [postscriptContents, setPostscriptContents] = useState<string>('');
 
   const pushTag = (newTag: string) => {
     const newTags = [...tags, newTag];
@@ -75,8 +85,16 @@ const RunnerPostCreatePage = () => {
     setDeadline(e.target.value);
   };
 
-  const changeContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContents(e.target.value);
+  const changeImplementedContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setImplementedContents(e.target.value);
+  };
+
+  const changeCuriousContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCuriousContents(e.target.value);
+  };
+
+  const changePostscriptContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPostscriptContents(e.target.value);
   };
 
   const cancelPostWrite = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -101,22 +119,20 @@ const RunnerPostCreatePage = () => {
     validateTags(tags);
     validatePullRequestUrl(pullRequestUrl);
     validateDeadline(deadline);
+    validateImplementContents(implementedContents);
+    validateCuriousContents(curiousContents);
   };
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {
-    const token = getToken()?.value;
-    if (!token) return;
-
     const body = JSON.stringify(data);
 
-    postRequest(`/posts/runner`, token, body)
-      .then(async () => {
-        goToCreationResultPage();
-      })
-      .catch((error: Error) => {
-        const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
-        showErrorToast({ title: ERROR_TITLE.REQUEST, description });
-      });
+    postRequestWithAuth(
+      `/posts/runner`,
+      async () => {
+        goToMainPage();
+      },
+      body,
+    );
   };
 
   const submitForm = async () => {
@@ -125,7 +141,9 @@ const RunnerPostCreatePage = () => {
       title,
       pullRequestUrl,
       deadline,
-      contents,
+      implementedContents,
+      curiousContents,
+      postscriptContents,
     };
 
     await postRunnerForm(postData);
@@ -178,15 +196,31 @@ const RunnerPostCreatePage = () => {
               onChange={changeDeadline}
             />
           </S.InputContainer>
-          <TextArea
-            inputTextState={contents}
-            width={isMobile ? '300px' : '1200px'}
-            height="340px"
-            maxLength={500}
-            handleInputTextState={changeContents}
-            placeholder="> 리뷰어가 작성된 코드의 의미를 파악할 수 있도록 내용을 작성해주시면 더 나은 리뷰가 될 수 있어요 :)"
+          <GuideTextarea
+            title="무엇을 구현하였나요?"
+            inputTextState={implementedContents}
+            maxLength={200}
+            guideTexts={IMPLEMENTED_GUIDE_MESSAGE}
+            handleInputTextState={changeImplementedContents}
+            placeholder="구현 기능에 대한 설명을 해주세요"
           />
-
+          <GuideTextarea
+            title="아쉬운 점이나 궁금한 점이 있나요?"
+            inputTextState={curiousContents}
+            maxLength={200}
+            guideTexts={CURIOUS_GUIDE_MESSAGE}
+            handleInputTextState={changeCuriousContents}
+            placeholder="궁금한 점을 적어주세요"
+          />
+          <GuideTextarea
+            title="서포터에게 하고싶은 말이 있나요?"
+            inputTextState={postscriptContents}
+            maxLength={200}
+            guideTexts={POSTSCRIPT_GUIDE_MESSAGE}
+            handleInputTextState={changePostscriptContents}
+            placeholder="서포터에게 하고 싶은 말을 적어주세요"
+            isOptional={true}
+          />
           <S.ButtonContainer>
             <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
               취소
