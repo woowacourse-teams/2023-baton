@@ -4,6 +4,9 @@ import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.repository.MemberRepository;
@@ -26,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.domain.RunnerPostTagsFixture.runnerPostTags;
 import static touch.baton.fixture.vo.CuriousContentsFixture.curiousContents;
@@ -35,6 +39,7 @@ import static touch.baton.fixture.vo.PostscriptContentsFixture.postscriptContent
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
+import static touch.baton.util.TestDateFormatUtil.createExpireDate;
 
 class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
@@ -54,16 +59,16 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
     private RunnerPostTagRepository runnerPostTagRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @DisplayName("RunnerPost 식별자로 RunnerPostTag 목록을 조회할 때 Tag 가 있으면 조회된다.")
     @Test
     void findRunnerPostTagsById_exist() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
-        entityManager.persist(ditoo);
+        em.persist(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
-        entityManager.persist(runner);
+        em.persist(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 implementedContents("제 코드의 내용은 이렇습니다."),
@@ -79,9 +84,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         runnerPostRepository.save(runnerPost);
 
         final Tag java = TagFixture.createJava();
-        entityManager.persist(java);
+        em.persist(java);
         final Tag spring = TagFixture.createSpring();
-        entityManager.persist(spring);
+        em.persist(spring);
         final RunnerPostTag javaRunnerPostTag = RunnerPostTagFixture.create(runnerPost, java);
         final RunnerPostTag springRunnerPostTag = RunnerPostTagFixture.create(runnerPost, spring);
 
@@ -99,9 +104,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
     void findByRunnerId() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
-        entityManager.persist(ditoo);
+        em.persist(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
-        entityManager.persist(runner);
+        em.persist(runner);
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 implementedContents("제 코드의 내용은 이렇습니다."),
@@ -121,5 +126,63 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
         // then
         assertThat(actual).containsExactly(runnerPost);
+    }
+
+    @DisplayName("생성 시간이 같다면 다음 기준인 id 오름차순으로 게시글 페이징 조회한다")
+    @Test
+    void findByReviewStatus_when_createAt_is_same() {
+        // given
+        final Member ditoo = MemberFixture.createDitoo();
+        em.persist(ditoo);
+        final Runner runner = RunnerFixture.createRunner(ditoo);
+        em.persist(runner);
+        final Long runnerId = runner.getId();
+        final LocalDateTime createdAt = createExpireDate(LocalDateTime.now());
+
+        insertRunnerPostByNativeQuery(1L, createdAt, runnerId);
+        insertRunnerPostByNativeQuery(3L, createdAt, runnerId);
+        insertRunnerPostByNativeQuery(2L, createdAt, runnerId);
+
+        // when
+        final PageRequest pageable = PageRequest.of(0, 10, Sort.by(
+                Sort.Order.desc("createdAt"),
+                Sort.Order.desc("id")
+        ));
+        final Page<RunnerPost> actual = runnerPostRepository.findByReviewStatus(pageable, NOT_STARTED);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actual.getTotalElements()).isEqualTo(3);
+
+            List<RunnerPost> runnerPosts = actual.getContent();
+            softly.assertThat(runnerPosts.get(0).getId()).isEqualTo(3L);
+            softly.assertThat(runnerPosts.get(1).getId()).isEqualTo(2L);
+            softly.assertThat(runnerPosts.get(2).getId()).isEqualTo(1L);
+
+            softly.assertThat(runnerPosts.stream()
+                    .filter(runnerPost -> runnerPost.getCreatedAt().isEqual(createdAt))
+                    .count()).isEqualTo(3);
+        });
+    }
+
+    private void insertRunnerPostByNativeQuery(final long value, final LocalDateTime createdAt, final Long runnerId) {
+        em.createNativeQuery("""
+                        insert into runner_post (id, title, implemented_contents, curious_contents, postscript_contents, 
+                            pull_request_url, deadline, review_status, created_at, updated_at, runner_id)
+                        values (:id, :title, :implemented_contents, :curious_contents, :postscript_contents, 
+                            :pull_request_url, :deadline, :review_status, :created_at, :updated_at, :runner_id)
+                        """)
+                .setParameter("id", value)
+                .setParameter("title", "제목")
+                .setParameter("implemented_contents", "구현 내용")
+                .setParameter("curious_contents", "궁금한 내용")
+                .setParameter("postscript_contents", "참고 사항")
+                .setParameter("pull_request_url", "pr url")
+                .setParameter("deadline", LocalDateTime.now().plusHours(100))
+                .setParameter("review_status", NOT_STARTED.name())
+                .setParameter("created_at", createdAt)
+                .setParameter("updated_at", createdAt)
+                .setParameter("runner_id", runnerId)
+                .executeUpdate();
     }
 }
