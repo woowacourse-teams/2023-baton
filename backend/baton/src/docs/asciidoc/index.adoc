@@ -29,7 +29,7 @@ include::MemberLoginReadApi.adoc[]
 
 === *러너 프로필 조회*
 
-include::RunneReadApi.adoc[]
+include::RunnerReadApi.adoc[]
 
 === *러너 프로필 수정*
 

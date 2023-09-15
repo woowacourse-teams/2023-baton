@@ -36,19 +36,19 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-one-api-test
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-all-runner-posts/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-posts-by-review-status/http-request.adoc[]
 
 ===== *Http Request Query Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-all-runner-posts/query-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-posts-by-review-status/query-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-all-runner-posts/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-posts-by-review-status/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-all-runner-posts/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-posts-by-review-status/response-fields.adoc[]
 
 ==== *러너 마이페이지 게시글 조회 API*
 
@@ -147,3 +147,21 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-search-api-t
 ===== *Http Response Fields*
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-search-api-test/read-runner-posts-by-tag-names-and-review-status/response-fields.adoc[]
+
+==== *태그 검색 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/tag-read-api-test/read-tags/http-request.adoc[]
+
+===== *Http Request Query Parameters*
+
+include::{snippets}/../../build/generated-snippets/tag-read-api-test/read-tags/query-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/tag-read-api-test/read-tags/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/tag-read-api-test/read-tags/response-fields.adoc[]
