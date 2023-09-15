@@ -1,4 +1,9 @@
-export class APIError extends Error {
+export interface APIError {
+  errorCode: string;
+  message: string;
+}
+
+export class CustomError extends Error {
   errorCode;
   message;
 
