@@ -1,9 +1,13 @@
 import { APIError } from '@/types/error';
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
-import { useState } from 'react';
+import { useContext } from 'react';
+import { ToastContext } from '@/contexts/ToastContext';
+import { usePageRouter } from './usePageRouter';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 export const useFetch = () => {
-  const [error, setError] = useState<Error | APIError | null>(null);
+  const { goToLoginPage } = usePageRouter();
+  const { showErrorToast } = useContext(ToastContext);
 
   const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
@@ -11,15 +15,27 @@ export const useFetch = () => {
     fetch(`${BATON_BASE_URL}${url}`, options)
       .then(async (response) => {
         if (!response.ok) {
-          const error: APIError = await response.json();
+          const apiError: APIError = await response.json();
 
-          throw error;
+          if (apiError.errorCode.includes('JW') || apiError.errorCode.includes('OA')) {
+            showErrorToast({ title: apiError.message, description: apiError.message });
+            goToLoginPage();
+
+            return;
+          }
+
+          showErrorToast({ title: apiError.message, description: apiError.message });
+
+          return;
         }
 
         return response;
       })
-      .catch((error: Error | APIError) => {
-        setError(error);
+      .catch((error) => {
+        showErrorToast({
+          title: ERROR_TITLE.NETWORK,
+          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
+        });
       });
 
   const getRequest = async (url: string, onSuccess: (response: Response) => void) => {
@@ -121,8 +137,6 @@ export const useFetch = () => {
 
     if (result) onSuccess(result);
   };
-
-  if (error) throw error;
 
   return {
     getRequest,
