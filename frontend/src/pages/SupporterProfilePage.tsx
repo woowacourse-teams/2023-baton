@@ -1,4 +1,3 @@
-import { getRequest } from '@/api/fetch';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
@@ -11,7 +10,7 @@ import githubIcon from '@/assets/github-icon.svg';
 import { GetRunnerPostResponse } from '@/types/runnerPost';
 import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
 import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_TITLE } from '@/constants/message';
+import { useFetch } from '@/hooks/useFetch';
 
 const SupporterProfilePage = () => {
   const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
@@ -19,7 +18,7 @@ const SupporterProfilePage = () => {
 
   const { supporterId } = useParams();
 
-  const { showErrorToast } = useContext(ToastContext);
+  const { getRequest } = useFetch();
 
   useEffect(() => {
     getProfile();
@@ -27,23 +26,19 @@ const SupporterProfilePage = () => {
   }, [supporterId]);
 
   const getProfile = () => {
-    getRequest(`/profile/supporter/${supporterId}`)
-      .then(async (response) => {
-        const data: GetSupporterProfileResponse = await response.json();
+    getRequest(`/profile/supporter/${supporterId}`, async (response) => {
+      const data: GetSupporterProfileResponse = await response.json();
 
-        setSupporterProfile(data);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+      setSupporterProfile(data);
+    });
   };
 
   const getPost = async () => {
-    getRequest(`/posts/runner/search/${supporterId}`)
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
+    getRequest(`/posts/runner/search/${supporterId}`, async (response) => {
+      const data: GetRunnerPostResponse = await response.json();
 
-        setSupporterProfilePost(data);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+      setSupporterProfilePost(data);
+    });
   };
 
   return (
