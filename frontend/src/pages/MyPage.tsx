@@ -29,6 +29,7 @@ const MyPage = () => {
   const { getToken } = useToken();
   const { goToProfileEditPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
+
   const { isMobile } = useViewport();
 
   useEffect(() => {
@@ -37,7 +38,7 @@ const MyPage = () => {
       setPage(1);
 
       getProfile(role);
-      getPostList(role);
+      getPostList(role, 1);
     };
 
     fetchMyPageData(isRunner ? 'runner' : 'supporter');
@@ -56,7 +57,7 @@ const MyPage = () => {
       .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
   };
 
-  const getPostList = (role: 'runner' | 'supporter') => {
+  const getPostList = (role: 'runner' | 'supporter', currentPage: number) => {
     const token = getToken()?.value;
     if (!token) return;
 
@@ -64,13 +65,14 @@ const MyPage = () => {
 
     const rolePath =
       role === 'runner'
-        ? `runner/me/runner?size=10&page=${page}&reviewStatus=${selectedPostOption}`
-        : `runner/me/supporter?size=10&page=${page}&reviewStatus=${selectedPostOption}`;
+        ? `runner/me/runner?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`
+        : `runner/me/supporter?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`;
 
     getRequest(`/posts/${rolePath}`, token)
       .then(async (response) => {
         const data: GetMyPagePostResponse = await response.json();
 
+        console.log(data.data);
         setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
         setPage(() => data.pageInfo.currentPage);
         setIsLast(data.pageInfo.isLast);
@@ -99,7 +101,7 @@ const MyPage = () => {
     const role = isRunner ? 'runner' : 'supporter';
 
     setPage(() => page + 1);
-    getPostList(role);
+    getPostList(role, page + 1);
   };
 
   return (
@@ -116,49 +118,49 @@ const MyPage = () => {
               </S.RunnerSupporterButton>
             </S.ButtonContainer>
           )}
-      <S.ProfileContainer>
-        <S.InfoContainer>
-          <Avatar
-            imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
+          <S.ProfileContainer>
+            <S.InfoContainer>
+              <Avatar
+                imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
                 width={isMobile ? '80px' : '100px'}
                 height={isMobile ? '80px' : '100px'}
-          />
-          <S.InfoDetailContainer>
+              />
+              <S.InfoDetailContainer>
                 <S.Name>{isRunner ? '러너 - ' + myPageProfile?.name : '서포터 - ' + myPageProfile?.name}</S.Name>
-            <S.Company>{myPageProfile?.company}</S.Company>
-            <S.TechLabel>
-              {myPageProfile?.technicalTags.map((tag) => (
-                <TechLabel key={tag} tag={tag} />
-              ))}
-            </S.TechLabel>
-          </S.InfoDetailContainer>
-        </S.InfoContainer>
+                <S.Company>{myPageProfile?.company}</S.Company>
+                <S.TechLabel>
+                  {myPageProfile?.technicalTags.map((tag) => (
+                    <TechLabel key={tag} tag={tag} />
+                  ))}
+                </S.TechLabel>
+              </S.InfoDetailContainer>
+            </S.InfoContainer>
             {!isMobile && (
-        <S.ButtonContainer>
-          <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-            러너
-          </S.RunnerSupporterButton>
-          <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-            서포터
-          </S.RunnerSupporterButton>
-        </S.ButtonContainer>
+              <S.ButtonContainer>
+                <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
+                  러너
+                </S.RunnerSupporterButton>
+                <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
+                  서포터
+                </S.RunnerSupporterButton>
+              </S.ButtonContainer>
             )}
-      </S.ProfileContainer>
-      <S.IntroductionContainer>
-        <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
+          </S.ProfileContainer>
+          <S.IntroductionContainer>
+            <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
             {!isMobile && (
-        <Button
-          width="95px"
-          height="38px"
-          colorTheme="WHITE"
-          fontSize="16px"
-          fontWeight={400}
-          onClick={goToProfileEditPage}
-        >
-          수정하기
-        </Button>
+              <Button
+                width="95px"
+                height="38px"
+                colorTheme="WHITE"
+                fontSize="16px"
+                fontWeight={400}
+                onClick={goToProfileEditPage}
+              >
+                수정하기
+              </Button>
             )}
-      </S.IntroductionContainer>
+          </S.IntroductionContainer>
           {isMobile && (
             <S.MobileButtonWrapper>
               <Button
@@ -173,30 +175,30 @@ const MyPage = () => {
               </Button>
             </S.MobileButtonWrapper>
           )}
-      <S.PostsContainer>
-        <S.FilterWrapper>
+          <S.PostsContainer>
+            <S.FilterWrapper>
               <ListFilter
                 options={postOptions}
                 selectOption={selectOptions}
                 width={isMobile ? '100%' : '920px'}
                 fontSize={isMobile ? '16px' : '26px'}
               />
-        </S.FilterWrapper>
-        <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
-        <S.MoreButtonWrapper>
-          {!isLast && (
-            <Button
-              colorTheme="RED"
+            </S.FilterWrapper>
+            <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
+            <S.MoreButtonWrapper>
+              {!isLast && (
+                <Button
+                  colorTheme="RED"
                   width={isMobile ? '100%' : '1150px'}
                   fontSize={isMobile ? '14px' : '18px'}
-              height="55px"
-              onClick={handleClickMoreButton}
-            >
-              더보기
-            </Button>
-          )}
-        </S.MoreButtonWrapper>
-      </S.PostsContainer>
+                  height="55px"
+                  onClick={handleClickMoreButton}
+                >
+                  더보기
+                </Button>
+              )}
+            </S.MoreButtonWrapper>
+          </S.PostsContainer>
         </S.MyPageContainer>
       </S.MyPageWrapper>
     </Layout>
