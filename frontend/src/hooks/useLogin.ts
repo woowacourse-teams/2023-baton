@@ -1,14 +1,11 @@
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, REFRESH_TOKEN_COOKIE_NAME } from '@/constants';
-import { deleteCookie, getCookie } from '@/utils/cookie';
+import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { useRef, useState } from 'react';
 import { useFetch } from './useFetch';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
-const getRefreshToken = () => getCookie(REFRESH_TOKEN_COOKIE_NAME);
-
 export const useLogin = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(!!getAccessToken());
 
   const timer = useRef<number | null>(null);
 
@@ -18,13 +15,8 @@ export const useLogin = () => {
     getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
       try {
         const jwt = response.headers.get('Authorization');
-        const cookies = response.headers.getSetCookie();
 
-        if (!jwt || cookies.length < 1) return;
-
-        cookies.forEach((cookie) => {
-          document.cookie = cookie;
-        });
+        if (!jwt) return;
 
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
@@ -38,13 +30,8 @@ export const useLogin = () => {
     postRequestWithCookie('/oauth/refresh', (response) => {
       try {
         const jwt = response.headers.get('Authorization');
-        const cookies = response.headers.getSetCookie();
 
-        if (!jwt || cookies.length < 1) return;
-
-        cookies.forEach((cookie) => {
-          document.cookie = cookie;
-        });
+        if (!jwt) return;
 
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
@@ -56,19 +43,12 @@ export const useLogin = () => {
 
   const logout = () => {
     localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-    deleteCookie(REFRESH_TOKEN_COOKIE_NAME);
 
     setIsLogin(false);
   };
 
   const checkLoginToken = () => {
     if (!isLogin) return;
-
-    if (!getRefreshToken()) {
-      setIsLogin(false);
-
-      return;
-    }
 
     if (timer.current) return;
 
