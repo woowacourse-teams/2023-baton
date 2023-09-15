@@ -1,9 +1,10 @@
 package touch.baton.domain.oauth.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.server.Cookie.SameSite;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -74,11 +75,13 @@ public class OauthController {
     }
 
     private void setCookie(final HttpServletResponse response, final RefreshToken refreshToken) {
-        final Cookie cookie = new Cookie(REFRESH_TOKEN_KEY, refreshToken.getToken().getValue());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setMaxAge((int) Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds());
-
-        response.addCookie(cookie);
+        final ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken.getToken().getValue())
+                .httpOnly(true)
+                .secure(true)
+                .maxAge(Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds())
+                .sameSite(SameSite.NONE.attributeValue())
+                .path("/")
+                .build();
+        response.addHeader("Set-Cookie", responseCookie.toString());
     }
 }
