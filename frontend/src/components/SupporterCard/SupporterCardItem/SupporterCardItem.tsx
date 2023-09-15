@@ -1,12 +1,11 @@
-import { patchRequest } from '@/api/fetch';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useToken } from '@/hooks/useToken';
 import { Candidate } from '@/types/supporterCandidate';
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -19,10 +18,10 @@ interface Props {
 const SupporterCardItem = ({ supporter }: Props) => {
   const { runnerPostId } = useParams();
 
-  const { getToken } = useToken();
   const { goToMyPage, goToSupporterProfilePage } = usePageRouter();
+  const { patchRequestWithAuth } = useFetch();
 
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showCompletionToast } = useContext(ToastContext);
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
@@ -39,23 +38,17 @@ const SupporterCardItem = ({ supporter }: Props) => {
   };
 
   const selectSupporter = () => {
-    const token = getToken()?.value;
-    if (!token) return;
-
     const body = JSON.stringify({ supporterId: supporter.supporterId });
 
-    patchRequest(`/posts/runner/${runnerPostId}/supporters`, token, body)
-      .then(async () => {
+    patchRequestWithAuth(
+      `/posts/runner/${runnerPostId}/supporters`,
+      async (response) => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);
 
         goToMyPage();
-      })
-      .catch((error: Error) =>
-        showErrorToast({
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
-          title: ERROR_TITLE.REQUEST,
-        }),
-      );
+      },
+      body,
+    );
   };
 
   return (

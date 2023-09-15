@@ -7,9 +7,9 @@ import githubIcon from '@/assets/github-icon.svg';
 import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
-import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
-import { getRequest, postRequest } from '@/api/fetch';
+import { getRequest } from '@/api/fetch';
+
 import {
   validateCuriousContents,
   validateDeadline,
@@ -24,12 +24,14 @@ import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
 import { GetMyPageProfileResponse } from '@/types/myPage';
+import { useLogin } from '@/hooks/useLogin';
+import { useFetch } from '@/hooks/useFetch';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToMainPage } = usePageRouter();
-  const { getToken } = useToken();
+  const { goBack, goToMainPage, goToLoginPage } = usePageRouter();
+  const { postRequestWithAuth } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
 
   const { isMobile } = useViewport();
@@ -44,24 +46,24 @@ const RunnerPostCreatePage = () => {
 
   const [githubUrl, setGithubUrl] = useState<string>('');
 
+  const { isLogin } = useLogin();
+  const { getRequestWithAuth } = useFetch();
+
   useEffect(() => {
     getGithubUrl();
   }, []);
 
   const getGithubUrl = () => {
-    const token = getToken()?.value;
-    if (!token) return;
+    if (!isLogin) return;
 
-    getRequest(`/profile/runner/me`, token)
-      .then(async (response) => {
-        const data: GetMyPageProfileResponse = await response.json();
+    getRequestWithAuth(`/profile/runner/me`, async (response) => {
+      const data: GetMyPageProfileResponse = await response.json();
 
-        const url = data.githubUrl;
-        setGithubUrl(url);
+      const url = data.githubUrl;
+      setGithubUrl(url);
 
-        const githubId = data.githubUrl.split('/').splice(-1)[0];
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      const githubId = data.githubUrl.split('/').splice(-1)[0];
+    });
   };
 
   const pushTag = (newTag: string) => {
@@ -149,19 +151,15 @@ const RunnerPostCreatePage = () => {
   };
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {
-    const token = getToken()?.value;
-    if (!token) return;
-
     const body = JSON.stringify(data);
 
-    postRequest(`/posts/runner`, token, body)
-      .then(async () => {
+    postRequestWithAuth(
+      `/posts/runner`,
+      async () => {
         goToMainPage();
-      })
-      .catch((error: Error) => {
-        const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
-        showErrorToast({ title: ERROR_TITLE.REQUEST, description });
-      });
+      },
+      body,
+    );
   };
 
   const submitForm = async () => {

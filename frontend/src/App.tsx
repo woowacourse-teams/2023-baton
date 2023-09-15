@@ -1,23 +1,22 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
-import { useToken } from './hooks/useToken';
 import ToastProvider from './contexts/ToastContext';
-import ChannelService from './ChannelService';
-import { CHANNEL_SERVICE_KEY } from './constants';
+// import ChannelService from './ChannelService';
+// import { CHANNEL_SERVICE_KEY } from './constants';
+import { useLogin } from './hooks/useLogin';
 
 const App = () => {
-  ChannelService.loadScript();
+  const { checkLoginToken } = useLogin();
 
-  if (CHANNEL_SERVICE_KEY) {
-    ChannelService.boot({
-      pluginKey: CHANNEL_SERVICE_KEY,
-    });
-  }
+  checkLoginToken();
+  // ChannelService.loadScript();
 
-  const { validateToken } = useToken();
-
-  validateToken();
+  // if (CHANNEL_SERVICE_KEY) {
+  //   ChannelService.boot({
+  //     pluginKey: CHANNEL_SERVICE_KEY,
+  //   });
+  // }
 
   return (
     <ToastProvider>
