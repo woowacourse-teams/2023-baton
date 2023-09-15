@@ -5,13 +5,12 @@ import ToastProvider from './contexts/ToastContext';
 import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import { useLogin } from './hooks/useLogin';
-import LoginErrorBoundary from './components/ErrorBoundary/LoginErrorBoundary';
 
 const App = () => {
   const { checkLoginToken } = useLogin();
 
-  ChannelService.loadScript();
   checkLoginToken();
+  ChannelService.loadScript();
 
   if (CHANNEL_SERVICE_KEY) {
     ChannelService.boot({
@@ -21,11 +20,9 @@ const App = () => {
 
   return (
     <ToastProvider>
-      <LoginErrorBoundary>
-        <S.AppContainer>
-          <Outlet />
-        </S.AppContainer>
-      </LoginErrorBoundary>
+      <S.AppContainer>
+        <Outlet />
+      </S.AppContainer>
     </ToastProvider>
   );
 };
