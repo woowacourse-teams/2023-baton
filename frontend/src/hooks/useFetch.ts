@@ -1,6 +1,5 @@
 import { APIError } from '@/types/error';
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL, REFRESH_TOKEN_COOKIE_NAME } from '@/constants';
-import { getCookie } from '@/utils/cookie';
+import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
 import { useState } from 'react';
 
 export const useFetch = () => {
@@ -66,32 +65,6 @@ export const useFetch = () => {
           }
         : {
             Authorization: `Bearer ${getAccessToken()}`,
-          },
-      body,
-    });
-
-    response
-      ?.json()
-      .then((data: T) => {
-        onSuccess(data);
-      })
-      .catch((error) => {
-        setError(error);
-      });
-  };
-
-  const postRequestWithCookie = async <T>(url: string, onSuccess: (result: T) => void, body?: BodyInit) => {
-    const response = await fetchAPI(url, {
-      method: 'POST',
-      headers: body
-        ? {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${getAccessToken()}`,
-            credentials: 'include',
-          }
-        : {
-            Authorization: `Bearer ${getAccessToken()}`,
-            credentials: 'include',
           },
       body,
     });
@@ -179,7 +152,6 @@ export const useFetch = () => {
     getRequest,
     getRequestWithAuth,
     postRequestWithAuth,
-    postRequestWithCookie,
     deleteRequestWithAuth,
     patchRequestWithAuth,
     putRequestWithAuth,

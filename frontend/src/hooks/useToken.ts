@@ -1,4 +1,3 @@
-import { APIError, getRequest, postRequestWithCookie } from '@/api/fetch';
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, REFRESH_TOKEN_COOKIE_NAME } from '@/constants';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
@@ -36,11 +35,6 @@ export const useToken = () => {
 
     setIsLogin(false);
   };
-
-  // const saveAccessToken = (token: string) => {
-  //   localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, token);
-  //   setAccessToken(token);
-  // };
 
   return { getToken, isLogin, removeToken };
 };

@@ -1,10 +1,9 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
 import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { APIError } from '@/api/fetch';
 import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
-import { login } from '@/api/login';
+import { TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { useLogin } from '@/hooks/useLogin';
 
 function GithubCallbackPage() {
   const location = useLocation();
@@ -12,6 +11,7 @@ function GithubCallbackPage() {
   const { showErrorToast } = useContext(ToastContext);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
+  const { login } = useLogin();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -25,16 +25,9 @@ function GithubCallbackPage() {
     }
 
     if (code) {
-      login(code)
-        .then(() => {
-          goToMainPage();
-        })
-        .catch((error: Error | APIError) => {
-          const description = error instanceof Error ? error.message : error.message;
-          showErrorToast({ title: ERROR_TITLE.REQUEST, description });
-
-          goToLoginPage();
-        });
+      login(code).then(() => {
+        goToMainPage();
+      });
     }
   }, [location]);
 
