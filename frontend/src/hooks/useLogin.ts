@@ -14,60 +14,48 @@ export const useLogin = () => {
 
   const timer = useRef<number | null>(null);
 
-  const { fetchAPI } = useFetch();
+  const { getRequestWithAuth, postRequestWithCookie } = useFetch();
 
   const login = async (code: string) => {
-    const response = await fetchAPI(`/oauth/login/github?code=${code}`, {
-      method: 'GET',
+    getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
+      try {
+        const jwt = response.headers.get('Authorization');
+        const cookies = response.headers.getSetCookie();
+
+        if (!jwt || cookies.length < 1) return;
+
+        cookies.forEach((cookie) => {
+          document.cookie = cookie;
+        });
+
+        localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
+        setIsLogin(true);
+      } catch (error) {
+        if (error instanceof APIError || error instanceof Error) setError(error);
+        setIsLogin(false);
+      }
     });
-
-    if (!response) return;
-
-    try {
-      const jwt = response.headers.get('Authorization');
-      const cookies = response.headers.getSetCookie();
-
-      if (!jwt || cookies.length < 1) return;
-
-      cookies.forEach((cookie) => {
-        document.cookie = cookie;
-      });
-
-      localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
-      setIsLogin(true);
-    } catch (error) {
-      if (error instanceof APIError || error instanceof Error) setError(error);
-      setIsLogin(false);
-    }
   };
 
   const silentLogin = async () => {
-    const response = await fetchAPI('/oauth/refresh', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${getAccessToken()}`,
-        credentials: 'include',
-      },
+    postRequestWithCookie('/oauth/refresh', (response) => {
+      try {
+        const jwt = response.headers.get('Authorization');
+        const cookies = response.headers.getSetCookie();
+
+        if (!jwt || cookies.length < 1) return;
+
+        cookies.forEach((cookie) => {
+          document.cookie = cookie;
+        });
+
+        localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
+        setIsLogin(true);
+      } catch (error) {
+        if (error instanceof APIError || error instanceof Error) setError(error);
+        setIsLogin(false);
+      }
     });
-
-    if (!response) return;
-
-    try {
-      const jwt = response.headers.get('Authorization');
-      const cookies = response.headers.getSetCookie();
-
-      if (!jwt || cookies.length < 1) return;
-
-      cookies.forEach((cookie) => {
-        document.cookie = cookie;
-      });
-
-      localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
-      setIsLogin(true);
-    } catch (error) {
-      if (error instanceof APIError || error instanceof Error) setError(error);
-      setIsLogin(false);
-    }
   };
 
   const checkLoginToken = () => {
