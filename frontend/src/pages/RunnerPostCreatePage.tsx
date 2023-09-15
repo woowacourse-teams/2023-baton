@@ -3,12 +3,13 @@ import TagInput from '@/components/TagInput/TagInput';
 import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
-import React, { useContext, useState } from 'react';
+import githubIcon from '@/assets/github-icon.svg';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
-import { postRequest } from '@/api/fetch';
+import { getRequest, postRequest } from '@/api/fetch';
 import {
   validateCuriousContents,
   validateDeadline,
@@ -22,6 +23,7 @@ import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
+import { GetMyPageProfileResponse } from '@/types/myPage';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
@@ -39,6 +41,28 @@ const RunnerPostCreatePage = () => {
   const [implementedContents, setImplementedContents] = useState<string>('');
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');
+
+  const [githubUrl, setGithubUrl] = useState<string>('');
+
+  useEffect(() => {
+    getGithubUrl();
+  }, []);
+
+  const getGithubUrl = () => {
+    const token = getToken()?.value;
+    if (!token) return;
+
+    getRequest(`/profile/runner/me`, token)
+      .then(async (response) => {
+        const data: GetMyPageProfileResponse = await response.json();
+
+        const url = data.githubUrl;
+        setGithubUrl(url);
+
+        const githubId = data.githubUrl.split('/').splice(-1)[0];
+      })
+      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+  };
 
   const pushTag = (newTag: string) => {
     const newTags = [...tags, newTag];
@@ -188,7 +212,15 @@ const RunnerPostCreatePage = () => {
               handleInputTextState={changePullRequestUrl}
               width={isMobile ? '300px' : '500px'}
               placeholder="코드 리뷰받을 PR 주소를 입력해주세요"
+              value={pullRequestUrl}
             />
+
+            {githubUrl && (
+              <S.Anchor href={githubUrl + '?tab=repositories'} target="_blank">
+                <img src={githubIcon} />
+                {!isMobile && <S.GoToGitHub>github</S.GoToGitHub>}
+              </S.Anchor>
+            )}
           </S.InputContainer>
 
           <S.InputContainer>
@@ -311,4 +343,25 @@ const S = {
     align-items: end;
     gap: 30px;
   `,
+
+  Anchor: styled.a`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    width: 100px;
+    height: 36px;
+    border-radius: 3px;
+    border: 1px solid var(--gray-800);
+
+    font-weight: 700;
+
+    @media (max-width: 768px) {
+      width: 40px;
+      height: 36px;
+    }
+  `,
+
+  GoToGitHub: styled.p``,
 };
