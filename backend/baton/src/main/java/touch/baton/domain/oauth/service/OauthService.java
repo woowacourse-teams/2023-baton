@@ -113,8 +113,14 @@ public class OauthService {
                 .expireDate(new ExpireDate(expireDate))
                 .build();
 
-        refreshTokenRepository.save(refreshToken);
+        final Optional<RefreshToken> maybeRefreshToken = refreshTokenRepository.findByMember(member);
+        if (maybeRefreshToken.isPresent()) {
+            final RefreshToken findRefreshToken = maybeRefreshToken.get();
+            findRefreshToken.updateToken(new Token(randomTokens));
+            return new Tokens(accessToken, findRefreshToken);
+        }
 
+        refreshTokenRepository.save(refreshToken);
         return new Tokens(accessToken, refreshToken);
     }
 
