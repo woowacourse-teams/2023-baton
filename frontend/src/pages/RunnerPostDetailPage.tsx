@@ -42,10 +42,7 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = () => {
-    const token = getToken();
-    if (!token) return;
-
-    getRequest(`/posts/runner/${runnerPostId}`, token ?? undefined)
+    getRequest(`/posts/runner/${runnerPostId}`, isLogin ? getToken()! : undefined)
       .then(async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
         setRunnerPost(data);
