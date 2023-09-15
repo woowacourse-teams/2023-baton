@@ -1,9 +1,10 @@
 package touch.baton.domain.oauth.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import touch.baton.domain.oauth.token.Tokens;
 import java.io.IOException;
 import java.time.Duration;
 
+import static org.springframework.boot.web.server.Cookie.SameSite.NONE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FOUND;
 import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
@@ -74,11 +76,14 @@ public class OauthController {
     }
 
     private void setCookie(final HttpServletResponse response, final RefreshToken refreshToken) {
-        final Cookie cookie = new Cookie(REFRESH_TOKEN_KEY, refreshToken.getToken().getValue());
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setMaxAge((int) Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds());
+        final int maxAge = (int) Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds();
+        final ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_KEY, refreshToken.getToken().getValue())
+                .httpOnly(true)
+                .secure(true)
+                .sameSite(NONE.attributeValue())
+                .maxAge(maxAge)
+                .build();
 
-        response.addCookie(cookie);
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 }
