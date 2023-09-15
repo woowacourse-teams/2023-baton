@@ -1,13 +1,17 @@
 import React from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
-import { useToken } from './hooks/useToken';
 import ToastProvider from './contexts/ToastContext';
 import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
+import { useLogin } from './hooks/useLogin';
+import LoginErrorBoundary from './components/ErrorBoundary/LoginErrorBoundary';
 
 const App = () => {
+  const { checkLoginToken } = useLogin();
+
   ChannelService.loadScript();
+  checkLoginToken();
 
   if (CHANNEL_SERVICE_KEY) {
     ChannelService.boot({
@@ -17,9 +21,11 @@ const App = () => {
 
   return (
     <ToastProvider>
-      <S.AppContainer>
-        <Outlet />
-      </S.AppContainer>
+      <LoginErrorBoundary>
+        <S.AppContainer>
+          <Outlet />
+        </S.AppContainer>
+      </LoginErrorBoundary>
     </ToastProvider>
   );
 };
