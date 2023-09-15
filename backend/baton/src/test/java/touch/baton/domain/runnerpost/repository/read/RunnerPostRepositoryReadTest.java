@@ -39,6 +39,7 @@ import static touch.baton.fixture.vo.PostscriptContentsFixture.postscriptContent
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
+import static touch.baton.util.TestDateFormatUtil.createExpireDate;
 
 class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
@@ -136,7 +137,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         final Runner runner = RunnerFixture.createRunner(ditoo);
         em.persist(runner);
         final Long runnerId = runner.getId();
-        final LocalDateTime createdAt = LocalDateTime.now();
+        final LocalDateTime createdAt = createExpireDate(LocalDateTime.now());
 
         insertRunnerPostByNativeQuery(1L, createdAt, runnerId);
         insertRunnerPostByNativeQuery(3L, createdAt, runnerId);

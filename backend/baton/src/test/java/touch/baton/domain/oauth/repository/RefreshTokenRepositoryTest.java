@@ -1,7 +1,6 @@
 package touch.baton.domain.oauth.repository;
 
 import jakarta.persistence.EntityManager;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,13 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RefreshTokenFixture;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.ExpireDateFixture.expireDate;
 import static touch.baton.fixture.vo.TokenFixture.token;
+import static touch.baton.util.TestDateFormatUtil.createExpireDate;
 
 class RefreshTokenRepositoryTest extends RepositoryTestConfig {
 
@@ -89,13 +88,5 @@ class RefreshTokenRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(actual.get().getToken()).isEqualTo(expected.getToken());
             softly.assertThat(actual.get().getExpireDate()).isEqualTo(expected.getExpireDate());
         } );
-    }
-
-    @NotNull
-    private static LocalDateTime createExpireDate(final LocalDateTime expireDate) {
-        final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
-        final String formattedExpireDate = expireDate.format(formatter);
-
-        return LocalDateTime.parse(formattedExpireDate, formatter);
     }
 }
