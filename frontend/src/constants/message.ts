@@ -71,13 +71,18 @@ export const TOAST_COMPLETION_MESSAGE = {
     description: '취소를 완료했어요',
   },
 
-  REVIEW_COMPETE: {
+  REVIEW_COMPLETE: {
     title: '리뷰 완료',
     description: '리뷰를 완료했어요',
   },
 
   SUBMIT_FEEDBACK: {
     title: '제출 완료',
-    description: '피드백을 제출했어요'
-  }
+    description: '피드백을 제출했어요',
+  },
+
+  REPO_COMPLETE: {
+    title: '생성 완료',
+    description: '브랜치 생성을 완료했어요',
+  },
 };

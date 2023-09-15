@@ -8,12 +8,25 @@ interface Props extends React.HTMLProps<HTMLButtonElement> {
   fontWeight?: number;
   type?: 'button' | 'submit' | 'reset';
   ariaLabel?: string;
+  dataType?: string;
 }
 
-const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeight, onClick, ariaLabel }: Props) => {
+const Button = ({
+  colorTheme,
+  children,
+  width,
+  height,
+  type,
+  fontSize,
+  fontWeight,
+  onClick,
+  ariaLabel,
+  dataType,
+}: Props) => {
   return (
     <S.ButtonWrapper>
       <S.Button
+        data-type={dataType}
         $width={width}
         $height={height}
         $colorTheme={colorTheme}
@@ -32,7 +45,11 @@ const Button = ({ colorTheme, children, width, height, type, fontSize, fontWeigh
 export default Button;
 
 const S = {
-  ButtonWrapper: styled.div``,
+  ButtonWrapper: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
 
   Button: styled.button<{
     $colorTheme: 'RED' | 'WHITE' | 'GRAY' | 'BLACK';
@@ -67,6 +84,7 @@ export const themeStyles = {
 
     color: #ffffff;
   `,
+
   WHITE: css`
     background: #ffffff;
     border: 1px solid var(--baton-red);
@@ -74,6 +92,7 @@ export const themeStyles = {
 
     color: var(--baton-red);
   `,
+
   GRAY: css`
     background: #ffffff;
     border: 1px solid var(--gray-500);

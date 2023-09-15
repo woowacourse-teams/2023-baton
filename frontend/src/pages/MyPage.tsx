@@ -279,6 +279,7 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 50px;
   `,
 
   FilterWrapper: styled.div`
@@ -289,7 +290,7 @@ const S = {
     max-width: 1200px;
     width: 100%;
 
-    margin-top: 50px;
+    margin-bottom: 20px;
 
     @media (max-width: 768px) {
       max-width: 375px;
