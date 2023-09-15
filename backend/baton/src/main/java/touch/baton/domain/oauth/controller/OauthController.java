@@ -3,6 +3,7 @@ package touch.baton.domain.oauth.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -76,14 +77,13 @@ public class OauthController {
     }
 
     private void setCookie(final HttpServletResponse response, final RefreshToken refreshToken) {
-        final int maxAge = (int) Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds();
-        final ResponseCookie cookie = ResponseCookie.from(REFRESH_TOKEN_KEY, refreshToken.getToken().getValue())
+        final ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken.getToken().getValue())
                 .httpOnly(true)
                 .secure(true)
-                .sameSite(NONE.attributeValue())
-                .maxAge(maxAge)
+                .maxAge(Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds())
+                .sameSite(SameSite.NONE.attributeValue())
+                .path("/")
                 .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        response.addHeader("Set-Cookie", responseCookie.toString());
     }
 }
