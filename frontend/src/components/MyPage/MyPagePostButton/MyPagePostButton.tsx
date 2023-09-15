@@ -4,6 +4,7 @@ import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_M
 import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useToken } from '@/hooks/useToken';
+import useViewport from '@/hooks/useViewport';
 import { ReviewStatus } from '@/types/runnerPost';
 import React, { useContext, useMemo } from 'react';
 
@@ -15,11 +16,13 @@ interface Props {
 }
 
 const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }: Props) => {
-  const { goToMyPage, goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
+  const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
   const { getToken } = useToken();
   const { showCompletionToast, showErrorToast } = useContext(ToastContext);
 
   const token = useMemo(() => getToken()?.value, [getToken]);
+
+  const { isMobile } = useViewport();
 
   const cancelReview = () => {
     if (!token) {
@@ -81,9 +84,10 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
     case 'NOT_STARTED':
       return (
         <Button
+          fontSize={isMobile ? '14px' : ''}
           colorTheme="WHITE"
           fontWeight={700}
-          width="180px"
+          width={isMobile ? '100%' : '180px'}
           height="40px"
           onClick={isRunner ? handleClickSupportSelectButton : handleClickCancelReviewButton}
         >
@@ -92,7 +96,14 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
       );
     case 'IN_PROGRESS':
       return isRunner ? null : (
-        <Button colorTheme="WHITE" fontWeight={700} width="180px" height="40px" onClick={handleClickFinishButton}>
+        <Button
+          colorTheme="WHITE"
+          fontWeight={700}
+          fontSize={isMobile ? '14px' : ''}
+          width={isMobile ? '100%' : '180px'}
+          height="40px"
+          onClick={handleClickFinishButton}
+        >
           리뷰 완료
         </Button>
       );
@@ -101,7 +112,8 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
         <Button
           colorTheme="WHITE"
           fontWeight={700}
-          width="180px"
+          fontSize={isMobile ? '14px' : ''}
+          width={isMobile ? '100%' : '180px'}
           height="40px"
           onClick={handleClickSupportFeedbackButton}
         >

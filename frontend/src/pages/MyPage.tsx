@@ -104,15 +104,27 @@ const MyPage = () => {
 
   return (
     <Layout>
+      <S.MyPageWrapper>
+        <S.MyPageContainer>
+          {isMobile && (
+            <S.ButtonContainer>
+              <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
+                러너
+              </S.RunnerSupporterButton>
+              <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
+                서포터
+              </S.RunnerSupporterButton>
+            </S.ButtonContainer>
+          )}
       <S.ProfileContainer>
         <S.InfoContainer>
           <Avatar
             imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
-            width="100px"
-            height="100px"
+                width={isMobile ? '80px' : '100px'}
+                height={isMobile ? '80px' : '100px'}
           />
           <S.InfoDetailContainer>
-            <S.Name>{myPageProfile?.name}</S.Name>
+                <S.Name>{isRunner ? '러너 - ' + myPageProfile?.name : '서포터 - ' + myPageProfile?.name}</S.Name>
             <S.Company>{myPageProfile?.company}</S.Company>
             <S.TechLabel>
               {myPageProfile?.technicalTags.map((tag) => (
@@ -121,6 +133,7 @@ const MyPage = () => {
             </S.TechLabel>
           </S.InfoDetailContainer>
         </S.InfoContainer>
+            {!isMobile && (
         <S.ButtonContainer>
           <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
             러너
@@ -129,10 +142,11 @@ const MyPage = () => {
             서포터
           </S.RunnerSupporterButton>
         </S.ButtonContainer>
+            )}
       </S.ProfileContainer>
-
       <S.IntroductionContainer>
         <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
+            {!isMobile && (
         <Button
           width="95px"
           height="38px"
@@ -143,18 +157,38 @@ const MyPage = () => {
         >
           수정하기
         </Button>
+            )}
       </S.IntroductionContainer>
-
+          {isMobile && (
+            <S.MobileButtonWrapper>
+              <Button
+                width="75px"
+                height="30px"
+                colorTheme="WHITE"
+                fontSize="14px"
+                fontWeight={400}
+                onClick={goToProfileEditPage}
+              >
+                수정하기
+              </Button>
+            </S.MobileButtonWrapper>
+          )}
       <S.PostsContainer>
         <S.FilterWrapper>
-          <ListFilter options={postOptions} selectOption={selectOptions} />
+              <ListFilter
+                options={postOptions}
+                selectOption={selectOptions}
+                width={isMobile ? '100%' : '920px'}
+                fontSize={isMobile ? '16px' : '26px'}
+              />
         </S.FilterWrapper>
         <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
         <S.MoreButtonWrapper>
           {!isLast && (
             <Button
               colorTheme="RED"
-              width={isMobile ? '375px' : '1150px'}
+                  width={isMobile ? '100%' : '1150px'}
+                  fontSize={isMobile ? '14px' : '18px'}
               height="55px"
               onClick={handleClickMoreButton}
             >
@@ -163,6 +197,8 @@ const MyPage = () => {
           )}
         </S.MoreButtonWrapper>
       </S.PostsContainer>
+        </S.MyPageContainer>
+      </S.MyPageWrapper>
     </Layout>
   );
 };
@@ -170,6 +206,18 @@ const MyPage = () => {
 export default MyPage;
 
 const S = {
+  MyPageWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+
+  MyPageContainer: styled.div`
+    @media (max-width: 768px) {
+      width: calc(85% + 40px);
+    }
+  `,
+
   TitleContainer: styled.div`
     display: flex;
     justify-content: space-between;
@@ -188,6 +236,11 @@ const S = {
 
     margin-top: 70px;
     margin-bottom: 50px;
+
+    @media (max-width: 768px) {
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
   `,
 
   InfoContainer: styled.div`
@@ -208,14 +261,22 @@ const S = {
   Name: styled.div`
     font-size: 26px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
   `,
 
   Company: styled.div`
     font-size: 18px;
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   TechLabel: styled.div`
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
   `,
 
@@ -226,6 +287,19 @@ const S = {
     gap: 10px;
 
     margin-top: 30px;
+
+    @media (max-width: 768px) {
+      width: calc(85% + 40px);
+      margin-top: 50px;
+    }
+  `,
+
+  MobileButtonWrapper: styled.div`
+    display: flex;
+    justify-content: end;
+
+    width: calc(85% + 40px);
+    margin-bottom: 70px;
   `,
 
   RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
@@ -241,6 +315,13 @@ const S = {
     background-color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'white')};
 
     color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
+
+    @media (max-width: 768px) {
+      width: 100%;
+      height: 32px;
+
+      font-size: 14px;
+    }
   `,
 
   IntroductionContainer: styled.div`
@@ -248,7 +329,7 @@ const S = {
     justify-content: space-between;
     align-items: end;
 
-    margin-bottom: 50px;
+    margin-bottom: 20px;
   `,
 
   Introduction: styled.div`
@@ -260,6 +341,11 @@ const S = {
     margin-left: 40px;
     width: 75%;
 
+    font-size: 18px;
+    line-height: 1.8;
+
+    white-space: pre-line;
+
     &::before {
       position: absolute;
       content: '';
@@ -270,32 +356,40 @@ const S = {
       border-radius: 2px;
 
       background-color: var(--gray-400);
+
+      @media (max-width: 768px) {
+        width: 3.5px;
+      }
     }
 
-    font-size: 18px;
-    line-height: 1.8;
+    @media (max-width: 768px) {
+      width: 85%;
 
-    white-space: pre-line;
+      font-size: 14px;
+    }
   `,
 
   PostsContainer: styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    width: 100%;
   `,
 
   FilterWrapper: styled.div`
     padding: 80px 20px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      padding: 30px 0;
+    }
   `,
 
   MoreButtonWrapper: styled.div`
     max-width: 1200px;
+    min-width: 375px;
     width: 100%;
-
     margin-top: 50px;
-
-    @media (max-width: 768px) {
-      max-width: 375px;
-    }
   `,
 };
