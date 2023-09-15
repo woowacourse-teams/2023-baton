@@ -1,13 +1,11 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import TagIcon from '@/assets/tag-icon.svg';
 import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
 import { ReviewStatus } from '@/types/runnerPost';
-import { getRequest } from '@/api/fetch';
 import { GetSearchTagResponse, Tag } from '@/types/tags';
-import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_TITLE } from '@/constants/message';
 import useViewport from '@/hooks/useViewport';
+import { useFetch } from '@/hooks/useFetch';
 
 interface Props {
   reviewStatus: ReviewStatus;
@@ -35,8 +33,8 @@ const RunnerPostSearchBox = ({
   const inputRefs = useRef<HTMLElement[]>([]);
   const timer = useRef<number | null>(null);
 
-  const { showErrorToast } = useContext(ToastContext);
   const { isMobile } = useViewport();
+  const { getRequest } = useFetch();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTag(e.target.value);
@@ -127,13 +125,11 @@ const RunnerPostSearchBox = ({
   };
 
   const searchTags = (keyword: string) => {
-    getRequest(`/posts/runner/tags/search?tagName=${keyword}`)
-      .then(async (response) => {
-        const data: GetSearchTagResponse = await response.json();
+    getRequest(`/posts/runner/tags/search?tagName=${keyword}`, async (response) => {
+      const data: GetSearchTagResponse = await response.json();
 
-        setSearchedTags(data.data);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+      setSearchedTags(data.data);
+    });
   };
 
   return (

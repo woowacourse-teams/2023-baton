@@ -2,18 +2,18 @@ import ListFilter from '@/components/ListFilter/ListFilter';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useToken } from '@/hooks/useToken';
 import Layout from '@/layout/Layout';
 import { GetMyPagePostResponse, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
-import { getRequest } from '@/api/fetch';
 import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
-import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_TITLE } from '@/constants/message';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
+import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
+import { ToastContext } from '@/contexts/ToastContext';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 const MyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
@@ -25,13 +25,20 @@ const MyPage = () => {
 
   const [page, setPage] = useState<number>(1);
   const [isLast, setIsLast] = useState<boolean>(true);
-
-  const { isLogin, getToken } = useToken();
+  const { isLogin } = useLogin();
+  const { getRequestWithAuth } = useFetch();
   const { goToProfileEditPage, goToLoginPage } = usePageRouter();
-  const { showErrorToast } = useContext(ToastContext);
   const { isMobile } = useViewport();
+  const { showErrorToast } = useContext(ToastContext);
 
   useEffect(() => {
+    if (!isLogin) {
+      showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
+
+      return;
+    }
+
     const fetchMyPageData = async (role: 'runner' | 'supporter') => {
       setIsLast(() => true);
       setPage(1);
@@ -44,22 +51,14 @@ const MyPage = () => {
   }, [isRunner, postOptions]);
 
   const getProfile = (role: 'runner' | 'supporter') => {
-    const token = getToken();
-    if (!token) return;
+    getRequestWithAuth(`/profile/${role}/me`, async (response) => {
+      const data: GetMyPageProfileResponse = await response.json();
 
-    getRequest(`/profile/${role}/me`, token)
-      .then(async (response) => {
-        const data: GetMyPageProfileResponse = await response.json();
-
-        setMyPageProfile(data);
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      setMyPageProfile(data);
+    });
   };
 
   const getPostList = (role: 'runner' | 'supporter') => {
-    const token = getToken();
-    if (!token) return;
-
     const selectedPostOption = postOptions.filter((option) => option.selected)[0].value;
 
     const rolePath =
@@ -67,15 +66,13 @@ const MyPage = () => {
         ? `runner/me/runner?size=10&page=${page}&reviewStatus=${selectedPostOption}`
         : `runner/me/supporter?size=10&page=${page}&reviewStatus=${selectedPostOption}`;
 
-    getRequest(`/posts/${rolePath}`, token)
-      .then(async (response) => {
-        const data: GetMyPagePostResponse = await response.json();
+    getRequestWithAuth(`/posts/${rolePath}`, async (response) => {
+      const data: GetMyPagePostResponse = await response.json();
 
-        setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
-        setPage(() => data.pageInfo.currentPage);
-        setIsLast(data.pageInfo.isLast);
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
+      setPage(() => data.pageInfo.currentPage);
+      setIsLast(data.pageInfo.isLast);
+    });
   };
 
   const selectOptions = (value: string | number) => {

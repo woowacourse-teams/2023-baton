@@ -6,9 +6,7 @@ import Layout from '@/layout/Layout';
 import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
-import { useToken } from '@/hooks/useToken';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
-import { postRequest } from '@/api/fetch';
 import {
   validateCuriousContents,
   validateDeadline,
@@ -22,12 +20,13 @@ import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
+import { useFetch } from '@/hooks/useFetch';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
   const { goBack, goToMainPage, goToLoginPage } = usePageRouter();
-  const { isLogin, getToken } = useToken();
+  const { postRequestWithAuth } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
 
   const { isMobile } = useViewport();
@@ -125,19 +124,15 @@ const RunnerPostCreatePage = () => {
   };
 
   const postRunnerForm = (data: CreateRunnerPostRequest) => {
-    const token = getToken();
-    if (!token) return;
-
     const body = JSON.stringify(data);
 
-    postRequest(`/posts/runner`, token, body)
-      .then(async () => {
+    postRequestWithAuth(
+      `/posts/runner`,
+      async () => {
         goToMainPage();
-      })
-      .catch((error: Error) => {
-        const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
-        showErrorToast({ title: ERROR_TITLE.REQUEST, description });
-      });
+      },
+      body,
+    );
   };
 
   const submitForm = async () => {
