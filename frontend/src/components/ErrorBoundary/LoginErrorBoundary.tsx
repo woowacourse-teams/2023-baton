@@ -1,5 +1,5 @@
 import React from 'react';
-import { APIError } from '@/types/error';
+import { CustomError } from '@/types/error';
 import LoginError from '../LoginError';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 
 interface State {
   hasError: boolean;
-  error: Error | APIError | null;
+  error: Error | CustomError | null;
 }
 
 class LoginErrorBoundary extends React.Component<Props, State> {
@@ -20,7 +20,7 @@ class LoginErrorBoundary extends React.Component<Props, State> {
     };
   }
 
-  static getDerivedStateFromError(error: Error | APIError) {
+  static getDerivedStateFromError(error: Error | CustomError) {
     return { hasError: true, error: error };
   }
 
