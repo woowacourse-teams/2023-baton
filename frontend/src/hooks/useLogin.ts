@@ -1,16 +1,14 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, REFRESH_TOKEN_COOKIE_NAME } from '@/constants';
-import { getCookie } from '@/utils/cookie';
+import { deleteCookie, getCookie } from '@/utils/cookie';
 import { useRef, useState } from 'react';
 import { useFetch } from './useFetch';
-import { APIError } from '@/types/error';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
 const getRefreshToken = () => getCookie(REFRESH_TOKEN_COOKIE_NAME);
 
 export const useLogin = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(!!getRefreshToken());
-  const [error, setError] = useState<Error | APIError | null>(null);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const timer = useRef<number | null>(null);
 
@@ -31,7 +29,6 @@ export const useLogin = () => {
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
       } catch (error) {
-        if (error instanceof APIError || error instanceof Error) setError(error);
         setIsLogin(false);
       }
     });
@@ -52,10 +49,16 @@ export const useLogin = () => {
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
       } catch (error) {
-        if (error instanceof APIError || error instanceof Error) setError(error);
         setIsLogin(false);
       }
     });
+  };
+
+  const logout = () => {
+    localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    deleteCookie(REFRESH_TOKEN_COOKIE_NAME);
+
+    setIsLogin(false);
   };
 
   const checkLoginToken = () => {
@@ -76,7 +79,5 @@ export const useLogin = () => {
     }, 29 * 60 * 1000);
   };
 
-  if (error) throw error;
-
-  return { isLogin, login, silentLogin, checkLoginToken };
+  return { isLogin, login, logout, silentLogin, checkLoginToken };
 };
