@@ -81,12 +81,10 @@ const MainPage = () => {
 
     setPage(2);
     setIsLast(true);
-    setReviewStatus(reviewStatus);
     setRunnerPostList([]);
 
     getRequest(`/posts/runner?${params.toString()}`, async (response) => {
       const data: GetRunnerPostResponse = await response.json();
-      setRunnerPostList(() => []);
       setRunnerPostList(() => [...data.data]);
       setIsLast(data.pageInfo.isLast);
     });
