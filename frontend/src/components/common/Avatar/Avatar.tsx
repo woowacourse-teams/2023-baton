@@ -28,10 +28,5 @@ const S = {
     object-fit: cover;
 
     cursor: ${({ $isPointer }) => ($isPointer ? 'pointer' : '')};
-
-    @media (max-width: 768px) {
-      width: 30px;
-      height: 30px;
-    }
   `,
 };

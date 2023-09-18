@@ -45,7 +45,11 @@ const RunnerPostItem = ({
         {runnerProfile ? (
           <>
             <S.ProfileContainer>
-              <Avatar width="50px" height="50px" imageUrl={runnerProfile.imageUrl} />
+              <Avatar
+                width={isMobile ? '30px' : '50px'}
+                height={isMobile ? '30px' : '50px'}
+                imageUrl={runnerProfile.imageUrl}
+              />
               <S.ProfileName>{runnerProfile.name}</S.ProfileName>
             </S.ProfileContainer>
           </>

@@ -34,39 +34,51 @@ const MyPagePostItem = ({
 
   return (
     <S.RunnerPostItemContainer onClick={handlePostClick}>
-      <S.LeftSideContainer>
-        <S.PostTitle>{title}</S.PostTitle>
-        <S.DeadLineContainer>
-          <S.DeadLine>{deadline} 까지</S.DeadLine>
-          <Label
-            colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
-            fontSize={isMobile ? '10px' : ''}
-          >
-            {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
-          </Label>
-        </S.DeadLineContainer>
-        <S.TagContainer>
-          {tags.map((tag, index) => (
-            <S.Tag key={index}>#{tag}</S.Tag>
-          ))}
-        </S.TagContainer>
-      </S.LeftSideContainer>
-      <S.RightSideContainer>
-        <S.ChatViewContainer>
-          <S.statisticsContainer>
-            <S.statisticsImage src={eyeIcon} />
-            <S.statisticsText>{watchedCount}</S.statisticsText>
-            <S.statisticsImage src={applicantIcon} />
-            <S.statisticsText>{applicantCount}</S.statisticsText>
-          </S.statisticsContainer>
-        </S.ChatViewContainer>
+      <S.SideContainer>
+        <S.LeftSideContainer>
+          <S.PostTitle>{title}</S.PostTitle>
+          <S.DeadLineContainer>
+            <S.DeadLine>{deadline} 까지</S.DeadLine>
+            <Label
+              colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+              fontSize={isMobile ? '10px' : ''}
+            >
+              {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
+            </Label>
+          </S.DeadLineContainer>
+          <S.TagContainer>
+            {tags.map((tag, index) => (
+              <S.Tag key={index}>#{tag}</S.Tag>
+            ))}
+          </S.TagContainer>
+        </S.LeftSideContainer>
+        <S.RightSideContainer>
+          <S.ChatViewContainer>
+            <S.statisticsContainer>
+              <S.statisticsImage src={eyeIcon} />
+              <S.statisticsText>{watchedCount}</S.statisticsText>
+              <S.statisticsImage src={applicantIcon} />
+              <S.statisticsText>{applicantCount}</S.statisticsText>
+            </S.statisticsContainer>
+          </S.ChatViewContainer>
+          {!isMobile && (
+            <MyPagePostButton
+              runnerPostId={runnerPostId}
+              isRunner={isRunner}
+              reviewStatus={reviewStatus}
+              supporterId={supporterId}
+            />
+          )}
+        </S.RightSideContainer>
+      </S.SideContainer>
+      {isMobile && (
         <MyPagePostButton
           runnerPostId={runnerPostId}
           isRunner={isRunner}
           reviewStatus={reviewStatus}
           supporterId={supporterId}
         />
-      </S.RightSideContainer>
+      )}
     </S.RunnerPostItemContainer>
   );
 };
@@ -76,11 +88,11 @@ export default MyPagePostItem;
 const S = {
   RunnerPostItemContainer: styled.li`
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 20px;
 
-    min-width: 360px;
+    min-width: 340px;
     width: 100%;
-    height: 206px;
     padding: 35px 40px;
 
     border: 0.5px solid var(--gray-500);
@@ -90,8 +102,19 @@ const S = {
     cursor: pointer;
 
     @media (max-width: 768px) {
-      padding: 25px 30px;
+      padding: 25px 27px;
     }
+
+    & button:hover {
+      transition: all 0.3s ease;
+      background-color: var(--baton-red);
+      color: var(--white-color);
+    }
+  `,
+
+  SideContainer: styled.div`
+    display: flex;
+    justify-content: space-between;
   `,
 
   PostTitle: styled.p`

@@ -6,9 +6,10 @@ interface Props {
   options: ListSelectOption[];
   selectOption: (value: string | number) => void;
   width?: string;
+  fontSize?: string;
 }
 
-const ListFilter = ({ options, selectOption, width }: Props) => {
+const ListFilter = ({ options, selectOption, width, fontSize }: Props) => {
   const makeHandleClickOption = (value: string | number) => () => {
     if (options.filter((option) => option.value === value).length === 0) return;
 
@@ -19,11 +20,11 @@ const ListFilter = ({ options, selectOption, width }: Props) => {
     <S.FilterContainer>
       <S.FilterList $width={width}>
         {options.map((option) => (
-          <S.FilterItem>
+          <S.FilterItem key={option.value}>
             <S.FilterButton
-              key={option.value}
               onClick={makeHandleClickOption(option.value)}
               $isSelected={option.selected}
+              $fontSize={fontSize}
             >
               {option.label}
             </S.FilterButton>
@@ -67,20 +68,31 @@ const S = {
     justify-content: space-between;
 
     width: ${({ $width }) => $width ?? '920px'};
+    min-width: 320px;
+    padding: 0 15px;
+
+    @media (max-width: 468px) {
+      padding: 0;
+    }
   `,
 
   FilterItem: styled.li`
-    width: 150px;
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+      flex: 1;
+    }
   `,
 
-  FilterButton: styled.button<{ $isSelected: boolean }>`
+  FilterButton: styled.button<{ $isSelected: boolean; $fontSize?: string }>`
     display: flex;
     flex-direction: column;
     align-items: center;
 
     background-color: transparent;
 
-    font-size: 26px;
+    font-size: ${({ $fontSize }) => $fontSize ?? '26px'};
     font-weight: 700;
     color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'var(--gray-700)')};
 
