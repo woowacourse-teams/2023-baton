@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 
 @Profile("!test")
@@ -19,18 +20,16 @@ import touch.baton.domain.oauth.exception.OauthRequestException;
 @Component
 public class JwtDecoder {
 
-    private static final String BEARER = "Bearer ";
-
     private final JwtConfig jwtConfig;
 
-    public Claims parseAuthHeader(final String authHeader) {
+    public Claims parseAuthorizationHeader(final AuthorizationHeader authorizationHeader) {
         try {
             final JwtParser jwtParser = Jwts.parserBuilder()
                     .setSigningKey(jwtConfig.getSecretKey())
                     .requireIssuer(jwtConfig.getIssuer())
                     .build();
 
-            final String token = parseBearerAccessToken(authHeader);
+            final String token = authorizationHeader.parseBearerAccessToken();
             return jwtParser.parseClaimsJws(token).getBody();
         } catch (final SignatureException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
@@ -43,14 +42,14 @@ public class JwtDecoder {
         }
     }
 
-    public Claims parseExpiredAuthHeader(final String authHeader) {
+    public Claims parseExpiredAuthorizationHeader(final AuthorizationHeader authorizationHeader) {
         try {
             final JwtParser jwtParser = Jwts.parserBuilder()
                     .setSigningKey(jwtConfig.getSecretKey())
                     .requireIssuer(jwtConfig.getIssuer())
                     .build();
 
-            final String token = parseBearerAccessToken(authHeader);
+            final String token = authorizationHeader.parseBearerAccessToken();
             jwtParser.parseClaimsJws(token).getBody();
 
             throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_NOT_EXPIRED);
@@ -63,9 +62,5 @@ public class JwtDecoder {
         } catch (final ExpiredJwtException e) {
             return e.getClaims();
         }
-    }
-
-    private String parseBearerAccessToken(final String authHeader) {
-        return authHeader.substring(BEARER.length());
     }
 }

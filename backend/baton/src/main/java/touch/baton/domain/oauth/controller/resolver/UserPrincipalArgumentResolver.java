@@ -8,6 +8,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
@@ -37,12 +38,12 @@ public abstract class UserPrincipalArgumentResolver implements HandlerMethodArgu
             return getGuest();
         }
 
-        final String authHeader = webRequest.getHeader(AUTHORIZATION);
-        if (!authHeader.startsWith(BEARER)) {
+        final AuthorizationHeader authorization = new AuthorizationHeader(webRequest.getHeader(AUTHORIZATION));
+        if (authorization.isNotBearerAuth()) {
             throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_BEARER_TYPE_NOT_FOUND);
         }
 
-        final Claims claims = jwtDecoder.parseAuthHeader(authHeader);
+        final Claims claims = jwtDecoder.parseAuthorizationHeader(authorization);
         final String socialId = claims.get("socialId", String.class);
 
         return getUser(socialId);

@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static touch.baton.fixture.vo.AuthorizationHeaderFixture.bearerAuthorizationHeader;
 
 class JwtEncoderAndDecoderTest {
 
@@ -37,7 +38,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
-        final Claims claims = jwtDecoder.parseAuthHeader("Bearer " + encodedJwt);
+        final Claims claims = jwtDecoder.parseAuthorizationHeader(bearerAuthorizationHeader(encodedJwt));
         final String socialId = claims.get("socialId", String.class);
 
         // then
@@ -55,7 +56,7 @@ class JwtEncoderAndDecoderTest {
         final JwtDecoder wrongJwtDecoder = new JwtDecoder(wrongJwtConfig);
 
         // then
-        assertThatThrownBy(() -> wrongJwtDecoder.parseAuthHeader(encodedJwt))
+        assertThatThrownBy(() -> wrongJwtDecoder.parseAuthorizationHeader(bearerAuthorizationHeader(encodedJwt)))
                 .isInstanceOf(OauthRequestException.class);
     }
 
@@ -68,7 +69,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = expiredJwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when, then
-        assertThatThrownBy(() -> jwtDecoder.parseAuthHeader(encodedJwt))
+        assertThatThrownBy(() -> jwtDecoder.parseAuthorizationHeader(bearerAuthorizationHeader(encodedJwt)))
                 .isInstanceOf(OauthRequestException.class);
     }
 }

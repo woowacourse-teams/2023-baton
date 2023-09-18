@@ -8,6 +8,7 @@ import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.member.vo.Company;
 import touch.baton.domain.member.vo.SocialId;
+import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.OauthInformation;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.authcode.AuthCodeRequestUrlProviderComposite;
@@ -125,8 +126,8 @@ public class OauthService {
     }
 
     @Transactional
-    public Tokens reissueAccessToken(final String authHeader, final String refreshToken) {
-        final Claims claims = jwtDecoder.parseExpiredAuthHeader(authHeader);
+    public Tokens reissueAccessToken(final AuthorizationHeader authHeader, final String refreshToken) {
+        final Claims claims = jwtDecoder.parseExpiredAuthorizationHeader(authHeader);
         final SocialId socialId = new SocialId(claims.get("socialId", String.class));
         final Member findMember = oauthMemberRepository.findBySocialId(socialId)
                 .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_SOCIAL_ID_IS_WRONG));

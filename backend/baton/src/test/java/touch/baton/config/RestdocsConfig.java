@@ -103,7 +103,7 @@ public abstract class RestdocsConfig {
         final Claims claims = Jwts.claims();
         claims.put("socialId", socialId);
 
-        when(jwtDecoder.parseAuthHeader(any())).thenReturn(claims);
+        when(jwtDecoder.parseAuthorizationHeader(any())).thenReturn(claims);
 
         return token;
     }

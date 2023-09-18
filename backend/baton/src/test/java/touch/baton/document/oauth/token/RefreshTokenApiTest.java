@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.controller.OauthController;
 import touch.baton.domain.oauth.service.OauthService;
 import touch.baton.domain.oauth.token.AccessToken;
@@ -56,7 +57,7 @@ class RefreshTokenApiTest extends RestdocsConfig {
         final Tokens tokens = new Tokens(new AccessToken("renew access token"), refreshToken);
         final Cookie cookie = createCookie();
 
-        given(oauthService.reissueAccessToken(any(String.class), any(String.class))).willReturn(tokens);
+        given(oauthService.reissueAccessToken(any(AuthorizationHeader.class), any(String.class))).willReturn(tokens);
 
         // then
         mockMvc.perform(post("/api/v1/oauth/refresh")

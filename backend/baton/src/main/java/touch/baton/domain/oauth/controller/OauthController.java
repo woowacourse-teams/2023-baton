@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.service.OauthService;
 import touch.baton.domain.oauth.token.RefreshToken;
@@ -63,8 +64,8 @@ public class OauthController {
                                            final HttpServletRequest request,
                                            final HttpServletResponse response
     ) {
-        final String authHeader = request.getHeader(AUTHORIZATION);
-        final Tokens tokens = oauthService.reissueAccessToken(authHeader, refreshToken);
+        final AuthorizationHeader authorizationHeader = new AuthorizationHeader(request.getHeader(AUTHORIZATION));
+        final Tokens tokens = oauthService.reissueAccessToken(authorizationHeader, refreshToken);
 
         setCookie(response, tokens.refreshToken());
 
