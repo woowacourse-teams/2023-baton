@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 
 @Profile("!test")
@@ -21,13 +22,14 @@ public class JwtDecoder {
 
     private final JwtConfig jwtConfig;
 
-    public Claims parseJwtToken(final String token) {
+    public Claims parseAuthorizationHeader(final AuthorizationHeader authorizationHeader) {
         try {
             final JwtParser jwtParser = Jwts.parserBuilder()
                     .setSigningKey(jwtConfig.getSecretKey())
                     .requireIssuer(jwtConfig.getIssuer())
                     .build();
 
+            final String token = authorizationHeader.parseBearerAccessToken();
             return jwtParser.parseClaimsJws(token).getBody();
         } catch (final SignatureException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
@@ -40,13 +42,14 @@ public class JwtDecoder {
         }
     }
 
-    public Claims parseExpiredJwtToken(final String token) {
+    public Claims parseExpiredAuthorizationHeader(final AuthorizationHeader authorizationHeader) {
         try {
             final JwtParser jwtParser = Jwts.parserBuilder()
                     .setSigningKey(jwtConfig.getSecretKey())
                     .requireIssuer(jwtConfig.getIssuer())
                     .build();
 
+            final String token = authorizationHeader.parseBearerAccessToken();
             jwtParser.parseClaimsJws(token).getBody();
 
             throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_NOT_EXPIRED);
