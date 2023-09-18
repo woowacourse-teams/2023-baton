@@ -23,7 +23,7 @@ public class JwtDecoder {
 
     private final JwtConfig jwtConfig;
 
-    public Claims parseJwtToken(final String authHeader) {
+    public Claims parseAuthHeader(final String authHeader) {
         try {
             final JwtParser jwtParser = Jwts.parserBuilder()
                     .setSigningKey(jwtConfig.getSecretKey())
@@ -43,7 +43,7 @@ public class JwtDecoder {
         }
     }
 
-    public Claims parseExpiredJwtToken(final String authHeader) {
+    public Claims parseExpiredAuthHeader(final String authHeader) {
         try {
             final JwtParser jwtParser = Jwts.parserBuilder()
                     .setSigningKey(jwtConfig.getSecretKey())

@@ -42,7 +42,7 @@ public abstract class UserPrincipalArgumentResolver implements HandlerMethodArgu
             throw new OauthRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_BEARER_TYPE_NOT_FOUND);
         }
 
-        final Claims claims = jwtDecoder.parseJwtToken(authHeader);
+        final Claims claims = jwtDecoder.parseAuthHeader(authHeader);
         final String socialId = claims.get("socialId", String.class);
 
         return getUser(socialId);

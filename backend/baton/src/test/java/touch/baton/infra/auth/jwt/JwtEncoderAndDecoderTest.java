@@ -37,7 +37,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
-        final Claims claims = jwtDecoder.parseJwtToken("Bearer " + encodedJwt);
+        final Claims claims = jwtDecoder.parseAuthHeader("Bearer " + encodedJwt);
         final String socialId = claims.get("socialId", String.class);
 
         // then
@@ -55,7 +55,7 @@ class JwtEncoderAndDecoderTest {
         final JwtDecoder wrongJwtDecoder = new JwtDecoder(wrongJwtConfig);
 
         // then
-        assertThatThrownBy(() -> wrongJwtDecoder.parseJwtToken(encodedJwt))
+        assertThatThrownBy(() -> wrongJwtDecoder.parseAuthHeader(encodedJwt))
                 .isInstanceOf(OauthRequestException.class);
     }
 
@@ -68,7 +68,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = expiredJwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when, then
-        assertThatThrownBy(() -> jwtDecoder.parseJwtToken(encodedJwt))
+        assertThatThrownBy(() -> jwtDecoder.parseAuthHeader(encodedJwt))
                 .isInstanceOf(OauthRequestException.class);
     }
 }
