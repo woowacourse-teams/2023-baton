@@ -128,9 +128,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         assertThat(actual).containsExactly(runnerPost);
     }
 
-    @DisplayName("생성 시간이 같다면 다음 기준인 id 오름차순으로 게시글 페이징 조회한다")
+    @DisplayName("id 오름차순으로 게시글 페이징 조회한다")
     @Test
-    void findByReviewStatus_when_createAt_is_same() {
+    void findByReviewStatus_sort_by_id() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
         em.persist(ditoo);
