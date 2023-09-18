@@ -1,6 +1,7 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { useRef, useState } from 'react';
 import { useFetch } from './useFetch';
+import { getExpiration } from '@/utils/jwt';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
@@ -12,33 +13,33 @@ export const useLogin = () => {
   const { getRequestWithAuth, postRequestWithCookie } = useFetch();
 
   const login = async (code: string) => {
-    getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
-      try {
+    try {
+      await getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
         const jwt = response.headers.get('Authorization');
 
         if (!jwt) return;
 
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
-      } catch (error) {
-        setIsLogin(false);
-      }
-    });
+      });
+    } catch (error) {
+      setIsLogin(false);
+    }
   };
 
   const silentLogin = async () => {
-    postRequestWithCookie('/oauth/refresh', (response) => {
-      try {
+    try {
+      await postRequestWithCookie('/oauth/refresh', (response) => {
         const jwt = response.headers.get('Authorization');
 
         if (!jwt) return;
 
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
-      } catch (error) {
-        setIsLogin(false);
-      }
-    });
+      });
+    } catch (error) {
+      setIsLogin(false);
+    }
   };
 
   const logout = () => {
@@ -48,15 +49,25 @@ export const useLogin = () => {
   };
 
   const checkLoginToken = () => {
-    if (!isLogin) return;
-
     if (timer.current) return;
 
-    silentLogin();
+    const token = getAccessToken();
+
+    if (!token || !isLogin) return;
+
+    const exp = getExpiration(token);
+
+    const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
+
+    if (restMinute <= 1000 * 60 * 2) {
+      silentLogin();
+
+      return;
+    }
 
     timer.current = window.setTimeout(() => {
       checkLoginToken();
-    }, 29 * 60 * 1000);
+    }, restMinute * 60 * 1000);
   };
 
   return { isLogin, login, logout, silentLogin, checkLoginToken };

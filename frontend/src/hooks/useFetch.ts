@@ -18,13 +18,12 @@ export const useFetch = () => {
           const apiError: APIError = await response.json();
 
           if (apiError.errorCode.includes('JW') || apiError.errorCode.includes('OA')) {
-            showErrorToast({ title: apiError.message, description: apiError.message });
-            goToLoginPage();
+            showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
 
             return;
           }
 
-          showErrorToast({ title: apiError.message, description: apiError.message });
+          showErrorToast({ title: ERROR_TITLE.REQUEST, description: apiError.message });
 
           return;
         }
