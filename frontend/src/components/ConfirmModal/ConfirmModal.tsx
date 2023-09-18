@@ -28,7 +28,7 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
   }, []);
 
   return (
-    <Modal width={isMobile ? '120px' : '495px'} height="211px" closeModal={closeModal}>
+    <Modal width={isMobile ? '120px' : '540px'} height="211px" closeModal={closeModal}>
       <S.ConfirmModalContainer>
         <S.ConfirmMessage>{contents}</S.ConfirmMessage>
         <S.ButtonContainer>
@@ -68,6 +68,8 @@ const S = {
     margin-bottom: 40px;
 
     font-size: 18px;
+
+    white-space: pre-wrap;
   `,
 
   ButtonContainer: styled.div`

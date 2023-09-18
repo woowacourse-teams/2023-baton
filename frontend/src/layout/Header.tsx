@@ -1,51 +1,35 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import { useToken } from '@/hooks/useToken';
 import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
-import { getRequest } from '@/api/fetch';
-import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import Button from '@/components/common/Button/Button';
+import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
 
 const Header = () => {
   const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
 
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
-
-  const { getToken, removeToken, hasToken } = useToken();
-
-  const { showErrorToast } = useContext(ToastContext);
+  const { isLogin, logout } = useLogin();
+  const { getRequestWithAuth } = useFetch();
 
   useEffect(() => {
-    const isLogin = hasToken();
-
     if (isLogin) getProfile();
   }, []);
 
   const getProfile = () => {
-    const token = getToken()?.value;
-    if (!token) return;
+    getRequestWithAuth(`/profile/me`, async (response) => {
+      const data: GetHeaderProfileResponse = await response.json();
 
-    getRequest(`/profile/me`, token)
-      .then(async (response) => {
-        const data: GetHeaderProfileResponse = await response.json();
-
-        setProfile(data);
-      })
-      .catch((error: Error) =>
-        showErrorToast({
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
-          title: ERROR_TITLE.REQUEST,
-        }),
-      );
+      setProfile(data);
+    });
   };
 
   const handleClickLogoutButton = () => {
-    removeToken();
+    logout();
 
     goToMainPage();
   };
@@ -59,7 +43,7 @@ const Header = () => {
       <S.HeaderContainer>
         <S.Logo onClick={goToMainPage} />
         <S.MenuContainer>
-          {hasToken() ? (
+          {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />

@@ -1,11 +1,12 @@
-import { getRequest } from '@/api/fetch';
+import Banner from '@/components/Banner/Banner';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/RunnerPostSearchBox';
 import Button from '@/components/common/Button/Button';
-import { ERROR_TITLE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useToken } from '@/hooks/useToken';
 import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
 import { GetRunnerPostResponse, ReviewStatus, RunnerPost } from '@/types/runnerPost';
@@ -16,10 +17,9 @@ import { styled } from 'styled-components';
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
 
-  const { getToken } = useToken();
-
+  const { isLogin } = useLogin();
+  const { getRequest } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
-
   const { isMobile } = useViewport();
 
   const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
@@ -38,13 +38,14 @@ const MainPage = () => {
   }, []);
 
   const handleClickPostButton = () => {
-    if (getToken()) {
-      goToRunnerPostCreatePage();
+    if (!isLogin) {
+      showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
 
       return;
     }
 
-    goToLoginPage();
+    goToRunnerPostCreatePage();
   };
 
   const getRunnerPosts = () => {
@@ -60,13 +61,11 @@ const MainPage = () => {
 
     setPage(page + 1);
 
-    getRequest(`/posts/runner?${params.toString()}`)
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
-        setRunnerPostList([...runnerPostList, ...data.data]);
-        setIsLast(data.pageInfo.isLast);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+    getRequest(`/posts/runner?${params.toString()}`, async (response) => {
+      const data: GetRunnerPostResponse = await response.json();
+      setRunnerPostList([...runnerPostList, ...data.data]);
+      setIsLast(data.pageInfo.isLast);
+    });
   };
 
   const searchPosts = (reviewStatus: ReviewStatus, tag?: string) => {
@@ -83,62 +82,61 @@ const MainPage = () => {
 
     setPage(2);
     setIsLast(true);
-    setReviewStatus(reviewStatus);
     setRunnerPostList([]);
 
-    getRequest(`/posts/runner?${params.toString()}`)
-      .then(async (response) => {
-        const data: GetRunnerPostResponse = await response.json();
-        setRunnerPostList(() => []);
-        setRunnerPostList(() => [...data.data]);
-        setIsLast(data.pageInfo.isLast);
-      })
-      .catch((error: Error) => showErrorToast({ description: error.message, title: ERROR_TITLE.REQUEST }));
+    getRequest(`/posts/runner?${params.toString()}`, async (response) => {
+      const data: GetRunnerPostResponse = await response.json();
+      setRunnerPostList(() => [...data.data]);
+      setIsLast(data.pageInfo.isLast);
+    });
   };
 
   return (
-    <Layout>
-      <S.TitleWrapper>
-        <S.Title>서포터를 찾고 있어요 👀</S.Title>
-      </S.TitleWrapper>
-      <S.ControlPanelContainer>
-        <S.LeftSideContainer>
-          <RunnerPostSearchBox
-            tag={tag}
-            setTag={setTag}
-            reviewStatus={reviewStatus}
-            setReviewStatus={setReviewStatus}
-            searchedTags={searchedTags}
-            setSearchedTags={setSearchedTags}
-            searchPosts={searchPosts}
-          />
-        </S.LeftSideContainer>
-        <S.RightSideContainer>
-          <Button
-            onClick={handleClickPostButton}
-            colorTheme="WHITE"
-            fontSize={isMobile ? '14px' : '18px'}
-            ariaLabel="리뷰 요청 글 작성하기"
-          >
-            리뷰 요청 글 작성하기
-          </Button>
-        </S.RightSideContainer>
-      </S.ControlPanelContainer>
-      <S.RunnerPostContainer>
-        <RunnerPostList posts={runnerPostList} />
-        <S.MoreButtonWrapper>
-          {!isLast && (
+    <Layout maxWidth="none">
+      <Banner />
+      <S.MainContainer>
+        <S.TitleWrapper>
+          <S.Title>서포터를 찾고 있어요 👀</S.Title>
+        </S.TitleWrapper>
+        <S.ControlPanelContainer>
+          <S.LeftSideContainer>
+            <RunnerPostSearchBox
+              tag={tag}
+              setTag={setTag}
+              reviewStatus={reviewStatus}
+              setReviewStatus={setReviewStatus}
+              searchedTags={searchedTags}
+              setSearchedTags={setSearchedTags}
+              searchPosts={searchPosts}
+            />
+          </S.LeftSideContainer>
+          <S.RightSideContainer>
             <Button
-              colorTheme="RED"
-              width={isMobile ? '375px' : '1150px'}
-              height="55px"
-              onClick={handleClickMoreButton}
+              onClick={handleClickPostButton}
+              colorTheme="WHITE"
+              fontSize={isMobile ? '14px' : '18px'}
+              ariaLabel="리뷰 요청 글 작성하기"
             >
-              더보기
+              리뷰 요청 글 작성하기
             </Button>
-          )}
-        </S.MoreButtonWrapper>
-      </S.RunnerPostContainer>
+          </S.RightSideContainer>
+        </S.ControlPanelContainer>
+        <S.RunnerPostContainer>
+          <RunnerPostList posts={runnerPostList} />
+          <S.MoreButtonWrapper>
+            {!isLast && (
+              <Button
+                colorTheme="RED"
+                width={isMobile ? '375px' : '1150px'}
+                height="55px"
+                onClick={handleClickMoreButton}
+              >
+                더보기
+              </Button>
+            )}
+          </S.MoreButtonWrapper>
+        </S.RunnerPostContainer>
+      </S.MainContainer>
     </Layout>
   );
 };
@@ -146,6 +144,11 @@ const MainPage = () => {
 export default MainPage;
 
 const S = {
+  MainContainer: styled.div`
+    max-width: 1200px;
+    margin: 0 auto;
+  `,
+
   TitleWrapper: styled.header`
     margin: 72px 0 53px 0;
 
@@ -219,6 +222,7 @@ const S = {
   MoreButtonWrapper: styled.div`
     max-width: 1200px;
     width: 100%;
+    margin-bottom: 20px;
 
     @media (max-width: 768px) {
       max-width: 375px;

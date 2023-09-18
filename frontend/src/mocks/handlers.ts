@@ -43,10 +43,6 @@ export const handlers = [
     );
   }),
 
-  rest.post('*/posts/runner', async (req, res, ctx) => {
-    return res(ctx.delay(300), ctx.status(201));
-  }),
-
   rest.get('*/profile/runner/me', async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerProfile));
   }),
@@ -152,10 +148,16 @@ export const handlers = [
   }),
 
   rest.get('*/posts/runner/tags/search', async (req, res, ctx) => {
-    const name = req.url.searchParams.get('name');
+    const name = req.url.searchParams.get('tagName');
 
     const searchedTags = name ? tagList.data.filter((tag) => tag.tagName.includes(name)) : [];
 
     return res(ctx.status(200), ctx.json({ data: searchedTags }));
+  }),
+
+  rest.post('*/branch', async (req, res, ctx) => {
+    const { repoName } = await req.json();
+
+    return res(ctx.status(201));
   }),
 ];
