@@ -291,8 +291,12 @@ const S = {
     margin-top: 30px;
 
     @media (max-width: 768px) {
+      display: flex;
+      justify-content: end;
+
       width: calc(85% + 40px);
       margin-top: 50px;
+      margin-bottom: 30px;
     }
   `,
 
@@ -319,7 +323,7 @@ const S = {
     color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
 
     @media (max-width: 768px) {
-      width: 100%;
+      width: 70px;
       height: 32px;
 
       font-size: 14px;
