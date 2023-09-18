@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AssuredSupport {
@@ -23,8 +22,8 @@ public class AssuredSupport {
     public static ExtractableResponse<Response> post(final String uri, final String accessToken, final String refreshToken) {
         return RestAssured
                 .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
                 .cookie("refreshToken", refreshToken)
-                .header(AUTHORIZATION, accessToken)
                 .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()

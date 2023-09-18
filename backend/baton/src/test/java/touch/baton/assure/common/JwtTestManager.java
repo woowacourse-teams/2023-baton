@@ -17,7 +17,7 @@ public class JwtTestManager {
     }
 
     public SocialId parseToSocialId(final String accessToken) {
-        final Claims claims = jwtDecoder.parseJwtToken(accessToken);
+        final Claims claims = jwtDecoder.parseJwtToken("Bearer " + accessToken);
         final String socialId = claims.get("socialId", String.class);
 
         return new SocialId(socialId);

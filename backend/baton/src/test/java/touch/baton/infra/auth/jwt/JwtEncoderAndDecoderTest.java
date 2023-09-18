@@ -37,7 +37,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
-        final Claims claims = jwtDecoder.parseJwtToken(encodedJwt);
+        final Claims claims = jwtDecoder.parseJwtToken("Bearer " + encodedJwt);
         final String socialId = claims.get("socialId", String.class);
 
         // then
