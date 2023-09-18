@@ -125,7 +125,7 @@ const RunnerPostSearchBox = ({
   };
 
   const searchTags = (keyword: string) => {
-    getRequest(`/posts/runner/tags/search?tagName=${keyword}`, async (response) => {
+    getRequest(`/tags/search?tagName=${keyword}`, async (response) => {
       const data: GetSearchTagResponse = await response.json();
 
       setSearchedTags(data.data);
@@ -147,7 +147,7 @@ const RunnerPostSearchBox = ({
         <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
           {searchedTags.map((tag, idx) => (
             <S.searchedTagItem
-              key={tag.tagId}
+              key={tag.id}
               id={tag.tagName}
               tabIndex={idx}
               ref={(element) => {
