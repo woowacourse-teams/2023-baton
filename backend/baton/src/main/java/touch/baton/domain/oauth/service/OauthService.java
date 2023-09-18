@@ -125,8 +125,8 @@ public class OauthService {
     }
 
     @Transactional
-    public Tokens reissueAccessToken(final String jwtToken, final String refreshToken) {
-        final Claims claims = jwtDecoder.parseExpiredJwtToken(jwtToken);
+    public Tokens reissueAccessToken(final String authHeader, final String refreshToken) {
+        final Claims claims = jwtDecoder.parseExpiredJwtToken(authHeader);
         final SocialId socialId = new SocialId(claims.get("socialId", String.class));
         final Member findMember = oauthMemberRepository.findBySocialId(socialId)
                 .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_SOCIAL_ID_IS_WRONG));

@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.server.Cookie.SameSite;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -22,7 +21,6 @@ import touch.baton.domain.oauth.token.Tokens;
 import java.io.IOException;
 import java.time.Duration;
 
-import static org.springframework.boot.web.server.Cookie.SameSite.NONE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FOUND;
 import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
@@ -65,9 +63,8 @@ public class OauthController {
                                            final HttpServletRequest request,
                                            final HttpServletResponse response
     ) {
-        final String jwtToken = request.getHeader(AUTHORIZATION);
-
-        final Tokens tokens = oauthService.reissueAccessToken(jwtToken, refreshToken);
+        final String authHeader = request.getHeader(AUTHORIZATION);
+        final Tokens tokens = oauthService.reissueAccessToken(authHeader, refreshToken);
 
         setCookie(response, tokens.refreshToken());
 
