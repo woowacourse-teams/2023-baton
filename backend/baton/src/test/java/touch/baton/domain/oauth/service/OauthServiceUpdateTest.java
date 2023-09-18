@@ -89,9 +89,9 @@ class OauthServiceUpdateTest {
         // then
         assertSoftly(softly -> {
             softly.assertThat(tokens.accessToken()).isNotNull();
-            softly.assertThat(tokens.accessToken().getValue()).isNotEqualTo(expiredAuthorizationHeader);
+            softly.assertThat(tokens.accessToken().getValue()).isNotEqualTo(expiredAuthorizationHeader.parseBearerAccessToken());
             softly.assertThat(tokens.refreshToken()).isNotNull();
-            softly.assertThat(tokens.refreshToken().getToken().getValue()).isNotEqualTo(beforeRefreshToken);
+            softly.assertThat(tokens.refreshToken().getToken().getValue()).isNotEqualTo(refreshTokenValue);
         });
     }
 
