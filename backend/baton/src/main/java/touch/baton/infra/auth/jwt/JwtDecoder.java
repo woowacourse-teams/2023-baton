@@ -50,9 +50,7 @@ public class JwtDecoder {
                     .build();
 
             final String token = authorizationHeader.parseBearerAccessToken();
-            jwtParser.parseClaimsJws(token).getBody();
-
-            throw new OauthRequestException(ClientErrorCode.JWT_CLAIM_IS_NOT_EXPIRED);
+            return jwtParser.parseClaimsJws(token).getBody();
         } catch (final SignatureException e) {
             throw new OauthRequestException(ClientErrorCode.JWT_SIGNATURE_IS_WRONG);
         } catch (final MalformedJwtException e) {
