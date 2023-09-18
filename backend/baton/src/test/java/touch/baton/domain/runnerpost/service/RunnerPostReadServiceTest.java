@@ -66,7 +66,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final PageRequest pageOne = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("createdAt")));
+        final PageRequest pageOne = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id")));
         final Page<RunnerPost> actual = runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(
                 pageOne,
                 javaTag.getTagName().getValue(),
