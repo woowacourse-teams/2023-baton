@@ -31,8 +31,6 @@ import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCL
 @RestController
 public class OauthController {
 
-    private static final String REFRESH_TOKEN_KEY = "refreshToken";
-
     private final OauthService oauthService;
 
     @GetMapping("/{oauthType}")
