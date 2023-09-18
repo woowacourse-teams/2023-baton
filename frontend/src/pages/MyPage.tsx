@@ -293,7 +293,7 @@ const S = {
 
       width: calc(85% + 40px);
       margin-top: 50px;
-      margin-bottom: 30px;
+      margin-left: 10px;
     }
   `,
 
@@ -394,11 +394,6 @@ const S = {
     max-width: 1200px;
     min-width: 375px;
     width: 100%;
-    margin-top: 50px;
     margin-bottom: 20px;
-
-    @media (max-width: 768px) {
-      max-width: 375px;
-    }
   `,
 };
