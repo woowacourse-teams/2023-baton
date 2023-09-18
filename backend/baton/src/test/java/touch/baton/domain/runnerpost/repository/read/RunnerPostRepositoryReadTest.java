@@ -144,10 +144,8 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         insertRunnerPostByNativeQuery(2L, createdAt, runnerId);
 
         // when
-        final PageRequest pageable = PageRequest.of(0, 10, Sort.by(
-                Sort.Order.desc("createdAt"),
-                Sort.Order.desc("id")
-        ));
+        final PageRequest pageable = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id")));
+
         final Page<RunnerPost> actual = runnerPostRepository.findByReviewStatus(pageable, NOT_STARTED);
 
         // then

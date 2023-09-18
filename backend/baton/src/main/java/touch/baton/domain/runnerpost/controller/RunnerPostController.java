@@ -89,7 +89,7 @@ public class RunnerPostController {
 
     @GetMapping
     public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostsByReviewStatus(
-            @PageableDefault(sort = {"createdAt", "id"}, direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = DESC) final Pageable pageable,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
         final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsByReviewStatus(pageable, reviewStatus);
@@ -111,7 +111,7 @@ public class RunnerPostController {
 
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
-            @PageableDefault(sort = {"createdAt", "id"}, direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = DESC) final Pageable pageable,
             @RequestParam("supporterId") final Long supporterId,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
@@ -146,7 +146,7 @@ public class RunnerPostController {
 
     @GetMapping("/me/supporter")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
-            @PageableDefault(sort = {"createdAt", "id"}, direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = DESC) final Pageable pageable,
             @AuthSupporterPrincipal final Supporter supporter,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
@@ -169,7 +169,7 @@ public class RunnerPostController {
 
     @GetMapping("/me/runner")
     public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(
-            @PageableDefault(sort = {"createdAt", "id"}, direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = {"id"}, direction = DESC) final Pageable pageable,
             @AuthRunnerPrincipal final Runner runner,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {

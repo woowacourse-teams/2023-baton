@@ -30,7 +30,7 @@ public class RunnerPostReadController {
 
     @GetMapping("/tags/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostsByTagNamesAndReviewStatus(
-            @PageableDefault(sort = "createdAt", direction = DESC) final Pageable pageable,
+            @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,
             @RequestParam final String tagName,
             @RequestParam final ReviewStatus reviewStatus
     ) {
