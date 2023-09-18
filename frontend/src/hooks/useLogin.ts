@@ -12,33 +12,33 @@ export const useLogin = () => {
   const { getRequestWithAuth, postRequestWithCookie } = useFetch();
 
   const login = async (code: string) => {
-    getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
-      try {
+    try {
+      await getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
         const jwt = response.headers.get('Authorization');
 
         if (!jwt) return;
 
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
-      } catch (error) {
-        setIsLogin(false);
-      }
-    });
+      });
+    } catch (error) {
+      setIsLogin(false);
+    }
   };
 
   const silentLogin = async () => {
-    postRequestWithCookie('/oauth/refresh', (response) => {
-      try {
+    try {
+      await postRequestWithCookie('/oauth/refresh', (response) => {
         const jwt = response.headers.get('Authorization');
 
         if (!jwt) return;
 
         localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
         setIsLogin(true);
-      } catch (error) {
-        setIsLogin(false);
-      }
-    });
+      });
+    } catch (error) {
+      setIsLogin(false);
+    }
   };
 
   const logout = () => {
