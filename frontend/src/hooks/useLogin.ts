@@ -59,7 +59,7 @@ export const useLogin = () => {
 
     const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
 
-    if (restMinute <= 1000 * 60 * 2) {
+    if (restMinute <= 2) {
       silentLogin();
 
       return;
