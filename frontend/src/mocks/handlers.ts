@@ -12,6 +12,9 @@ import notStarted from './data/myPagePost/notStarted.json';
 import inProgress from './data/myPagePost/inProgress.json';
 import done from './data/myPagePost/done.json';
 import tagList from './data/tagList.json';
+import searchedPostList from './data/searchedPostList.json';
+import emptyPostList from './data/emptyRunnerPostList.json';
+import { BATON_BASE_URL } from '@/constants';
 
 export const handlers = [
   rest.post('*/posts/runner', async (req, res, ctx) => {
@@ -147,7 +150,7 @@ export const handlers = [
     return res(ctx.status(201));
   }),
 
-  rest.get('*/posts/runner/tags/search', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/tags/search`, async (req, res, ctx) => {
     const name = req.url.searchParams.get('tagName');
 
     const searchedTags = name ? tagList.data.filter((tag) => tag.tagName.includes(name)) : [];
@@ -159,5 +162,17 @@ export const handlers = [
     const { repoName } = await req.json();
 
     return res(ctx.status(201));
+  }),
+
+  rest.get('*/posts/runner/tags/search', async (req, res, ctx) => {
+    const name = req.url.searchParams.get('tagName');
+
+    if (!name)
+      return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(emptyPostList));
+
+    const list = structuredClone(searchedPostList);
+    list.data[0].tags = [name];
+
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(list));
   }),
 ];

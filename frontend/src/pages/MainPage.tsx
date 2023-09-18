@@ -84,7 +84,7 @@ const MainPage = () => {
     setIsLast(true);
     setRunnerPostList([]);
 
-    getRequest(`/posts/runner?${params.toString()}`, async (response) => {
+    getRequest(`/posts/runner/tags/search?${params.toString()}`, async (response) => {
       const data: GetRunnerPostResponse = await response.json();
       setRunnerPostList(() => [...data.data]);
       setIsLast(data.pageInfo.isLast);

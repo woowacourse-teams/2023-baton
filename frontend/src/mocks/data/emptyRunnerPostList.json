@@ -1,0 +1,12 @@
+{
+  "data": [],
+  "pageInfo": {
+    "isFirst": true,
+    "isLast": true,
+    "hasNext": false,
+    "totalPages": 0,
+    "totalElements": 0,
+    "currentPage": 0,
+    "currentSize": 0
+  }
+}
