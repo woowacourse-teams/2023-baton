@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { ToastContext } from '@/contexts/ToastContext';
 import { TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { useLogin } from '@/hooks/useLogin';
+import LoadingPage from './LoadingPage';
 
 function GithubCallbackPage() {
   const location = useLocation();
@@ -31,7 +32,7 @@ function GithubCallbackPage() {
     }
   }, [location]);
 
-  return <div>GithubRedirect...</div>;
+  return <LoadingPage />;
 }
 
 export default GithubCallbackPage;

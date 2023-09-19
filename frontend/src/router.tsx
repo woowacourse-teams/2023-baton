@@ -26,8 +26,8 @@ export const ROUTER_PATH = {
   SUPPORTER_PROFILE: '/supporter-profile/:supporterId',
   PROFILE_EDIT: '/profile-edit',
   SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
-  GITHUB_CALLBACK: '/oauth/github/callback', // Authorization callback URL?
-  NOTICE: '/notice', // Authorization callback URL?
+  GITHUB_CALLBACK: '/oauth/github/callback',
+  NOTICE: '/notice',
 };
 
 export const router = createBrowserRouter(
