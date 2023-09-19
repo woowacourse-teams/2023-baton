@@ -36,3 +36,6 @@ jwt:
     secret_key: ${JWT_SECRET_KEY}
     issuer: ${JWT_ISSUER}
     expire_minutes: ${JWT_EXPIRE_MINUTES}
+
+refresh_token:
+  expire_minutes: ${REFRESH_TOKEN_MINUTES}
