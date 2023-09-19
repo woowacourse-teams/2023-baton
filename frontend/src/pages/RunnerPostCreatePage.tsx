@@ -8,7 +8,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
-import { getRequest } from '@/api/fetch';
 
 import {
   validateCuriousContents,
@@ -18,7 +17,7 @@ import {
   validateTags,
   validateTitle,
 } from '@/utils/validate';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
@@ -30,9 +29,9 @@ import { useFetch } from '@/hooks/useFetch';
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToMainPage, goToLoginPage } = usePageRouter();
+  const { goBack, goToMainPage } = usePageRouter();
   const { postRequestWithAuth } = useFetch();
-  const { showErrorToast } = useContext(ToastContext);
+  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const { isMobile } = useViewport();
 
@@ -130,7 +129,7 @@ const RunnerPostCreatePage = () => {
     goBack();
   };
 
-  const goToNextForm = () => {
+  const handleSubmitButton = () => {
     try {
       validateInputs();
     } catch (error) {
@@ -138,7 +137,7 @@ const RunnerPostCreatePage = () => {
       return showErrorToast({ title: ERROR_TITLE.VALIDATION, description });
     }
 
-    submitForm();
+    postRunnerForm();
   };
 
   const validateInputs = () => {
@@ -150,19 +149,7 @@ const RunnerPostCreatePage = () => {
     validateCuriousContents(curiousContents);
   };
 
-  const postRunnerForm = (data: CreateRunnerPostRequest) => {
-    const body = JSON.stringify(data);
-
-    postRequestWithAuth(
-      `/posts/runner`,
-      async () => {
-        goToMainPage();
-      },
-      body,
-    );
-  };
-
-  const submitForm = async () => {
+  const postRunnerForm = () => {
     const postData: CreateRunnerPostRequest = {
       tags,
       title,
@@ -173,7 +160,17 @@ const RunnerPostCreatePage = () => {
       postscriptContents,
     };
 
-    await postRunnerForm(postData);
+    const body = JSON.stringify(postData);
+
+    postRequestWithAuth(
+      `/posts/runner`,
+      async () => {
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
+
+        goToMainPage();
+      },
+      body,
+    );
   };
 
   return (
@@ -260,7 +257,7 @@ const RunnerPostCreatePage = () => {
             <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
               취소
             </Button>
-            <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={goToNextForm}>
+            <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={handleSubmitButton}>
               리뷰요청 글 생성
             </Button>
           </S.ButtonContainer>
