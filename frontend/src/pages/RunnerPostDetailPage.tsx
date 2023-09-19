@@ -259,7 +259,7 @@ const S = {
     background-color: white;
 
     @media (max-width: 768px) {
-      margin: 10px 0 30px 0;
+      margin: 40px 0 30px 0;
     }
   `,
 
