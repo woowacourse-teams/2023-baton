@@ -22,11 +22,15 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 20px;
+
+    padding: 0 20px;
     margin: 72px 0 53px 0;
 
     @media (max-width: 768px) {
-      margin-top: 40px;
       gap: 15px;
+
+      margin-top: 40px;
+      padding: 0 5px;
     }
   `,
 
@@ -48,7 +52,13 @@ const S = {
     }
   `,
 
-  SupporterListContainer: styled.div``,
+  SupporterListContainer: styled.div`
+    padding: 0 20px;
+
+    @media (max-width: 768px) {
+      padding: 0;
+    }
+  `,
 };
 
 export default SupporterSelectPage;

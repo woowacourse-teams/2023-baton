@@ -3,7 +3,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
 import { GetSupporterProfileResponse } from '@/types/profile';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
@@ -11,6 +11,7 @@ import { GetRunnerPostResponse } from '@/types/runnerPost';
 import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
+import useViewport from '@/hooks/useViewport';
 
 const SupporterProfilePage = () => {
   const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
@@ -19,6 +20,8 @@ const SupporterProfilePage = () => {
   const { supporterId } = useParams();
 
   const { getRequest } = useFetch();
+
+  const { isMobile } = useViewport();
 
   useEffect(() => {
     getProfile();
@@ -34,7 +37,14 @@ const SupporterProfilePage = () => {
   };
 
   const getPost = async () => {
-    getRequest(`/posts/runner/search/${supporterId}`, async (response) => {
+    if (supporterId === undefined || typeof Number(supporterId) !== 'number') return;
+
+    const params = new URLSearchParams([
+      ['supporterId', supporterId],
+      ['reviewStatus', 'DONE'],
+    ]);
+
+    getRequest(`/posts/runner/search?${params.toString()}`, async (response) => {
       const data: GetRunnerPostResponse = await response.json();
 
       setSupporterProfilePost(data);
@@ -64,20 +74,22 @@ const SupporterProfilePage = () => {
 
       <S.IntroductionContainer>
         <S.Introduction>{supporterProfile?.introduction}</S.Introduction>
-        <Button width="127px" height="43px" colorTheme="BLACK" fontWeight={700}>
-          <S.Anchor href={supporterProfile?.githubUrl} target="_blank">
-            <img src={githubIcon} />
-            <S.GoToGitHub>Github</S.GoToGitHub>
-          </S.Anchor>
-        </Button>
+        <S.GithubButtonWrapper>
+          <Button fontSize={isMobile ? '16px' : '20px'} width="127px" height="43px" colorTheme="BLACK" fontWeight={700}>
+            <S.Anchor href={supporterProfile?.githubUrl} target="_blank">
+              <img src={githubIcon} />
+              <S.GoToGitHub>Github</S.GoToGitHub>
+            </S.Anchor>
+          </Button>
+        </S.GithubButtonWrapper>
       </S.IntroductionContainer>
 
       <S.ReviewCountWrapper>
         <S.ReviewCountTitle>완료된 리뷰</S.ReviewCountTitle>
-        <S.ReviewCount>{supporterProfilePost?.data.length}</S.ReviewCount>
+        <S.ReviewCount>{supporterProfilePost?.data?.length}</S.ReviewCount>
       </S.ReviewCountWrapper>
       <S.PostsContainer>
-        {supporterProfilePost?.data.map((runnerPostData) => (
+        {supporterProfilePost?.data?.map((runnerPostData) => (
           <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
         ))}
       </S.PostsContainer>
@@ -94,6 +106,10 @@ const S = {
     align-items: flex-start;
 
     padding: 50px 0;
+
+    @media (min-width: 768px) {
+      padding: 50px 20px;
+    }
   `,
 
   InfoContainer: styled.div`
@@ -112,10 +128,18 @@ const S = {
   Name: styled.div`
     font-size: 26px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
   `,
 
   Company: styled.div`
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
   TechLabel: styled.div`
     display: flex;
@@ -149,6 +173,13 @@ const S = {
 
     padding: 0 10px;
     margin-bottom: 80px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 40px;
+    }
   `,
 
   Introduction: styled.div`
@@ -176,6 +207,20 @@ const S = {
     line-height: 1.8;
 
     white-space: pre-line;
+
+    @media (max-width: 768px) {
+      width: calc(75% + 40px);
+
+      font-size: 14px;
+    }
+  `,
+
+  GithubButtonWrapper: styled.div`
+    margin-left: auto;
+
+    @media (max-width: 768px) {
+      padding: 20px 0;
+    }
   `,
 
   Anchor: styled.a`
@@ -192,21 +237,37 @@ const S = {
     flex-direction: column;
     align-items: center;
     gap: 30px;
+
+    @media (min-width: 768px) {
+      padding: 0 20px;
+    }
   `,
 
   ReviewCountWrapper: styled.div`
     display: flex;
     align-items: center;
     margin: 0 0 40px 20px;
+
+    @media (max-width: 768px) {
+      margin: 0 0 25px 5px;
+    }
   `,
 
   ReviewCountTitle: styled.span`
     font-size: 30px;
     margin-right: 15px;
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
   `,
 
   ReviewCount: styled.span`
     font-size: 40px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
   `,
 };
