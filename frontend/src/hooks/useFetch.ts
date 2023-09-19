@@ -31,10 +31,10 @@ export const useFetch = () => {
 
         return response;
       })
-      .catch((error) => {
+      .catch(() => {
         showErrorToast({
-          title: ERROR_TITLE.NETWORK,
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
+          title: ERROR_TITLE.ERROR,
+          description: ERROR_DESCRIPTION.UNEXPECTED,
         });
       });
 
