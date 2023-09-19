@@ -123,7 +123,12 @@ const MyPage = () => {
                 height={isMobile ? '80px' : '100px'}
               />
               <S.InfoDetailContainer>
-                <S.Name>{isRunner ? '러너 - ' + myPageProfile?.name : '서포터 - ' + myPageProfile?.name}</S.Name>
+                {myPageProfile?.name &&
+                  (isRunner ? (
+                    <S.Name>{'러너 - ' + myPageProfile?.name}</S.Name>
+                  ) : (
+                    <S.Name>{'서포터 - ' + myPageProfile?.name}</S.Name>
+                  ))}
                 <S.Company>{myPageProfile?.company}</S.Company>
                 <S.TechLabel>
                   {myPageProfile?.technicalTags.map((tag) => (
@@ -177,7 +182,7 @@ const MyPage = () => {
               <ListFilter
                 options={postOptions}
                 selectOption={selectOptions}
-                width={isMobile ? '100%' : '920px'}
+                width="100%"
                 fontSize={isMobile ? '16px' : '26px'}
               />
             </S.FilterWrapper>
@@ -186,7 +191,7 @@ const MyPage = () => {
               {!isLast && (
                 <Button
                   colorTheme="RED"
-                  width={isMobile ? '100%' : '1150px'}
+                  width={isMobile ? '100%' : '1200px'}
                   fontSize={isMobile ? '14px' : '18px'}
                   height="55px"
                   onClick={handleClickMoreButton}
@@ -212,7 +217,9 @@ const S = {
   `,
 
   MyPageContainer: styled.div`
-    @media (max-width: 768px) {
+    width: 1200px;
+
+    @media (max-width: 1200px) {
       width: calc(85% + 40px);
     }
   `,
@@ -383,6 +390,11 @@ const S = {
 
   FilterWrapper: styled.div`
     padding: 80px 20px;
+    width: 920px;
+
+    @media (max-width: 1200px) {
+      width: 100%;
+    }
 
     @media (max-width: 768px) {
       width: 100%;
