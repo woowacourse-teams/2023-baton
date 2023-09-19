@@ -43,6 +43,8 @@ const RunnerPostCreatePage = () => {
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [githubUrl, setGithubUrl] = useState<string>('');
 
   const { isLogin } = useLogin();
@@ -137,7 +139,11 @@ const RunnerPostCreatePage = () => {
       return showErrorToast({ title: ERROR_TITLE.VALIDATION, description });
     }
 
-    postRunnerForm();
+    setIsLoading(true);
+
+    postRunnerForm().finally(() => {
+      setIsLoading(false);
+    });
   };
 
   const validateInputs = () => {
@@ -149,7 +155,7 @@ const RunnerPostCreatePage = () => {
     validateCuriousContents(curiousContents);
   };
 
-  const postRunnerForm = () => {
+  const postRunnerForm = async () => {
     const postData: CreateRunnerPostRequest = {
       tags,
       title,
@@ -162,7 +168,7 @@ const RunnerPostCreatePage = () => {
 
     const body = JSON.stringify(postData);
 
-    postRequestWithAuth(
+    await postRequestWithAuth(
       `/posts/runner`,
       async () => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
@@ -257,7 +263,13 @@ const RunnerPostCreatePage = () => {
             <Button type="button" onClick={cancelPostWrite} colorTheme="GRAY" fontWeight={700}>
               취소
             </Button>
-            <Button type="button" colorTheme="WHITE" fontWeight={700} onClick={handleSubmitButton}>
+            <Button
+              type="button"
+              colorTheme={isLoading ? 'GRAY' : 'WHITE'}
+              fontWeight={700}
+              onClick={handleSubmitButton}
+              disabled={isLoading}
+            >
               리뷰요청 글 생성
             </Button>
           </S.ButtonContainer>
