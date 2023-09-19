@@ -17,44 +17,35 @@ import emptyPostList from './data/emptyRunnerPostList.json';
 import { BATON_BASE_URL } from '@/constants';
 
 export const handlers = [
-  rest.post('*/posts/runner', async (req, res, ctx) => {
+  rest.post(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.get('*/posts/runner', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
   }),
 
-  rest.get('*/profile/me', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/me`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
   }),
 
-  rest.put('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
+  rest.put(`${BATON_BASE_URL}/posts/runner/:runnerPostId)`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
-  rest.delete('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
+  rest.delete(`${BATON_BASE_URL}/posts/runner/:runnerPostId`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(204));
   }),
 
-  rest.get('*/posts/runner/:runnerPostId', async (req, res, ctx) => {
-    return res(
-      ctx.delay(300),
-      ctx.status(200),
-      ctx.set('Content-Type', 'application/json'),
-      ctx.json(runnerPostDetails),
-    );
-  }),
-
-  rest.get('*/profile/runner/me', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/runner/me`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerProfile));
   }),
 
-  rest.get('*/profile/supporter/me', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/supporter/me`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterProfile));
   }),
 
-  rest.get('*/posts/runner/me/runner?size&page&reviewStatus', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner/me/runner?size&page&reviewStatus`, async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
 
     switch (reviewStatus) {
@@ -72,7 +63,7 @@ export const handlers = [
     }
   }),
 
-  rest.get('*/posts/runner/me/supporter?size&page&reviewStatus', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner/me/supporter?size&page&reviewStatus`, async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
 
     switch (reviewStatus) {
@@ -90,7 +81,7 @@ export const handlers = [
     }
   }),
 
-  rest.get('*/profile/runner/me', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/runner/me`, async (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.delay(500),
@@ -99,7 +90,7 @@ export const handlers = [
     );
   }),
 
-  rest.get('*/profile/supporter/me', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/supporter/me`, async (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.delay(500),
@@ -108,45 +99,45 @@ export const handlers = [
     );
   }),
 
-  rest.patch('*/profile/runner/me', async (req, res, ctx) => {
+  rest.patch(`${BATON_BASE_URL}/profile/runner/me`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
   }),
 
-  rest.patch('*/profile/supporter/me', async (req, res, ctx) => {
+  rest.patch(`${BATON_BASE_URL}/profile/supporter/me`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
   }),
 
-  rest.get('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner/:runnerPostId/supporters`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 
-  rest.patch('*/posts/runner/:runnerPostId/supporters', async (req, res, ctx) => {
+  rest.patch(`${BATON_BASE_URL}/posts/runner/:runnerPostId/supporters`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterCandidate));
   }),
 
-  rest.post('*/feedback/supporter', async (req, res, ctx) => {
+  rest.post(`${BATON_BASE_URL}/feedback/supporter`, async (req, res, ctx) => {
     const { reviewType, descriptions, supporterId, runnerPostId } = await req.json();
 
     return res(ctx.delay(300), ctx.status(201), ctx.set('Content-Type', 'application/json'), ctx.json({}));
   }),
 
-  rest.get('*/profile/runner/:runnerId', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/runner/:runnerId`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerProfileInfo));
   }),
 
-  rest.get('*/profile/supporter/:supporterId', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/profile/supporter/:supporterId`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterProfileInfo));
   }),
 
-  rest.get('*/posts/runner/search/:supporterId', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner/search`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(supporterProfilePost));
   }),
 
-  rest.post('*/posts/runner/:runnerPostId/application', async (req, res, ctx) => {
+  rest.post(`${BATON_BASE_URL}/posts/runner/:runnerPostId/application`, async (req, res, ctx) => {
     return res(ctx.status(201));
   }),
 
-  rest.patch('*/posts/runner/:runnerPostId/cancelation', async (req, res, ctx) => {
+  rest.patch(`${BATON_BASE_URL}/posts/runner/:runnerPostId/cancelation`, async (req, res, ctx) => {
     return res(ctx.status(201));
   }),
 
@@ -158,13 +149,13 @@ export const handlers = [
     return res(ctx.status(200), ctx.json({ data: searchedTags }));
   }),
 
-  rest.post('*/branch', async (req, res, ctx) => {
+  rest.post(`${BATON_BASE_URL}/branch`, async (req, res, ctx) => {
     const { repoName } = await req.json();
 
     return res(ctx.status(201));
   }),
 
-  rest.get('*/posts/runner/tags/search', async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner/tags/search`, async (req, res, ctx) => {
     const name = req.url.searchParams.get('tagName');
 
     if (!name)
@@ -174,5 +165,14 @@ export const handlers = [
     list.data[0].tags = [name];
 
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(list));
+  }),
+
+  rest.get(`${BATON_BASE_URL}/posts/runner/:runnerPostId`, async (req, res, ctx) => {
+    return res(
+      ctx.delay(300),
+      ctx.status(200),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(runnerPostDetails),
+    );
   }),
 ];
