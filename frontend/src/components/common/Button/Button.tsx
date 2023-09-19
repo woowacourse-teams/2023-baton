@@ -60,8 +60,7 @@ const S = {
   }>`
     ${({ $colorTheme }) => themeStyles[$colorTheme]}
 
-    max-width: ${({ $width }) => $width || '180px'};
-    width: 100%;
+    width: ${({ $width }) => $width || '180px'};
     height: ${({ $height }) => $height || '40px'};
 
     padding: 10px 10px;
@@ -70,8 +69,7 @@ const S = {
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
 
     @media (max-width: 768px) {
-      max-width: ${({ $width }) => $width};
-      width: 100%;
+      width: ${({ $width }) => $width || '180px'};
       height: 100%;
     }
   `,
