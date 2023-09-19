@@ -11,7 +11,7 @@ import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import EventImage from '@/assets/banner/event_banner_post.png';
-import { JavaIcon, JavascriptIcon } from '@/assets/technicalLabelIcon';
+import { JavaIcon, JavaIconWhite, JavascriptIcon } from '@/assets/technicalLabelIcon';
 import { GetHeaderProfileResponse } from '@/types/profile';
 import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { useFetch } from '@/hooks/useFetch';
@@ -107,7 +107,7 @@ const NoticePage = () => {
               </S.EventMessage>
               <S.EventMessage>
                 <br />
-                <S.EventMessageBold>사용 언어는 java, javascript 두 가지</S.EventMessageBold>이며
+                <S.EventMessageBold>사용 언어는 java, javascript 두 가지이며</S.EventMessageBold>
                 <S.EventMessageBold>아래 미션 시작하기 버튼을 통해 시작</S.EventMessageBold>하실 수 있습니다.
               </S.EventMessage>
               <S.EventMessage>
@@ -138,16 +138,16 @@ const NoticePage = () => {
                 </S.EventGuide>
               </S.EventMessageTitleContainer>
               <S.ButtonContainer>
-                <Button dataType="java" colorTheme="BLACK" onClick={openConfirmModal}>
+                <Button dataType="java" colorTheme="RED" onClick={openConfirmModal}>
                   <S.Anchor>
-                    <JavaIcon />
-                    <S.GoToGitHub>java</S.GoToGitHub>
+                    <JavaIconWhite color="#000000" />
+                    <S.Language>java</S.Language>
                   </S.Anchor>
                 </Button>
-                <Button dataType="javascript" colorTheme="BLACK" onClick={openConfirmModal}>
+                <Button dataType="javascript" colorTheme="RED" onClick={openConfirmModal}>
                   <S.Anchor>
                     <JavascriptIcon />
-                    <S.GoToGitHub>javascript</S.GoToGitHub>
+                    <S.Language>javascript</S.Language>
                   </S.Anchor>
                 </Button>
               </S.ButtonContainer>
@@ -327,6 +327,12 @@ const S = {
     display: flex;
     align-items: end;
     gap: 20px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: start;
+      gap: 0;
+    }
   `,
 
   EventMessageTitle: styled.p`
@@ -334,6 +340,11 @@ const S = {
 
     font-size: 28px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+      margin: 60px 0 20px 0;
+    }
   `,
 
   EventGuide: styled.a`
@@ -341,6 +352,11 @@ const S = {
 
     text-decoration: underline;
     text-underline-position: under;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+      margin: 0 0 30px 0;
+    }
   `,
 
   ButtonContainer: styled.div`
@@ -349,6 +365,10 @@ const S = {
   `,
 
   GoToGitHub: styled.span``,
+
+  Language: styled.span`
+    color: var(--white);
+  `,
 
   Anchor: styled.a`
     display: flex;
