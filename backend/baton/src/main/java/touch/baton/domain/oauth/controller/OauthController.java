@@ -63,6 +63,7 @@ public class OauthController {
                                            final HttpServletResponse response
     ) {
         final AuthorizationHeader authorizationHeader = new AuthorizationHeader(request.getHeader(AUTHORIZATION));
+
         final Tokens tokens = oauthService.reissueAccessToken(authorizationHeader, refreshToken);
 
         setCookie(response, tokens.refreshToken());
