@@ -161,6 +161,8 @@ const S = {
     text-align: center;
 
     @media (max-width: 768px) {
+      min-width: 30px;
+
       font-size: 12px;
     }
   `,

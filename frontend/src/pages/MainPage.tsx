@@ -128,7 +128,7 @@ const MainPage = () => {
             {!isLast && (
               <Button
                 colorTheme="RED"
-                width={isMobile ? '375px' : '1150px'}
+                width={isMobile ? '100%' : '1150px'}
                 height="55px"
                 onClick={handleClickMoreButton}
               >
@@ -159,7 +159,7 @@ const S = {
     margin: 72px 0 53px 0;
 
     @media (max-width: 768px) {
-      margin: 10px 0 40px 0;
+      margin: 40px 0 40px 0;
     }
   `,
 
@@ -231,7 +231,7 @@ const S = {
     margin-bottom: 20px;
 
     @media (max-width: 768px) {
-      max-width: 375px;
+      min-width: 360px;
     }
   `,
 
