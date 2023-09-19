@@ -19,7 +19,13 @@ export const useFetch = () => {
 
           if (apiError.errorCode.includes('JW') || apiError.errorCode.includes('OA')) {
             removeAccessToken();
-            showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+
+            showErrorToast({
+              title: ERROR_TITLE.NO_PERMISSION,
+              description: ['JW007', 'JW008', 'JW009'].includes(apiError.errorCode)
+                ? ERROR_DESCRIPTION.TOKEN_EXPIRATION
+                : ERROR_DESCRIPTION.NO_TOKEN,
+            });
 
             return;
           }
