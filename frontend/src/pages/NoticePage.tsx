@@ -247,7 +247,7 @@ const S = {
     width: 100%;
 
     margin-bottom: 20px;
-    padding: 40px 0;
+    padding: 20px 0;
     border-bottom: 1px solid #9d9d9d;
   `,
 

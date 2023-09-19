@@ -28,7 +28,7 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
   }, []);
 
   return (
-    <Modal width={isMobile ? '120px' : '540px'} height="211px" closeModal={closeModal}>
+    <Modal width={isMobile ? '340px' : '540px'} height={isMobile ? '250px' : '211px'} closeModal={closeModal}>
       <S.ConfirmModalContainer>
         <S.ConfirmMessage>{contents}</S.ConfirmMessage>
         <S.ButtonContainer>
@@ -62,6 +62,11 @@ const S = {
 
     width: 100%;
     height: 100%;
+    padding: 20px 0;
+
+    @media (max-width: 768px) {
+      padding: 10px 20px;
+    }
   `,
 
   ConfirmMessage: styled.p`
