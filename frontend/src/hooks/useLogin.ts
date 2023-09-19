@@ -1,7 +1,7 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { useRef, useState } from 'react';
 import { useFetch } from './useFetch';
-import { getExpiration } from '@/utils/jwt';
+import { getExpiration, getExpirationAsSecond } from '@/utils/jwt';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
@@ -63,7 +63,7 @@ export const useLogin = () => {
       () => {
         checkLoginToken();
       },
-      restMinute <= 2 ? 28 * 60 * 1000 : (restMinute - 2) * 60 * 1000,
+      restMinute <= 2 ? (getExpirationAsSecond(token) - 2 * 60) * 1000 : (restMinute - 2) * 60 * 1000,
     );
   };
 
