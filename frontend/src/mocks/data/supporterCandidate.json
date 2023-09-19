@@ -2,12 +2,12 @@
   "data": [
     {
       "supporterId": 1,
-      "name": "박정훈",
-      "company": "두나무",
+      "name": "박정훈훈훈훈훈훈훈",
+      "company": "두나무테스트테스트테스트테스트테스트",
       "imageUrl": "https://api.iconify.design/material-symbols:account-circle.svg",
       "reviewCount": 1,
       "message": "우아한테크코스 5기를 수료하여 토스에 입사했습니다.\n 토스 결제팀의 리드 개발자입니다.\n 저처럼 킹왕짱 개발자가 되는 법을 전수해드립니다.",
-      "technicalTags": ["java", "spring"]
+      "technicalTags": ["java", "spring", "java", "spring", "spring"]
     },
     {
       "supporterId": 2,
