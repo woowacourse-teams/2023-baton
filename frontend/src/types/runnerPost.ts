@@ -22,7 +22,9 @@ export interface RunnerProfile {
 }
 
 export interface GetDetailedRunnerPostResponse extends RunnerPost {
-  contents: string;
+  implementedContents: string;
+  curiousContents: string;
+  postscriptContents: string;
   isOwner: boolean;
   isApplied: boolean;
   pullRequestUrl: string;
