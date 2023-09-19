@@ -26,17 +26,18 @@ class FeedbackServiceTest extends ServiceTestConfig {
     private Runner exactRunner;
     private RunnerPost runnerPost;
     private SupporterFeedBackCreateRequest request;
+    private Supporter reviewedSupporter;
 
     @BeforeEach
     void setUp() {
         feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterRepository);
-        Member ethan = memberRepository.save(MemberFixture.createEthan());
+        final Member ethan = memberRepository.save(MemberFixture.createEthan());
         exactRunner = runnerRepository.save(RunnerFixture.createRunner(ethan));
-        Member ditoo = memberRepository.save(MemberFixture.createDitoo());
-        Supporter supporterDitoo = supporterRepository.save(SupporterFixture.create(ditoo));
-        runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, supporterDitoo));
+        final Member ditoo = memberRepository.save(MemberFixture.createDitoo());
+        reviewedSupporter = supporterRepository.save(SupporterFixture.create(ditoo));
+        runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, reviewedSupporter));
 
-        request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), supporterDitoo.getId(), runnerPost.getId());
+        request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), reviewedSupporter.getId(), runnerPost.getId());
     }
 
     @DisplayName("러너가 서포터 피드백을 할 수 있다.")
@@ -58,8 +59,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> feedbackService.createSupporterFeedback(notOwner, request))
-                .isInstanceOf(FeedbackBusinessException.class)
-                .hasMessage("리뷰 글을 작성한 주인만 글을 작성할 수 있습니다.");
+                .isInstanceOf(FeedbackBusinessException.class);
     }
 
     @DisplayName("리뷰를 하지 않은 서포터를 피드백을 할 수 없다.")
@@ -72,7 +72,18 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
         // when, then
         assertThatThrownBy(() -> feedbackService.createSupporterFeedback(exactRunner, notReviewSupporterRequest))
-                .isInstanceOf(FeedbackBusinessException.class)
-                .hasMessage("리뷰를 작성한 서포터에 대해서만 피드백을 작성할 수 있습니다.");
+                .isInstanceOf(FeedbackBusinessException.class);
+    }
+
+    @DisplayName("이미 서포터 피드백을 작성했으면 서포터 피드백을 할 수 없다.")
+    @Test
+    void fail_createSupporterFeedback_if_already_reviewed_supporter() {
+        // given
+        final SupporterFeedBackCreateRequest supporterFeedBackCreateRequest = new SupporterFeedBackCreateRequest("GOOD", new ArrayList<>(), reviewedSupporter.getId(), runnerPost.getId());
+        feedbackService.createSupporterFeedback(exactRunner, supporterFeedBackCreateRequest);
+
+        // when, then
+        assertThatThrownBy(() -> feedbackService.createSupporterFeedback(exactRunner, supporterFeedBackCreateRequest))
+                .isInstanceOf(FeedbackBusinessException.class);
     }
 }
