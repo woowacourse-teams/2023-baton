@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost.controller;
 
+import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +15,7 @@ import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostReadService;
+import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.util.List;
@@ -27,14 +29,16 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class RunnerPostReadController {
 
     private final RunnerPostReadService runnerPostReadService;
+    private final RunnerPostService runnerPostService;
 
     @GetMapping("/tags/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostsByTagNamesAndReviewStatus(
             @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,
-            @RequestParam final String tagName,
+            @Nullable @RequestParam(required = false) final String tagName,
             @RequestParam final ReviewStatus reviewStatus
     ) {
-        final Page<RunnerPost> pageRunnerPosts = runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(pageable, tagName, reviewStatus);
+        final Page<RunnerPost> pageRunnerPosts = getPageRunnerPosts(pageable, tagName, reviewStatus);
+
         final List<Long> foundRunnerPostIds = pageRunnerPosts.stream()
                 .map(RunnerPost::getId)
                 .toList();
@@ -53,5 +57,13 @@ public class RunnerPostReadController {
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
 
         return ResponseEntity.ok(PageResponse.from(pageResponse));
+    }
+
+    private Page<RunnerPost> getPageRunnerPosts(final Pageable pageable, final String tagName, final ReviewStatus reviewStatus) {
+        if (tagName == null || tagName.isBlank()) {
+            return runnerPostService.readRunnerPostsByReviewStatus(pageable, reviewStatus);
+        }
+
+        return runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(pageable, tagName, reviewStatus);
     }
 }

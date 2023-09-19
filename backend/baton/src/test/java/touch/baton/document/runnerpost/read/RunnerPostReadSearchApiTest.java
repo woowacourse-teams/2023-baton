@@ -13,6 +13,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostReadController;
 import touch.baton.domain.runnerpost.service.RunnerPostReadService;
+import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.Tag;
@@ -50,10 +51,12 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostReadService runnerPostReadService;
+    @MockBean
+    private RunnerPostService runnerPostService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostReadController runnerPostReadController = new RunnerPostReadController(runnerPostReadService);
+        final RunnerPostReadController runnerPostReadController = new RunnerPostReadController(runnerPostReadService, runnerPostService);
         restdocsSetUp(runnerPostReadController);
     }
 
