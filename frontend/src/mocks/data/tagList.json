@@ -1,32 +1,44 @@
 {
   "data": [
     {
-      "tagId": 1,
+      "id": 1,
       "tagName": "java"
     },
     {
-      "tagId": 2,
+      "id": 2,
       "tagName": "java1"
     },
     {
-      "tagId": 3,
+      "id": 3,
       "tagName": "java17"
     },
     {
-      "tagId": 4,
+      "id": 4,
       "tagName": "javascript"
     },
     {
-      "tagId": 5,
+      "id": 5,
       "tagName": "javascript map"
     },
     {
-      "tagId": 6,
+      "id": 6,
       "tagName": "react"
     },
     {
-      "tagId": 7,
+      "id": 7,
       "tagName": "react 18"
+    },
+    {
+      "id": 8,
+      "tagName": "자바"
+    },
+    {
+      "id": 9,
+      "tagName": "자바 17"
+    },
+    {
+      "id": 10,
+      "tagName": "자바스크립트"
     }
   ]
 }

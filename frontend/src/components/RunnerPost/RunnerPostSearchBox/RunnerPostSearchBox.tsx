@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
 import { ReviewStatus } from '@/types/runnerPost';
 import { GetSearchTagResponse, Tag } from '@/types/tags';
-import useViewport from '@/hooks/useViewport';
 import { useFetch } from '@/hooks/useFetch';
 
 interface Props {
@@ -33,7 +32,6 @@ const RunnerPostSearchBox = ({
   const inputRefs = useRef<HTMLElement[]>([]);
   const timer = useRef<number | null>(null);
 
-  const { isMobile } = useViewport();
   const { getRequest } = useFetch();
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -86,6 +84,7 @@ const RunnerPostSearchBox = ({
       return;
     }
 
+    if (e.nativeEvent.isComposing) return;
     e.preventDefault();
 
     switch (e.key) {
