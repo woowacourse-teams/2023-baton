@@ -56,26 +56,6 @@ const underLine = css`
 const S = {
   FilterContainer: styled.div``,
 
-  TitleContainer: styled.div`
-    display: flex;
-    align-items: flex-end;
-    gap: 5px;
-
-    width: 70px;
-
-    @media (max-width: 768px) {
-      width: fit-content;
-    }
-  `,
-
-  Icon: styled.img`
-    width: 22px;
-  `,
-
-  Title: styled.h3`
-    font-size: 20px;
-  `,
-
   LabelList: styled.li`
     display: flex;
     gap: 20px;
@@ -104,7 +84,6 @@ const S = {
     flex-direction: column;
     align-items: center;
 
-    width: fit-content;
     height: 30px;
 
     background-color: transparent;

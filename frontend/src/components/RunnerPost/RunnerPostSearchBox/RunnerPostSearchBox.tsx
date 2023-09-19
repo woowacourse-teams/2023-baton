@@ -172,26 +172,6 @@ const S = {
     gap: 18px;
   `,
 
-  TitleContainer: styled.div`
-    display: flex;
-    align-items: flex-end;
-    gap: 5px;
-
-    width: 70px;
-
-    @media (max-width: 768px) {
-      width: fit-content;
-    }
-  `,
-
-  Icon: styled.img`
-    width: 22px;
-  `,
-
-  Title: styled.h3`
-    font-size: 20px;
-  `,
-
   InputContainer: styled.div`
     position: relative;
     display: flex;
