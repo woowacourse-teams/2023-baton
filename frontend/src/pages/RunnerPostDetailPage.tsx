@@ -20,6 +20,7 @@ import { validateMessage } from '@/utils/validate';
 import useViewport from '@/hooks/useViewport';
 import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
+import GuideContents from '@/components/GuideContents/GuideContents';
 
 const RunnerPostPage = () => {
   const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage, goToLoginPage } = usePageRouter();
@@ -170,7 +171,13 @@ const RunnerPostPage = () => {
               </S.PostTitleContainer>
             </S.PostHeaderContainer>
             <S.PostBodyContainer>
-              <S.Contents>{runnerPost.contents}</S.Contents>
+              <S.GuideContentsContainer>
+                <GuideContents title="무엇을 구현하였나요?" contents={runnerPost.implementedContents} />
+                <GuideContents title="아쉬운 점이나 궁금한 점이 있나요?" contents={runnerPost.curiousContents} />
+                {runnerPost.postscriptContents && (
+                  <GuideContents title="서포터에게 하고싶은 말이 있나요?" contents={runnerPost.postscriptContents} />
+                )}
+              </S.GuideContentsContainer>
               <S.BottomContentContainer>
                 <S.LeftSideContainer>
                   <S.ProfileContainer onClick={viewProfile}>
@@ -187,7 +194,12 @@ const RunnerPostPage = () => {
                   <PostTagList tags={runnerPost.tags} />
                 </S.LeftSideContainer>
                 <S.RightSideContainer>
-                  <Button colorTheme="BLACK" fontSize={isMobile ? '14px' : ''} fontWeight={700}>
+                  <Button
+                    colorTheme="BLACK"
+                    width={isMobile ? '125px' : '150px'}
+                    fontSize={isMobile ? '14px' : ''}
+                    fontWeight={700}
+                  >
                     <S.Anchor href={runnerPost.pullRequestUrl} target="_blank">
                       <img src={githubIcon} />
                       <S.GoToGitHub>코드 보러가기</S.GoToGitHub>
@@ -196,6 +208,7 @@ const RunnerPostPage = () => {
                   {runnerPost.isOwner || runnerPost.isApplied || runnerPost.reviewStatus !== 'NOT_STARTED' ? null : (
                     <Button
                       colorTheme="WHITE"
+                      width={isMobile ? '125px' : '150px'}
                       fontSize={isMobile ? '14px' : ''}
                       fontWeight={700}
                       onClick={openMessageModal}
@@ -328,6 +341,14 @@ const S = {
     border-bottom: 1px solid #9d9d9d;
   `,
 
+  GuideContentsContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+
+    margin-bottom: 50px;
+  `,
+
   InformationContainer: styled.div`
     display: flex;
     justify-content: space-between;
@@ -408,7 +429,13 @@ const S = {
     justify-content: space-between;
     align-items: end;
 
+    margin-bottom: 10px;
+
     @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+
       gap: 8px;
     }
   `,
@@ -422,7 +449,17 @@ const S = {
   RightSideContainer: styled.div`
     display: flex;
     flex-direction: column;
+
     gap: 24px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      gap: 12px;
+
+      margin-top: 20px;
+    }
   `,
 
   GoToGitHub: styled.p``,

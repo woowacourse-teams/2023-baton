@@ -122,13 +122,13 @@ const NoticePage = () => {
 
               <S.EventMessageTitle>🔎 미션 보러가기</S.EventMessageTitle>
               <S.ButtonContainer>
-                <Button colorTheme="BLACK">
+                <Button colorTheme="BLACK" width="100%">
                   <S.Anchor href="https://github.com/baton-mission/java-boss-monster" target="_blank">
                     <img src={githubIcon} />
                     <S.GoToGitHub>java</S.GoToGitHub>
                   </S.Anchor>
                 </Button>
-                <Button colorTheme="BLACK">
+                <Button colorTheme="BLACK" width="100%">
                   <S.Anchor href="https://github.com/baton-mission/javascript-boss-monster" target="_blank">
                     <img src={githubIcon} />
                     <S.GoToGitHub>javascript</S.GoToGitHub>
@@ -143,13 +143,13 @@ const NoticePage = () => {
                 </S.EventGuide>
               </S.EventMessageTitleContainer>
               <S.ButtonContainer>
-                <Button dataType="java" colorTheme="RED" onClick={openConfirmModal}>
+                <Button dataType="java" colorTheme="RED" onClick={openConfirmModal} width="100%">
                   <S.Anchor>
                     <JavaIconWhite color="#000000" />
                     <S.Language>java</S.Language>
                   </S.Anchor>
                 </Button>
-                <Button dataType="javascript" colorTheme="RED" onClick={openConfirmModal}>
+                <Button dataType="javascript" colorTheme="RED" onClick={openConfirmModal} width="100%">
                   <S.Anchor>
                     <JavascriptIcon />
                     <S.Language>javascript</S.Language>
