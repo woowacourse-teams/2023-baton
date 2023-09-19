@@ -2,6 +2,7 @@ package touch.baton.domain.oauth.service;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
@@ -36,8 +37,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -51,6 +50,9 @@ public class OauthService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
+
+    @Value("${refresh_token.expire_minutes}")
+    private int refreshTokenExpireMinutes;
 
     public String readAuthCodeRedirect(final OauthType oauthType) {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);
@@ -107,7 +109,7 @@ public class OauthService {
 
         final String randomTokens = UUID.randomUUID().toString();
         final Token token = new Token(randomTokens);
-        final LocalDateTime expireDate = LocalDateTime.now().plusDays(REFRESH_TOKEN_LIFECYCLE);
+        final LocalDateTime expireDate = LocalDateTime.now().plusMinutes(refreshTokenExpireMinutes);
         final RefreshToken refreshToken = RefreshToken.builder()
                 .member(member)
                 .token(token)
@@ -117,7 +119,7 @@ public class OauthService {
         final Optional<RefreshToken> maybeRefreshToken = refreshTokenRepository.findByMember(member);
         if (maybeRefreshToken.isPresent()) {
             final RefreshToken findRefreshToken = maybeRefreshToken.get();
-            findRefreshToken.updateToken(new Token(randomTokens));
+            findRefreshToken.updateToken(new Token(randomTokens), refreshTokenExpireMinutes);
             return new Tokens(accessToken, findRefreshToken);
         }
 
@@ -148,7 +150,7 @@ public class OauthService {
     private Tokens reissueTokens(final SocialId socialId, final RefreshToken refreshToken) {
         final AccessToken accessToken = createAccessToken(socialId);
 
-        refreshToken.updateToken(new Token(UUID.randomUUID().toString()));
+        refreshToken.updateToken(new Token(UUID.randomUUID().toString()), refreshTokenExpireMinutes);
 
         return new Tokens(accessToken, refreshToken);
     }

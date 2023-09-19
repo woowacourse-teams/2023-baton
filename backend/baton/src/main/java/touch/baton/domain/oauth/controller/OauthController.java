@@ -21,17 +21,15 @@ import touch.baton.domain.oauth.token.Tokens;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FOUND;
-import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/oauth")
 @RestController
 public class OauthController {
-
-    private static final String REFRESH_TOKEN_KEY = "refreshToken";
 
     private final OauthService oauthService;
 
@@ -78,7 +76,7 @@ public class OauthController {
         final ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken.getToken().getValue())
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds())
+                .maxAge(Duration.between(LocalDateTime.now(), refreshToken.getExpireDate().getValue()).toSeconds())
                 .sameSite(SameSite.NONE.attributeValue())
                 .path("/")
                 .build();

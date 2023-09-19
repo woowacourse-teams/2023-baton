@@ -94,12 +94,12 @@ class RefreshTokenTest {
 
         // when
         final Token updateToken = new Token("update-token");
-        refreshToken.updateToken(updateToken);
+        refreshToken.updateToken(updateToken, 30);
 
         // then
         assertAll(
                 () -> assertThat(refreshToken.getToken()).isEqualTo(updateToken),
-                () -> assertThat(refreshToken.getExpireDate()).isEqualTo(new ExpireDate(currentTime.plusDays(30)))
+                () -> assertThat(refreshToken.getExpireDate()).isEqualTo(new ExpireDate(currentTime.plusMinutes(30)))
         );
     }
 

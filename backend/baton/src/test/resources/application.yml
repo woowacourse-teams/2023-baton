@@ -21,6 +21,9 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
 
+refresh_token:
+  expire_minutes: 30
+
 oauth:
   github:
     client_id: ${OAUTH_GITHUB_CLIENT_ID}
