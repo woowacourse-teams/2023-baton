@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import ToastProvider from './contexts/ToastContext';
@@ -8,8 +8,12 @@ import { useLogin } from './hooks/useLogin';
 
 const App = () => {
   const { checkLoginToken } = useLogin();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  checkLoginToken();
+  checkLoginToken().finally(() => {
+    setIsLoading(false);
+  });
+
   ChannelService.loadScript();
 
   if (CHANNEL_SERVICE_KEY) {
@@ -18,7 +22,7 @@ const App = () => {
     });
   }
 
-  return (
+  return isLoading ? null : (
     <ToastProvider>
       <S.AppContainer>
         <Outlet />

@@ -1,7 +1,7 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
 import { useRef, useState } from 'react';
 import { useFetch } from './useFetch';
-import { getExpiration } from '@/utils/jwt';
+import { getExpiration, getExpirationAsSecond } from '@/utils/jwt';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
@@ -48,7 +48,7 @@ export const useLogin = () => {
     setIsLogin(false);
   };
 
-  const checkLoginToken = () => {
+  const checkLoginToken = async () => {
     const token = getAccessToken();
 
     if (timer.current) return;
@@ -57,13 +57,13 @@ export const useLogin = () => {
     const exp = getExpiration(token);
     const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
 
-    if (restMinute <= 2) silentLogin();
+    if (restMinute <= 2) await silentLogin();
 
     timer.current = window.setTimeout(
       () => {
         checkLoginToken();
       },
-      restMinute <= 2 ? 28 * 60 * 1000 : (restMinute - 2) * 60 * 1000,
+      restMinute <= 2 ? (getExpirationAsSecond(token) - 2 * 60) * 1000 : (restMinute - 2) * 60 * 1000,
     );
   };
 
