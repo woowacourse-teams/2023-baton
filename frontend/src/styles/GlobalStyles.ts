@@ -40,8 +40,6 @@ ${ResetStyle}
 
   #root {
     width: 100%;
-    display: flex;
-    justify-content: center;
   }
 
   button{

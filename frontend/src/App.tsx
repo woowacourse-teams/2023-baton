@@ -5,6 +5,7 @@ import ToastProvider from './contexts/ToastContext';
 import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import { useLogin } from './hooks/useLogin';
+import LoadingPage from './pages/LoadingPage';
 
 const App = () => {
   const { checkLoginToken } = useLogin();
@@ -22,7 +23,9 @@ const App = () => {
     });
   }
 
-  return isLoading ? null : (
+  return isLoading ? (
+    <LoadingPage />
+  ) : (
     <ToastProvider>
       <S.AppContainer>
         <Outlet />
