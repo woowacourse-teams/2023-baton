@@ -11,9 +11,9 @@ import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import EventImage from '@/assets/banner/event_banner_post.png';
-import { JavaIcon, JavaIconWhite, JavascriptIcon } from '@/assets/technicalLabelIcon';
+import { JavaIconWhite, JavascriptIcon } from '@/assets/technicalLabelIcon';
 import { GetHeaderProfileResponse } from '@/types/profile';
-import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { useFetch } from '@/hooks/useFetch';
 
 const NoticePage = () => {
@@ -21,7 +21,7 @@ const NoticePage = () => {
   const { isLogin } = useLogin();
   const { getRequestWithAuth, postRequestWithAuth } = useFetch();
   const { isMobile } = useViewport();
-  const { showCompletionToast } = useContext(ToastContext);
+  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
   const [profileName, setProfileName] = useState<string>();
@@ -42,17 +42,22 @@ const NoticePage = () => {
   };
 
   const openConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (isLogin) {
-      const targetText = e.currentTarget.getAttribute('data-type');
-
-      if (targetText) {
-        setSelectedLanguage(targetText);
-      }
-
-      setIsConfirmModalOpen(true);
+    if (!isLogin) {
+      showErrorToast({
+        title: ERROR_TITLE.NO_PERMISSION,
+        description: ERROR_DESCRIPTION.NO_TOKEN,
+      });
 
       return;
     }
+
+    const targetText = e.currentTarget.getAttribute('data-type');
+
+    if (targetText) {
+      setSelectedLanguage(targetText);
+    }
+
+    setIsConfirmModalOpen(true);
   };
 
   const closeConfirmModal = () => {
