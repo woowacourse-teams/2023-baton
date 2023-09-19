@@ -20,6 +20,7 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -73,6 +74,7 @@ class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
                 .watchedCount(new WatchedCount(1))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
+                .isReviewed(IsReviewed.notReviewed())
                 .runner(saveRunner)
                 .supporter(null)
                 .build();

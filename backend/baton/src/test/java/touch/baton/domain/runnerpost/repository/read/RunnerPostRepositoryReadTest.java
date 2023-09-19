@@ -14,6 +14,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
@@ -78,6 +79,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
                 NOT_STARTED,
+                IsReviewed.notReviewed(),
                 runner,
                 null,
                 runnerPostTags(new ArrayList<>()));
@@ -116,6 +118,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
                 NOT_STARTED,
+                IsReviewed.notReviewed(),
                 runner,
                 null,
                 runnerPostTags(new ArrayList<>()));
