@@ -114,6 +114,7 @@ public record RunnerPostResponse() {
             );
         }
     }
+
     public record SimpleInMyPage(Long runnerPostId,
                                  Long supporterId,
                                  String title,
@@ -121,7 +122,8 @@ public record RunnerPostResponse() {
                                  List<String> tags,
                                  int watchedCount,
                                  long applicantCount,
-                                 String reviewStatus
+                                 String reviewStatus,
+                                 boolean isReviewed
 
     ) {
 
@@ -136,7 +138,8 @@ public record RunnerPostResponse() {
                     convertToTags(runnerPost),
                     runnerPost.getWatchedCount().getValue(),
                     applicantCount,
-                    runnerPost.getReviewStatus().name()
+                    runnerPost.getReviewStatus().name(),
+                     runnerPost.getIsReviewed().isValue()
             );
         }
 
