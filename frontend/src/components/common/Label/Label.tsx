@@ -37,7 +37,7 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    width: ${({ $width }) => $width || 'fit-content'};
+    width: ${({ $width }) => $width};
     height: ${({ $height }) => $height || '22px'};
     border-radius: 16px;
     padding: 10px 10px;

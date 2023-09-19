@@ -2,10 +2,10 @@
   "data": [
     {
       "runnerPostId": 1,
-      "title": "리액트 코드 리뷰 부탁드립니다!",
+      "title": "이거나라라라라라라라라라라라라라라라라라라라라라라라라라라라",
       "deadline": "2023-07-28T13:30",
       "tags": ["react", "리액트", "자바스크립트"],
-      "runnerProfile": { "name": "리액트초보", "imageUrl": "https://via.placeholder.com/150" },
+      "runnerProfile": { "name": "리액트초보", "imageUrl": "150" },
       "watchedCount": 34,
       "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"

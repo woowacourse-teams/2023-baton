@@ -8,12 +8,14 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
+import useViewport from '@/hooks/useViewport';
 
 const Header = () => {
   const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
 
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
   const { isLogin, logout } = useLogin();
+  const { isMobile } = useViewport();
   const { getRequestWithAuth } = useFetch();
 
   useEffect(() => {
@@ -46,8 +48,8 @@ const Header = () => {
           {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
+                {isMobile ? null : <S.ProfileName>{profile?.name}</S.ProfileName>}
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
-                <p>{profile?.name}</p>
               </S.AvatarContainer>
               <Button fontSize="14px" width="76px" height="35px" colorTheme="WHITE" onClick={handleClickLogoutButton}>
                 로그아웃
@@ -99,6 +101,13 @@ const S = {
     }
   `,
 
+  ProfileName: styled.p`
+    text-align: end;
+
+    @media (max-width: 768px) {
+    }
+  `,
+
   Logo: styled.div`
     width: 197px;
     height: 35px;
@@ -123,7 +132,7 @@ const S = {
     gap: 30px;
 
     @media (max-width: 768px) {
-      gap: 13px;
+      gap: 16px;
     }
   `,
 

@@ -174,7 +174,11 @@ const RunnerPostPage = () => {
               <S.BottomContentContainer>
                 <S.LeftSideContainer>
                   <S.ProfileContainer onClick={viewProfile}>
-                    <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
+                    <Avatar
+                      width={isMobile ? '40px' : '60px'}
+                      height={isMobile ? '40px' : '60px'}
+                      imageUrl={runnerPost.runnerProfile.imageUrl}
+                    />
                     <S.Profile>
                       <S.Name>{runnerPost.runnerProfile.name}</S.Name>
                       <S.Job>{runnerPost.runnerProfile.company}</S.Job>
@@ -336,6 +340,10 @@ const S = {
     gap: 20px;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      gap: 15px;
+    }
   `,
 
   Profile: styled.div`

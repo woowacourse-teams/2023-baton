@@ -148,6 +148,10 @@ const S = {
     max-width: 1200px;
     padding: 0 20px;
     margin: 0 auto;
+
+    @media (max-width: 768px) {
+      padding: 0;
+    }
   `,
 
   TitleWrapper: styled.header`
