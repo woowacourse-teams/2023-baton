@@ -55,5 +55,12 @@ const S = {
     column-gap: 40px;
 
     width: 100%;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(1, 1fr);
+
+      row-gap: 50px;
+      column-gap: 0;
+    }
   `,
 };

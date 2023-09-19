@@ -34,11 +34,11 @@ const MyPagePostItem = ({
 
   return (
     <S.RunnerPostItemContainer onClick={handlePostClick}>
-      <S.SideContainer>
-        <S.LeftSideContainer>
+      {isMobile && (
+        <>
           <S.PostTitle>{title}</S.PostTitle>
           <S.DeadLineContainer>
-            <S.DeadLine>{deadline} 까지</S.DeadLine>
+            <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
             <Label
               colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
               fontSize={isMobile ? '10px' : ''}
@@ -46,6 +46,26 @@ const MyPagePostItem = ({
               {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
             </Label>
           </S.DeadLineContainer>
+        </>
+      )}
+      <S.SideContainer>
+        <S.LeftSideContainer>
+          {!isMobile && (
+            <>
+              <S.PostTitle>{title}</S.PostTitle>
+              <S.DeadLineContainer>
+                <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
+                <Label
+                  colorTheme={
+                    reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'
+                  }
+                  fontSize={isMobile ? '10px' : ''}
+                >
+                  {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
+                </Label>
+              </S.DeadLineContainer>
+            </>
+          )}
           <S.TagContainer>
             {tags.map((tag, index) => (
               <S.Tag key={index}>#{tag}</S.Tag>
@@ -62,12 +82,14 @@ const MyPagePostItem = ({
             </S.statisticsContainer>
           </S.ChatViewContainer>
           {!isMobile && (
-            <MyPagePostButton
-              runnerPostId={runnerPostId}
-              isRunner={isRunner}
-              reviewStatus={reviewStatus}
-              supporterId={supporterId}
-            />
+            <S.PostButtonWrapper>
+              <MyPagePostButton
+                runnerPostId={runnerPostId}
+                isRunner={isRunner}
+                reviewStatus={reviewStatus}
+                supporterId={supporterId}
+              />
+            </S.PostButtonWrapper>
           )}
         </S.RightSideContainer>
       </S.SideContainer>
@@ -103,6 +125,7 @@ const S = {
 
     @media (max-width: 768px) {
       padding: 25px 27px;
+      gap: 12px;
     }
 
     & button:hover {
@@ -124,6 +147,8 @@ const S = {
     font-weight: 700;
 
     @media (max-width: 768px) {
+      margin-bottom: 0;
+
       font-size: 16px;
     }
   `,
@@ -140,7 +165,7 @@ const S = {
     color: var(--gray-600);
 
     @media (max-width: 768px) {
-      margin-bottom: 40px;
+      margin-bottom: 15px;
 
       font-size: 12px;
     }
@@ -169,6 +194,11 @@ const S = {
       background-color: var(--baton-red);
       color: var(--white-color);
     }
+  `,
+
+  PostButtonWrapper: styled.div`
+    padding-left: auto;
+    width: 140px;
   `,
 
   ChatViewContainer: styled.div`
