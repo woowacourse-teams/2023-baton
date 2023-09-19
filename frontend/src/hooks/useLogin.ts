@@ -49,25 +49,22 @@ export const useLogin = () => {
   };
 
   const checkLoginToken = () => {
-    if (timer.current) return;
-
     const token = getAccessToken();
 
+    if (timer.current) return;
     if (!token || !isLogin) return;
 
     const exp = getExpiration(token);
-
     const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
 
-    if (restMinute <= 2) {
-      silentLogin();
+    if (restMinute <= 2) silentLogin();
 
-      return;
-    }
-
-    timer.current = window.setTimeout(() => {
-      checkLoginToken();
-    }, restMinute * 60 * 1000);
+    timer.current = window.setTimeout(
+      () => {
+        checkLoginToken();
+      },
+      restMinute <= 2 ? 28 * 60 * 1000 : (restMinute - 2) * 60 * 1000,
+    );
   };
 
   return { isLogin, login, logout, silentLogin, checkLoginToken };

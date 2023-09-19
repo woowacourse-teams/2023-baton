@@ -6,10 +6,10 @@ import { usePageRouter } from './usePageRouter';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 export const useFetch = () => {
-  const { goToLoginPage } = usePageRouter();
   const { showErrorToast } = useContext(ToastContext);
 
   const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+  const removeAccessToken = () => localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
   const fetchAPI = (url: string, options: RequestInit) =>
     fetch(`${BATON_BASE_URL}${url}`, options)
@@ -18,6 +18,7 @@ export const useFetch = () => {
           const apiError: APIError = await response.json();
 
           if (apiError.errorCode.includes('JW') || apiError.errorCode.includes('OA')) {
+            removeAccessToken();
             showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
 
             return;
