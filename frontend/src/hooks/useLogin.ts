@@ -51,7 +51,8 @@ export const useLogin = () => {
   const checkLoginToken = async () => {
     const token = getAccessToken();
 
-    if (timer.current) return;
+    if (timer.current) clearTimeout(timer.current);
+
     if (!token || !isLogin) return;
 
     const exp = getExpiration(token);
