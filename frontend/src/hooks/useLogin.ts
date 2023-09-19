@@ -48,7 +48,7 @@ export const useLogin = () => {
     setIsLogin(false);
   };
 
-  const checkLoginToken = () => {
+  const checkLoginToken = async () => {
     const token = getAccessToken();
 
     if (timer.current) return;
@@ -57,7 +57,7 @@ export const useLogin = () => {
     const exp = getExpiration(token);
     const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
 
-    if (restMinute <= 2) silentLogin();
+    if (restMinute <= 2) await silentLogin();
 
     timer.current = window.setTimeout(
       () => {
