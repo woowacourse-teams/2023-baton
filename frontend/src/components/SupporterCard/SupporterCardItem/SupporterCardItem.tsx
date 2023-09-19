@@ -60,27 +60,24 @@ const SupporterCardItem = ({ supporter }: Props) => {
         완료된 리뷰
         <S.ReviewCount> {supporter.reviewCount}</S.ReviewCount>
       </S.ReviewCountContainer>
-      <S.ProfileContainer>
-        <Avatar imageUrl={supporter.imageUrl} width={isMobile ? '60px' : '80px'} height={isMobile ? '60px' : '80px'} />
-        <S.InfoContainer>
-          <S.Name>{supporter.name}</S.Name>
-          <S.Company>{supporter.company}</S.Company>
-          {!isMobile && (
-            <S.TechStackContainer>
-              {supporter.technicalTags.map((tag) => (
-                <TechLabel key={tag} tag={tag} />
-              ))}
-            </S.TechStackContainer>
-          )}
-        </S.InfoContainer>
-      </S.ProfileContainer>
-      {isMobile && (
+      <S.TitleContainer>
+        <S.ProfileContainer>
+          <Avatar
+            imageUrl={supporter.imageUrl}
+            width={isMobile ? '60px' : '80px'}
+            height={isMobile ? '60px' : '80px'}
+          />
+          <S.InfoContainer>
+            <S.Name>{supporter.name}</S.Name>
+            <S.Company>{supporter.company}</S.Company>
+          </S.InfoContainer>
+        </S.ProfileContainer>
         <S.TechStackContainer>
           {supporter.technicalTags.map((tag) => (
             <TechLabel key={tag} tag={tag} />
           ))}
         </S.TechStackContainer>
-      )}
+      </S.TitleContainer>
       <S.MessageContainer>
         📮 남긴 메시지
         <S.Message> {supporter.message}</S.Message>
@@ -117,21 +114,27 @@ const S = {
     box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.2);
 
     @media (max-width: 768px) {
-      height: 100%;
       padding: 30px 23px;
+    }
+  `,
+
+  TitleContainer: styled.div`
+    height: 175px;
+
+    @media (max-width: 768px) {
+      height: 100%;
     }
   `,
 
   ProfileContainer: styled.div`
     display: flex;
+    align-items: center;
     flex-wrap: wrap column;
     gap: 20px;
 
-    height: 120px;
-    margin-bottom: 30px;
+    margin-bottom: 15px;
 
     @media (max-width: 768px) {
-      height: 100%;
       margin-bottom: 15px;
     }
   `,
@@ -179,6 +182,8 @@ const S = {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+
+    margin-bottom: 55px;
 
     @media (max-width: 768px) {
       margin-bottom: 45px;
