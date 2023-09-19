@@ -119,8 +119,8 @@ const MyPage = () => {
             <S.InfoContainer>
               <Avatar
                 imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
-                width={isMobile ? '80px' : '100px'}
-                height={isMobile ? '80px' : '100px'}
+                width={isMobile ? '70px' : '100px'}
+                height={isMobile ? '70px' : '100px'}
               />
               <S.InfoDetailContainer>
                 {myPageProfile?.name &&
@@ -389,8 +389,8 @@ const S = {
   `,
 
   FilterWrapper: styled.div`
-    padding: 80px 20px;
     width: 920px;
+    padding: 80px 20px;
 
     @media (max-width: 1200px) {
       width: 100%;
@@ -398,13 +398,14 @@ const S = {
 
     @media (max-width: 768px) {
       width: 100%;
-      padding: 30px 0;
+      padding: 0;
+      margin-top: 20px;
     }
   `,
 
   MoreButtonWrapper: styled.div`
     max-width: 1200px;
-    min-width: 375px;
+    min-width: 340px;
     width: 100%;
     margin-bottom: 20px;
   `,
