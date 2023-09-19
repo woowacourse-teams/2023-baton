@@ -63,7 +63,7 @@ export const useLogin = () => {
       () => {
         checkLoginToken();
       },
-      restMinute <= 2 ? 28 * 60 * 1000 : restMinute * 60 * 1000,
+      restMinute <= 2 ? 28 * 60 * 1000 : (restMinute - 2) * 60 * 1000,
     );
   };
 
