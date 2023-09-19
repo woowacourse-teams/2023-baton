@@ -64,7 +64,7 @@ public class RefreshToken extends BaseEntity {
 
     public void updateToken(final Token token, final int expiredMinutes) {
         this.token = token;
-        expireDate.plusMinutes(expiredMinutes);
+        expireDate.refreshExpireTokenDate(expiredMinutes);
     }
 
     public boolean isNotOwner(final Member member) {
