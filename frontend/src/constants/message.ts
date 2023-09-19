@@ -46,6 +46,11 @@ export const TOAST_ERROR_MESSAGE = {
 } as const;
 
 export const TOAST_COMPLETION_MESSAGE = {
+  CREATE_POST: {
+    title: '생성 완료',
+    description: '리뷰 요청 글을 생성했어요',
+  },
+
   SUBMISSION: {
     title: '제출 완료',
     description: '리뷰 제안을 보냈어요',
