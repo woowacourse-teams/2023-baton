@@ -37,10 +37,17 @@ const SendMessageModal = ({
           inputTextState={messageState}
         />
         <S.ButtonContainer>
-          <Button colorTheme="GRAY" fontSize={isMobile ? '12px' : '14px'} fontWeight={700} onClick={closeModal}>
+          <Button
+            width={isMobile ? '90px' : '180px'}
+            colorTheme="GRAY"
+            fontSize={isMobile ? '12px' : '14px'}
+            fontWeight={700}
+            onClick={closeModal}
+          >
             취소
           </Button>
           <Button
+            width={isMobile ? '90px' : '180px'}
             colorTheme="WHITE"
             fontSize={isMobile ? '12px' : '14px'}
             fontWeight={700}

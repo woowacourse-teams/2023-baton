@@ -71,6 +71,10 @@ const S = {
     align-items: flex-start;
 
     padding: 50px 0;
+
+    @media (min-width: 768px) {
+      padding: 50px 20px;
+    }
   `,
 
   InfoContainer: styled.div`
@@ -89,11 +93,20 @@ const S = {
   Name: styled.div`
     font-size: 26px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
   `,
 
   Company: styled.div`
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
+
   TechLabel: styled.div`
     display: flex;
     gap: 8px;
@@ -126,6 +139,13 @@ const S = {
 
     padding: 0 10px;
     margin-bottom: 50px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 40px;
+    }
   `,
 
   Introduction: styled.div`
@@ -153,6 +173,12 @@ const S = {
     line-height: 1.8;
 
     white-space: pre-line;
+
+    @media (max-width: 768px) {
+      width: calc(75% + 40px);
+
+      font-size: 14px;
+    }
   `,
 
   Anchor: styled.a`
