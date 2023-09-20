@@ -30,11 +30,11 @@ const MainPage = () => {
   const [searchedTags, setSearchedTags] = useState<Tag[]>([]);
 
   const handleClickMoreButton = () => {
-    getRunnerPosts();
+    getNextPage();
   };
 
   useEffect(() => {
-    getRunnerPosts();
+    searchPosts(reviewStatus);
   }, []);
 
   const handleClickPostButton = () => {
@@ -48,10 +48,10 @@ const MainPage = () => {
     goToRunnerPostCreatePage();
   };
 
-  const getRunnerPosts = () => {
+  const getNextPage = () => {
     const params = new URLSearchParams([
       ['size', '10'],
-      ['page', page.toString()],
+      ['page', (page + 1).toString()],
       ['reviewStatus', reviewStatus],
     ]);
 
@@ -59,11 +59,13 @@ const MainPage = () => {
       params.set('tagName', tag);
     }
 
-    setPage(page + 1);
+    setIsLast(true);
 
-    getRequest(`/posts/runner?${params.toString()}`, async (response) => {
+    getRequest(`/posts/runner/tags/search?${params.toString()}`, async (response) => {
       const data: GetRunnerPostResponse = await response.json();
+
       setRunnerPostList([...runnerPostList, ...data.data]);
+      setPage(data.pageInfo.currentPage);
       setIsLast(data.pageInfo.isLast);
     });
   };
@@ -80,13 +82,14 @@ const MainPage = () => {
       setTag(tag);
     }
 
-    setPage(2);
     setIsLast(true);
     setRunnerPostList([]);
 
     getRequest(`/posts/runner/tags/search?${params.toString()}`, async (response) => {
       const data: GetRunnerPostResponse = await response.json();
+
       setRunnerPostList(() => [...data.data]);
+      setPage(data.pageInfo.currentPage);
       setIsLast(data.pageInfo.isLast);
     });
   };
