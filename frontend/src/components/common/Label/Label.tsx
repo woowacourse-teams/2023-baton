@@ -46,7 +46,7 @@ const S = {
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
 
     @media (max-width: 768px) {
-      padding: 5px 7px;
+      padding: 4px 6px;
 
       font-size: ${({ $fontSize }) => $fontSize};
     }
