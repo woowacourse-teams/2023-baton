@@ -148,7 +148,7 @@ public class RunnerPostAssuredSupport {
                 조회수,
                 지원한_서포터_수,
                 리뷰_상태.name(),
-                러너_게시글.getIsReviewed().isValue()
+                러너_게시글.getIsReviewed().getValue()
         );
     }
 

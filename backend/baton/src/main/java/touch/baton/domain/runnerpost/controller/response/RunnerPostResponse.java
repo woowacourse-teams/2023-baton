@@ -139,7 +139,7 @@ public record RunnerPostResponse() {
                     runnerPost.getWatchedCount().getValue(),
                     applicantCount,
                     runnerPost.getReviewStatus().name(),
-                     runnerPost.getIsReviewed().isValue()
+                     runnerPost.getIsReviewed().getValue()
             );
         }
 

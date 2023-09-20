@@ -3,14 +3,12 @@ package touch.baton.domain.runnerpost.vo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import static lombok.AccessLevel.PROTECTED;
 
 @EqualsAndHashCode
-@Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
 public class IsReviewed {
@@ -29,5 +27,9 @@ public class IsReviewed {
 
     public static IsReviewed reviewed() {
         return new IsReviewed(true);
+    }
+
+    public boolean getValue() {
+        return false;
     }
 }

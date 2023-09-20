@@ -14,7 +14,7 @@ class IsReviewedTest {
         final IsReviewed isReviewed = new IsReviewed();
 
         // expect
-        final boolean actual = isReviewed.isValue();
+        final boolean actual = isReviewed.getValue();
 
         assertThat(actual).isFalse();
     }
