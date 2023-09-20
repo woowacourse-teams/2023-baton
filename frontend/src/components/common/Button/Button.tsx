@@ -21,7 +21,8 @@ const Button = ({
   ariaLabel,
   dataType,
   disabled,
-  ...buttonProps
+  width,
+  height,
 }: Props) => {
   return (
     <S.ButtonWrapper>
@@ -34,7 +35,8 @@ const Button = ({
         $fontWeight={fontWeight}
         onClick={onClick}
         aria-label={ariaLabel}
-        {...buttonProps}
+        $width={width}
+        $height={height}
       >
         {children}
       </S.Button>
