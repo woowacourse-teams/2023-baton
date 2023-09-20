@@ -53,6 +53,9 @@ class SupporterFeedbackRepositoryTest extends RepositoryTestConfig {
         final Supporter notReviewedSupporter = SupporterFixture.create(notReviewedSupporterMember);
         em.persist(notReviewedSupporter);
 
+        em.flush();
+        em.close();
+
         // when, then
         assertSoftly(softly -> {
             softly.assertThat(supporterFeedbackRepository.existsByRunnerPostIdAndSupporterId(runnerPost.getId(), reviewedSupporter.getId())).isTrue();
