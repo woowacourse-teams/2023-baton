@@ -12,17 +12,11 @@ import notStarted from './data/myPagePost/notStarted.json';
 import inProgress from './data/myPagePost/inProgress.json';
 import done from './data/myPagePost/done.json';
 import tagList from './data/tagList.json';
-import searchedPostList from './data/searchedPostList.json';
-import emptyPostList from './data/emptyRunnerPostList.json';
 import { BATON_BASE_URL } from '@/constants';
 
 export const handlers = [
   rest.post(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
-  }),
-
-  rest.get(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
-    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(runnerPostList));
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/me`, async (req, res, ctx) => {
@@ -157,14 +151,38 @@ export const handlers = [
 
   rest.get(`${BATON_BASE_URL}/posts/runner/tags/search`, async (req, res, ctx) => {
     const name = req.url.searchParams.get('tagName');
+    const reviewStatus = req.url.searchParams.get('reviewStatus');
+    const page = req.url.searchParams.get('page');
 
-    if (!name)
-      return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(emptyPostList));
+    if (!reviewStatus || !page)
+      return res(
+        ctx.status(400),
+        ctx.set('Content-Type', 'application/json'),
+        ctx.json({ errorCode: 'FE001', message: '잘못된 요청' }),
+      );
 
-    const list = structuredClone(searchedPostList);
-    list.data[0].tags = [name];
+    const postList = structuredClone(runnerPostList);
 
-    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(list));
+    if (!name || name.trim() === '') {
+      postList.data.forEach((post, idx) => {
+        post.runnerPostId = Date.now() + idx;
+        post.title = `${post.title} (${page})`;
+        post.reviewStatus = reviewStatus;
+      });
+
+      postList.pageInfo.currentPage = Number(page);
+
+      return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(postList));
+    }
+
+    postList.data.forEach((post, idx) => {
+      post.runnerPostId = Date.now() + idx;
+      post.title = `검색된 목록입니다 (${page})`;
+      post.tags = [name];
+      post.reviewStatus = reviewStatus!;
+    });
+
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(postList));
   }),
 
   rest.get(`${BATON_BASE_URL}/posts/runner/:runnerPostId`, async (req, res, ctx) => {
