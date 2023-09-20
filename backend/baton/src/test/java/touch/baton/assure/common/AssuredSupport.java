@@ -32,7 +32,6 @@ public class AssuredSupport {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .contentType(APPLICATION_JSON_VALUE)
                 .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()
