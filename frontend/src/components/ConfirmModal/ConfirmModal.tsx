@@ -73,6 +73,7 @@ const S = {
     margin-bottom: 40px;
 
     white-space: pre-wrap;
+    line-height: 1.5;
   `,
 
   ButtonContainer: styled.div`
