@@ -3,6 +3,7 @@ package touch.baton.domain.runnerpost.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.repository.RunnerPostCustomRepository;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.util.List;
@@ -11,10 +12,9 @@ import java.util.List;
 @Service
 public class RunnerPostNativeService {
 
-//    private final RunnerPostCustomRepositoryImpl runnerPostCustomRepositoryImpl;
+    private final RunnerPostCustomRepository runnerPostCustomRepository;
 
-    public List<RunnerPost> findNative(final Long cursor, final int limit, final ReviewStatus reviewStatus) {
-//        return runnerPostCustomRepositoryImpl.findByReviewStatus(cursor, limit, reviewStatus);
-        return null;
+    public List<RunnerPost> findNative(final Long cursor, final Long limit, final ReviewStatus reviewStatus) {
+        return runnerPostCustomRepository.findByCursorAndReviewStatus(cursor, limit, reviewStatus);
     }
 }

@@ -21,7 +21,7 @@ public class RunnerPostTempController {
     @GetMapping("/temp")
     public ResponseEntity<List<RunnerPostResponse.Simple>> read(
             @RequestParam("cursor") final Long cursor,
-            @RequestParam("limit") final int limit,
+            @RequestParam("limit") final Long limit,
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
         final List<RunnerPost> runnerPosts = runnerPostNativeService.findNative(cursor, limit, reviewStatus);
