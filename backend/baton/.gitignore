@@ -180,5 +180,5 @@ gradle-app.setting
 
 src/main/resources/application-deploy.yml
 src/main/resources/application-dev.yml
+src/main/resources/application-local.yml
 src/main/resources/static/docs/**
-src/main/generated/**
