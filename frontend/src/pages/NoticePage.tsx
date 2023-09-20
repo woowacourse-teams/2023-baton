@@ -315,8 +315,8 @@ const S = {
     margin: 0 auto;
 
     @media (max-width: 768px) {
-      width: 350px;
-      height: 123px;
+      width: 320px;
+      height: 112px;
     }
   `,
 
