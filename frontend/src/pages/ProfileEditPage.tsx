@@ -459,6 +459,6 @@ const S = {
 
     color: white;
     font-size: 23px;
-    font-weight: 300;
+    font-weight: 400;
   `,
 };
