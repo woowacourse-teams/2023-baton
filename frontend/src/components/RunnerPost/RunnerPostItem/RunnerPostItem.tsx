@@ -29,6 +29,7 @@ const RunnerPostItem = ({
         <S.DeadLineContainer>
           <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
           <Label
+            height={isMobile ? '18px' : '22px'}
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
             fontSize={isMobile ? '10px' : ''}
           >
