@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostReadRepository;
+import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.vo.TagReducedName;
 
@@ -28,7 +29,7 @@ public class RunnerPostReadService {
         return runnerPostReadRepository.findByTagReducedNameAndReviewStatus(pageable, tagReducedName, reviewStatus);
     }
 
-    public List<Long> readApplicantCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return runnerPostReadRepository.countApplicantsByRunnerPostIds(runnerPostIds);
+    public ApplicantCountMappingDto readApplicantCountMappingByRunnerPostIds(final List<Long> runnerPostIds) {
+        return runnerPostReadRepository.findApplicantCountMappingByRunnerPostIds(runnerPostIds);
     }
 }

@@ -12,6 +12,7 @@ import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostReadController;
+import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
 import touch.baton.domain.runnerpost.service.RunnerPostReadService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -24,6 +25,7 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -51,6 +53,7 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostReadService runnerPostReadService;
+
     @MockBean
     private RunnerPostService runnerPostService;
 
@@ -81,8 +84,8 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         when(runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(any(Pageable.class), anyString(), any(ReviewStatus.class)))
                 .thenReturn(pageRunnerPosts);
 
-        when(runnerPostReadService.readApplicantCountsByRunnerPostIds(anyList()))
-                .thenReturn(List.of(0L));
+        when(runnerPostReadService.readApplicantCountMappingByRunnerPostIds(anyList()))
+                .thenReturn(new ApplicantCountMappingDto(Map.of(1L, 0L)));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/tags/search")

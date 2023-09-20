@@ -9,6 +9,7 @@ import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.SupporterRunnerPost;
@@ -84,12 +85,14 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
     @Test
     void fail_when_runnerPost_reviewStatus_is_not_NOT_STARTED() {
         // given
+        final IsReviewed isReviewed = IsReviewed.notReviewed();
         final RunnerPost runnerPost = runnerPostRepository.save(
                 RunnerPostFixture.create(
                         revieweeRunner,
                         applicantSupporter,
                         new Deadline(LocalDateTime.now().plusHours(100)),
-                        ReviewStatus.IN_PROGRESS
+                        ReviewStatus.IN_PROGRESS,
+                        isReviewed
                 ));
         final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
         supporterRunnerPostRepository.save(supporterRunnerPost);

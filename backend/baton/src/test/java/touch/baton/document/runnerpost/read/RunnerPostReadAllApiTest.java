@@ -14,10 +14,7 @@ import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.repository.TagRepository;
-import touch.baton.domain.tag.service.TagService;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -172,6 +169,7 @@ class RunnerPostReadAllApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].watchedCount").type(NUMBER).description("러너 게시글의 조회수"),
                                 fieldWithPath("data.[].applicantCount").type(NUMBER).description("러너 게시글에 신청한 서포터 수"),
                                 fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글 리뷰 상태"),
+                                fieldWithPath("data.[].isReviewed").type(BOOLEAN).description("러너 게시글을 리뷰해준 서포터에 대한 피드백 유무"),
                                 fieldWithPath("pageInfo.isFirst").type(BOOLEAN).description("첫 번째 페이지인지"),
                                 fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 인지"),
                                 fieldWithPath("pageInfo.hasNext").type(BOOLEAN).description("다음 페이지가 있는지"),
