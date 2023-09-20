@@ -101,8 +101,8 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         final Runner runner = RunnerFixture.createRunner(ditoo);
         em.persist(runner);
 
-        em.close();
         em.flush();
+        em.close();
 
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 implementedContents("제 코드의 내용은 이렇습니다."),
