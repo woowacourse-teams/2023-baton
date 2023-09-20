@@ -34,7 +34,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    searchPosts('NOT_STARTED');
+    searchPosts(reviewStatus);
   }, []);
 
   const handleClickPostButton = () => {
