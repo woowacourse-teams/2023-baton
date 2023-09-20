@@ -220,7 +220,13 @@ const RunnerPostPage = () => {
               </S.BottomContentContainer>
             </S.PostBodyContainer>
             <S.PostFooterContainer>
-              <Button colorTheme="GRAY" fontSize={isMobile ? '14px' : ''} fontWeight={700} onClick={goBack}>
+              <Button
+                width={isMobile ? '100%' : '180px'}
+                colorTheme="GRAY"
+                fontSize={isMobile ? '14px' : ''}
+                fontWeight={700}
+                onClick={goBack}
+              >
                 목록
               </Button>
             </S.PostFooterContainer>
