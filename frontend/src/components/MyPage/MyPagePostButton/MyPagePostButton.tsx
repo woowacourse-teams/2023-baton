@@ -14,9 +14,10 @@ interface Props {
   reviewStatus: ReviewStatus;
   isRunner: boolean;
   supporterId?: number;
+  handleDeletePost: (handleDeletePost: number) => void;
 }
 
-const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }: Props) => {
+const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, handleDeletePost }: Props) => {
   const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
 
   const { isMobile } = useViewport();
@@ -27,12 +28,16 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
   const cancelReview = () => {
     patchRequestWithAuth(`/posts/runner/${runnerPostId}/cancelation`, async (response) => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
+
+      handleDeletePost(runnerPostId);
     });
   };
 
   const finishReview = () => {
     patchRequestWithAuth(`/posts/runner/${runnerPostId}/done`, async (response) => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPLETE);
+
+      handleDeletePost(runnerPostId);
     });
   };
 

@@ -163,6 +163,10 @@ export const handlers = [
       ctx.json(runnerPostDetails),
     );
   }),
+
+  rest.patch(`${BATON_BASE_URL}/posts/runner/:runnerPostId/done`, async (req, res, ctx) => {
+    return res(ctx.status(201));
+  }),
 ];
 
 const handleRequest = (
