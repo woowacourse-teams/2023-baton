@@ -231,7 +231,7 @@ const S = {
     margin-bottom: 20px;
 
     @media (max-width: 768px) {
-      min-width: 360px;
+      min-width: 340px;
     }
   `,
 
