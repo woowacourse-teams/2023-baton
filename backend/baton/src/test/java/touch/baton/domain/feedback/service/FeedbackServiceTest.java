@@ -17,8 +17,8 @@ import touch.baton.fixture.domain.SupporterFixture;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class FeedbackServiceTest extends ServiceTestConfig {
 
@@ -47,7 +47,10 @@ class FeedbackServiceTest extends ServiceTestConfig {
         final Long expected = feedbackService.createSupporterFeedback(exactRunner, request);
 
         // then
-        assertThat(expected).isNotNull();
+        assertSoftly(softly -> {
+            softly.assertThat(expected).isNotNull();
+            softly.assertThat(runnerPost.getIsReviewed().getValue()).isTrue();
+        });
     }
 
     @DisplayName("소유자가 아닌 러너는 피드백을 할 수 없다.")

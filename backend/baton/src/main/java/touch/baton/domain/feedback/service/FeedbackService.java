@@ -42,6 +42,7 @@ public class FeedbackService {
             throw new FeedbackBusinessException("리뷰를 작성한 서포터에 대해서만 피드백을 작성할 수 있습니다.");
         }
 
+        foundRunnerPost.finishFeedback();
         final SupporterFeedback supporterFeedback = SupporterFeedback.builder()
                 .reviewType(ReviewType.valueOf(request.reviewType()))
                 .description(new Description(String.join(DELIMITER, request.descriptions())))
