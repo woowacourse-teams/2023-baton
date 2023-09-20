@@ -115,7 +115,7 @@ const MainPage = () => {
           </S.LeftSideContainer>
           <S.RightSideContainer>
             <Button
-              width="100%"
+              width={isMobile ? '160px' : '190px'}
               onClick={handleClickPostButton}
               colorTheme="WHITE"
               fontSize={isMobile ? '14px' : '18px'}
