@@ -8,14 +8,7 @@ import touch.baton.domain.runnerpost.exception.validator.ValidNotUrl;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static touch.baton.domain.common.exception.ClientErrorCode.CONTENTS_ARE_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.CONTENTS_OVERFLOW;
-import static touch.baton.domain.common.exception.ClientErrorCode.DEADLINE_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.PAST_DEADLINE;
-import static touch.baton.domain.common.exception.ClientErrorCode.PULL_REQUEST_URL_IS_NOT_URL;
-import static touch.baton.domain.common.exception.ClientErrorCode.PULL_REQUEST_URL_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.TAGS_ARE_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.TITLE_IS_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 public record RunnerPostCreateRequest(@ValidNotNull(clientErrorCode = TITLE_IS_NULL)
                                       String title,
@@ -27,8 +20,14 @@ public record RunnerPostCreateRequest(@ValidNotNull(clientErrorCode = TITLE_IS_N
                                       @ValidNotNull(clientErrorCode = DEADLINE_IS_NULL)
                                       @ValidFuture(clientErrorCode = PAST_DEADLINE)
                                       LocalDateTime deadline,
-                                      @ValidNotNull(clientErrorCode = CONTENTS_ARE_NULL)
+                                      @ValidNotNull(clientErrorCode = IMPLEMENTED_CONTENTS_ARE_NULL)
                                       @ValidMaxLength(clientErrorCode = CONTENTS_OVERFLOW, max = 1000)
-                                      String contents
+                                      String implementedContents,
+                                      @ValidNotNull(clientErrorCode = CURIOUS_CONTENTS_ARE_NULL)
+                                      @ValidMaxLength(clientErrorCode = CONTENTS_OVERFLOW, max = 1000)
+                                      String curiousContents,
+                                      @ValidNotNull(clientErrorCode = POSTSCRIPT_CONTENTS_ARE_NULL)
+                                      @ValidMaxLength(clientErrorCode = CONTENTS_OVERFLOW, max = 1000)
+                                      String postscriptContents
 ) {
 }

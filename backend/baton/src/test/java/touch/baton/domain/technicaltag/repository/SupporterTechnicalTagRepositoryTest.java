@@ -24,28 +24,29 @@ class SupporterTechnicalTagRepositoryTest extends RepositoryTestConfig {
     private SupporterTechnicalTagRepository supporterTechnicalTagRepository;
 
     @Autowired
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @DisplayName("batch 로 supporter 의 모든 SupporterTechnicalTag 를 삭제한다.")
     @Test
     void deleteBySupporter() {
         // given
         final Member member = MemberFixture.createDitoo();
-        entityManager.persist(member);
+        em.persist(member);
         final Supporter supporter = SupporterFixture.create(member);
-        entityManager.persist(supporter);
+        em.persist(supporter);
         final TechnicalTag technicalTag1 = TechnicalTagFixture.createReact();
         final TechnicalTag technicalTag2 = TechnicalTagFixture.createSpring();
         final TechnicalTag technicalTag3 = TechnicalTagFixture.createJava();
-        entityManager.persist(technicalTag1);
-        entityManager.persist(technicalTag2);
-        entityManager.persist(technicalTag3);
+        em.persist(technicalTag1);
+        em.persist(technicalTag2);
+        em.persist(technicalTag3);
         final SupporterTechnicalTag supporterTechnicalTag1 = SupporterTechnicalTagFixture.create(supporter, technicalTag1);
         final SupporterTechnicalTag supporterTechnicalTag2 = SupporterTechnicalTagFixture.create(supporter, technicalTag2);
         final SupporterTechnicalTag supporterTechnicalTag3 = SupporterTechnicalTagFixture.create(supporter, technicalTag3);
         final List<SupporterTechnicalTag> savedSupporterTechnicalTags = List.of(supporterTechnicalTag1, supporterTechnicalTag2, supporterTechnicalTag3);
         supporterTechnicalTagRepository.saveAll(savedSupporterTechnicalTags);
-        entityManager.flush();
+        em.flush();
+        em.close();
 
         // when
         final int expected = savedSupporterTechnicalTags.size();

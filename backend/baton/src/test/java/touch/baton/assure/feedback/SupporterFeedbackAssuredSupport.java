@@ -7,6 +7,8 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
 
+import java.util.List;
+
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -19,19 +21,27 @@ public class SupporterFeedbackAssuredSupport {
         return new SupporterFeedbackClientRequestBuilder();
     }
 
+    public static SupporterFeedBackCreateRequest 서포터_피드백_요청(final String 리뷰_타입,
+                                                            final List<String> 디스크립션,
+                                                            final Long 서포터_식별자값,
+                                                            final Long 러너_게시글_식별자값
+    ) {
+        return new SupporterFeedBackCreateRequest(리뷰_타입, 디스크립션, 서포터_식별자값, 러너_게시글_식별자값);
+    }
+
     public static class SupporterFeedbackClientRequestBuilder {
 
         private ExtractableResponse<Response> response;
 
         private String accessToken;
 
-        public SupporterFeedbackClientRequestBuilder 토큰으로_로그인한다(final String 토큰) {
-            this.accessToken = 토큰;
+        public SupporterFeedbackClientRequestBuilder 액세스_토큰으로_로그인한다(final String 액세스_토큰) {
+            this.accessToken = 액세스_토큰;
             return this;
         }
 
         public SupporterFeedbackClientRequestBuilder 서포터_피드백을_등록한다(final SupporterFeedBackCreateRequest 서포터_피드백_정보) {
-            response = AssuredSupport.post("/api/v1/feedback/supporter", 서포터_피드백_정보, accessToken);
+            response = AssuredSupport.post("/api/v1/feedback/supporter", accessToken, 서포터_피드백_정보);
             return this;
         }
 

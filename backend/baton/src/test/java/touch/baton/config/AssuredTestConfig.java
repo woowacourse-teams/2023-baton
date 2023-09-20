@@ -1,69 +1,68 @@
 package touch.baton.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
+import touch.baton.assure.common.JwtTestManager;
+import touch.baton.assure.common.OauthLoginTestManager;
+import touch.baton.assure.repository.TestMemberRepository;
+import touch.baton.assure.repository.TestRefreshTokenRepository;
+import touch.baton.assure.repository.TestRunnerPostReadRepository;
+import touch.baton.assure.repository.TestRunnerPostRepository;
+import touch.baton.assure.repository.TestRunnerRepository;
+import touch.baton.assure.repository.TestSupporterRepository;
+import touch.baton.assure.repository.TestSupporterRunnerPostRepository;
+import touch.baton.assure.repository.TestTagRepository;
+import touch.baton.assure.repository.TestTechnicalTagRepository;
 import touch.baton.config.converter.ConverterConfig;
-import touch.baton.domain.member.repository.MemberRepository;
-import touch.baton.domain.runner.repository.RunnerRepository;
-import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
-import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
-import touch.baton.infra.auth.jwt.JwtDecoder;
+import touch.baton.config.infra.auth.MockAuthTestConfig;
+import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 
-import java.util.UUID;
-
-import static org.mockito.BDDMockito.when;
-
-@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class})
+@ActiveProfiles("test")
+@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class, MockAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AssuredTestConfig {
 
     @Autowired
-    protected MemberRepository memberRepository;
+    protected TestMemberRepository memberRepository;
 
     @Autowired
-    protected RunnerRepository runnerRepository;
+    protected TestRunnerRepository runnerRepository;
 
     @Autowired
-    protected SupporterRepository supporterRepository;
+    protected TestSupporterRepository supporterRepository;
 
     @Autowired
-    protected RunnerPostRepository runnerPostRepository;
+    protected TestRunnerPostRepository runnerPostRepository;
 
     @Autowired
-    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
+    protected TestRunnerPostReadRepository runnerPostReadRepository;
 
     @Autowired
-    protected TechnicalTagRepository technicalTagRepository;
+    protected TestSupporterRunnerPostRepository supporterRunnerPostRepository;
 
-    @MockBean
-    private JwtDecoder jwtDecoder;
+    @Autowired
+    protected TestTagRepository tagRepository;
+
+    @Autowired
+    protected TestRefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    protected JwtTestManager jwtTestManager;
+
+    protected OauthLoginTestManager oauthLoginTestManager = new OauthLoginTestManager();
 
     @BeforeEach
-    void assuredTestSetUp(@LocalServerPort int port) {
+    void assuredTestSetUp(@LocalServerPort final int port) {
         RestAssured.port = port;
-    }
-
-    public String login(final String socialId) {
-        final String token = UUID.randomUUID().toString();
-        final Claims claims = Jwts.claims();
-        claims.put("socialId", socialId);
-
-        when(jwtDecoder.parseJwtToken(token)).thenReturn(claims);
-
-        return token;
     }
 }

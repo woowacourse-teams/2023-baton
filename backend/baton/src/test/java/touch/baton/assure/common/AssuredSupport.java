@@ -4,17 +4,45 @@ import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 
-import java.util.Map;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 public class AssuredSupport {
 
-    public static ExtractableResponse<Response> post(final String uri, final Object params) {
+    public static ExtractableResponse<Response> post(final String uri) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .when().log().ifValidationFails()
+                .post(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> post(final String uri, final Object body) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(params)
+                .body(body)
+                .when().log().ifValidationFails()
+                .post(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> post(final String uri, final String accessToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .when().log().ifValidationFails()
+                .post(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> post(final String uri, final String accessToken, final String refreshToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .cookie("refreshToken", refreshToken)
                 .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()
@@ -35,29 +63,27 @@ public class AssuredSupport {
 
     public static ExtractableResponse<Response> post(final String uri,
                                                      final String accessToken,
-                                                     final Map<String, Object> pathVariables,
-                                                     final Object requestBody
+                                                     final PathParams pathParams,
+                                                     final Object body
     ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
                 .contentType(APPLICATION_JSON_VALUE)
-                .pathParams(pathVariables)
-                .body(requestBody)
+                .pathParams(pathParams.getValues())
+                .body(body)
                 .when().log().ifValidationFails()
                 .post(uri)
                 .then().log().ifError()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> post(final String uri, final Object params, final String accessToken) {
+    public static ExtractableResponse<Response> get(final String uri, final PathParams pathParams) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .auth().preemptive().oauth2(accessToken)
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(params)
+                .pathParams(pathParams.getValues())
                 .when().log().ifValidationFails()
-                .post(uri)
+                .get(uri)
                 .then().log().ifError()
                 .extract();
     }
@@ -73,123 +99,96 @@ public class AssuredSupport {
     }
 
     public static ExtractableResponse<Response> get(final String uri,
-                                                    final String pathParamName,
-                                                    final Long id,
-                                                    final String accessToken
+                                                    final String accessToken,
+                                                    final PathParams pathParams
     ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .pathParam(pathParamName, id)
+                .pathParams(pathParams.getValues())
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final String pathParamName, final Long id) {
+    public static ExtractableResponse<Response> get(final String uri, final QueryParams queryParams) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .pathParam(pathParamName, id)
+                .queryParams(queryParams.getValues())
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams) {
+    public static ExtractableResponse<Response> get(final String uri, final PathParams pathParams, final QueryParams queryParams) {
         return RestAssured
                 .given().log().ifValidationFails()
-                .contentType(APPLICATION_JSON_VALUE)
-                .queryParams(queryParams)
+                .pathParams(pathParams.getValues())
+                .queryParams(queryParams.getValues())
                 .when().log().ifValidationFails()
                 .get(uri)
                 .then().log().ifError()
                 .extract();
     }
 
-    public static ExtractableResponse<Response> get(final String uri, final String accessToken, final Map<String, Object> queryParams) {
+    public static ExtractableResponse<Response> get(final String uri, final String accessToken, final QueryParams queryParams) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .queryParams(queryParams.getValues())
+                .when().log().ifValidationFails()
+                .get(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final PathParams pathParams) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .pathParams(pathParams.getValues())
+                .when().log().ifValidationFails()
+                .patch(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object body) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
                 .contentType(APPLICATION_JSON_VALUE)
-                .queryParams(queryParams)
+                .body(body)
                 .when().log().ifValidationFails()
-                .get(uri)
-                .then().log().ifError()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> get(final String uri, final Map<String, Object> queryParams, final String accessToken) {
-        return RestAssured
-                .given().log().ifValidationFails()
-                .auth().preemptive().oauth2(accessToken)
-                .contentType(APPLICATION_JSON_VALUE)
-                .queryParams(queryParams)
-                .when().log().ifValidationFails()
-                .get(uri)
+                .patch(uri)
                 .then().log().ifError()
                 .extract();
     }
 
     public static ExtractableResponse<Response> patch(final String uri,
-                                                      final String pathParamName,
-                                                      final Long id,
-                                                      final Object requestBody,
-                                                      final String accessToken
+                                                      final String accessToken,
+                                                      final PathParams pathParams,
+                                                      final Object body
     ) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
                 .contentType(APPLICATION_JSON_VALUE)
-                .pathParam(pathParamName, id)
-                .body(requestBody)
+                .pathParams(pathParams.getValues())
+                .body(body)
                 .when().log().ifValidationFails()
                 .patch(uri)
                 .then().log().ifError()
                 .extract();
     }
 
-
-    public static ExtractableResponse<Response> patch(final String uri, final String accessToken, final Object requestBody) {
+    public static ExtractableResponse<Response> delete(final String uri, final String accessToken, final PathParams pathParams) {
         return RestAssured
                 .given().log().ifValidationFails()
                 .auth().preemptive().oauth2(accessToken)
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(requestBody)
-                .when().log().ifValidationFails()
-                .patch(uri)
-                .then().log().ifError()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> patch(final String uri, final String pathParamName, final Long id, final String accessToken) {
-        return RestAssured
-                .given().log().ifValidationFails()
-                .auth().preemptive().oauth2(accessToken)
-                .pathParam(pathParamName, id)
-                .when().log().ifValidationFails()
-                .patch(uri)
-                .then().log().ifError()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> delete(final String uri, final String pathParamName, final Long id) {
-        return RestAssured
-                .given().log().ifValidationFails()
-                .pathParam(pathParamName, id)
-                .contentType(APPLICATION_JSON_VALUE)
-                .when().log().ifValidationFails()
-                .delete(uri)
-                .then().log().ifError()
-                .extract();
-    }
-
-    public static ExtractableResponse<Response> delete(final String uri, final String accessToken, final String pathParamName, final Long id) {
-        return RestAssured
-                .given().log().ifValidationFails()
-                .auth().preemptive().oauth2(accessToken)
-                .pathParam(pathParamName, id)
+                .pathParams(pathParams.getValues())
                 .when().log().ifValidationFails()
                 .delete(uri)
                 .then().log().ifError()

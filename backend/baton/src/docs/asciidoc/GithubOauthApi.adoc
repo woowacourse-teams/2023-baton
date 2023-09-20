@@ -1,0 +1,37 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+==== *깃허브 소셜 로그인 redirect API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/http-request.adoc[]
+
+===== *Http Request Path Paramemters*
+
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/path-parameters.adoc[]
+
+===== *Http Request Query Paramemters*
+
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/query-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/http-response.adoc[]
+
+===== *Http Response Headers*
+
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/response-headers.adoc[]
+
+===== *Http Response Cookies*
+
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/response-cookies.adoc[]

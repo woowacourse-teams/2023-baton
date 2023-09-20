@@ -1,6 +1,7 @@
 package touch.baton.domain.common;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpHeaders;
@@ -30,6 +31,16 @@ import touch.baton.domain.common.response.ServerErrorResponse;
 @Slf4j
 @RestControllerAdvice
 public class GlobalControllerAdvice {
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(final HttpServletRequest request,
+                                                          final ClientRequestException e
+    ) {
+        LoggerUtils.logWarn(request, e);
+        return ResponseEntity
+                .status(e.getErrorCode().getHttpStatus())
+                .body(ErrorResponse.from(e));
+    }
 
     @ExceptionHandler(ClientRequestException.class)
     public ResponseEntity<ErrorResponse> handleClientRequest(final HttpServletRequest request,
@@ -71,5 +82,13 @@ public class GlobalControllerAdvice {
     ) {
         LoggerUtils.logWarn(httpServletRequest, ex);
         return ResponseEntity.internalServerError().body(ServerErrorResponse.from(ex));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ServerErrorResponse> handleException(final HttpServletRequest httpServletRequest,
+                                                               final BaseException ex
+    ) {
+        LoggerUtils.logWarn(httpServletRequest, ex);
+        return ResponseEntity.internalServerError().body(ServerErrorResponse.unExpected());
     }
 }

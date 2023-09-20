@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static touch.baton.fixture.vo.AuthorizationHeaderFixture.bearerAuthorizationHeader;
 
 class JwtEncoderAndDecoderTest {
 
@@ -25,7 +26,7 @@ class JwtEncoderAndDecoderTest {
 
     @BeforeEach
     void setUp() {
-        this.jwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena");
+        this.jwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena", 30);
         this.jwtDecoder = new JwtDecoder(this.jwtConfig);
         this.jwtEncoder = new JwtEncoder(this.jwtConfig);
     }
@@ -37,7 +38,7 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
-        final Claims claims = jwtDecoder.parseJwtToken(encodedJwt);
+        final Claims claims = jwtDecoder.parseAuthorizationHeader(bearerAuthorizationHeader(encodedJwt));
         final String socialId = claims.get("socialId", String.class);
 
         // then
@@ -51,11 +52,24 @@ class JwtEncoderAndDecoderTest {
         final String encodedJwt = jwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
 
         // when
-        final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKeywrongSecretKeywrongSecretKey", "hyena");
+        final JwtConfig wrongJwtConfig = new JwtConfig("wrongSecretKeywrongSecretKeywrongSecretKey", "hyena", 30);
         final JwtDecoder wrongJwtDecoder = new JwtDecoder(wrongJwtConfig);
 
         // then
-        assertThatThrownBy(() -> wrongJwtDecoder.parseJwtToken(encodedJwt))
+        assertThatThrownBy(() -> wrongJwtDecoder.parseAuthorizationHeader(bearerAuthorizationHeader(encodedJwt)))
+                .isInstanceOf(OauthRequestException.class);
+    }
+
+    @DisplayName("exp가 만료된 jwt 를 디코드할 때 예외가 발생한다")
+    @Test
+    void fail_decode_when_exp_is_already_expired() {
+        // given
+        final JwtConfig expiredJwtConfig = new JwtConfig("hyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyenahyena", "hyena", -1);
+        final JwtEncoder expiredJwtEncoder = new JwtEncoder(expiredJwtConfig);
+        final String encodedJwt = expiredJwtEncoder.jwtToken(Map.of("socialId", "testSocialId"));
+
+        // when, then
+        assertThatThrownBy(() -> jwtDecoder.parseAuthorizationHeader(bearerAuthorizationHeader(encodedJwt)))
                 .isInstanceOf(OauthRequestException.class);
     }
 }

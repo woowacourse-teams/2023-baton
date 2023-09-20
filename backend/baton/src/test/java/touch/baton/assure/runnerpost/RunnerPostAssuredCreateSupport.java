@@ -4,6 +4,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.PathParams;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 
@@ -28,9 +29,11 @@ public class RunnerPostAssuredCreateSupport {
                                                        final List<String> 태그_목록,
                                                        final String 풀_리퀘스트,
                                                        final LocalDateTime 마감기한,
-                                                       final String 러너_게시글_내용
+                                                       final String 구현_내용,
+                                                       final String 궁금한_내용,
+                                                       final String 참고_사항
     ) {
-        return new RunnerPostCreateRequest(러너_게시글_제목, 태그_목록, 풀_리퀘스트, 마감기한, 러너_게시글_내용);
+        return new RunnerPostCreateRequest(러너_게시글_제목, 태그_목록, 풀_리퀘스트, 마감기한, 구현_내용, 궁금한_내용, 참고_사항);
     }
 
     public static class RunnerPostClientRequestBuilder {
@@ -39,8 +42,8 @@ public class RunnerPostAssuredCreateSupport {
 
         private String accessToken;
 
-        public RunnerPostClientRequestBuilder 토큰으로_로그인한다(final String accessToken) {
-            this.accessToken = accessToken;
+        public RunnerPostClientRequestBuilder 액세스_토큰으로_로그인한다(final String 액세스_토큰) {
+            this.accessToken = 액세스_토큰;
             return this;
         }
 
@@ -52,7 +55,7 @@ public class RunnerPostAssuredCreateSupport {
         public RunnerPostClientRequestBuilder 서포터가_러너_게시글에_리뷰를_신청한다(final Long 러너_게시글_식별자값, final String 리뷰_지원_메시지) {
             response = AssuredSupport.post("/api/v1/posts/runner/{runnerPostId}/application",
                     accessToken,
-                    Map.of("runnerPostId", 러너_게시글_식별자값),
+                    new PathParams(Map.of("runnerPostId", 러너_게시글_식별자값)),
                     new RunnerPostApplicantCreateRequest(리뷰_지원_메시지)
             );
             return this;

@@ -10,6 +10,17 @@ endif::[]
 
 = Baton-API
 
+== *[ 깃허브 레포 ]*
+
+=== *사용자 깃허브 브랜치 생성*
+
+include::GithubBranchCreateApi.adoc[]
+
+== *[ 로그인 ]*
+
+include::GithubOauthApi.adoc[]
+include::RefreshTokenApi.adoc[]
+
 == *[ 프로필 ]*
 
 === *사용자 프로필 조회*
@@ -18,7 +29,7 @@ include::MemberLoginReadApi.adoc[]
 
 === *러너 프로필 조회*
 
-include::RunneReadApi.adoc[]
+include::RunnerReadApi.adoc[]
 
 === *러너 프로필 수정*
 

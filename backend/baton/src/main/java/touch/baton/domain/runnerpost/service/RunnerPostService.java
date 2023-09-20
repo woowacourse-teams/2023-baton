@@ -58,7 +58,9 @@ public class RunnerPostService {
 
     private RunnerPost toDomain(final Runner runner, final RunnerPostCreateRequest request) {
         return RunnerPost.newInstance(request.title(),
-                request.contents(),
+                request.implementedContents(),
+                request.curiousContents(),
+                request.postscriptContents(),
                 request.pullRequestUrl(),
                 request.deadline(),
                 runner);
@@ -144,8 +146,8 @@ public class RunnerPostService {
         return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
     }
 
-    public Page<RunnerPost> readAllRunnerPosts(final Pageable pageable) {
-        return runnerPostRepository.findAll(pageable);
+    public Page<RunnerPost> readRunnerPostsByReviewStatus(final Pageable pageable, final ReviewStatus reviewStatus) {
+        return runnerPostRepository.findByReviewStatus(pageable, reviewStatus);
     }
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {

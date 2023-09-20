@@ -9,6 +9,7 @@ import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -23,8 +24,10 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static touch.baton.domain.feedback.SupporterFeedback.builder;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
-import static touch.baton.fixture.vo.ContentsFixture.contents;
+import static touch.baton.fixture.vo.CuriousContentsFixture.curiousContents;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
+import static touch.baton.fixture.vo.ImplementedContentsFixture.implementedContents;
+import static touch.baton.fixture.vo.PostscriptContentsFixture.postscriptContents;
 import static touch.baton.fixture.vo.PullRequestUrlFixture.pullRequestUrl;
 import static touch.baton.fixture.vo.TitleFixture.title;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
@@ -48,11 +51,14 @@ class SupporterFeedbackTest {
             runner = RunnerFixture.createRunner(MemberFixture.createDitoo());
 
             runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
-                    contents("제 코드의 내용은 이렇습니다."),
+                    implementedContents("제 코드의 내용은 이렇습니다."),
+                    curiousContents("제 궁금증은 이렇습니다."),
+                    postscriptContents("제 참고 사항은 이렇습니다."),
                     pullRequestUrl("https://"),
                     deadline(LocalDateTime.now().plusHours(10)),
                     watchedCount(0),
                     NOT_STARTED,
+                    IsReviewed.notReviewed(),
                     runner,
                     supporter,
                     RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));

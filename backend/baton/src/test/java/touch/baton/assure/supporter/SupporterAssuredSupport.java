@@ -4,11 +4,15 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
+import touch.baton.assure.common.PathParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.controller.response.SupporterResponse;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -22,8 +26,35 @@ public class SupporterAssuredSupport {
         return new SupporterClientRequestBuilder();
     }
 
-    public static SupporterResponse.Profile 서포터_프로필_응답(final Supporter 서포터) {
-        return SupporterResponse.Profile.from(서포터);
+    public static SupporterUpdateRequest 서포터_본인_정보_수정_요청(final String 이름,
+                                                         final String 회사,
+                                                         final String 서포터_자기소개글,
+                                                         final List<String> 서포터_기술_태그_목록
+    ) {
+        return new SupporterUpdateRequest(이름, 회사, 서포터_자기소개글, 서포터_기술_태그_목록);
+    }
+
+    public static SupporterResponse.Profile 서포터_Profile_응답(final Supporter 서포터, final List<String> 서포터_태그_목록) {
+        return new SupporterResponse.Profile(
+                서포터.getId(),
+                서포터.getMember().getMemberName().getValue(),
+                서포터.getMember().getCompany().getValue(),
+                서포터.getMember().getImageUrl().getValue(),
+                서포터.getMember().getGithubUrl().getValue(),
+                서포터.getIntroduction().getValue(),
+                서포터_태그_목록
+        );
+    }
+
+    public static SupporterResponse.MyProfile 서포터_MyProfile_응답(final Supporter 서포터, final List<String> 서포터_태그_목록) {
+        return new SupporterResponse.MyProfile(
+                서포터.getMember().getMemberName().getValue(),
+                서포터.getMember().getImageUrl().getValue(),
+                서포터.getMember().getGithubUrl().getValue(),
+                서포터.getIntroduction().getValue(),
+                서포터.getMember().getCompany().getValue(),
+                서포터_태그_목록
+        );
     }
 
     public static class SupporterClientRequestBuilder {
@@ -32,13 +63,13 @@ public class SupporterAssuredSupport {
 
         private String accessToken;
 
-        public SupporterClientRequestBuilder 로그인_한다(final String 토큰) {
-            accessToken = 토큰;
+        public SupporterClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
+            accessToken = 액세스_토큰;
             return this;
         }
 
         public SupporterClientRequestBuilder 서포터_프로필을_서포터_식별자값으로_조회한다(final Long 서포터_식별자값) {
-            response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", "supporterId", 서포터_식별자값);
+            response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", new PathParams(Map.of("supporterId", 서포터_식별자값)));
             return this;
         }
 
@@ -47,7 +78,7 @@ public class SupporterAssuredSupport {
             return this;
         }
 
-        public SupporterClientRequestBuilder 서포터_마이페이지를_토큰으로_조회한다() {
+        public SupporterClientRequestBuilder 서포터_마이페이지를_액세스_토큰으로_조회한다() {
             response = AssuredSupport.get("/api/v1/profile/supporter/me", accessToken);
             return this;
         }

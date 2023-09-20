@@ -46,7 +46,7 @@ jobs:
         run: docker push 2023baton/2023baton
 
   deploy:
-    runs-on: [self-hosted, Linux, ARM64]
+    runs-on: [ self-hosted, Linux, ARM64, dev ]
     needs: build
 
     steps:

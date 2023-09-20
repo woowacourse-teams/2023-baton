@@ -1,5 +1,6 @@
 package touch.baton.domain.oauth.client;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.oauth.OauthInformation;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 import static java.util.function.Function.identity;
 
+@Profile("!test")
 @Component
 public class OauthInformationClientComposite {
 
