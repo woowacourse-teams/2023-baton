@@ -36,12 +36,4 @@ public class ApplicantCountDto {
     public int hashCode() {
         return Objects.hash(runnerPostId, applicantCount);
     }
-
-    @Override
-    public String toString() {
-        return "ApplicantCountDto{" +
-               "runnerPostId=" + runnerPostId +
-               ", applicantCount=" + applicantCount +
-               '}';
-    }
 }
