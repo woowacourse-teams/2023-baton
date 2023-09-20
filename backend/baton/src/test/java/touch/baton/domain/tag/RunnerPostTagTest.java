@@ -3,8 +3,6 @@ package touch.baton.domain.tag;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.common.vo.Contents;
-import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
@@ -16,7 +14,11 @@ import touch.baton.domain.member.vo.OauthId;
 import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
+import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
@@ -68,19 +70,20 @@ class RunnerPostTagTest {
 
         private final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("JPA 정복"))
-                .contents(new Contents("김영한 짱짱맨"))
+                .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                .curiousContents(new CuriousContents("저는 클린코드가 궁금해요."))
+                .postscriptContents(new PostscriptContents("저 상처 잘 받으니깐 부드럽게 말해주세요."))
                 .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
                 .deadline(new Deadline(LocalDateTime.now()))
                 .watchedCount(new WatchedCount(0))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
+                .isReviewed(IsReviewed.notReviewed())
                 .runner(runner)
                 .supporter(supporter)
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
 
-        private final Tag tag = Tag.builder()
-                .tagName(new TagName("자바"))
-                .build();
+        private final Tag tag = Tag.newInstance("자바");
 
         @DisplayName("성공한다.")
         @Test

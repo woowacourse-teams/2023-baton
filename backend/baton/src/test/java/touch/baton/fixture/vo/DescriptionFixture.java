@@ -2,7 +2,7 @@ package touch.baton.fixture.vo;
 
 import touch.baton.domain.feedback.vo.Description;
 
-public class DescriptionFixture {
+public abstract class DescriptionFixture {
 
     private DescriptionFixture() {
     }

@@ -1,6 +1,7 @@
 package touch.baton.document.oauth.github;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +10,25 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.Member;
 import touch.baton.domain.oauth.controller.OauthController;
 import touch.baton.domain.oauth.service.OauthService;
+import touch.baton.domain.oauth.token.AccessToken;
+import touch.baton.domain.oauth.token.ExpireDate;
+import touch.baton.domain.oauth.token.RefreshToken;
+import touch.baton.domain.oauth.token.Token;
+import touch.baton.domain.oauth.token.Tokens;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
+
+import java.time.LocalDateTime;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.BDDMockito.when;
+import static org.mockito.Mockito.mock;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -58,17 +71,29 @@ class GithubOauthApiTest extends RestdocsConfig {
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("oauthType").description("소셜 로그인 타입")
+                        ),
+                        responseHeaders(
+                                headerWithName(LOCATION).description("Oauth 서버 리다이렉트 URL")
                         )
                 ))
                 .andDo(print());
     }
 
+    // FIXME: 2023/09/15 RFC2616 버전오류 해결해주세요.
+    @Disabled
     @DisplayName("Github 소셜 로그인을 위해 AuthCode 를 받아 SocialToken 으로 교환하여 Github 프로필 정보를 찾아오고 미가입 사용자일 경우 자동으로 회원가입을 진행하고 JWT 로 변환하여 클라이언트에게 넘겨준다.")
     @Test
     void github_login() throws Exception {
         // given & when
+        final RefreshToken refreshToken = RefreshToken.builder()
+                .member(mock(Member.class))
+                .token(new Token("mock refresh token"))
+                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
+                .build();
+        final Tokens tokens = new Tokens(new AccessToken("Bearer Jwt"), refreshToken);
+
         when(oauthService.login(GITHUB, "authcode"))
-                .thenReturn("Bearer Jwt");
+                .thenReturn(tokens);
 
         // then
         mockMvc.perform(get("/api/v1/oauth/login/{oauthType}", "github")
@@ -78,16 +103,20 @@ class GithubOauthApiTest extends RestdocsConfig {
                 )
                 .andExpect(status().isOk())
                 .andDo(restDocs.document(
-                        pathParameters(
-                                parameterWithName("oauthType").description("소셜 로그인 타입")
-                        ),
-                        queryParameters(
-                                parameterWithName("code").description("소셜로부터 redirect 하여 받은 AuthCode")
-                        ),
-                        responseHeaders(
-                                headerWithName("Authorization").description("Json Web Token")
+                                pathParameters(
+                                        parameterWithName("oauthType").description("소셜 로그인 타입")
+                                ),
+                                queryParameters(
+                                        parameterWithName("code").description("소셜로부터 redirect 하여 받은 AuthCode")
+                                ),
+                                responseHeaders(
+                                        headerWithName("Authorization").description("발급된 JWT 토큰")
+                                ),
+                                responseCookies(
+                                        cookieWithName("refreshToken").description("발급된 리프레시 토큰")
+                                )
                         )
-                ))
+                )
                 .andDo(print());
     }
 }

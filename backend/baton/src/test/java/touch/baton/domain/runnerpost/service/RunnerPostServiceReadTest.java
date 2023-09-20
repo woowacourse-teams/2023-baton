@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.common.vo.Contents;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
@@ -20,13 +19,18 @@ import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
+import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
+import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
+import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -43,6 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
@@ -84,12 +89,15 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         final LocalDateTime deadline = now();
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("제 코드 리뷰 좀 해주세요!!"))
-                .contents(new Contents("제 코드는 클린코드가 맞을까요?"))
+                .implementedContents(new ImplementedContents("제 코드는 클린코드가 맞을까요?"))
+                .curiousContents(new CuriousContents("궁금해요."))
+                .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
                 .deadline(new Deadline(deadline))
                 .pullRequestUrl(new PullRequestUrl("https://"))
                 .watchedCount(new WatchedCount(0))
                 .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .reviewStatus(NOT_STARTED)
+                .isReviewed(IsReviewed.notReviewed())
                 .runner(runner)
                 .supporter(null)
                 .build();
@@ -97,6 +105,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
 
         final Tag tag = Tag.builder()
                 .tagName(new TagName("자바"))
+                .tagReducedName(TagReducedName.from("자바"))
                 .build();
         tagRepository.save(tag);
 
@@ -145,6 +154,30 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         });
     }
 
+    @DisplayName("ReviewStatus 로 RunnerPost 를 전체 조회한다.")
+    @Test
+    void success_readRunnerPostsByReviewStatus() {
+        // given
+        final Member memberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Runner runnerDitoo = runnerRepository.save(RunnerFixture.createRunner(memberDitoo));
+        final Member memberJudy = memberRepository.save(MemberFixture.createJudy());
+        final Supporter supporterJudy = supporterRepository.save(SupporterFixture.create(memberJudy));
+
+        final RunnerPost inProgressRunnerPost = RunnerPostFixture.create(runnerDitoo, deadline(now().plusHours(100)));
+        inProgressRunnerPost.assignSupporter(supporterJudy);
+        final RunnerPost savedInProgressRunnerPost = runnerPostRepository.save(inProgressRunnerPost);
+
+        // when
+        final PageRequest pageable = PageRequest.of(0, 10);
+        final Page<RunnerPost> actualInProgressRunnerPosts = runnerPostService.readRunnerPostsByReviewStatus(pageable, IN_PROGRESS);
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(actualInProgressRunnerPosts.getPageable()).isEqualTo(pageable);
+            softly.assertThat(actualInProgressRunnerPosts.getContent()).containsExactly(savedInProgressRunnerPost);
+        });
+    }
+
     @DisplayName("Supporter 외래키와 ReviewStatus 가 NOT_STARTED 가 아닌 것으로 러너 게시글을 조회한다.")
     @Test
     void readRunnerPostsBySupporterIdAndReviewStatusIsNot_NOT_STARTED() {
@@ -164,7 +197,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
         // when
         final PageRequest pageable = PageRequest.of(0, 10);
         final Page<RunnerPost> pageRunnerPosts
-                = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), ReviewStatus.IN_PROGRESS);
+                = runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), IN_PROGRESS);
 
         // then
         assertAll(

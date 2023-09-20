@@ -1,6 +1,5 @@
 package touch.baton.domain.feedback.service;
 
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,14 +32,17 @@ public class FeedbackService {
         final RunnerPost foundRunnerPost = runnerPostRepository.findById(request.runnerPostId())
                 .orElseThrow(() -> new FeedbackBusinessException("러너 게시글을 찾을 수 없습니다."));
 
+        if (supporterFeedbackRepository.existsByRunnerPostIdAndSupporterId(foundRunnerPost.getId(), foundSupporter.getId())) {
+            throw new FeedbackBusinessException("서포터에 대한 피드백을 작성했으면 추가적인 피드백을 남길 수 없습니다.");
+        }
         if (foundRunnerPost.isNotOwner(runner)) {
             throw new FeedbackBusinessException("리뷰 글을 작성한 주인만 글을 작성할 수 있습니다.");
         }
-
         if (foundRunnerPost.isDifferentSupporter(foundSupporter)) {
             throw new FeedbackBusinessException("리뷰를 작성한 서포터에 대해서만 피드백을 작성할 수 있습니다.");
         }
 
+        foundRunnerPost.finishFeedback();
         final SupporterFeedback supporterFeedback = SupporterFeedback.builder()
                 .reviewType(ReviewType.valueOf(request.reviewType()))
                 .description(new Description(String.join(DELIMITER, request.descriptions())))

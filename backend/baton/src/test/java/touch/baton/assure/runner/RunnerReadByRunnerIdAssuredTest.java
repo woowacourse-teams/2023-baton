@@ -1,16 +1,18 @@
 package touch.baton.assure.runner;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.domain.member.Member;
+import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
-import touch.baton.domain.technicaltag.TechnicalTag;
-import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.NO_CONTENT;
+import static touch.baton.assure.runner.RunnerAssuredSupport.러너_본인_프로필_수정_요청;
+import static touch.baton.assure.runner.RunnerAssuredSupport.러너_프로필_상세_응답;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerReadByRunnerIdAssuredTest extends AssuredTestConfig {
@@ -18,25 +20,27 @@ class RunnerReadByRunnerIdAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_프로필_조회에_성공한다() {
         // given
-        final Member 사용자_에단 = memberRepository.save(MemberFixture.createEthan());
-        final TechnicalTag 자바_태그 = technicalTagRepository.save(TechnicalTagFixture.createJava());
-        final TechnicalTag 리액트_태그 = technicalTagRepository.save(TechnicalTagFixture.createReact());
-        final Runner 러너_에단 = runnerRepository.save(RunnerFixture.createRunner(사용자_에단, List.of(자바_태그, 리액트_태그)));
-        final RunnerProfileResponse.Detail 러너_프로필_조회_응답 = new RunnerProfileResponse.Detail(
-                1L,
-                "에단",
-                "https://",
-                "https://github.com/",
-                "안녕하세요.",
-                "우아한테크코스 5기 백엔드",
-                List.of("Java", "React"));
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+
+        final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
+        final Runner 러너_헤나 = runnerRepository.getBySocialId(헤나_소셜_아이디);
+
+        final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = 러너_본인_프로필_수정_요청("수정된_헤나", "수정된_회사", "수정된_러너_소개글", List.of("자바", "스프링"));
+        RunnerAssuredSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
+                .러너_본인_프로필을_수정한다(러너_본인_프로필_수정_요청)
+
+                .서버_응답()
+                .러너_본인_프로필_수정_성공을_검증한다(new HttpStatusAndLocationHeader(NO_CONTENT, "/api/v1/profile/runner/me"));
 
         // when, then
         RunnerAssuredSupport
                 .클라이언트_요청()
-                .러너_프로필을_상세_조회한다(러너_에단.getId())
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
+                .러너_프로필을_상세_조회한다(러너_헤나.getId())
 
                 .서버_응답()
-                .러너_프로필_상세_조회를_검증한다(러너_프로필_조회_응답);
+                .러너_프로필_상세_조회를_검증한다(러너_프로필_상세_응답(러너_헤나, 러너_본인_프로필_수정_요청));
     }
 }

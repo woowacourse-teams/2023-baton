@@ -10,6 +10,7 @@ import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -19,7 +20,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
@@ -68,8 +71,8 @@ class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
         final Deadline passedDeadlineOne = deadline(LocalDateTime.now().minusHours(10));
         final Deadline passedDeadlineTwo = deadline(LocalDateTime.now().minusHours(5));
         final ReviewStatus expectedReviewStatus = DONE;
-        final RunnerPost runnerPostOne = RunnerPostFixture.create(runner, passedDeadlineOne, expectedReviewStatus);
-        final RunnerPost runnerPostTwo = RunnerPostFixture.create(runner, passedDeadlineTwo, expectedReviewStatus);
+        final RunnerPost runnerPostOne = RunnerPostFixture.create(runner, passedDeadlineOne, expectedReviewStatus, IsReviewed.notReviewed());
+        final RunnerPost runnerPostTwo = RunnerPostFixture.create(runner, passedDeadlineTwo, expectedReviewStatus, IsReviewed.notReviewed());
         em.persist(runnerPostOne);
         em.persist(runnerPostTwo);
 
@@ -90,8 +93,8 @@ class ScheduleRunnerPostRepositoryTest extends RepositoryTestConfig {
         final Deadline passedDeadlineOne = deadline(LocalDateTime.now().plusHours(10));
         final Deadline passedDeadlineTwo = deadline(LocalDateTime.now().plusHours(5));
         final ReviewStatus expectedReviewStatus = NOT_STARTED;
-        final RunnerPost runnerPostOne = RunnerPostFixture.create(runner, passedDeadlineOne, expectedReviewStatus);
-        final RunnerPost runnerPostTwo = RunnerPostFixture.create(runner, passedDeadlineTwo, expectedReviewStatus);
+        final RunnerPost runnerPostOne = RunnerPostFixture.create(runner, passedDeadlineOne, expectedReviewStatus, IsReviewed.notReviewed());
+        final RunnerPost runnerPostTwo = RunnerPostFixture.create(runner, passedDeadlineTwo, expectedReviewStatus, IsReviewed.notReviewed());
         em.persist(runnerPostOne);
         em.persist(runnerPostTwo);
 

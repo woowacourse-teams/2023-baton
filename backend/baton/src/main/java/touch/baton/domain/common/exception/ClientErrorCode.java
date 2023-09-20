@@ -7,7 +7,7 @@ public enum ClientErrorCode {
     TITLE_IS_NULL(HttpStatus.BAD_REQUEST, "RP001", "제목을 입력해주세요."),
     PULL_REQUEST_URL_IS_NULL(HttpStatus.BAD_REQUEST, "RP002", "PR 주소를 입력해주세요."),
     DEADLINE_IS_NULL(HttpStatus.BAD_REQUEST, "RP003", "마감일을 입력해주세요."),
-    CONTENTS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP004", "내용을 입력해주세요."),
+    IMPLEMENTED_CONTENTS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP004", "구현 내용을 입력해주세요."),
     CONTENTS_OVERFLOW(HttpStatus.BAD_REQUEST, "RP005", "내용은 1000자 까지 입력해주세요."),
     PAST_DEADLINE(HttpStatus.BAD_REQUEST, "RP006", "마감일은 오늘보다 과거일 수 없습니다."),
     RUNNER_POST_NOT_FOUND(HttpStatus.NOT_FOUND, "RP007", "존재하지 않는 게시물입니다."),
@@ -15,6 +15,8 @@ public enum ClientErrorCode {
     ASSIGN_SUPPORTER_ID_IS_NULL(HttpStatus.BAD_REQUEST, "RP009", "선택한 서포터의 식별자를 입력해주세요."),
     APPLICANT_MESSAGE_IS_OVERFLOW(HttpStatus.BAD_REQUEST, "RP010", "서포터 지원 메시지는 500자 까지 입력해주세요."),
     PULL_REQUEST_URL_IS_NOT_URL(HttpStatus.BAD_REQUEST, "RP011", "올바른 PR 주소를 입력해주세요."),
+    CURIOUS_CONTENTS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP012", "궁금한 내용을 입력해주세요."),
+    POSTSCRIPT_CONTENTS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP013", "참고 사항을 입력해주세요."),
 
     REVIEW_TYPE_IS_NULL(HttpStatus.BAD_REQUEST, "FB001", "만족도를 입력해주세요."),
     SUPPORTER_ID_IS_NULL(HttpStatus.BAD_REQUEST, "FB002", "서포터 식별자를 입력해주세요."),
@@ -35,7 +37,16 @@ public enum ClientErrorCode {
     JWT_SIGNATURE_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW001", "시그니처가 다른 잘못된 JWT 입니다."),
     JWT_FORM_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW002", "잘못 생성된 JWT 로 디코딩 할 수 없습니다."),
     JWT_CLAIM_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW003", "JWT 에 기대한 정보를 모두 포함하고 있지 않습니다."),
-    JWT_CLAIM_SOCIAL_ID_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW004", "사용자의 잘못된 소셜 아이디(SocialId) 정보를 가진 JWT 입니다.");
+    JWT_CLAIM_SOCIAL_ID_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW004", "사용자의 잘못된 소셜 아이디(SocialId) 정보를 가진 JWT 입니다."),
+    JWT_CLAIM_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW005", "기간이 만료된 JWT 입니다."),
+    REFRESH_TOKEN_IS_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JW007", "해당 사용자의 Refresh Token이 존재하지 않습니다."),
+    ACCESS_TOKEN_AND_REFRESH_TOKEN_HAVE_DIFFERENT_OWNER(HttpStatus.UNAUTHORIZED, "JW008", "Access Token 과 Refresh Token 의 주인이 다릅니다."),
+    REFRESH_TOKEN_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW009", "기간이 만료된 Refresh Token 입니다."),
+    REFRESH_TOKEN_IS_NOT_NULL(HttpStatus.BAD_REQUEST, "JW010", "Refresh Token 은 비어 있을 수 없습니다."),
+
+    DUPLICATED_BRANCH_NAME(HttpStatus.BAD_REQUEST, "BR001", "이미 존재하는 이름의 브랜치입니다."),
+    REPO_NAME_IS_NULL(HttpStatus.BAD_REQUEST, "BR002", "레포지토리 이름을 입력해주세요."),
+    REPO_NOT_FOUND(HttpStatus.NOT_FOUND, "BR003", "레포지토리를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String errorCode;
