@@ -6,16 +6,18 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
 
 import { ReviewStatus } from '@/types/runnerPost';
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
+import styled from 'styled-components';
 
 interface Props {
   runnerPostId: number;
   reviewStatus: ReviewStatus;
   isRunner: boolean;
   supporterId?: number;
+  handleDeletePost: (handleDeletePost: number) => void;
 }
 
-const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }: Props) => {
+const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, handleDeletePost }: Props) => {
   const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
 
   const { isMobile } = useViewport();
@@ -27,14 +29,15 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
     patchRequestWithAuth(`/posts/runner/${runnerPostId}/cancelation`, async (response) => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
 
-      setTimeout(window.location.reload, 2000);
+      handleDeletePost(runnerPostId);
     });
   };
 
   const finishReview = () => {
     patchRequestWithAuth(`/posts/runner/${runnerPostId}/done`, async (response) => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPLETE);
-      setTimeout(window.location.reload, 2000);
+
+      handleDeletePost(runnerPostId);
     });
   };
 
@@ -68,42 +71,48 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
   switch (reviewStatus) {
     case 'NOT_STARTED':
       return (
-        <Button
-          fontSize={isMobile ? '14px' : ''}
-          colorTheme="WHITE"
-          fontWeight={700}
-          width={isMobile ? '100%' : '180px'}
-          height="40px"
-          onClick={isRunner ? handleClickSupportSelectButton : handleClickCancelReviewButton}
-        >
-          {isRunner ? '서포터 선택하기' : '리뷰 제안 취소'}
-        </Button>
+        <S.PostButtonWrapper>
+          <Button
+            fontSize={isMobile ? '14px' : ''}
+            colorTheme="WHITE"
+            fontWeight={700}
+            width={isMobile ? '100%' : '180px'}
+            height="40px"
+            onClick={isRunner ? handleClickSupportSelectButton : handleClickCancelReviewButton}
+          >
+            {isRunner ? '서포터 선택하기' : '리뷰 제안 취소'}
+          </Button>
+        </S.PostButtonWrapper>
       );
     case 'IN_PROGRESS':
       return isRunner ? null : (
-        <Button
-          colorTheme="WHITE"
-          fontWeight={700}
-          fontSize={isMobile ? '14px' : ''}
-          width={isMobile ? '100%' : '180px'}
-          height="40px"
-          onClick={handleClickFinishButton}
-        >
-          리뷰 완료
-        </Button>
+        <S.PostButtonWrapper>
+          <Button
+            colorTheme="WHITE"
+            fontWeight={700}
+            fontSize={isMobile ? '14px' : ''}
+            width={isMobile ? '100%' : '180px'}
+            height="40px"
+            onClick={handleClickFinishButton}
+          >
+            리뷰 완료
+          </Button>
+        </S.PostButtonWrapper>
       );
     case 'DONE':
       return isRunner ? (
-        <Button
-          colorTheme="WHITE"
-          fontWeight={700}
-          fontSize={isMobile ? '14px' : ''}
-          width={isMobile ? '100%' : '180px'}
-          height="40px"
-          onClick={handleClickSupportFeedbackButton}
-        >
-          후기 작성
-        </Button>
+        <S.PostButtonWrapper>
+          <Button
+            colorTheme="WHITE"
+            fontWeight={700}
+            fontSize={isMobile ? '14px' : ''}
+            width={isMobile ? '100%' : '180px'}
+            height="40px"
+            onClick={handleClickSupportFeedbackButton}
+          >
+            후기 작성
+          </Button>
+        </S.PostButtonWrapper>
       ) : null;
     default:
       return null;
@@ -111,3 +120,14 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId }:
 };
 
 export default MyPagePostButton;
+
+const S = {
+  PostButtonWrapper: styled.div`
+    width: 180px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+      margin-top: 18px;
+    }
+  `,
+};

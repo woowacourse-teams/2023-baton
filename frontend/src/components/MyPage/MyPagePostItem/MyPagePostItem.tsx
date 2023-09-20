@@ -11,6 +11,7 @@ import useViewport from '@/hooks/useViewport';
 
 interface Props extends MyPagePost {
   isRunner: boolean;
+  handleDeletePost: (handleDeletePost: number) => void;
 }
 
 const MyPagePostItem = ({
@@ -23,6 +24,7 @@ const MyPagePostItem = ({
   applicantCount,
   isRunner,
   supporterId,
+  handleDeletePost,
 }: Props) => {
   const { goToRunnerPostPage } = usePageRouter();
 
@@ -34,73 +36,41 @@ const MyPagePostItem = ({
 
   return (
     <S.RunnerPostItemContainer onClick={handlePostClick}>
-      {isMobile && (
-        <>
-          <S.PostTitle>{title}</S.PostTitle>
-          <S.DeadLineContainer>
-            <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
-            <Label
-              colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
-              fontSize={isMobile ? '10px' : ''}
-            >
-              {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
-            </Label>
-          </S.DeadLineContainer>
-        </>
-      )}
       <S.SideContainer>
-        <S.LeftSideContainer>
-          {!isMobile && (
-            <>
-              <S.PostTitle>{title}</S.PostTitle>
-              <S.DeadLineContainer>
-                <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
-                <Label
-                  colorTheme={
-                    reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'
-                  }
-                  fontSize={isMobile ? '10px' : ''}
-                >
-                  {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
-                </Label>
-              </S.DeadLineContainer>
-            </>
-          )}
-          <S.TagContainer>
-            {tags.map((tag, index) => (
-              <S.Tag key={index}>#{tag}</S.Tag>
-            ))}
-          </S.TagContainer>
-        </S.LeftSideContainer>
-        <S.RightSideContainer>
-          <S.ChatViewContainer>
-            <S.statisticsContainer>
-              <S.statisticsImage src={eyeIcon} />
-              <S.statisticsText>{watchedCount}</S.statisticsText>
-              <S.statisticsImage src={applicantIcon} />
-              <S.statisticsText>{applicantCount}</S.statisticsText>
-            </S.statisticsContainer>
-          </S.ChatViewContainer>
-          {!isMobile && (
-            <S.PostButtonWrapper>
-              <MyPagePostButton
-                runnerPostId={runnerPostId}
-                isRunner={isRunner}
-                reviewStatus={reviewStatus}
-                supporterId={supporterId}
-              />
-            </S.PostButtonWrapper>
-          )}
-        </S.RightSideContainer>
+        <S.PostTitle>{title}</S.PostTitle>
+        <S.statisticsContainer>
+          <S.statisticsImage src={eyeIcon} />
+          <S.statisticsText>{watchedCount}</S.statisticsText>
+          <S.statisticsImage src={applicantIcon} />
+          <S.statisticsText>{applicantCount}</S.statisticsText>
+        </S.statisticsContainer>
       </S.SideContainer>
-      {isMobile && (
+      <S.DeadLineContainer>
+        <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
+        <Label
+          height={isMobile ? '18px' : '22px'}
+          colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
+          fontSize={isMobile ? '10px' : ''}
+        >
+          {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
+        </Label>
+      </S.DeadLineContainer>
+
+      <S.BottomContainer>
+        <S.TagContainer>
+          {tags.map((tag, index) => (
+            <S.Tag key={index}>#{tag}</S.Tag>
+          ))}
+        </S.TagContainer>
+
         <MyPagePostButton
+          handleDeletePost={handleDeletePost}
           runnerPostId={runnerPostId}
           isRunner={isRunner}
           reviewStatus={reviewStatus}
           supporterId={supporterId}
         />
-      )}
+      </S.BottomContainer>
     </S.RunnerPostItemContainer>
   );
 };
@@ -138,6 +108,9 @@ const S = {
   SideContainer: styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: end;
+
+    gap: 12px;
   `,
 
   PostTitle: styled.p`
@@ -160,7 +133,7 @@ const S = {
   `,
 
   DeadLine: styled.p`
-    margin-bottom: 60px;
+    margin-bottom: 40px;
 
     color: var(--gray-600);
 
@@ -171,43 +144,28 @@ const S = {
     }
   `,
 
-  TagContainer: styled.div`
-    & span {
-      margin-right: 10px;
+  TagContainer: styled.div``,
 
+  Tag: styled.span`
+    margin-right: 10px;
+
+    font-size: 14px;
+    color: var(--gray-600);
+
+    @media (max-width: 768px) {
       font-size: 14px;
-      color: var(--gray-600);
-    }
-  `,
-  Tag: styled.span``,
-
-  LeftSideContainer: styled.div``,
-
-  RightSideContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-    gap: 15px;
-
-    & button:hover {
-      transition: all 0.3s ease;
-      background-color: var(--baton-red);
-      color: var(--white-color);
     }
   `,
 
-  PostButtonWrapper: styled.div`
-    padding-left: auto;
-    width: 140px;
-  `,
-
-  ChatViewContainer: styled.div`
+  BottomContainer: styled.div`
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
+    align-items: end;
 
-    gap: 10px;
-
-    font-size: 12px;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: start;
+    }
   `,
 
   statisticsContainer: styled.div`
@@ -226,9 +184,18 @@ const S = {
     width: 20px;
 
     margin-left: 8px;
+
+    @media (max-width: 768px) {
+      width: 15px;
+      margin-left: 4px;
+    }
   `,
 
   statisticsText: styled.p`
     font-size: 14px;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   `,
 };
