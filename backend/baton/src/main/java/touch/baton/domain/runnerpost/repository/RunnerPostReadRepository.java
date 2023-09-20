@@ -21,8 +21,8 @@ public interface RunnerPostReadRepository extends JpaRepository<RunnerPost, Long
         final Map<Long, Long> applicantCountMapping = countApplicantsByRunnerPostIds(runnerPostIds)
                 .stream()
                 .collect(Collectors.toMap(
-                        applicantCountDto -> applicantCountDto.getRunnerPostId(),
-                        applicantCountDto -> applicantCountDto.getApplicantCount()
+                        ApplicantCountDto::runnerPostId,
+                        ApplicantCountDto::applicantCount
                 ));
 
         return new ApplicantCountMappingDto(applicantCountMapping);
@@ -34,7 +34,6 @@ public interface RunnerPostReadRepository extends JpaRepository<RunnerPost, Long
             left outer join fetch SupporterRunnerPost srp on srp.runnerPost.id = rp.id
             where rp.id in :runnerPostIds
             group by rp.id
-            order by rp.id
             """)
     List<ApplicantCountDto> countApplicantsByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
 
