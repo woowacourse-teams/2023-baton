@@ -10,6 +10,7 @@ import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.Tag;
@@ -22,6 +23,7 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -138,10 +140,14 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
                 savedRunnerPostThree.getId()
         );
 
-        final List<Long> actual = runnerPostReadService.readApplicantCountsByRunnerPostIds(runnerPostIds);
+        final ApplicantCountMappingDto actual = runnerPostReadService.readApplicantCountMappingByRunnerPostIds(runnerPostIds);
 
         // then
-        final List<Long> expected = List.of(3L, 0L, 2L);
+        final ApplicantCountMappingDto expected = new ApplicantCountMappingDto(Map.of(
+                savedRunnerPostOne.getId(), 3L,
+                savedRunnerPostTwo.getId(), 0L,
+                savedRunnerPostThree.getId(), 2L
+        ));
 
         assertThat(actual).isEqualTo(expected);
     }

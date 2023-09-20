@@ -4,4 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import touch.baton.domain.feedback.SupporterFeedback;
 
 public interface SupporterFeedbackRepository extends JpaRepository<SupporterFeedback, Long> {
+
+    boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
 }
