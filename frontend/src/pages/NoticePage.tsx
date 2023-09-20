@@ -176,9 +176,17 @@ const NoticePage = () => {
 
       {isConfirmModalOpen && (
         <ConfirmModal
-          contents={`${selectedLanguage} 미션을 선택하셨습니다.
-
-확인을 누르시면 ${profileName}님의 깃허브 아이디로 브랜치가 생성됩니다.`}
+          contents={
+            <>
+              <p>
+                <S.highlightSpan>{selectedLanguage} 미션을 선택</S.highlightSpan>하셨습니다.
+              </p>
+              <p>
+                확인을 누르시면 <S.highlightSpan>{profileName}님의 깃허브 아이디로 브랜치가 생성</S.highlightSpan>
+                됩니다.
+              </p>
+            </>
+          }
           closeModal={closeConfirmModal}
           handleClickConfirmButton={handleClickStartButton}
         />
@@ -315,8 +323,8 @@ const S = {
     margin: 0 auto;
 
     @media (max-width: 768px) {
-      width: 350px;
-      height: 123px;
+      width: 320px;
+      height: 112px;
     }
   `,
 
@@ -394,6 +402,10 @@ const S = {
     @media (max-width: 768px) {
       font-size: 12px;
     }
+  `,
+
+  highlightSpan: styled.span`
+    font-weight: 700;
   `,
 };
 

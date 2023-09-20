@@ -5,7 +5,7 @@ import { styled } from 'styled-components';
 import useViewport from '@/hooks/useViewport';
 
 interface Props {
-  contents: string;
+  contents: React.ReactNode;
   closeModal: () => void;
   handleClickConfirmButton: () => void;
   confirmText?: string;
@@ -72,9 +72,8 @@ const S = {
   ConfirmMessage: styled.p`
     margin-bottom: 40px;
 
-    font-size: 18px;
-
     white-space: pre-wrap;
+    line-height: 1.5;
   `,
 
   ButtonContainer: styled.div`

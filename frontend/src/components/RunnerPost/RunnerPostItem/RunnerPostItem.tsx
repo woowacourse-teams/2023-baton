@@ -74,7 +74,7 @@ const S = {
     display: flex;
     justify-content: space-between;
 
-    min-width: 360px;
+    min-width: 340px;
     width: 100%;
     height: max-content;
     padding: 35px 40px;
