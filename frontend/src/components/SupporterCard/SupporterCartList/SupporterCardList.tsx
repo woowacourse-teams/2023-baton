@@ -1,39 +1,39 @@
-import { Candidate, GetSupporterCandidateResponse } from '@/types/supporterCandidate';
+import { Candidate } from '@/types/supporterCandidate';
 import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import SupporterCardItem from '../SupporterCardItem/SupporterCardItem';
 import { useParams } from 'react-router-dom';
-import { useToken } from '@/hooks/useToken';
-import { getRequest } from '@/api/fetch';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
+import { usePageRouter } from '@/hooks/usePageRouter';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
 const SupporterCardList = () => {
   const { runnerPostId } = useParams();
 
-  const { getToken } = useToken();
-
+  const { isLogin } = useLogin();
+  const { getRequestWithAuth } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
+  const { goToLoginPage } = usePageRouter();
 
   const [supporterList, setSupporterList] = useState<Candidate[]>([]);
 
   useEffect(() => {
+    if (!isLogin) {
+      showErrorToast({ title: ERROR_TITLE.REQUEST, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
+
+      return;
+    }
     getSupporterList();
   }, []);
 
   const getSupporterList = async () => {
-    const token = getToken()?.value;
-    if (!token) return;
-
-    getRequest(`/posts/runner/${runnerPostId}/supporters`, token)
-      .then(async (response) => {
-        const data = await response.json();
-        setSupporterList(data.data);
-      })
-      .catch((error: Error) => {
-        const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
-        showErrorToast({ title: ERROR_TITLE.REQUEST, description });
-      });
+    getRequestWithAuth(`/posts/runner/${runnerPostId}/supporters`, async (response) => {
+      const data = await response.json();
+      setSupporterList(data.data);
+    });
   };
 
   return (
@@ -55,5 +55,12 @@ const S = {
     column-gap: 40px;
 
     width: 100%;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(1, 1fr);
+
+      row-gap: 50px;
+      column-gap: 0;
+    }
   `,
 };

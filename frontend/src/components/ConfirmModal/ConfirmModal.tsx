@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import { styled } from 'styled-components';
+import useViewport from '@/hooks/useViewport';
 
 interface Props {
-  contents: string;
+  contents: React.ReactNode;
   closeModal: () => void;
   handleClickConfirmButton: () => void;
   confirmText?: string;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmText, cancelText }: Props) => {
+  const { isMobile } = useViewport();
+
   useEffect(() => {
     const handleEscapeKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeModal();
@@ -25,7 +28,7 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
   }, []);
 
   return (
-    <Modal width="495px" height="211px" closeModal={closeModal}>
+    <Modal width={isMobile ? '340px' : '540px'} height={isMobile ? '250px' : '211px'} closeModal={closeModal}>
       <S.ConfirmModalContainer>
         <S.ConfirmMessage>{contents}</S.ConfirmMessage>
         <S.ButtonContainer>
@@ -36,7 +39,7 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
             colorTheme="WHITE"
             width="134px"
             height="35px"
-            fontSize="16px"
+            fontSize={isMobile ? '12px' : '14px'}
             fontWeight={700}
             onClick={handleClickConfirmButton}
           >
@@ -59,12 +62,18 @@ const S = {
 
     width: 100%;
     height: 100%;
+    padding: 20px 0;
+
+    @media (max-width: 768px) {
+      padding: 10px 20px;
+    }
   `,
 
   ConfirmMessage: styled.p`
     margin-bottom: 40px;
 
-    font-size: 18px;
+    white-space: pre-wrap;
+    line-height: 1.5;
   `,
 
   ButtonContainer: styled.div`

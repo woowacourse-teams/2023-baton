@@ -29,7 +29,9 @@ jobs:
 
       - name: Setup environment variables
         run: |
-          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_PROD_BASE_URL }}" >> .env
+          echo "REACT_APP_BASE_URL=${{ secrets.REACT_APP_PROD_BASE_URL }}
+          REACT_APP_CHANNELTALK_KEY=${{ secrets.REACT_APP_CHANNELTALK_KEY }}
+           " >> .env
 
       - name: Install Dependancies
         run: npm install

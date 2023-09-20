@@ -17,5 +17,9 @@ const S = {
 
     font-size: 18px;
     color: var(--gray-500);
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   `,
 };

@@ -7,9 +7,10 @@ interface Props {
   pushTag: (tag: string) => void;
   popTag: (tag?: string) => void;
   width?: string | number;
+  fontSize?: string;
 }
 
-const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
+const TagInput = ({ tags, pushTag, popTag, width, fontSize }: Props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isFocus, setIsFocus] = useState(false);
 
@@ -49,7 +50,7 @@ const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
   };
 
   return (
-    <S.TagInputContainer $width={width}>
+    <S.TagInputContainer $width={width} $fontSize={fontSize}>
       <S.TagList>
         {tags.map((item) => (
           <S.TagItem key={item}>
@@ -80,14 +81,14 @@ const TagInput = ({ tags, pushTag, popTag, width }: Props) => {
 export default TagInput;
 
 const S = {
-  TagInputContainer: styled.div<{ $width?: string | number }>`
+  TagInputContainer: styled.div<{ $width?: string | number; $fontSize?: string }>`
     display: flex;
     align-items: center;
 
     gap: 15px;
     width: ${({ $width }) => $width || '500px'};
 
-    font-size: 18px;
+    font-size: ${({ $fontSize }) => $fontSize || '18px'};
   `,
 
   InputBox: styled.input`

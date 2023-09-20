@@ -5,7 +5,6 @@ import MainPage from './pages/MainPage';
 import RunnerPostPage from './pages/RunnerPostDetailPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
-import CreationResultPage from './pages/CreationResultPage';
 import MyPage from './pages/MyPage';
 import GithubCallbackPage from './pages/GithubCallbackPage';
 import ProfileEditPage from './pages/ProfileEditPage';
@@ -13,6 +12,7 @@ import SupporterSelectPage from './pages/SupporterSelectPage';
 import SupporterFeedbackPage from './pages/SupporterFeedbackPage';
 import SupporterProfilePage from './pages/SupporterProfilePage';
 import RunnerProfilePage from './pages/RunnerProfilePage';
+import NoticePage from './pages/NoticePage';
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -22,12 +22,12 @@ export const ROUTER_PATH = {
   MY_PAGE: '/my-page',
   LOGIN: '/login',
   NOT_FOUND: '/*',
-  RESULT: '/result',
   RUNNER_PROFILE: '/runner-profile/:runnerId',
   SUPPORTER_PROFILE: '/supporter-profile/:supporterId',
   PROFILE_EDIT: '/profile-edit',
   SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
-  GITHUB_CALLBACK: '/oauth/github/callback', // Authorization callback URL?
+  GITHUB_CALLBACK: '/oauth/github/callback',
+  NOTICE: '/notice',
 };
 
 export const router = createBrowserRouter(
@@ -50,10 +50,6 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.LOGIN,
           element: <LoginPage />,
-        },
-        {
-          path: ROUTER_PATH.RESULT,
-          element: <CreationResultPage />,
         },
         {
           path: ROUTER_PATH.MY_PAGE,
@@ -79,6 +75,10 @@ export const router = createBrowserRouter(
         {
           path: ROUTER_PATH.SUPPORTER_PROFILE,
           element: <SupporterProfilePage />,
+        },
+        {
+          path: ROUTER_PATH.NOTICE,
+          element: <NoticePage />,
         },
       ],
     },

@@ -1,40 +1,31 @@
-import { getRequest } from '@/api/fetch';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
 import { GetRunnerProfileResponse } from '@/types/profile';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import { ToastContext } from '@/contexts/ToastContext';
-import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { useFetch } from '@/hooks/useFetch';
 
 const RunnerProfilePage = () => {
   const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
 
-  const { runnerId } = useParams();
+  const { getRequest } = useFetch();
 
-  const { showErrorToast } = useContext(ToastContext);
+  const { runnerId } = useParams();
 
   useEffect(() => {
     getProfile();
   }, [runnerId]);
 
   const getProfile = async () => {
-    getRequest(`/profile/runner/${runnerId}`)
-      .then(async (response) => {
-        const data: GetRunnerProfileResponse = await response.json();
+    getRequest(`/profile/runner/${runnerId}`, async (response) => {
+      const data: GetRunnerProfileResponse = await response.json();
 
-        setRunnerProfile(data);
-      })
-      .catch((error: Error) =>
-        showErrorToast({
-          description: error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED,
-          title: ERROR_TITLE.REQUEST,
-        }),
-      );
+      setRunnerProfile(data);
+    });
   };
 
   return (
@@ -80,6 +71,10 @@ const S = {
     align-items: flex-start;
 
     padding: 50px 0;
+
+    @media (min-width: 768px) {
+      padding: 50px 20px;
+    }
   `,
 
   InfoContainer: styled.div`
@@ -98,11 +93,20 @@ const S = {
   Name: styled.div`
     font-size: 26px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
   `,
 
   Company: styled.div`
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
+
   TechLabel: styled.div`
     display: flex;
     gap: 8px;
@@ -135,6 +139,13 @@ const S = {
 
     padding: 0 10px;
     margin-bottom: 50px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      gap: 40px;
+    }
   `,
 
   Introduction: styled.div`
@@ -162,6 +173,12 @@ const S = {
     line-height: 1.8;
 
     white-space: pre-line;
+
+    @media (max-width: 768px) {
+      width: calc(75% + 40px);
+
+      font-size: 14px;
+    }
   `,
 
   Anchor: styled.a`
