@@ -5,6 +5,7 @@ import java.util.Objects;
 public class ApplicantCountDto {
 
     private Long runnerPostId;
+
     private Long applicantCount;
 
     public ApplicantCountDto() {

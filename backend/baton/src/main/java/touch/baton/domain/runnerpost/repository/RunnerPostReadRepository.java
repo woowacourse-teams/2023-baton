@@ -44,7 +44,6 @@ public interface RunnerPostReadRepository extends JpaRepository<RunnerPost, Long
             join fetch Runner r on r.id = rp.runner.id
             join fetch Member m on m.id = r.member.id
             join fetch RunnerPostTag rpt on rpt.runnerPost.id = rp.id
-                        
             where rpt.tag.tagReducedName = :tagReducedName
             and rp.reviewStatus = :reviewStatus
             """)
