@@ -9,6 +9,7 @@ import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -57,6 +58,7 @@ class SupporterFeedbackTest {
                     deadline(LocalDateTime.now().plusHours(10)),
                     watchedCount(0),
                     NOT_STARTED,
+                    IsReviewed.notReviewed(),
                     runner,
                     supporter,
                     RunnerPostTagsFixture.runnerPostTags(new ArrayList<>()));
