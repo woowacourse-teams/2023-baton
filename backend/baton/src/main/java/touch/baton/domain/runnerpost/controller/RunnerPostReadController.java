@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
 import touch.baton.domain.runnerpost.service.RunnerPostReadService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 
 import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.springframework.data.domain.Sort.Direction.DESC;
 
@@ -38,20 +38,14 @@ public class RunnerPostReadController {
             @RequestParam final ReviewStatus reviewStatus
     ) {
         final Page<RunnerPost> pageRunnerPosts = getPageRunnerPosts(pageable, tagName, reviewStatus);
+        final ApplicantCountMappingDto applicantCountMapping = getApplicantCountMapping(pageRunnerPosts);
 
-        final List<Long> foundRunnerPostIds = pageRunnerPosts.stream()
-                .map(RunnerPost::getId)
-                .toList();
+        final List<RunnerPostResponse.Simple> responses = pageRunnerPosts.getContent().stream()
+                .map(runnerPost -> {
+                    final Long foundApplicantCount = applicantCountMapping.getApplicantCountByRunnerPostId(runnerPost.getId());
 
-        final List<Long> foundApplicantCounts = runnerPostReadService.readApplicantCountsByRunnerPostIds(foundRunnerPostIds);
-        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundApplicantCounts.size())
-                .mapToObj(index -> {
-                            final RunnerPost current = pageRunnerPosts.getContent().get(index);
-                            final Long applicantCount = foundApplicantCounts.get(index);
-
-                            return RunnerPostResponse.Simple.from(current, applicantCount);
-                        }
-                ).toList();
+                    return RunnerPostResponse.Simple.from(runnerPost, foundApplicantCount);
+                }).toList();
 
         final PageImpl<RunnerPostResponse.Simple> pageResponse
                 = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
@@ -65,5 +59,13 @@ public class RunnerPostReadController {
         }
 
         return runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(pageable, tagName, reviewStatus);
+    }
+
+    private ApplicantCountMappingDto getApplicantCountMapping(final Page<RunnerPost> pageRunnerPosts) {
+        final List<Long> foundRunnerPostIds = pageRunnerPosts.stream()
+                .map(RunnerPost::getId)
+                .toList();
+
+        return runnerPostReadService.readApplicantCountMappingByRunnerPostIds(foundRunnerPostIds);
     }
 }
