@@ -26,7 +26,7 @@ const InputBox = ({
     <S.InputContainer $fontSize={fontSize} $fontWeight={fontWeight} $width={width} $height={height}>
       <S.InputBox onChange={handleInputTextState} maxLength={maxLength} autoFocus={autoFocus} {...rest} />
       {maxLength && (
-        <S.InputTextLength $fontsize={maxLengthFontSize}>
+        <S.InputTextLength $maxLengthFontSize={maxLengthFontSize}>
           {inputTextState.length ?? 0} / {maxLength}
         </S.InputTextLength>
       )}
@@ -54,11 +54,11 @@ const S = {
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
   `,
 
-  InputTextLength: styled.div<{ $fontsize?: string | number }>`
+  InputTextLength: styled.div<{ $maxLengthFontSize?: string | number }>`
     display: flex;
     align-items: center;
 
-    font-size: ${({ $fontsize }) => $fontsize || '18px'};
+    font-size: ${({ $maxLengthFontSize }) => $maxLengthFontSize || '18px'};
     color: var(--gray-400);
   `,
 

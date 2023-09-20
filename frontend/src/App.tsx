@@ -1,15 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
-import { useToken } from './hooks/useToken';
 import ToastProvider from './contexts/ToastContext';
+import ChannelService from './ChannelService';
+import { CHANNEL_SERVICE_KEY } from './constants';
+import { useLogin } from './hooks/useLogin';
+import LoadingPage from './pages/LoadingPage';
 
 const App = () => {
-  const { validateToken } = useToken();
+  const { checkLoginToken } = useLogin();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  validateToken();
+  checkLoginToken().finally(() => {
+    setIsLoading(false);
+  });
 
-  return (
+  ChannelService.loadScript();
+
+  if (CHANNEL_SERVICE_KEY) {
+    ChannelService.boot({
+      pluginKey: CHANNEL_SERVICE_KEY,
+    });
+  }
+
+  return isLoading ? (
+    <LoadingPage />
+  ) : (
     <ToastProvider>
       <S.AppContainer>
         <Outlet />

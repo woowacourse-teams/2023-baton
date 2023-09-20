@@ -4,13 +4,14 @@ import { styled } from 'styled-components';
 
 interface Props {
   children: React.ReactNode;
+  maxWidth?: string;
 }
 
-const Layout = ({ children }: Props) => {
+const Layout = ({ children, maxWidth }: Props) => {
   return (
     <S.LayoutContainer>
       <Header />
-      <S.ChildrenWrapper>{children}</S.ChildrenWrapper>
+      <S.ChildrenWrapper $maxWidth={maxWidth}>{children}</S.ChildrenWrapper>
     </S.LayoutContainer>
   );
 };
@@ -24,9 +25,12 @@ const S = {
     align-items: center;
   `,
 
-  ChildrenWrapper: styled.article`
-    width: 1200px;
+  ChildrenWrapper: styled.article<{ $maxWidth?: string }>`
+    max-width: ${({ $maxWidth }) => $maxWidth || '1200px'};
+    width: 100%;
 
-    margin-bottom: 80px;
+    @media (max-width: 768px) {
+      padding: 15px;
+    }
   `,
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -13,19 +13,23 @@ import Label from '@/components/common/Label/Label';
 import { GetDetailedRunnerPostResponse } from '@/types/runnerPost';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
-import { useToken } from '@/hooks/useToken';
-import { deleteRequest, getRequest, postRequest } from '@/api/fetch';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 import { validateMessage } from '@/utils/validate';
+import useViewport from '@/hooks/useViewport';
+import { useFetch } from '@/hooks/useFetch';
+import { useLogin } from '@/hooks/useLogin';
+import GuideContents from '@/components/GuideContents/GuideContents';
 
 const RunnerPostPage = () => {
-  const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage } = usePageRouter();
+  const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage, goToLoginPage } = usePageRouter();
 
   const { runnerPostId } = useParams();
+  const { getRequest, getRequestWithAuth, postRequestWithAuth, deleteRequestWithAuth } = useFetch();
+  const { isLogin } = useLogin();
 
-  const { getToken, hasToken } = useToken();
+  const { isMobile } = useViewport();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
@@ -39,36 +43,30 @@ const RunnerPostPage = () => {
   }, []);
 
   const getRunnerPost = () => {
-    const token = hasToken() ? getToken()?.value : undefined;
-
-    getRequest(`/posts/runner/${runnerPostId}`, token)
-      .then(async (response) => {
+    if (isLogin) {
+      getRequestWithAuth(`/posts/runner/${runnerPostId}`, async (response) => {
         const data: GetDetailedRunnerPostResponse = await response.json();
         setRunnerPost(data);
-      })
-      .catch((error: Error) => {
-        showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message });
-        goBack();
       });
+
+      return;
+    }
+
+    getRequest(`/posts/runner/${runnerPostId}`, async (response) => {
+      const data: GetDetailedRunnerPostResponse = await response.json();
+      setRunnerPost(data);
+    });
   };
 
   const deleteRunnerPost = () => {
-    const token = getToken()?.value;
-    if (!token) return;
+    deleteRequestWithAuth(`/posts/runner/${runnerPostId}`, () => {
+      showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
 
-    deleteRequest(`/posts/runner/${runnerPostId}`, token)
-      .then(() => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
-
-        goToMainPage();
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      goToMainPage();
+    });
   };
 
   const sendMessage = () => {
-    const token = getToken()?.value;
-    if (!token) return;
-
     try {
       validateMessage(message);
     } catch (error) {
@@ -78,15 +76,15 @@ const RunnerPostPage = () => {
       return;
     }
 
-    const body = JSON.stringify({ message: message });
-
-    postRequest(`/posts/runner/${runnerPostId}/application`, token!, body)
-      .then(() => {
+    postRequestWithAuth(
+      `/posts/runner/${runnerPostId}/application`,
+      () => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
 
         goToMyPage();
-      })
-      .catch((error: Error) => showErrorToast({ title: ERROR_TITLE.REQUEST, description: error.message }));
+      },
+      JSON.stringify({ message: message }),
+    );
   };
 
   const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -108,6 +106,13 @@ const RunnerPostPage = () => {
   };
 
   const openMessageModal = () => {
+    if (!isLogin) {
+      showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
+      goToLoginPage();
+
+      return;
+    }
+
     setIsMessageModalOpen(true);
   };
 
@@ -166,11 +171,21 @@ const RunnerPostPage = () => {
               </S.PostTitleContainer>
             </S.PostHeaderContainer>
             <S.PostBodyContainer>
-              <S.Contents>{runnerPost.contents}</S.Contents>
+              <S.GuideContentsContainer>
+                <GuideContents title="무엇을 구현하였나요?" contents={runnerPost.implementedContents} />
+                <GuideContents title="아쉬운 점이나 궁금한 점이 있나요?" contents={runnerPost.curiousContents} />
+                {runnerPost.postscriptContents && (
+                  <GuideContents title="서포터에게 하고싶은 말이 있나요?" contents={runnerPost.postscriptContents} />
+                )}
+              </S.GuideContentsContainer>
               <S.BottomContentContainer>
                 <S.LeftSideContainer>
                   <S.ProfileContainer onClick={viewProfile}>
-                    <Avatar imageUrl={runnerPost.runnerProfile.imageUrl} />
+                    <Avatar
+                      width={isMobile ? '40px' : '60px'}
+                      height={isMobile ? '40px' : '60px'}
+                      imageUrl={runnerPost.runnerProfile.imageUrl}
+                    />
                     <S.Profile>
                       <S.Name>{runnerPost.runnerProfile.name}</S.Name>
                       <S.Job>{runnerPost.runnerProfile.company}</S.Job>
@@ -179,14 +194,25 @@ const RunnerPostPage = () => {
                   <PostTagList tags={runnerPost.tags} />
                 </S.LeftSideContainer>
                 <S.RightSideContainer>
-                  <Button colorTheme="BLACK" fontWeight={700}>
+                  <Button
+                    colorTheme="BLACK"
+                    width={isMobile ? '130px' : '150px'}
+                    fontSize={isMobile ? '14px' : ''}
+                    fontWeight={700}
+                  >
                     <S.Anchor href={runnerPost.pullRequestUrl} target="_blank">
                       <img src={githubIcon} />
                       <S.GoToGitHub>코드 보러가기</S.GoToGitHub>
                     </S.Anchor>
                   </Button>
                   {runnerPost.isOwner || runnerPost.isApplied || runnerPost.reviewStatus !== 'NOT_STARTED' ? null : (
-                    <Button colorTheme="WHITE" fontWeight={700} onClick={openMessageModal}>
+                    <Button
+                      colorTheme="WHITE"
+                      width={isMobile ? '130px' : '150px'}
+                      fontSize={isMobile ? '14px' : ''}
+                      fontWeight={700}
+                      onClick={openMessageModal}
+                    >
                       리뷰 제안하기
                     </Button>
                   )}
@@ -194,7 +220,13 @@ const RunnerPostPage = () => {
               </S.BottomContentContainer>
             </S.PostBodyContainer>
             <S.PostFooterContainer>
-              <Button colorTheme="GRAY" fontWeight={700} onClick={goBack}>
+              <Button
+                width={isMobile ? '100%' : '180px'}
+                colorTheme="GRAY"
+                fontSize={isMobile ? '14px' : ''}
+                fontWeight={700}
+                onClick={goBack}
+              >
                 목록
               </Button>
             </S.PostFooterContainer>
@@ -231,6 +263,10 @@ const S = {
     margin: 72px 0 53px 0;
 
     background-color: white;
+
+    @media (max-width: 768px) {
+      margin: 40px 0 30px 0;
+    }
   `,
 
   Title: styled.div`
@@ -286,6 +322,10 @@ const S = {
   PostTitle: styled.h1`
     font-size: 38px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
   `,
 
   PostDeadline: styled.div`
@@ -307,6 +347,14 @@ const S = {
     border-bottom: 1px solid #9d9d9d;
   `,
 
+  GuideContentsContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+
+    margin-bottom: 50px;
+  `,
+
   InformationContainer: styled.div`
     display: flex;
     justify-content: space-between;
@@ -319,6 +367,10 @@ const S = {
     gap: 20px;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      gap: 15px;
+    }
   `,
 
   Profile: styled.div`
@@ -330,10 +382,18 @@ const S = {
   Name: styled.p`
     font-size: 18px;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+    }
   `,
 
   Job: styled.p`
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+    }
   `,
 
   statisticsContainer: styled.div`
@@ -364,12 +424,26 @@ const S = {
     font-size: 18px;
     line-height: 200%;
     white-space: pre-wrap;
+
+    @media (max-width: 768px) {
+      min-height: 300px;
+    }
   `,
 
   BottomContentContainer: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: end;
+
+    margin-bottom: 10px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+
+      gap: 8px;
+    }
   `,
 
   LeftSideContainer: styled.div`
@@ -383,6 +457,15 @@ const S = {
     flex-direction: column;
 
     gap: 24px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      gap: 12px;
+
+      margin-top: 20px;
+    }
   `,
 
   GoToGitHub: styled.p``,
@@ -393,6 +476,10 @@ const S = {
 
     font-size: 20px;
     font-weight: bold;
+
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
   `,
 
   Anchor: styled.a`

@@ -1,6 +1,6 @@
 {
   "name": "baton",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "코드 리뷰를 주고 받을 수 있는 서비스",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "build": "webpack --config webpack/webpack.prod.js",
     "test": "jest",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_2be44b6342a5cae"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +43,7 @@
     "@types/jest": "^29.5.3",
     "@types/styled-components": "^5.1.26",
     "babel-loader": "^9.1.2",
+    "chromatic": "^7.2.0",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
@@ -65,5 +67,7 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  }
+  },
+  "readme": "ERROR: No README data found!",
+  "_id": "baton@1.0.0"
 }

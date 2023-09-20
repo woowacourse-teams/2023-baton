@@ -19,8 +19,6 @@ ${ResetStyle}
     color: #333333;
   }
   
-  html,
-
   /* Colors *****************************************/
   :root {
     --baton-red: #F64545;
@@ -42,8 +40,6 @@ ${ResetStyle}
 
   #root {
     width: 100%;
-    display: flex;
-    justify-content: center;
   }
 
   button{

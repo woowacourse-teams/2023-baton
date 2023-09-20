@@ -1,4 +1,3 @@
-import Layout from '@/layout/Layout';
 import React from 'react';
 import { styled } from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
@@ -36,7 +35,7 @@ const S = {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 30px;
+    gap: 45px;
 
     height: calc(100vh - 80px);
     min-height: 570px;
@@ -45,10 +44,13 @@ const S = {
   `,
 
   Logo: styled.img`
-    width: 300px;
-    height: 80px;
+    height: 45px;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      height: 35px;
+    }
   `,
 
   LoginBoxContainer: styled.div`
@@ -58,27 +60,41 @@ const S = {
     gap: 37px;
 
     width: 450px;
-    min-height: 400px;
     padding: 35px;
     border-radius: 10px;
-    border: 1px solid var(--gray-700);
+    box-shadow: 1px 1px 3px #333333;
+
+    @media (max-width: 768px) {
+      width: 340px;
+
+      padding: 35px 20px;
+    }
   `,
 
   LoginBoxText: styled.div`
     font-weight: 700;
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+    }
   `,
 
   LoginBoxGithubIcon: styled.img`
     width: 180px;
     height: 180px;
+
+    @media (max-width: 768px) {
+      width: 120px;
+      height: 120px;
+    }
   `,
 
   LoginButton: styled.a`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 12px;
 
     width: 370px;
     height: 60px;
@@ -92,15 +108,26 @@ const S = {
     font-size: 14px;
 
     cursor: pointer;
+
+    @media (max-width: 768px) {
+      width: 260px;
+      height: 55px;
+
+      padding: 0 20px;
+    }
   `,
 
   LoginButtonIcon: styled.img`
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
+
+    @media (max-width: 768px) {
+      width: 20px;
+      height: 20px;
+    }
   `,
 
   LoginButtonText: styled.div`
-    font-size: 19px;
-    margin-right: 40px;
+    font-size: 18px;
   `,
 };

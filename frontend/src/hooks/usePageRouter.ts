@@ -24,10 +24,6 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.MY_PAGE);
   };
 
-  const goToCreationResultPage = () => {
-    navigate(ROUTER_PATH.RESULT);
-  };
-
   const goToSupporterProfilePage = (supporterId: number) => {
     navigate(ROUTER_PATH.SUPPORTER_PROFILE.replace(':supporterId', supporterId.toString()));
   };
@@ -53,6 +49,10 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.PROFILE_EDIT);
   };
 
+  const goToNoticePage = () => {
+    navigate(ROUTER_PATH.NOTICE);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -63,12 +63,12 @@ export const usePageRouter = () => {
     goToRunnerPostCreatePage,
     goToLoginPage,
     goToMyPage,
-    goToCreationResultPage,
     goToSupporterProfilePage,
     goToRunnerProfilePage,
     goToSupportSelectPage,
     goToSupporterFeedbackPage,
     goToProfileEditPage,
+    goToNoticePage,
     goBack,
   };
 };
