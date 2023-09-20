@@ -14,27 +14,27 @@ interface Props extends React.HTMLProps<HTMLButtonElement> {
 const Button = ({
   colorTheme,
   children,
-  width,
-  height,
   type,
   fontSize,
   fontWeight,
   onClick,
   ariaLabel,
   dataType,
+  disabled,
+  ...buttonProps
 }: Props) => {
   return (
     <S.ButtonWrapper>
       <S.Button
         data-type={dataType}
-        $width={width}
-        $height={height}
         $colorTheme={colorTheme}
         type={type}
+        $disabled={disabled}
         $fontSize={fontSize}
         $fontWeight={fontWeight}
         onClick={onClick}
         aria-label={ariaLabel}
+        {...buttonProps}
       >
         {children}
       </S.Button>
@@ -57,6 +57,7 @@ const S = {
     $height?: string | number;
     $fontSize?: string | number;
     $fontWeight?: number;
+    $disabled?: boolean;
   }>`
     ${({ $colorTheme }) => themeStyles[$colorTheme]}
 
@@ -67,6 +68,8 @@ const S = {
 
     font-size: ${({ $fontSize }) => $fontSize || '18px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
+
+    visibility: ${({ $disabled }) => ($disabled ? 'hidden' : 'visible')};
 
     @media (max-width: 768px) {
       width: ${({ $width }) => $width || '180px'};

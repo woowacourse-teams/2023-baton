@@ -65,6 +65,7 @@ const MyPagePostItem = ({
 
         <MyPagePostButton
           handleDeletePost={handleDeletePost}
+          applicantCount={applicantCount}
           runnerPostId={runnerPostId}
           isRunner={isRunner}
           reviewStatus={reviewStatus}

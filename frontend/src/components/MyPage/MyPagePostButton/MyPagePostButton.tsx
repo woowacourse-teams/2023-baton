@@ -14,10 +14,18 @@ interface Props {
   reviewStatus: ReviewStatus;
   isRunner: boolean;
   supporterId?: number;
+  applicantCount: number;
   handleDeletePost: (handleDeletePost: number) => void;
 }
 
-const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, handleDeletePost }: Props) => {
+const MyPagePostButton = ({
+  runnerPostId,
+  reviewStatus,
+  isRunner,
+  supporterId,
+  applicantCount,
+  handleDeletePost,
+}: Props) => {
   const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
 
   const { isMobile } = useViewport();
@@ -78,6 +86,7 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, h
             fontWeight={700}
             width={isMobile ? '100%' : '180px'}
             height="40px"
+            disabled={applicantCount < 1}
             onClick={isRunner ? handleClickSupportSelectButton : handleClickCancelReviewButton}
           >
             {isRunner ? '서포터 선택하기' : '리뷰 제안 취소'}
