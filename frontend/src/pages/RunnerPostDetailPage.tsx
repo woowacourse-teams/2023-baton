@@ -196,7 +196,7 @@ const RunnerPostPage = () => {
                 <S.RightSideContainer>
                   <Button
                     colorTheme="BLACK"
-                    width={isMobile ? '125px' : '150px'}
+                    width={isMobile ? '130px' : '150px'}
                     fontSize={isMobile ? '14px' : ''}
                     fontWeight={700}
                   >
@@ -208,7 +208,7 @@ const RunnerPostPage = () => {
                   {runnerPost.isOwner || runnerPost.isApplied || runnerPost.reviewStatus !== 'NOT_STARTED' ? null : (
                     <Button
                       colorTheme="WHITE"
-                      width={isMobile ? '125px' : '150px'}
+                      width={isMobile ? '130px' : '150px'}
                       fontSize={isMobile ? '14px' : ''}
                       fontWeight={700}
                       onClick={openMessageModal}
