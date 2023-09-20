@@ -22,7 +22,7 @@ export const useFetch = () => {
 
             showErrorToast({
               title: ERROR_TITLE.NO_PERMISSION,
-              description: ['JW007', 'JW008', 'JW009'].includes(apiError.errorCode)
+              description: ['JW007', 'JW008', 'JW009', 'JW010'].includes(apiError.errorCode)
                 ? ERROR_DESCRIPTION.TOKEN_EXPIRATION
                 : ERROR_DESCRIPTION.NO_TOKEN,
             });
