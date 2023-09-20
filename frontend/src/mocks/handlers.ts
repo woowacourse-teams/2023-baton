@@ -23,7 +23,7 @@ export const handlers = [
     return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
   }),
 
-  rest.put(`${BATON_BASE_URL}/posts/runner/:runnerPostId)`, async (req, res, ctx) => {
+  rest.put(`${BATON_BASE_URL}/posts/runner/:runnerPostId`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
 
@@ -39,39 +39,34 @@ export const handlers = [
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageSupporterProfile));
   }),
 
-  rest.get(`${BATON_BASE_URL}/posts/runner/me/runner?size&page&reviewStatus`, async (req, res, ctx) => {
+  rest.get(`${BATON_BASE_URL}/posts/runner/me/runner`, async (req, res, ctx) => {
     const reviewStatus = req.url.searchParams.get('reviewStatus');
+    const page = req.url.searchParams.get('page');
 
-    switch (reviewStatus) {
-      case 'NOT_STARTED':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(notStarted));
+    if (!reviewStatus || !page)
+      return res(
+        ctx.status(400),
+        ctx.set('Content-Type', 'application/json'),
+        ctx.json({ errorCode: 'FE001', message: '잘못된 요청' }),
+      );
 
-      case 'IN_PROGRESS':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(inProgress));
+    const myPagePostList = structuredClone(notStarted);
 
-      case 'DONE':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done));
+    if (reviewStatus) {
+      myPagePostList.data.forEach((post, idx) => {
+        post.runnerPostId = Date.now() + idx;
+        post.title = `${post.title} (${page})`;
+        post.reviewStatus = reviewStatus;
+      });
 
-      default:
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({}));
-    }
-  }),
+      myPagePostList.pageInfo.currentPage = Number(page);
 
-  rest.get(`${BATON_BASE_URL}/posts/runner/me/supporter?size&page&reviewStatus`, async (req, res, ctx) => {
-    const reviewStatus = req.url.searchParams.get('reviewStatus');
-
-    switch (reviewStatus) {
-      case 'NOT_STARTED':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(notStarted));
-
-      case 'IN_PROGRESS':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(inProgress));
-
-      case 'DONE':
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(done));
-
-      default:
-        return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({}));
+      return res(
+        ctx.delay(300),
+        ctx.status(200),
+        ctx.set('Content-Type', 'application/json'),
+        ctx.json(myPagePostList),
+      );
     }
   }),
 
