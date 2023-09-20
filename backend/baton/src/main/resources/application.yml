@@ -28,6 +28,9 @@ oauth:
     client_secret: ${OAUTH_GITHUB_CLIENT_SECRET}
     scope: ${OAUTH_GITHUB_SCOPE}
 
+github:
+  personal_access_token: ${PERSONAL_MISSION_ACCESS_TOKEN}
+
 cors:
   allowed-origin: http://localhost:3000
 

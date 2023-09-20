@@ -1,5 +1,6 @@
 package touch.baton.domain.oauth.controller;
 
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.common.exception.ClientRequestException;
 import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.service.OauthService;
@@ -58,10 +61,17 @@ public class OauthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<Void> refreshJwt(@CookieValue final String refreshToken,
+    public ResponseEntity<Void> refreshJwt(@Nullable @CookieValue(required = false) final String refreshToken,
                                            final HttpServletRequest request,
                                            final HttpServletResponse response
     ) {
+        if (request.getHeader(AUTHORIZATION) == null) {
+            throw new ClientRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_VALUE_IS_NULL);
+        }
+        if (refreshToken == null || refreshToken.isBlank()) {
+            throw new ClientRequestException(ClientErrorCode.REFRESH_TOKEN_IS_NOT_NULL);
+        }
+
         final AuthorizationHeader authorizationHeader = new AuthorizationHeader(request.getHeader(AUTHORIZATION));
 
         final Tokens tokens = oauthService.reissueAccessToken(authorizationHeader, refreshToken);
