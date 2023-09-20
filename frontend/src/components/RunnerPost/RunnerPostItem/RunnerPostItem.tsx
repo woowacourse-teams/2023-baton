@@ -127,6 +127,10 @@ const S = {
   `,
 
   TagContainer: styled.div`
+    @media (max-width: 768px) {
+      max-width: 200px;
+    }
+
     & span {
       margin-right: 10px;
 
