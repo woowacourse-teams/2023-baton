@@ -30,6 +30,6 @@ public class IsReviewed {
     }
 
     public boolean getValue() {
-        return false;
+        return value;
     }
 }
