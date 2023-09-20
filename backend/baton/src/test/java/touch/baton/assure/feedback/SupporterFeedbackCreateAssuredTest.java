@@ -98,4 +98,6 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
                 .서버_응답()
                 .러너_게시글이_성공적으로_리뷰_완료_상태인지_확인한다(new HttpStatusAndLocationHeader(HttpStatus.NO_CONTENT, "/api/v1/posts/runner"));
     }
+
+    // FIXME: 2023/09/19 피드백 실패 테스트 추가해줘잉
 }

@@ -216,6 +216,10 @@ public class RunnerPost extends BaseEntity {
         updateReviewStatus(DONE);
     }
 
+    public void finishFeedback() {
+        this.isReviewed = IsReviewed.reviewed();
+    }
+
     public void updateReviewStatus(final ReviewStatus other) {
         if (this.reviewStatus.isSame(NOT_STARTED) && other.isSame(IN_PROGRESS)) {
             throw new RunnerPostDomainException("ReviewStatus 를 수정하던 도중 NOT_STARTED 에서 IN_PROGRESS 로 리뷰 상태 정책을 원인으로 실패하였습니다.");
@@ -285,10 +289,10 @@ public class RunnerPost extends BaseEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RunnerPost that = (RunnerPost) o;
+        final RunnerPost that = (RunnerPost) o;
         return Objects.equals(id, that.id);
     }
 
