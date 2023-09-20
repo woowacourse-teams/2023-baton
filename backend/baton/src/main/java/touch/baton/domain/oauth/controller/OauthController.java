@@ -1,5 +1,6 @@
 package touch.baton.domain.oauth.controller;
 
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class OauthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<Void> refreshJwt(@CookieValue(required = false) final String refreshToken,
+    public ResponseEntity<Void> refreshJwt(@Nullable @CookieValue(required = false) final String refreshToken,
                                            final HttpServletRequest request,
                                            final HttpServletResponse response
     ) {
