@@ -32,11 +32,17 @@ export default RunnerPostFilter;
 
 const appear = keyframes`
  0% {
+<<<<<<< HEAD
   transform-origin:left;
   transform: scaleX(0);
  }
  100% {
   transform-origin:left;
+=======
+  transform: scaleX(0);
+ }
+ 100% {
+>>>>>>> dev/FE
   transform: scaleX(1);
  }
 `;
@@ -50,11 +56,20 @@ const underLine = css`
 
   background-color: var(--baton-red);
 
+<<<<<<< HEAD
+=======
+  transform-origin: left;
+
+>>>>>>> dev/FE
   animation: 0.2s ease-in ${appear};
 `;
 
 const S = {
+<<<<<<< HEAD
   FilterContainer: styled.div``,
+=======
+  FilterContainer: styled.ul``,
+>>>>>>> dev/FE
 
   LabelList: styled.li`
     display: flex;

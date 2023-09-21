@@ -44,6 +44,7 @@ const RunnerPostItem = ({
       </S.LeftSideContainer>
       <S.RightSideContainer>
         {runnerProfile ? (
+<<<<<<< HEAD
           <>
             <S.ProfileContainer>
               <Avatar
@@ -60,6 +61,22 @@ const RunnerPostItem = ({
             <S.statisticsImage src={eyeIcon} />
             <S.statisticsText>{watchedCount}</S.statisticsText>
             <S.statisticsImage src={applicantIcon} />
+=======
+          <S.ProfileContainer>
+            <Avatar
+              width={isMobile ? '30px' : '50px'}
+              height={isMobile ? '30px' : '50px'}
+              imageUrl={runnerProfile.imageUrl}
+            />
+            <S.ProfileName>{runnerProfile.name}</S.ProfileName>
+          </S.ProfileContainer>
+        ) : null}
+        <S.ChatViewContainer>
+          <S.statisticsContainer>
+            <S.statisticsImage src={eyeIcon} alt="조회수" />
+            <S.statisticsText>{watchedCount}</S.statisticsText>
+            <S.statisticsImage src={applicantIcon} alt="리뷰요청수" />
+>>>>>>> dev/FE
             <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
@@ -127,6 +144,7 @@ const S = {
   `,
 
   TagContainer: styled.div`
+<<<<<<< HEAD
     & span {
       margin-right: 10px;
 
@@ -136,6 +154,20 @@ const S = {
   `,
 
   Tag: styled.span``,
+=======
+    @media (max-width: 768px) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  `,
+
+  Tag: styled.span`
+    margin-right: 10px;
+
+    font-size: 14px;
+    color: var(--gray-600);
+  `,
+>>>>>>> dev/FE
 
   LeftSideContainer: styled.div``,
 
@@ -193,12 +225,22 @@ const S = {
   `,
 
   statisticsImage: styled.img`
+<<<<<<< HEAD
     width: 20px;
+=======
+    width: 21px;
+    height: 20px;
+>>>>>>> dev/FE
 
     margin-left: 8px;
 
     @media (max-width: 768px) {
+<<<<<<< HEAD
       width: 15px;
+=======
+      width: 16px;
+      height: 15px;
+>>>>>>> dev/FE
     }
   `,
 

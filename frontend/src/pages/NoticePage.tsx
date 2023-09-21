@@ -122,13 +122,21 @@ const NoticePage = () => {
 
               <S.EventMessageTitle>🔎 미션 보러가기</S.EventMessageTitle>
               <S.ButtonContainer>
+<<<<<<< HEAD
                 <Button colorTheme="BLACK" width="100%">
+=======
+                <Button colorTheme="BLACK" width="120px">
+>>>>>>> dev/FE
                   <S.Anchor href="https://github.com/baton-mission/java-boss-monster" target="_blank">
                     <img src={githubIcon} />
                     <S.GoToGitHub>java</S.GoToGitHub>
                   </S.Anchor>
                 </Button>
+<<<<<<< HEAD
                 <Button colorTheme="BLACK" width="100%">
+=======
+                <Button colorTheme="BLACK" width="120px">
+>>>>>>> dev/FE
                   <S.Anchor href="https://github.com/baton-mission/javascript-boss-monster" target="_blank">
                     <img src={githubIcon} />
                     <S.GoToGitHub>javascript</S.GoToGitHub>
@@ -143,13 +151,21 @@ const NoticePage = () => {
                 </S.EventGuide>
               </S.EventMessageTitleContainer>
               <S.ButtonContainer>
+<<<<<<< HEAD
                 <Button dataType="java" colorTheme="RED" onClick={openConfirmModal} width="100%">
+=======
+                <Button dataType="java" colorTheme="RED" onClick={openConfirmModal} width="120px">
+>>>>>>> dev/FE
                   <S.Anchor>
                     <JavaIconWhite color="#000000" />
                     <S.Language>java</S.Language>
                   </S.Anchor>
                 </Button>
+<<<<<<< HEAD
                 <Button dataType="javascript" colorTheme="RED" onClick={openConfirmModal} width="100%">
+=======
+                <Button dataType="javascript" colorTheme="RED" onClick={openConfirmModal} width="120px">
+>>>>>>> dev/FE
                   <S.Anchor>
                     <JavascriptIcon />
                     <S.Language>javascript</S.Language>
@@ -167,7 +183,17 @@ const NoticePage = () => {
             </S.ProfileContainer>
           </S.PostBodyContainer>
           <S.PostFooterContainer>
+<<<<<<< HEAD
             <Button colorTheme="GRAY" fontSize={isMobile ? '14px' : ''} fontWeight={700} onClick={goBack}>
+=======
+            <Button
+              colorTheme="GRAY"
+              width={isMobile ? '60px' : '180px'}
+              fontSize={isMobile ? '14px' : ''}
+              fontWeight={700}
+              onClick={goBack}
+            >
+>>>>>>> dev/FE
               목록
             </Button>
           </S.PostFooterContainer>

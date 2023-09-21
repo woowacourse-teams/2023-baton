@@ -115,11 +115,19 @@ const MainPage = () => {
           </S.LeftSideContainer>
           <S.RightSideContainer>
             <Button
+<<<<<<< HEAD
               width="100%"
               onClick={handleClickPostButton}
               colorTheme="WHITE"
               fontSize={isMobile ? '14px' : '18px'}
               ariaLabel="리뷰 요청 글 작성하기"
+=======
+              width={isMobile ? '160px' : '190px'}
+              onClick={handleClickPostButton}
+              colorTheme="WHITE"
+              fontSize={isMobile ? '14px' : '18px'}
+              ariaLabel="리뷰 요청 글 작성"
+>>>>>>> dev/FE
             >
               리뷰 요청 글 작성하기
             </Button>

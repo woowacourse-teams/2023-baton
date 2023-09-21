@@ -136,7 +136,11 @@ const S = {
 
     @media (max-width: 768px) {
       width: 100%;
+<<<<<<< HEAD
       margin-top: 18px;
+=======
+      margin-top: 15px;
+>>>>>>> dev/FE
     }
   `,
 };

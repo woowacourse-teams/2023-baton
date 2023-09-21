@@ -2,6 +2,7 @@ import React from 'react';
 import App from './App';
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage';
+<<<<<<< HEAD
 import RunnerPostPage from './pages/RunnerPostDetailPage';
 import RunnerPostCreatePage from './pages/RunnerPostCreatePage';
 import LoginPage from './pages/LoginPage';
@@ -13,6 +14,19 @@ import SupporterFeedbackPage from './pages/SupporterFeedbackPage';
 import SupporterProfilePage from './pages/SupporterProfilePage';
 import RunnerProfilePage from './pages/RunnerProfilePage';
 import NoticePage from './pages/NoticePage';
+=======
+const RunnerPostPage = React.lazy(() => import('./pages/RunnerPostDetailPage'));
+const RunnerPostCreatePage = React.lazy(() => import('./pages/RunnerPostCreatePage'));
+const LoginPage = React.lazy(() => import('./pages/LoginPage'));
+const MyPage = React.lazy(() => import('./pages/MyPage'));
+const GithubCallbackPage = React.lazy(() => import('./pages/GithubCallbackPage'));
+const ProfileEditPage = React.lazy(() => import('./pages/ProfileEditPage'));
+const SupporterSelectPage = React.lazy(() => import('./pages/SupporterSelectPage'));
+const SupporterFeedbackPage = React.lazy(() => import('./pages/SupporterFeedbackPage'));
+const SupporterProfilePage = React.lazy(() => import('./pages/SupporterProfilePage'));
+const RunnerProfilePage = React.lazy(() => import('./pages/RunnerProfilePage'));
+const NoticePage = React.lazy(() => import('./pages/NoticePage'));
+>>>>>>> dev/FE
 
 export const ROUTER_PATH = {
   MAIN: '/',

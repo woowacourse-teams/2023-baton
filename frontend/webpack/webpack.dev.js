@@ -14,8 +14,11 @@ module.exports = merge(common, {
     port: 3000,
     historyApiFallback: true,
     liveReload: true,
+<<<<<<< HEAD
     proxy: {
       '/api': 'http://localhost:8080',
     },
+=======
+>>>>>>> dev/FE
   },
 });

@@ -13,7 +13,11 @@ const MyPagePostList = ({ filteredPostList, isRunner, handleDeletePost }: Props)
   if (filteredPostList?.length === 0) return <p>게시글 정보가 없습니다.</p>;
 
   return (
+<<<<<<< HEAD
     <S.RunnerPostWrapper>
+=======
+    <S.RunnerPostWrapper aria-label="게시글 목록">
+>>>>>>> dev/FE
       {filteredPostList?.map((item: MyPagePost) => (
         <MyPagePostItem handleDeletePost={handleDeletePost} key={item.runnerPostId} {...item} isRunner={isRunner} />
       ))}

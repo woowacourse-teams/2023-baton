@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev/FE
+<<<<<<< HEAD
     paths: 'frontend/**'
   pull_request:
     branches:
@@ -25,3 +26,37 @@ jobs:
 
       - name: 테스트를 수행한다
         run: npm run test
+=======
+    paths: "frontend/**"
+  pull_request:
+    branches:
+      - dev/FE
+    paths: "frontend/**"
+
+defaults:
+  run:
+    working-directory: ./frontend
+
+jobs:
+  Cypress-Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitCode
+        uses: actions/checkout@v3
+
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: install dependencies
+        run: npm install
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./frontend
+          start: npm run dev
+>>>>>>> dev/FE

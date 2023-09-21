@@ -20,6 +20,7 @@ const ListFilter = ({ options, selectOption, width, fontSize }: Props) => {
     <S.FilterContainer>
       <S.FilterList $width={width}>
         {options.map((option) => (
+<<<<<<< HEAD
           <S.FilterItem key={option.value}>
             <S.FilterButton
               onClick={makeHandleClickOption(option.value)}
@@ -29,6 +30,19 @@ const ListFilter = ({ options, selectOption, width, fontSize }: Props) => {
               {option.label}
             </S.FilterButton>
           </S.FilterItem>
+=======
+          <S.ButtonWrapper key={option.value}>
+            <S.FilterItem>
+              <S.FilterButton
+                onClick={makeHandleClickOption(option.value)}
+                $isSelected={option.selected}
+                $fontSize={fontSize}
+              >
+                {option.label}
+              </S.FilterButton>
+            </S.FilterItem>
+          </S.ButtonWrapper>
+>>>>>>> dev/FE
         ))}
       </S.FilterList>
     </S.FilterContainer>
@@ -39,11 +53,17 @@ export default ListFilter;
 
 const appear = keyframes`
  0% {
+<<<<<<< HEAD
   transform-origin:left;
   transform: scaleX(0);
  }
  100% {
   transform-origin:left;
+=======
+  transform: scaleX(0);
+ }
+ 100% {
+>>>>>>> dev/FE
   transform: scaleX(1);
  }
 `;
@@ -57,6 +77,11 @@ const underLine = css`
 
   background-color: var(--baton-red);
 
+<<<<<<< HEAD
+=======
+  transform-origin: left;
+
+>>>>>>> dev/FE
   animation: 0.3s ease-in ${appear};
 `;
 
@@ -76,7 +101,11 @@ const S = {
     }
   `,
 
+<<<<<<< HEAD
   FilterItem: styled.li`
+=======
+  FilterItem: styled.div`
+>>>>>>> dev/FE
     display: flex;
     justify-content: center;
 
@@ -100,4 +129,11 @@ const S = {
       ${({ $isSelected }) => ($isSelected ? underLine : null)}
     }
   `,
+<<<<<<< HEAD
+=======
+
+  ButtonWrapper: styled.li`
+    width: 150px;
+  `,
+>>>>>>> dev/FE
 };

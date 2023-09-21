@@ -9,7 +9,11 @@ interface Props {
 
 const RunnerPostList = ({ posts }: Props) => {
   return (
+<<<<<<< HEAD
     <S.RunnerPostWrapper>
+=======
+    <S.RunnerPostWrapper aria-label="게시글 목록">
+>>>>>>> dev/FE
       {posts.map((runnerPostData) => (
         <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
       ))}

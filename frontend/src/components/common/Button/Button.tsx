@@ -66,16 +66,27 @@ const S = {
     width: ${({ $width }) => $width || '180px'};
     height: ${({ $height }) => $height || '40px'};
 
+<<<<<<< HEAD
     padding: 10px 10px;
+=======
+    padding: 5px 0;
+>>>>>>> dev/FE
 
     font-size: ${({ $fontSize }) => $fontSize || '18px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
 
+<<<<<<< HEAD
     visibility: ${({ $disabled }) => ($disabled ? 'hidden' : 'visible')};
 
     @media (max-width: 768px) {
       width: ${({ $width }) => $width || '180px'};
       height: 100%;
+=======
+    display: ${({ $disabled }) => ($disabled ? 'none' : 'block')};
+
+    @media (max-width: 768px) {
+      width: ${({ $width }) => $width || '180px'};
+>>>>>>> dev/FE
     }
   `,
 };

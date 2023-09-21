@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
+=======
+import React, { Suspense, useState } from 'react';
+>>>>>>> dev/FE
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import ToastProvider from './contexts/ToastContext';
@@ -28,7 +32,13 @@ const App = () => {
   ) : (
     <ToastProvider>
       <S.AppContainer>
+<<<<<<< HEAD
         <Outlet />
+=======
+        <Suspense fallback={<div></div>}>
+          <Outlet />
+        </Suspense>
+>>>>>>> dev/FE
       </S.AppContainer>
     </ToastProvider>
   );

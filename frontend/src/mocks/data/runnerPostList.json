@@ -99,6 +99,7 @@
       "watchedCount": 34,
       "applicantCount": 4,
       "reviewStatus": "DONE"
+<<<<<<< HEAD
     },
     {
       "runnerPostId": 11,
@@ -122,6 +123,8 @@
       "watchedCount": 34,
       "applicantCount": 4,
       "reviewStatus": "NOT_STARTED"
+=======
+>>>>>>> dev/FE
     }
   ],
   "pageInfo": {
@@ -131,6 +134,10 @@
     "totalPages": 4,
     "totalElements": 48,
     "currentPage": 1,
+<<<<<<< HEAD
     "currentSize": 12
+=======
+    "currentSize": 10
+>>>>>>> dev/FE
   }
 }
