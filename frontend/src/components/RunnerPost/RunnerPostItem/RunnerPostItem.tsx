@@ -128,18 +128,17 @@ const S = {
 
   TagContainer: styled.div`
     @media (max-width: 768px) {
-      max-width: 200px;
-    }
-
-    & span {
-      margin-right: 10px;
-
-      font-size: 14px;
-      color: var(--gray-600);
+      display: flex;
+      flex-wrap: wrap;
     }
   `,
 
-  Tag: styled.span``,
+  Tag: styled.span`
+    margin-right: 10px;
+
+    font-size: 14px;
+    color: var(--gray-600);
+  `,
 
   LeftSideContainer: styled.div``,
 

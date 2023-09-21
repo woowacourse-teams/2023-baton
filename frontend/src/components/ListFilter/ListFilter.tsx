@@ -78,7 +78,7 @@ const S = {
     }
   `,
 
-  FilterItem: styled.li`
+  FilterItem: styled.div`
     display: flex;
     justify-content: center;
 
@@ -103,7 +103,7 @@ const S = {
     }
   `,
 
-  ButtonWrapper: styled.div`
+  ButtonWrapper: styled.li`
     width: 150px;
   `,
 };
