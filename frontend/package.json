@@ -1,6 +1,6 @@
 {
   "name": "baton",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "코드 리뷰를 주고 받을 수 있는 서비스",
   "main": "index.js",
   "scripts": {
@@ -62,7 +62,5 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
-  },
-  "readme": "ERROR: No README data found!",
-  "_id": "baton@1.0.0"
+  }
 }
