@@ -7,6 +7,7 @@ import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
+import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import {
   Profile,
@@ -25,6 +26,7 @@ const ProfileEditPage = () => {
   const { getRequestWithAuth, patchRequestWithAuth } = useFetch();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { goBack } = usePageRouter();
 
   const [isRunner, setIsRunner] = useState(true);
 
@@ -231,9 +233,14 @@ const ProfileEditPage = () => {
     );
   };
 
+  const handleGoBack = () => {
+    goBack();
+  };
+
   return (
     <Layout>
       <S.TitleWrapper>
+        <S.BackButton onClick={handleGoBack}>{'<'}</S.BackButton>
         <S.Title>프로필 수정</S.Title>
       </S.TitleWrapper>
       <S.ProfileContainer>
@@ -327,9 +334,7 @@ const ProfileEditPage = () => {
               </S.TechTagsList>
             </S.InputContainer>
           </S.Form>
-        ) : (
-          'Loading'
-        )}
+        ) : null}
       </S.ProfileContainer>
 
       {isModalOpen && (
@@ -347,7 +352,19 @@ export default ProfileEditPage;
 
 const S = {
   TitleWrapper: styled.div`
-    margin: 72px 0 53px 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+
+    margin: 72px 0 40px 0;
+  `,
+
+  BackButton: styled.div`
+    position: absolute;
+    margin-right: 530px;
+
+    font-size: 36px;
+    cursor: pointer;
   `,
 
   Title: styled.h1`
@@ -356,8 +373,7 @@ const S = {
   `,
 
   ProfileContainer: styled.div`
-    width: 900px;
-
+    max-width: 900px;
     margin: 0 auto;
   `,
 
@@ -459,6 +475,6 @@ const S = {
 
     color: white;
     font-size: 23px;
-    font-weight: 300;
+    font-weight: 400;
   `,
 };

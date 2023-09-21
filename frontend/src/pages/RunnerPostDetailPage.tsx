@@ -221,7 +221,7 @@ const RunnerPostPage = () => {
             </S.PostBodyContainer>
             <S.PostFooterContainer>
               <Button
-                width={isMobile ? '100%' : '180px'}
+                width={isMobile ? '60px' : '180px'}
                 colorTheme="GRAY"
                 fontSize={isMobile ? '14px' : ''}
                 fontWeight={700}
@@ -317,6 +317,17 @@ const S = {
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+
+      & > div {
+        margin-left: auto;
+      }
+    }
   `,
 
   PostTitle: styled.h1`

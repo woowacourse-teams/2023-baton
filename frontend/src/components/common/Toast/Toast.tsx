@@ -13,7 +13,12 @@ interface Props {
 
 const Toast = ({ colorTheme, description, title, ms }: Props) => {
   return createPortal(
-    <S.ToastWrapper key={Date.now()} $colorTheme={colorTheme} ms={ms}>
+    <S.ToastWrapper
+      key={Date.now()}
+      $colorTheme={colorTheme}
+      ms={ms}
+      aria-label={colorTheme === 'COMPLETION' ? '알림 메시지' : '에러 메시지'}
+    >
       <S.Icon src={colorTheme === 'COMPLETION' ? completeIcon : errorIcon} />
       <S.MessageContainer>
         <S.Title>{title}</S.Title>

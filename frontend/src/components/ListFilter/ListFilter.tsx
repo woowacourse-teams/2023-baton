@@ -20,15 +20,17 @@ const ListFilter = ({ options, selectOption, width, fontSize }: Props) => {
     <S.FilterContainer>
       <S.FilterList $width={width}>
         {options.map((option) => (
-          <S.FilterItem key={option.value}>
-            <S.FilterButton
-              onClick={makeHandleClickOption(option.value)}
-              $isSelected={option.selected}
-              $fontSize={fontSize}
-            >
-              {option.label}
-            </S.FilterButton>
-          </S.FilterItem>
+          <S.ButtonWrapper key={option.value}>
+            <S.FilterItem>
+              <S.FilterButton
+                onClick={makeHandleClickOption(option.value)}
+                $isSelected={option.selected}
+                $fontSize={fontSize}
+              >
+                {option.label}
+              </S.FilterButton>
+            </S.FilterItem>
+          </S.ButtonWrapper>
         ))}
       </S.FilterList>
     </S.FilterContainer>
@@ -39,11 +41,9 @@ export default ListFilter;
 
 const appear = keyframes`
  0% {
-  transform-origin:left;
   transform: scaleX(0);
  }
  100% {
-  transform-origin:left;
   transform: scaleX(1);
  }
 `;
@@ -56,6 +56,8 @@ const underLine = css`
   border-radius: 1px;
 
   background-color: var(--baton-red);
+
+  transform-origin: left;
 
   animation: 0.3s ease-in ${appear};
 `;
@@ -76,7 +78,7 @@ const S = {
     }
   `,
 
-  FilterItem: styled.li`
+  FilterItem: styled.div`
     display: flex;
     justify-content: center;
 
@@ -99,5 +101,9 @@ const S = {
     &::after {
       ${({ $isSelected }) => ($isSelected ? underLine : null)}
     }
+  `,
+
+  ButtonWrapper: styled.li`
+    width: 150px;
   `,
 };

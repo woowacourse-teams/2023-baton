@@ -269,6 +269,7 @@ const RunnerPostCreatePage = () => {
               fontWeight={700}
               onClick={handleSubmitButton}
               disabled={isLoading}
+              ariaLabel="리뷰 요청 글 생성"
             >
               리뷰요청 글 생성
             </Button>

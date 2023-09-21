@@ -44,22 +44,20 @@ const RunnerPostItem = ({
       </S.LeftSideContainer>
       <S.RightSideContainer>
         {runnerProfile ? (
-          <>
-            <S.ProfileContainer>
-              <Avatar
-                width={isMobile ? '30px' : '50px'}
-                height={isMobile ? '30px' : '50px'}
-                imageUrl={runnerProfile.imageUrl}
-              />
-              <S.ProfileName>{runnerProfile.name}</S.ProfileName>
-            </S.ProfileContainer>
-          </>
+          <S.ProfileContainer>
+            <Avatar
+              width={isMobile ? '30px' : '50px'}
+              height={isMobile ? '30px' : '50px'}
+              imageUrl={runnerProfile.imageUrl}
+            />
+            <S.ProfileName>{runnerProfile.name}</S.ProfileName>
+          </S.ProfileContainer>
         ) : null}
         <S.ChatViewContainer>
           <S.statisticsContainer>
-            <S.statisticsImage src={eyeIcon} />
+            <S.statisticsImage src={eyeIcon} alt="조회수" />
             <S.statisticsText>{watchedCount}</S.statisticsText>
-            <S.statisticsImage src={applicantIcon} />
+            <S.statisticsImage src={applicantIcon} alt="리뷰요청수" />
             <S.statisticsText>{applicantCount}</S.statisticsText>
           </S.statisticsContainer>
         </S.ChatViewContainer>
@@ -127,15 +125,18 @@ const S = {
   `,
 
   TagContainer: styled.div`
-    & span {
-      margin-right: 10px;
-
-      font-size: 14px;
-      color: var(--gray-600);
+    @media (max-width: 768px) {
+      display: flex;
+      flex-wrap: wrap;
     }
   `,
 
-  Tag: styled.span``,
+  Tag: styled.span`
+    margin-right: 10px;
+
+    font-size: 14px;
+    color: var(--gray-600);
+  `,
 
   LeftSideContainer: styled.div``,
 
@@ -193,12 +194,14 @@ const S = {
   `,
 
   statisticsImage: styled.img`
-    width: 20px;
+    width: 21px;
+    height: 20px;
 
     margin-left: 8px;
 
     @media (max-width: 768px) {
-      width: 15px;
+      width: 16px;
+      height: 15px;
     }
   `,
 
