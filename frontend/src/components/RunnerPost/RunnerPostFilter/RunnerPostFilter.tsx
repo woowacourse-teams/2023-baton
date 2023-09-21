@@ -54,7 +54,7 @@ const underLine = css`
 `;
 
 const S = {
-  FilterContainer: styled.div``,
+  FilterContainer: styled.ul``,
 
   LabelList: styled.li`
     display: flex;
