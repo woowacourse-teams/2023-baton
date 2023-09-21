@@ -15,17 +15,19 @@ defaults:
     working-directory: ./frontend
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-latest
+  Cypress-Test:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout GitCode
+      uses: actions/checkout@v3
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: install dependencies
+      uses: npm install
 
-      - name: Install Dependencies
-        run: npm install
+    - name: dev start
+      uses: npm run dev
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run test
+    - name: Run Cypress Test
+      uses: cypress-io/github-action@v5
+      with:
+        command: npm run test
