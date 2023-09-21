@@ -101,6 +101,12 @@ const MyPage = () => {
     getPostList(role, page + 1);
   };
 
+  const handleDeletePost = (runnerPostId: number) => {
+    const deletedPostList = myPagePostList.filter((post) => post.runnerPostId !== runnerPostId);
+
+    setMyPagePostList(deletedPostList);
+  };
+
   return (
     <Layout>
       <S.MyPageWrapper>
@@ -186,7 +192,7 @@ const MyPage = () => {
                 fontSize={isMobile ? '16px' : '26px'}
               />
             </S.FilterWrapper>
-            <MyPagePostList filteredPostList={myPagePostList} isRunner={isRunner} />
+            <MyPagePostList handleDeletePost={handleDeletePost} filteredPostList={myPagePostList} isRunner={isRunner} />
             <S.MoreButtonWrapper>
               {!isLast && (
                 <Button

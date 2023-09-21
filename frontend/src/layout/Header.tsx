@@ -51,7 +51,13 @@ const Header = () => {
                 {isMobile ? null : <S.ProfileName>{profile?.name}</S.ProfileName>}
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
               </S.AvatarContainer>
-              <Button fontSize="14px" width="76px" height="35px" colorTheme="WHITE" onClick={handleClickLogoutButton}>
+              <Button
+                fontSize="14px"
+                width={isMobile ? '80px' : '85px'}
+                height="35px"
+                colorTheme="WHITE"
+                onClick={handleClickLogoutButton}
+              >
                 로그아웃
               </Button>
             </>

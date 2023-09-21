@@ -142,6 +142,7 @@ const RunnerPostSearchBox = ({
             if (element) inputRefs.current[0] = element;
           }}
           onChange={handleChangeInput}
+          aria-label="태그명 검색"
         />
         <S.SearchedTagList $isVisible={searchedTags.length > 0 && isInputFocused}>
           {searchedTags.map((tag, idx) => (

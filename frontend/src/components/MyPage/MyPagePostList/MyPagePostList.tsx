@@ -6,15 +6,16 @@ import MyPagePostItem from '../MyPagePostItem/MyPagePostItem';
 interface Props {
   filteredPostList: MyPagePost[];
   isRunner: boolean;
+  handleDeletePost: (handleDeletePost: number) => void;
 }
 
-const MyPagePostList = ({ filteredPostList, isRunner }: Props) => {
+const MyPagePostList = ({ filteredPostList, isRunner, handleDeletePost }: Props) => {
   if (filteredPostList?.length === 0) return <p>게시글 정보가 없습니다.</p>;
 
   return (
-    <S.RunnerPostWrapper>
+    <S.RunnerPostWrapper aria-label="게시글 목록">
       {filteredPostList?.map((item: MyPagePost) => (
-        <MyPagePostItem key={item.runnerPostId} {...item} isRunner={isRunner} />
+        <MyPagePostItem handleDeletePost={handleDeletePost} key={item.runnerPostId} {...item} isRunner={isRunner} />
       ))}
     </S.RunnerPostWrapper>
   );

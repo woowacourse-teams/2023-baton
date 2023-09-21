@@ -29,6 +29,7 @@ const RunnerPostItem = ({
         <S.DeadLineContainer>
           <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
           <Label
+            height={isMobile ? '18px' : '22px'}
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
             fontSize={isMobile ? '10px' : ''}
           >
@@ -124,15 +125,18 @@ const S = {
   `,
 
   TagContainer: styled.div`
-    & span {
-      margin-right: 10px;
-
-      font-size: 14px;
-      color: var(--gray-600);
+    @media (max-width: 768px) {
+      display: flex;
+      flex-wrap: wrap;
     }
   `,
 
-  Tag: styled.span``,
+  Tag: styled.span`
+    margin-right: 10px;
+
+    font-size: 14px;
+    color: var(--gray-600);
+  `,
 
   LeftSideContainer: styled.div``,
 
