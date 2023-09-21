@@ -1,6 +1,7 @@
 package touch.baton.infra.auth.oauth.github.response;
 
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import jakarta.annotation.Nullable;
 import touch.baton.domain.member.vo.GithubUrl;
 import touch.baton.domain.member.vo.ImageUrl;
 import touch.baton.domain.member.vo.MemberName;
@@ -13,7 +14,7 @@ import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseS
 
 @JsonNaming(SnakeCaseStrategy.class)
 public record GithubMemberResponse(String id,
-                                   String name,
+                                   @Nullable String name,
                                    String login,
                                    String htmlUrl,
                                    String avatarUrl
