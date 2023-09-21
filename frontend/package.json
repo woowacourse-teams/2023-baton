@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack-dev-server --config webpack/webpack.dev.js",
     "build": "webpack --config webpack/webpack.prod.js",
-    "test": "jest",
+    "test": "cypress run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=chpt_2be44b6342a5cae"
