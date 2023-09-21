@@ -30,6 +30,7 @@ jobs:
         run: npm install
 
       - name: Cypress run
+        working-directory: "/home/runner/work/2023-baton/2023-baton/frontend"
         uses: cypress-io/github-action@v6
         with:
           start: npm run test
