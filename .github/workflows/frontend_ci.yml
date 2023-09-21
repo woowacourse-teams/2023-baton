@@ -10,12 +10,13 @@ on:
       - dev/FE
     paths: "frontend/**"
 
+defaults:
+  run:
+    working-directory: ./frontend
+
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./frontend
 
     steps:
       - name: Checkout
