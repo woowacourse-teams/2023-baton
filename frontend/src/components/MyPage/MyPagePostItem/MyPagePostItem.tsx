@@ -39,10 +39,10 @@ const MyPagePostItem = ({
       <S.SideContainer>
         <S.PostTitle>{title}</S.PostTitle>
         <S.statisticsContainer>
-          <S.statisticsImage src={eyeIcon} />
-          <S.statisticsText>{watchedCount}</S.statisticsText>
-          <S.statisticsImage src={applicantIcon} />
-          <S.statisticsText>{applicantCount}</S.statisticsText>
+          <S.statisticsImage alt="조회수" src={eyeIcon} />
+          <S.statisticsText aria-label="조회수">{watchedCount}</S.statisticsText>
+          <S.statisticsImage alt="지원한 서포터 수" src={applicantIcon} />
+          <S.statisticsText aria-label="지원한 서포터 수">{applicantCount}</S.statisticsText>
         </S.statisticsContainer>
       </S.SideContainer>
       <S.DeadLineContainer>

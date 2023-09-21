@@ -119,7 +119,7 @@ const MainPage = () => {
               onClick={handleClickPostButton}
               colorTheme="WHITE"
               fontSize={isMobile ? '14px' : '18px'}
-              ariaLabel="리뷰 요청 글 작성하기"
+              ariaLabel="리뷰 요청 글 작성"
             >
               리뷰 요청 글 작성하기
             </Button>
