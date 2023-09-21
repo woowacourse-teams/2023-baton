@@ -141,6 +141,7 @@ const S = {
       font-size: 16px;
     }
   `,
+
   TechLabel: styled.div`
     display: flex;
     gap: 8px;

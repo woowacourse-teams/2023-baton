@@ -41,11 +41,9 @@ export default ListFilter;
 
 const appear = keyframes`
  0% {
-  transform-origin:left;
   transform: scaleX(0);
  }
  100% {
-  transform-origin:left;
   transform: scaleX(1);
  }
 `;
@@ -58,6 +56,8 @@ const underLine = css`
   border-radius: 1px;
 
   background-color: var(--baton-red);
+
+  transform-origin: left;
 
   animation: 0.3s ease-in ${appear};
 `;

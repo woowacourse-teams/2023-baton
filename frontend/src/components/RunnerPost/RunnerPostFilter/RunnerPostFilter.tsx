@@ -32,11 +32,9 @@ export default RunnerPostFilter;
 
 const appear = keyframes`
  0% {
-  transform-origin:left;
   transform: scaleX(0);
  }
  100% {
-  transform-origin:left;
   transform: scaleX(1);
  }
 `;
@@ -49,6 +47,8 @@ const underLine = css`
   border-radius: 1px;
 
   background-color: var(--baton-red);
+
+  transform-origin: left;
 
   animation: 0.2s ease-in ${appear};
 `;
