@@ -4,24 +4,27 @@ on:
   push:
     branches:
       - dev/FE
-    paths: 'frontend/**'
+    paths: "frontend/**"
   pull_request:
     branches:
       - dev/FE
-    paths: 'frontend/**'
+    paths: "frontend/**"
 
 jobs:
-  test:
+  cypress-run:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./frontend
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
 
-      - name: 의존성을 설치한다
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
         run: npm install
 
-      - name: 테스트를 수행한다
-        run: npm run test
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          start: npm run test
