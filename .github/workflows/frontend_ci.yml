@@ -16,18 +16,18 @@ defaults:
 
 jobs:
   Cypress-Test:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout GitCode
-      uses: actions/checkout@v3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout GitCode
+        uses: actions/checkout@v3
 
-    - name: install dependencies
-      uses: npm install
+      - name: install dependencies
+        uses: npm install
 
-    - name: dev start
-      uses: npm run dev
+      - name: dev start
+        uses: npm run dev
 
-    - name: Run Cypress Test
-      uses: cypress-io/github-action@v5
-      with:
-        command: npm run test
+      - name: Run Cypress Test
+        uses: cypress-io/github-action@v5
+        with:
+          command: npm run test
