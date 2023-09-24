@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.vo.TagReducedName;
 
 import java.util.List;
@@ -46,27 +47,44 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
     @Override
     public List<RunnerPost> findByPageInfoAndReviewStatusAndTagReducedName(final Long previousLastId,
                                                                            final int limit,
-                                                                           final ReviewStatus reviewStatus,
-                                                                           final TagReducedName tagReducedName
+                                                                           final TagReducedName tagReducedName,
+                                                                           final ReviewStatus reviewStatus
     ) {
-        jpaQueryFactory.selectFrom(runnerPostTag)
-                .join(runnerPostTag.tag, tag).fetchJoin()
-                .join(runnerPostTag.runnerPost, runnerPost).fetchJoin()
+        return jpaQueryFactory.selectFrom(runnerPost)
                 .join(runnerPost.runner, runner).fetchJoin()
                 .join(runner.member, member).fetchJoin()
-                .where(tag.tagReducedName.value.contains(tagReducedName.getValue()))
-                .fetch();
-        return jpaQueryFactory.select(runnerPost)
-                .from(runnerPostTag)
-//                .join(runnerPostTag.tag, tag)
-//                .join(runnerPostTag.runnerPost, runnerPost)
-//                .join(runnerPost.runner, runner)
-//                .join(runner.member, member)
-                .where(tag.tagReducedName.eq(tagReducedName))
-//                        .and(runnerPost.id.lt(previousLastId))
-//                        .and(runnerPost.reviewStatus.eq(reviewStatus)))
+                .leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
+                .leftJoin(runnerPostTag.tag, tag)
+                .where(tag.tagReducedName.eq(tagReducedName)
+                    .and(runnerPost.reviewStatus.eq(reviewStatus))
+                    .and(runnerPost.id.lt(previousLastId)))
                 .orderBy(runnerPost.id.desc())
                 .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<RunnerPost> findLatestByLimitAndTagNameAndReviewStatus(final int limit,
+                                                                       final TagReducedName tagReducedName,
+                                                                       final ReviewStatus reviewStatus
+    ) {
+        return jpaQueryFactory.selectFrom(runnerPost)
+                .join(runnerPost.runner, runner).fetchJoin()
+                .join(runner.member, member).fetchJoin()
+                .leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
+                .leftJoin(runnerPostTag.tag, tag)
+                .where(tag.tagReducedName.eq(tagReducedName)
+                        .and(runnerPost.reviewStatus.eq(reviewStatus)))
+                .orderBy(runnerPost.id.desc())
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<RunnerPostTag> findByRunnerPosts(final List<RunnerPost> runnerPosts) {
+        return jpaQueryFactory.selectFrom(runnerPostTag)
+                .join(runnerPostTag.tag, tag).fetchJoin()
+                .where(runnerPostTag.runnerPost.in(runnerPosts))
                 .fetch();
     }
 }

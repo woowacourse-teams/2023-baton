@@ -36,10 +36,10 @@ public class RunnerPostReadController {
             return ResponseEntity.ok(runnerPostReadService.readRunnerPostByPageInfoAndReviewStatus(cursor, limit, reviewStatus));
         }
         if (!isTagNameBlank(tagName) && isFirstPage(cursor)) {
-            return null;
+            return ResponseEntity.ok(runnerPostReadService.readLatestByLimitAndTagNameAndReviewStatus(tagName, limit, reviewStatus));
         }
         if (!isTagNameBlank(tagName) && !isFirstPage(cursor)) {
-            return null;
+            return ResponseEntity.ok(runnerPostReadService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(tagName, cursor, limit, reviewStatus));
         }
         throw new ClientRequestException(INVALID_QUERY_STRING_FORMAT);
     }

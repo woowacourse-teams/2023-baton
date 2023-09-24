@@ -13,10 +13,10 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.vo.TagReducedName;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,7 +24,6 @@ import java.util.List;
 public class RunnerPostReadService {
 
     private final RunnerPostRepository runnerPostRepository;
-    private final RunnerPostTagRepository runnerPostTagRepository;
 
     public Page<RunnerPost> readRunnerPostByTagNameAndReviewStatus(final Pageable pageable,
                                                                    final String tagName,
@@ -35,16 +34,42 @@ public class RunnerPostReadService {
         return runnerPostRepository.findByTagReducedNameAndReviewStatus(pageable, tagReducedName, reviewStatus);
     }
 
-    public List<RunnerPostResponse.Simple> readRunnerPostByPageInfoAndReviewStatus(final Long cursor, final int limit, final ReviewStatus reviewStatus) {
+    public List<RunnerPostResponse.Simple> readRunnerPostByPageInfoAndReviewStatus(final Long cursor,
+                                                                                   final int limit,
+                                                                                   final ReviewStatus reviewStatus
+    ) {
         final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatus(cursor, limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagByRunnerPosts(runnerPosts);
+        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
 
-    public List<RunnerPostResponse.Simple> readLatestByLimitAndReviewStatus(final int limit, final ReviewStatus reviewStatus) {
+    public List<RunnerPostResponse.Simple> readLatestByLimitAndReviewStatus(final int limit,
+                                                                            final ReviewStatus reviewStatus
+    ) {
         final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndReviewStatus(limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagByRunnerPosts(runnerPosts);
+        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findByRunnerPosts(runnerPosts);
+        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
+        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
+    }
+
+    public List<RunnerPostResponse.Simple> readRunnerPostByPageInfoAndTagNameAndReviewStatus(final String tagName,
+                                                                                             final Long cursor,
+                                                                                             final int limit,
+                                                                                             final ReviewStatus reviewStatus
+    ) {
+        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(cursor, limit, TagReducedName.from(tagName), reviewStatus);
+        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findByRunnerPosts(runnerPosts);
+        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
+        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
+    }
+
+    public List<RunnerPostResponse.Simple> readLatestByLimitAndTagNameAndReviewStatus(final String tagName,
+                                                                                      final int limit,
+                                                                                      final ReviewStatus reviewStatus
+    ) {
+        final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndTagNameAndReviewStatus(limit, TagReducedName.from(tagName), reviewStatus);
+        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
@@ -84,7 +109,7 @@ public class RunnerPostReadService {
 
     private List<String> convertToTags(final RunnerPost runnerPost, final List<RunnerPostTag> runnerPostTags) {
         return runnerPostTags.stream()
-                .filter(runnerPostTag -> runnerPostTag.getRunnerPost().getId() == runnerPost.getId())
+                .filter(runnerPostTag -> Objects.equals(runnerPostTag.getRunnerPost().getId(), runnerPost.getId()))
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .toList();
     }
