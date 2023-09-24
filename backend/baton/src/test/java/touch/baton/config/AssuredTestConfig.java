@@ -14,19 +14,17 @@ import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
 import touch.baton.assure.repository.TestMemberRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
-import touch.baton.assure.repository.TestRunnerPostReadRepository;
 import touch.baton.assure.repository.TestRunnerPostRepository;
 import touch.baton.assure.repository.TestRunnerRepository;
 import touch.baton.assure.repository.TestSupporterRepository;
 import touch.baton.assure.repository.TestSupporterRunnerPostRepository;
 import touch.baton.assure.repository.TestTagRepository;
-import touch.baton.assure.repository.TestTechnicalTagRepository;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.infra.auth.MockAuthTestConfig;
 import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 
 @ActiveProfiles("test")
-@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class, MockAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
+@Import({JpaConfig.class, QuerydslConfig.class, ConverterConfig.class, PageableTestConfig.class, MockAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,9 +41,6 @@ public abstract class AssuredTestConfig {
 
     @Autowired
     protected TestRunnerPostRepository runnerPostRepository;
-
-    @Autowired
-    protected TestRunnerPostReadRepository runnerPostReadRepository;
 
     @Autowired
     protected TestSupporterRunnerPostRepository supporterRunnerPostRepository;

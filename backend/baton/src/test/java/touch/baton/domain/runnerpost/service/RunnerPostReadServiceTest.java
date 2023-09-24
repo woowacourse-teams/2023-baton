@@ -34,7 +34,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostReadService = new RunnerPostReadService(runnerPostReadRepository);
+        runnerPostReadService = new RunnerPostReadService(runnerPostRepository);
     }
 
     @DisplayName("러너 게시글을 태그 이름과 리뷰 상태를 조건으로 이용하여 페이징 조회에 성공한다.")

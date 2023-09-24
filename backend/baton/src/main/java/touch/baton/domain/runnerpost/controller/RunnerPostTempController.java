@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.service.RunnerPostNativeService;
+import touch.baton.domain.runnerpost.service.RunnerPostReadService;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.tag.RunnerPostTag;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @Controller
 public class RunnerPostTempController {
 
-    private final RunnerPostNativeService runnerPostNativeService;
+    private final RunnerPostReadService runnerPostNativeService;
 
     @GetMapping("/temp")
     public ResponseEntity<List<RunnerPostResponse.Simple>> read(
@@ -26,9 +25,12 @@ public class RunnerPostTempController {
             @RequestParam("reviewStatus") final ReviewStatus reviewStatus
     ) {
         final List<RunnerPost> runnerPosts = runnerPostNativeService.findNative(cursor, limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostNativeService.findRunnerPostTags(runnerPosts);
+//        final List<RunnerPostTag> runnerPostTags = runnerPostNativeService.findRunnerPostTags(runnerPosts);
+//        final List<RunnerPostResponse.Simple> response = runnerPosts.stream()
+//                .map(runnerPost -> RunnerPostResponse.Simple.page(runnerPost, 0L, runnerPostTags))
+//                .toList();
         final List<RunnerPostResponse.Simple> response = runnerPosts.stream()
-                .map(runnerPost -> RunnerPostResponse.Simple.page(runnerPost, 0L, runnerPostTags))
+                .map(runnerPost -> RunnerPostResponse.Simple.from(runnerPost, 0L))
                 .toList();
         return ResponseEntity.ok(response);
     }

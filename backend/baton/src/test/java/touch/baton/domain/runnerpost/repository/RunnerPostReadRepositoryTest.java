@@ -34,7 +34,7 @@ import static touch.baton.fixture.vo.TagNameFixture.tagName;
 class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private RunnerPostReadRepository runnerPostReadRepository;
+    private RunnerPostRepository runnerPostRepository;
 
     @Autowired
     private EntityManager em;
@@ -68,7 +68,7 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
         em.close();
 
         // when
-        final List<Long> actual = runnerPostReadRepository.countApplicantsByRunnerPostIds(List.of(
+        final List<Long> actual = runnerPostRepository.countApplicantsByRunnerPostIds(List.of(
                 runnerPostOne.getId(),
                 runnerPostTwo.getId(),
                 runnerPostThree.getId(),
@@ -142,7 +142,7 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
         // when
         final PageRequest pageOne = PageRequest.of(0, 10);
 
-        final Page<RunnerPost> foundRunnerPosts = runnerPostReadRepository.findByTagReducedNameAndReviewStatus(
+        final Page<RunnerPost> foundRunnerPosts = runnerPostRepository.findByTagReducedNameAndReviewStatus(
                 pageOne,
                 TagReducedName.from("자바"),
                 ReviewStatus.NOT_STARTED

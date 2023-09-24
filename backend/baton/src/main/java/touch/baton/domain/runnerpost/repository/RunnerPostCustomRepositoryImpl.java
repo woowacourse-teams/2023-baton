@@ -2,6 +2,7 @@ package touch.baton.domain.runnerpost.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
@@ -16,6 +17,7 @@ import static touch.baton.domain.tag.QRunnerPostTag.runnerPostTag;
 import static touch.baton.domain.tag.QTag.tag;
 
 @RequiredArgsConstructor
+@Repository
 public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;

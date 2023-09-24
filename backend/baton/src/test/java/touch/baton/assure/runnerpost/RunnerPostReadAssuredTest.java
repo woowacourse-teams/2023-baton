@@ -78,7 +78,7 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
         final Long 헤나_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(헤나_액세스_토큰);
 
         final RunnerPost 헤나_러너_게시글 = runnerPostRepository.getByRunnerPostId(헤나_러너_게시글_식별자값);
-        final Long 서포터_지원자_수 = runnerPostReadRepository.countApplicantByRunnerPostId(헤나_러너_게시글_식별자값);
+        final Long 서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(헤나_러너_게시글_식별자값);
 
         final PageRequest 페이징_정보 = PageRequest.of(1, 10);
 

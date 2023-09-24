@@ -7,11 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.domain.tag.vo.TagReducedName;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
+public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long>, RunnerPostCustomRepository {
 
     @Query(value = """
             select rp, r, m
@@ -56,5 +57,30 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long> {
     Page<RunnerPost> joinSupporterRunnerPostBySupporterIdAndReviewStatus(
             final Pageable pageable,
             @Param("supporterId") final Long supporterId,
+            @Param("reviewStatus") final ReviewStatus reviewStatus);
+
+    // FIXME: 원래 Read repo에 있었음
+    @Query("""
+            select coalesce(count(srp.id), 0) 
+            from RunnerPost rp
+            left outer join fetch SupporterRunnerPost srp on srp.runnerPost.id = rp.id
+            where rp.id in :runnerPostIds
+            group by rp.id
+            """)
+    List<Long> countApplicantsByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
+
+    @Query("""
+            select rp
+            from RunnerPost rp
+            join fetch Runner r on r.id = rp.runner.id
+            join fetch Member m on m.id = r.member.id
+            join fetch RunnerPostTag rpt on rpt.runnerPost.id = rp.id
+            
+            where rpt.tag.tagReducedName = :tagReducedName
+            and rp.reviewStatus = :reviewStatus
+            """)
+    Page<RunnerPost> findByTagReducedNameAndReviewStatus(
+            final Pageable pageable,
+            @Param("tagReducedName") final TagReducedName tagReducedName,
             @Param("reviewStatus") final ReviewStatus reviewStatus);
 }
