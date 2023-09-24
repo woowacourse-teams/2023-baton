@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.vo.TagReducedName;
 
 import java.util.List;
@@ -45,18 +44,10 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
     }
 
     @Override
-    public List<RunnerPostTag> findByRunnerPosts(final List<RunnerPost> runnerPosts) {
-        return jpaQueryFactory.selectFrom(runnerPostTag)
-                .join(runnerPostTag.tag, tag).fetchJoin()
-                .where(runnerPostTag.runnerPost.in(runnerPosts))
-                .fetch();
-    }
-
-    @Override
-    public List<RunnerPost> findByCursorAndReviewStatusAndTagReducedName(final Long previousLastId,
-                                                                         final int limit,
-                                                                         final ReviewStatus reviewStatus,
-                                                                         final TagReducedName tagReducedName
+    public List<RunnerPost> findByPageInfoAndReviewStatusAndTagReducedName(final Long previousLastId,
+                                                                           final int limit,
+                                                                           final ReviewStatus reviewStatus,
+                                                                           final TagReducedName tagReducedName
     ) {
         jpaQueryFactory.selectFrom(runnerPostTag)
                 .join(runnerPostTag.tag, tag).fetchJoin()

@@ -1,35 +1,21 @@
 package touch.baton.domain.tag.repository;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.WatchedCount;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ImplementedContents;
-import touch.baton.domain.runnerpost.vo.PostscriptContents;
-import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagReducedName;
-import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
+import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.RunnerPostTagFixture;
+import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -40,71 +26,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private RunnerRepository runnerRepository;
-
-    @Autowired
-    private RunnerPostRepository runnerPostRepository;
+    private EntityManager em;
 
     @Autowired
     private RunnerPostTagRepository runnerPostTagRepository;
 
-    @Autowired
-    private TagRepository tagRepository;
-
     @DisplayName("RunnerPostTag 의 식별자값 목록으로 Tag 목록을 조회한다.")
     @Test
-    void success_joinTagByRunnerPostIds() {
+    void success_joinTagByRunnerPostId() {
         // given
-        final Member member = Member.builder()
-                .memberName(new MemberName("헤에디주"))
-                .socialId(new SocialId("testSocialId"))
-                .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
-                .githubUrl(new GithubUrl("github.com/hyena0608"))
-                .company(new Company("우아한형제들"))
-                .imageUrl(new ImageUrl("김석호"))
-                .build();
-        final Member saveMember = memberRepository.saveAndFlush(member);
+        final Runner runner = persistRunner();
+        final RunnerPost runnerPost = persistRunnerPost(runner);
+        final RunnerPostTag runnerPostTag = persistRunnerPostTag(runnerPost);
 
-        final Runner runner = Runner.builder()
-                .member(saveMember)
-                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
-                .build();
-        final Runner saveRunner = runnerRepository.saveAndFlush(runner);
-
-        final LocalDateTime deadline = LocalDateTime.now();
-        final RunnerPost runnerPost = RunnerPost.builder()
-                .title(new Title("제 코드 리뷰 좀 해주세요!!"))
-                .implementedContents(new ImplementedContents("제 코드는 클린코드가 맞을까요?"))
-                .curiousContents(new CuriousContents("저는 클린코드가 궁금해요."))
-                .postscriptContents(new PostscriptContents("저 상처 잘 받으니깐 부드럽게 말해주세요."))
-                .deadline(new Deadline(deadline))
-                .pullRequestUrl(new PullRequestUrl("https://"))
-                .watchedCount(new WatchedCount(1))
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .reviewStatus(ReviewStatus.NOT_STARTED)
-                .runner(saveRunner)
-                .supporter(null)
-                .build();
-        runnerPostRepository.saveAndFlush(runnerPost);
-
-        final Tag tag = Tag.builder()
-                .tagName(new TagName("자바"))
-                .tagReducedName(TagReducedName.from("자바"))
-                .build();
-        tagRepository.save(tag);
-
-        final RunnerPostTag runnerPostTag = RunnerPostTag.builder()
-                .runnerPost(runnerPost)
-                .tag(tag)
-                .build();
-        runnerPostTagRepository.save(runnerPostTag);
+        em.flush();
+        em.close();
 
         // when
-        final List<RunnerPostTag> joinRunnerPostTags
-                = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
+        final List<RunnerPostTag> joinRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
 
         // then
         assertThat(joinRunnerPostTags).containsExactly(runnerPostTag);
@@ -114,44 +53,74 @@ class RunnerPostTagRepositoryTest extends RepositoryTestConfig {
     @Test
     void success_joinTagByRunnerPostIds_if_tag_is_empty() {
         // given
-        final Member member = Member.builder()
-                .memberName(new MemberName("헤에디주"))
-                .socialId(new SocialId("testSocialId"))
-                .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
-                .githubUrl(new GithubUrl("github.com/hyena0608"))
-                .company(new Company("우아한형제들"))
-                .imageUrl(new ImageUrl("김석호"))
-                .build();
-        final Member saveMember = memberRepository.saveAndFlush(member);
+        final Runner runner = persistRunner();
+        final RunnerPost runnerPost = persistRunnerPost(runner);
 
-        final Runner runner = Runner.builder()
-                .member(saveMember)
-                .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
-                .build();
-
-        final Runner saveRunner = runnerRepository.saveAndFlush(runner);
-
-        final LocalDateTime deadline = LocalDateTime.now();
-        final RunnerPost runnerPost = RunnerPost.builder()
-                .title(new Title("제 코드 리뷰 좀 해주세요!!"))
-                .implementedContents(new ImplementedContents("제 코드는 클린코드가 맞을까요?"))
-                .curiousContents(new CuriousContents("저는 클린코드가 궁금해요."))
-                .postscriptContents(new PostscriptContents("저 상처 잘 받으니깐 부드럽게 말해주세요."))
-                .deadline(new Deadline(deadline))
-                .pullRequestUrl(new PullRequestUrl("https://"))
-                .watchedCount(new WatchedCount(1))
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
-                .reviewStatus(ReviewStatus.NOT_STARTED)
-                .runner(saveRunner)
-                .supporter(null)
-                .build();
-        runnerPostRepository.saveAndFlush(runnerPost);
+        em.flush();
+        em.close();
 
         // when
-        final List<RunnerPostTag> joinRunnerPostTags
-                = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
+        final List<RunnerPostTag> joinRunnerPostTags = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
 
         // then
         assertThat(joinRunnerPostTags).isEmpty();
+    }
+    
+    @DisplayName("RunnerPost 목록으로 RunnerPostTag 목록을 조회한다.")
+    @Test
+    void joinTagByRunnerPosts() {
+        // given
+        final Tag tagReact = TagFixture.createReact();
+        em.persist(tagReact);
+        final Tag tagJava = TagFixture.createJava();
+        em.persist(tagJava);
+
+        final List<RunnerPost> runnerPosts = new ArrayList<>();
+        final List<RunnerPostTag> expected = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            final Runner runner = persistRunner();
+            final RunnerPost runnerPost = persistRunnerPost(runner);
+            final RunnerPostTag runnerPostTagReact = persistRunnerPostTag(runnerPost, tagReact);
+            final RunnerPostTag runnerPostTagJava = persistRunnerPostTag(runnerPost, tagJava);
+            runnerPosts.add(runnerPost);
+            expected.addAll(List.of(runnerPostTagReact, runnerPostTagJava));
+        }
+
+        em.flush();
+        em.close();
+
+        // when
+        final List<RunnerPostTag> actual = runnerPostTagRepository.joinTagByRunnerPosts(runnerPosts);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    private Runner persistRunner() {
+        final Member member = MemberFixture.createDitoo();
+        em.persist(member);
+        final Runner runner = RunnerFixture.createRunner(member);
+        em.persist(runner);
+        return runner;
+    }
+
+    private RunnerPost persistRunnerPost(final Runner runner) {
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, new Deadline(LocalDateTime.now().plusHours(10)));
+        em.persist(runnerPost);
+        return runnerPost;
+    }
+
+    private RunnerPostTag persistRunnerPostTag(final RunnerPost runnerPost) {
+        final Tag tag = TagFixture.createJava();
+        em.persist(tag);
+        final RunnerPostTag runnerPostTag = RunnerPostTagFixture.create(runnerPost, tag);
+        runnerPost.addAllRunnerPostTags(List.of(runnerPostTag));
+        return runnerPostTag;
+    }
+
+    private RunnerPostTag persistRunnerPostTag(final RunnerPost runnerPost, final Tag tag) {
+        final RunnerPostTag runnerPostTag = RunnerPostTagFixture.create(runnerPost, tag);
+        runnerPost.addAllRunnerPostTags(List.of(runnerPostTag));
+        return runnerPostTag;
     }
 }

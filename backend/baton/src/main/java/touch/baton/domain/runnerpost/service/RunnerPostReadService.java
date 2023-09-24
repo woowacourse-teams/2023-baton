@@ -13,6 +13,7 @@ import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
+import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.vo.TagReducedName;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 public class RunnerPostReadService {
 
     private final RunnerPostRepository runnerPostRepository;
+    private final RunnerPostTagRepository runnerPostTagRepository;
 
     public Page<RunnerPost> readRunnerPostByTagNameAndReviewStatus(final Pageable pageable,
                                                                    final String tagName,
@@ -35,14 +37,14 @@ public class RunnerPostReadService {
 
     public List<RunnerPostResponse.Simple> readRunnerPostByPageInfoAndReviewStatus(final Long cursor, final int limit, final ReviewStatus reviewStatus) {
         final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatus(cursor, limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findByRunnerPosts(runnerPosts);
+        final List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
 
     public List<RunnerPostResponse.Simple> readLatestByLimitAndReviewStatus(final int limit, final ReviewStatus reviewStatus) {
         final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndReviewStatus(limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findByRunnerPosts(runnerPosts);
+        final List<RunnerPostTag> runnerPostTags = runnerPostTagRepository.joinTagByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
