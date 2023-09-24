@@ -11,6 +11,8 @@ public interface RunnerPostCustomRepository {
 
     List<RunnerPost> findByPageInfoAndReviewStatus(final Long previousLastId, final int limit, final ReviewStatus reviewStatus);
 
+    List<RunnerPost> findLatestByLimitAndReviewStatus(final int limit, final ReviewStatus reviewStatus);
+
     List<RunnerPostTag> findByRunnerPosts(final List<RunnerPost> runnerPosts);
 
     List<RunnerPost> findByCursorAndReviewStatusAndTagReducedName(final Long cursor,

@@ -34,6 +34,17 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
     }
 
     @Override
+    public List<RunnerPost> findLatestByLimitAndReviewStatus(final int limit, final ReviewStatus reviewStatus) {
+        return jpaQueryFactory.selectFrom(runnerPost)
+                .join(runnerPost.runner, runner).fetchJoin()
+                .join(runner.member, member).fetchJoin()
+                .where(runnerPost.reviewStatus.eq(reviewStatus))
+                .orderBy(runnerPost.id.desc())
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
     public List<RunnerPostTag> findByRunnerPosts(final List<RunnerPost> runnerPosts) {
         return jpaQueryFactory.selectFrom(runnerPostTag)
                 .join(runnerPostTag.tag, tag).fetchJoin()

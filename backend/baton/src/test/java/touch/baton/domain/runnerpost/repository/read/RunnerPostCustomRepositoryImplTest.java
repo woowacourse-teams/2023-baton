@@ -25,6 +25,8 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
 
+    private static final Long GENERATED_START_ID = 1L;
+
     @Autowired
     private RunnerPostRepository runnerPostRepository;
 
@@ -41,28 +43,53 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
         em.persist(runner);
     }
 
-    @DisplayName("리뷰 상태로 러너 게시글을 페이지 조회한다")
+    @DisplayName("리뷰 상태로 러너 게시글을 페이지 조회한다 (2페이지 조회)")
     @Test
-    void findByPageInfoAndReviewStatus() {
+    void findByPageInfoAndReviewStatus_secondPage() {
         // given
         final ReviewStatus reviewStatus = NOT_STARTED;
         for (int i = 0; i < 20; i++) {
             persistRunnerPost(runner, reviewStatus);
         }
-        final Long previousLastId = 11L;
+        final long previousLastId = 11L;
         final int limit = 10;
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatus(previousLastId, limit, reviewStatus);
-        final List<Long> expected = LongStream.rangeClosed(1L, 10L)
-                .mapToObj(i -> 11L - i)
+        final List<Long> expected = LongStream.range(GENERATED_START_ID, GENERATED_START_ID + limit)
+                .mapToObj(i -> previousLastId - i)
                 .toList();
 
         // then
         assertSoftly(softly -> {
-           softly.assertThat(runnerPosts).hasSize(10);
+           softly.assertThat(runnerPosts).hasSize(limit);
            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
                    .isEqualTo(expected);
+        });
+    }
+
+    @DisplayName("리뷰 상태로 러너 게시글을 페이지 조회한다 (첫 페이지 조회)")
+    @Test
+    void findByPageInfoAndReviewStatus_firstPage() {
+        // given
+        final ReviewStatus reviewStatus = NOT_STARTED;
+        final int runnerPostCount = 20;
+        for (int i = 0; i < runnerPostCount; i++) {
+            persistRunnerPost(runner, reviewStatus);
+        }
+        final int limit = 10;
+
+        // when
+        final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndReviewStatus(limit, reviewStatus);
+        final List<Long> expected = LongStream.range(GENERATED_START_ID, GENERATED_START_ID + limit)
+                .mapToObj(i -> runnerPostCount + 1 - i)
+                .toList();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(runnerPosts).hasSize(limit);
+            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+                    .isEqualTo(expected);
         });
     }
 
