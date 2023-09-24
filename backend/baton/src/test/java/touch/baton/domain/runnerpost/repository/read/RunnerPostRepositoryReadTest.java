@@ -9,15 +9,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
 import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
-import touch.baton.domain.tag.repository.TagRepository;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -44,16 +42,7 @@ import static touch.baton.util.TestDateFormatUtil.createExpireDate;
 class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
-    private MemberRepository memberRepository;
-
-    @Autowired
-    private RunnerRepository runnerRepository;
-
-    @Autowired
     private RunnerPostRepository runnerPostRepository;
-
-    @Autowired
-    private TagRepository tagRepository;
 
     @Autowired
     private RunnerPostTagRepository runnerPostTagRepository;
@@ -78,6 +67,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
                 NOT_STARTED,
+                IsReviewed.notReviewed(),
                 runner,
                 null,
                 runnerPostTags(new ArrayList<>()));
@@ -91,6 +81,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         final RunnerPostTag springRunnerPostTag = RunnerPostTagFixture.create(runnerPost, spring);
 
         runnerPost.addAllRunnerPostTags(List.of(javaRunnerPostTag, springRunnerPostTag));
+
+        em.flush();
+        em.close();
 
         // when
         final List<RunnerPostTag> expected = runnerPostTagRepository.joinTagByRunnerPostId(runnerPost.getId());
@@ -108,6 +101,9 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
         final Runner runner = RunnerFixture.createRunner(ditoo);
         em.persist(runner);
 
+        em.flush();
+        em.close();
+
         final RunnerPost runnerPost = RunnerPostFixture.create(title("제 코드를 리뷰해주세요"),
                 implementedContents("제 코드의 내용은 이렇습니다."),
                 curiousContents("저는 이것이 궁금합니다."),
@@ -116,6 +112,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 deadline(LocalDateTime.now().plusHours(10)),
                 watchedCount(0),
                 NOT_STARTED,
+                IsReviewed.notReviewed(),
                 runner,
                 null,
                 runnerPostTags(new ArrayList<>()));

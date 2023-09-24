@@ -20,6 +20,7 @@ import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -97,7 +98,7 @@ class RunnerPostTest {
 
         // when
         runnerPost.addAllRunnerPostTags(List.of(java, spring));
-         List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
+        List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
         final List<String> actualTagNames = runnerPostTags.stream()
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .collect(Collectors.toList());
@@ -125,6 +126,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -144,6 +146,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(null)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -163,6 +166,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -183,6 +187,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -203,6 +208,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -223,6 +229,7 @@ class RunnerPostTest {
                     .deadline(null)
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -243,12 +250,34 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(null)
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build()
             ).isInstanceOf(RunnerPostDomainException.class)
                     .hasMessage("RunnerPost 의 watchedCount 는 null 일 수 없습니다.");
+        }
+
+        @DisplayName("is reviewed 에 null 이 들어갈 경우 예외가 발생한다.")
+        @Test
+        void fail_if_isReviewed_is_null() {
+            assertThatThrownBy(() -> RunnerPost.builder()
+                    .title(new Title("아이"))
+                    .implementedContents(new ImplementedContents("김영한 짱짱맨"))
+                    .curiousContents(new CuriousContents("궁금한 점입니다."))
+                    .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
+                    .pullRequestUrl(new PullRequestUrl("https://github.com/woowacourse-teams/2023-baton/pull/17"))
+                    .deadline(new Deadline(LocalDateTime.now()))
+                    .watchedCount(new WatchedCount(0))
+                    .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(null)
+                    .runner(runner)
+                    .supporter(supporter)
+                    .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                    .build()
+            ).isInstanceOf(RunnerPostDomainException.class)
+                    .hasMessage("RunnerPost 의 isReviewed 는 null 일 수 없습니다.");
         }
 
         @DisplayName("runner 에 null 이 들어갈 경우 예외가 발생한다.")
@@ -263,6 +292,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(null)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -283,6 +313,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now()))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(null)
@@ -334,6 +365,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(null)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -357,6 +389,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -380,6 +413,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().minusDays(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -413,6 +447,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.IN_PROGRESS)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -438,6 +473,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.NOT_STARTED)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -461,6 +497,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.DONE)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -484,6 +521,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.DONE)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -507,6 +545,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(ReviewStatus.DONE)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
@@ -531,6 +570,7 @@ class RunnerPostTest {
                     .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
                     .watchedCount(new WatchedCount(0))
                     .reviewStatus(reviewStatus)
+                    .isReviewed(IsReviewed.notReviewed())
                     .runner(runner)
                     .supporter(supporter)
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))

@@ -1,5 +1,6 @@
 package touch.baton.domain.oauth.controller;
 
+import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import touch.baton.domain.common.exception.ClientErrorCode;
+import touch.baton.domain.common.exception.ClientRequestException;
 import touch.baton.domain.oauth.AuthorizationHeader;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.service.OauthService;
@@ -21,10 +24,10 @@ import touch.baton.domain.oauth.token.Tokens;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FOUND;
-import static touch.baton.domain.oauth.token.RefreshToken.REFRESH_TOKEN_LIFECYCLE;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/oauth")
@@ -58,11 +61,19 @@ public class OauthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<Void> refreshJwt(@CookieValue final String refreshToken,
+    public ResponseEntity<Void> refreshJwt(@Nullable @CookieValue(required = false) final String refreshToken,
                                            final HttpServletRequest request,
                                            final HttpServletResponse response
     ) {
+        if (request.getHeader(AUTHORIZATION) == null) {
+            throw new ClientRequestException(ClientErrorCode.OAUTH_AUTHORIZATION_VALUE_IS_NULL);
+        }
+        if (refreshToken == null || refreshToken.isBlank()) {
+            throw new ClientRequestException(ClientErrorCode.REFRESH_TOKEN_IS_NOT_NULL);
+        }
+
         final AuthorizationHeader authorizationHeader = new AuthorizationHeader(request.getHeader(AUTHORIZATION));
+
         final Tokens tokens = oauthService.reissueAccessToken(authorizationHeader, refreshToken);
 
         setCookie(response, tokens.refreshToken());
@@ -76,7 +87,7 @@ public class OauthController {
         final ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken.getToken().getValue())
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(Duration.ofDays(REFRESH_TOKEN_LIFECYCLE).toSeconds())
+                .maxAge(Duration.between(LocalDateTime.now(), refreshToken.getExpireDate().getValue()).toSeconds())
                 .sameSite(SameSite.NONE.attributeValue())
                 .path("/")
                 .build();

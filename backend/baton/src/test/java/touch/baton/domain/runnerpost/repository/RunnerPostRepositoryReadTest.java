@@ -33,7 +33,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
+class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -62,6 +62,7 @@ class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
                 .member(saveMember)
                 .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
+
         final Runner saveRunner = runnerRepository.saveAndFlush(runner);
 
         final RunnerPost runnerPost = RunnerPost.builder()

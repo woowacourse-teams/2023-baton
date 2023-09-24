@@ -1,0 +1,1 @@
+ALTER TABLE runner_post ADD COLUMN is_reviewed BOOLEAN DEFAULT FALSE;

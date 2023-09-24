@@ -23,8 +23,6 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 public class RefreshToken extends BaseEntity {
 
-    public static final int REFRESH_TOKEN_LIFECYCLE = 30;
-
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
@@ -64,9 +62,9 @@ public class RefreshToken extends BaseEntity {
         }
     }
 
-    public void updateToken(final Token token) {
+    public void updateToken(final Token token, final int expiredMinutes) {
         this.token = token;
-        expireDate.plusDays(REFRESH_TOKEN_LIFECYCLE);
+        expireDate.refreshExpireTokenDate(expiredMinutes);
     }
 
     public boolean isNotOwner(final Member member) {

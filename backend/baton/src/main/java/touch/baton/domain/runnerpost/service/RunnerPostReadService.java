@@ -5,11 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.RunnerPostsApplicantCount;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponses;
-import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
+import touch.baton.domain.runnerpost.repository.RunnerPostReadRepository;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.vo.TagReducedName;
@@ -53,6 +49,11 @@ public class RunnerPostReadService {
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
+    
+    public ApplicantCountMappingDto readApplicantCountMappingByRunnerPostIds(final List<Long> runnerPostIds) {
+        return runnerPostReadRepository.findApplicantCountMappingByRunnerPostIds(runnerPostIds);
+    }
+    
 
     public RunnerPostResponses.Simple readLatestByLimitAndTagNameAndReviewStatus(final String tagName,
                                                                                  final int limit,

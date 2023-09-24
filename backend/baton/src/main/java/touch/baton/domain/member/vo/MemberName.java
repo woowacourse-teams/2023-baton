@@ -16,17 +16,15 @@ import static lombok.AccessLevel.PROTECTED;
 @Embeddable
 public class MemberName {
 
+    private static final String DEFAULT_VALUE = "익명의 사용자";
+
     @Column(name = "name", nullable = false)
-    private String value;
+    private String value = DEFAULT_VALUE;
 
     public MemberName(final String value) {
-        validateNotNull(value);
-        this.value = value;
-    }
-
-    private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("MemberName 객체 내부에 name 은 null 일 수 없습니다.");
+            return;
         }
+        this.value = value;
     }
 }

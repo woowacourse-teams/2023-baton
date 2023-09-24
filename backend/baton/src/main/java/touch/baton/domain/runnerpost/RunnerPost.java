@@ -21,6 +21,7 @@ import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -37,7 +38,10 @@ import static jakarta.persistence.EnumType.STRING;
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.*;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.IN_PROGRESS;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
 
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -73,6 +77,9 @@ public class RunnerPost extends BaseEntity {
     @Column(nullable = false)
     private ReviewStatus reviewStatus = ReviewStatus.NOT_STARTED;
 
+    @Embedded
+    private IsReviewed isReviewed;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "runner_id", foreignKey = @ForeignKey(name = "fk_runner_post_to_runner"), nullable = false)
     private Runner runner;
@@ -93,11 +100,12 @@ public class RunnerPost extends BaseEntity {
                        final Deadline deadline,
                        final WatchedCount watchedCount,
                        final ReviewStatus reviewStatus,
+                       final IsReviewed isReviewed,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        this(null, title, implementedContents, curiousContents, postscriptContents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, supporter, runnerPostTags);
+        this(null, title, implementedContents, curiousContents, postscriptContents, pullRequestUrl, deadline, watchedCount, reviewStatus, isReviewed, runner, supporter, runnerPostTags);
     }
 
     private RunnerPost(final Long id,
@@ -109,11 +117,12 @@ public class RunnerPost extends BaseEntity {
                        final Deadline deadline,
                        final WatchedCount watchedCount,
                        final ReviewStatus reviewStatus,
+                       final IsReviewed isReviewed,
                        final Runner runner,
                        final Supporter supporter,
                        final RunnerPostTags runnerPostTags
     ) {
-        validateNotNull(title, implementedContents, curiousContents, postscriptContents, pullRequestUrl, deadline, watchedCount, reviewStatus, runner, runnerPostTags);
+        validateNotNull(title, implementedContents, curiousContents, postscriptContents, pullRequestUrl, deadline, watchedCount, reviewStatus, isReviewed, runner, runnerPostTags);
         this.id = id;
         this.title = title;
         this.implementedContents = implementedContents;
@@ -123,6 +132,7 @@ public class RunnerPost extends BaseEntity {
         this.deadline = deadline;
         this.watchedCount = watchedCount;
         this.reviewStatus = reviewStatus;
+        this.isReviewed = isReviewed;
         this.runner = runner;
         this.supporter = supporter;
         this.runnerPostTags = runnerPostTags;
@@ -143,10 +153,11 @@ public class RunnerPost extends BaseEntity {
                 .postscriptContents(new PostscriptContents(postscriptContents))
                 .pullRequestUrl(new PullRequestUrl(pullRequestUrl))
                 .deadline(new Deadline(deadline))
-                .runner(runner)
-                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .watchedCount(WatchedCount.zero())
                 .reviewStatus(NOT_STARTED)
+                .isReviewed(IsReviewed.notReviewed())
+                .runner(runner)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                 .build();
     }
 
@@ -158,6 +169,7 @@ public class RunnerPost extends BaseEntity {
                                  final Deadline deadline,
                                  final WatchedCount watchedCount,
                                  final ReviewStatus reviewStatus,
+                                 final IsReviewed isReviewed,
                                  final Runner runner,
                                  final RunnerPostTags runnerPostTags
     ) {
@@ -185,6 +197,9 @@ public class RunnerPost extends BaseEntity {
         if (Objects.isNull(reviewStatus)) {
             throw new RunnerPostDomainException("RunnerPost 의 reviewStatus 는 null 일 수 없습니다.");
         }
+        if (Objects.isNull(isReviewed)) {
+            throw new RunnerPostDomainException("RunnerPost 의 isReviewed 는 null 일 수 없습니다.");
+        }
         if (Objects.isNull(runner)) {
             throw new RunnerPostDomainException("RunnerPost 의 runner 는 null 일 수 없습니다.");
         }
@@ -199,6 +214,10 @@ public class RunnerPost extends BaseEntity {
 
     public void finishReview() {
         updateReviewStatus(DONE);
+    }
+
+    public void finishFeedback() {
+        this.isReviewed = IsReviewed.reviewed();
     }
 
     public void updateReviewStatus(final ReviewStatus other) {
@@ -270,10 +289,10 @@ public class RunnerPost extends BaseEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RunnerPost that = (RunnerPost) o;
+        final RunnerPost that = (RunnerPost) o;
         return Objects.equals(id, that.id);
     }
 

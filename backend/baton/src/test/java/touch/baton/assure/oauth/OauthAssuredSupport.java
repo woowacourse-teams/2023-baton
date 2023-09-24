@@ -79,6 +79,18 @@ public class OauthAssuredSupport {
             return this;
         }
 
+        public OauthClientRequestBuilder 리프레시_토큰_없이_액세스_토큰만으로_리프레시_요청한다() {
+            response = AssuredSupport.post("/api/v1/oauth/refresh", accessToken);
+
+            return this;
+        }
+
+        public OauthClientRequestBuilder 리프레시를_요청한다() {
+            response = AssuredSupport.post("/api/v1/oauth/refresh");
+
+            return this;
+        }
+
         public OauthServerResponseBuilder 서버_응답() {
             return new OauthServerResponseBuilder(response);
         }

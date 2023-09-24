@@ -15,6 +15,7 @@ import touch.baton.domain.oauth.token.exception.RefreshTokenDomainException;
 import java.time.LocalDateTime;
 
 import static java.time.LocalDateTime.now;
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -94,13 +95,13 @@ class RefreshTokenTest {
 
         // when
         final Token updateToken = new Token("update-token");
-        refreshToken.updateToken(updateToken);
+        refreshToken.updateToken(updateToken, 30);
 
         // then
         assertAll(
                 () -> assertThat(refreshToken.getToken()).isEqualTo(updateToken),
-                () -> assertThat(refreshToken.getExpireDate()).isEqualTo(new ExpireDate(currentTime.plusDays(30)))
-        );
+                () -> assertThat(refreshToken.getExpireDate().getValue().truncatedTo(MINUTES))
+                        .isEqualTo((currentTime.plusMinutes(30)).truncatedTo(MINUTES)));
     }
 
     @DisplayName("토큰의 주인을 확인할 수 있다.")

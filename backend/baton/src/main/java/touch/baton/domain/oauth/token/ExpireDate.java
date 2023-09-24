@@ -30,8 +30,8 @@ public class ExpireDate {
         }
     }
 
-    public void plusDays(final int days) {
-        this.value = value.plusDays(days);
+    public void refreshExpireTokenDate(final int minutes) {
+        this.value = LocalDateTime.now().plusMinutes(minutes);
     }
 
     public boolean isExpired() {

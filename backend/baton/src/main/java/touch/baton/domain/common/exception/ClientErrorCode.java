@@ -40,10 +40,10 @@ public enum ClientErrorCode {
     JWT_CLAIM_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW003", "JWT 에 기대한 정보를 모두 포함하고 있지 않습니다."),
     JWT_CLAIM_SOCIAL_ID_IS_WRONG(HttpStatus.UNAUTHORIZED, "JW004", "사용자의 잘못된 소셜 아이디(SocialId) 정보를 가진 JWT 입니다."),
     JWT_CLAIM_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW005", "기간이 만료된 JWT 입니다."),
-    JWT_CLAIM_IS_NOT_EXPIRED(HttpStatus.UNAUTHORIZED, "JW006", "만료되지 않은 JWT로 새로운 JWT를 발급 받을 수 없습니다."),
     REFRESH_TOKEN_IS_NOT_FOUND(HttpStatus.UNAUTHORIZED, "JW007", "해당 사용자의 Refresh Token이 존재하지 않습니다."),
     ACCESS_TOKEN_AND_REFRESH_TOKEN_HAVE_DIFFERENT_OWNER(HttpStatus.UNAUTHORIZED, "JW008", "Access Token 과 Refresh Token 의 주인이 다릅니다."),
     REFRESH_TOKEN_IS_ALREADY_EXPIRED(HttpStatus.UNAUTHORIZED, "JW009", "기간이 만료된 Refresh Token 입니다."),
+    REFRESH_TOKEN_IS_NOT_NULL(HttpStatus.BAD_REQUEST, "JW010", "Refresh Token 은 비어 있을 수 없습니다."),
 
     DUPLICATED_BRANCH_NAME(HttpStatus.BAD_REQUEST, "BR001", "이미 존재하는 이름의 브랜치입니다."),
     REPO_NAME_IS_NULL(HttpStatus.BAD_REQUEST, "BR002", "레포지토리 이름을 입력해주세요."),
