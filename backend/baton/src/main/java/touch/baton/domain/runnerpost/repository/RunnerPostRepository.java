@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.vo.TagReducedName;
 
@@ -61,13 +62,13 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long>, R
 
     // FIXME: 원래 Read repo에 있었음
     @Query("""
-            select coalesce(count(srp.id), 0) 
+            select new touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto(rp.id, coalesce(count(srp.id), 0L))
             from RunnerPost rp
-            left outer join fetch SupporterRunnerPost srp on srp.runnerPost.id = rp.id
+            left join SupporterRunnerPost srp on srp.runnerPost.id = rp.id
             where rp.id in :runnerPostIds
             group by rp.id
             """)
-    List<Long> countApplicantsByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
+    List<RunnerPostApplicantCountDto> countApplicantsByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
 
     @Query("""
             select rp

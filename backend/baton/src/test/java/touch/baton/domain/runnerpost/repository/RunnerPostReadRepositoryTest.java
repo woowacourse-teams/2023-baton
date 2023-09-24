@@ -10,6 +10,7 @@ import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.SupporterRunnerPost;
@@ -68,7 +69,7 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
         em.close();
 
         // when
-        final List<Long> actual = runnerPostRepository.countApplicantsByRunnerPostIds(List.of(
+        final List<RunnerPostApplicantCountDto> actual = runnerPostRepository.countApplicantsByRunnerPostIds(List.of(
                 runnerPostOne.getId(),
                 runnerPostTwo.getId(),
                 runnerPostThree.getId(),
@@ -80,7 +81,10 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
         // then
         final List<Long> expected = List.of(3L, 2L, 1L, 0L, 0L, 0L);
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual.stream()
+                .map(RunnerPostApplicantCountDto::applicantCount)
+                .toList())
+                .isEqualTo(expected);
     }
 
     private Runner persistRunner(final Member member) {

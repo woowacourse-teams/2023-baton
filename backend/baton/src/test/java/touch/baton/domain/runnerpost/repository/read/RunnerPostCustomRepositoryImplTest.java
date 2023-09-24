@@ -16,16 +16,15 @@ import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.stream.LongStream;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.domain.runnerpost.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
-
-    private static final Long GENERATED_START_ID = 1L;
 
     @Autowired
     private RunnerPostRepository runnerPostRepository;
@@ -43,22 +42,25 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
         em.persist(runner);
     }
 
-    @DisplayName("리뷰 상태로 러너 게시글을 페이지 조회한다 (2페이지 조회)")
+    // FIXME: 다른 테스트랑 데이터 겹침
+    @DisplayName("리뷰 상태로 러너 게시글을 페이지 조회한다 (2 페이지 이상 조회)")
     @Test
     void findByPageInfoAndReviewStatus_secondPage() {
         // given
         final ReviewStatus reviewStatus = NOT_STARTED;
-        for (int i = 0; i < 20; i++) {
-            persistRunnerPost(runner, reviewStatus);
+        final List<Long> runnerPostIds = new ArrayList<>();
+        final int persistSize = 30;
+        for (int i = 0; i < persistSize; i++) {
+            runnerPostIds.add(persistRunnerPost(runner, reviewStatus));
         }
-        final long previousLastId = 11L;
+        final int lastIndex = persistSize - 1;
+        final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatus(previousLastId, limit, reviewStatus);
-        final List<Long> expected = LongStream.range(GENERATED_START_ID, GENERATED_START_ID + limit)
-                .mapToObj(i -> previousLastId - i)
-                .toList();
+        runnerPostIds.sort(Comparator.reverseOrder());
+        final List<Long> expected = runnerPostIds.subList(1, 1 + limit);
 
         // then
         assertSoftly(softly -> {
@@ -68,22 +70,23 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
         });
     }
 
+    // FIXME: 다른 테스트랑 데이터 겹침
     @DisplayName("리뷰 상태로 러너 게시글을 페이지 조회한다 (첫 페이지 조회)")
     @Test
     void findByPageInfoAndReviewStatus_firstPage() {
         // given
         final ReviewStatus reviewStatus = NOT_STARTED;
-        final int runnerPostCount = 20;
+        final int runnerPostCount = 10;
+        final List<Long> runnerPostIds = new ArrayList<>();
         for (int i = 0; i < runnerPostCount; i++) {
-            persistRunnerPost(runner, reviewStatus);
+            runnerPostIds.add(persistRunnerPost(runner, reviewStatus));
         }
         final int limit = 10;
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndReviewStatus(limit, reviewStatus);
-        final List<Long> expected = LongStream.range(GENERATED_START_ID, GENERATED_START_ID + limit)
-                .mapToObj(i -> runnerPostCount + 1 - i)
-                .toList();
+        runnerPostIds.sort(Comparator.reverseOrder());
+        final List<Long> expected = runnerPostIds;
 
         // then
         assertSoftly(softly -> {
@@ -93,8 +96,9 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
         });
     }
 
-    private void persistRunnerPost(final Runner runner, final ReviewStatus reviewStatus) {
+    private Long persistRunnerPost(final Runner runner, final ReviewStatus reviewStatus) {
         final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(100)), reviewStatus);
         em.persist(runnerPost);
+        return runnerPost.getId();
     }
 }

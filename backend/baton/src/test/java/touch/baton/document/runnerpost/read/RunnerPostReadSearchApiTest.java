@@ -25,17 +25,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -77,9 +73,9 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
         when(runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(any(Pageable.class), anyString(), any(ReviewStatus.class)))
                 .thenReturn(pageRunnerPosts);
-
-        when(runnerPostReadService.readApplicantCountsByRunnerPostIds(anyList()))
-                .thenReturn(List.of(0L));
+//
+//        when(runnerPostReadService.readApplicantCountsByRunnerPostIds(anyList()))
+//                .thenReturn(List.of(0L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/tags/search")

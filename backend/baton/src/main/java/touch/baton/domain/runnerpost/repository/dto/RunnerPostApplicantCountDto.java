@@ -1,4 +1,4 @@
 package touch.baton.domain.runnerpost.repository.dto;
 
-public record RunnerPostApplicantCountDto(Long runnerPostId, Long applicantCount) {
+public record RunnerPostApplicantCountDto(Long runnerPostId, long applicantCount) {
 }

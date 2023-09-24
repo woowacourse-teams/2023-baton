@@ -17,6 +17,7 @@ public enum ClientErrorCode {
     PULL_REQUEST_URL_IS_NOT_URL(HttpStatus.BAD_REQUEST, "RP011", "올바른 PR 주소를 입력해주세요."),
     CURIOUS_CONTENTS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP012", "궁금한 내용을 입력해주세요."),
     POSTSCRIPT_CONTENTS_ARE_NULL(HttpStatus.BAD_REQUEST, "RP013", "참고 사항을 입력해주세요."),
+    INVALID_QUERY_STRING_FORMAT(HttpStatus.BAD_REQUEST, "RP014", "잘못된 Query Parameter 형식입니다."),
 
     REVIEW_TYPE_IS_NULL(HttpStatus.BAD_REQUEST, "FB001", "만족도를 입력해주세요."),
     SUPPORTER_ID_IS_NULL(HttpStatus.BAD_REQUEST, "FB002", "서포터 식별자를 입력해주세요."),

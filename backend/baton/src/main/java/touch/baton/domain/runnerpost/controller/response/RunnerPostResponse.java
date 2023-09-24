@@ -3,7 +3,6 @@ package touch.baton.domain.runnerpost.controller.response;
 import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.tag.RunnerPostTag;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -73,22 +72,6 @@ public record RunnerPostResponse() {
                     runnerPost.getReviewStatus().name(),
                     RunnerResponse.Simple.from(runnerPost.getRunner()),
                     convertToTags(runnerPost)
-            );
-        }
-
-        public static Simple page(final RunnerPost runnerPost,
-                                  final long applicantCount,
-                                  final List<RunnerPostTag> runnerPostTags
-        ) {
-            return new Simple(
-                    runnerPost.getId(),
-                    runnerPost.getTitle().getValue(),
-                    runnerPost.getDeadline().getValue(),
-                    runnerPost.getWatchedCount().getValue(),
-                    applicantCount,
-                    runnerPost.getReviewStatus().name(),
-                    RunnerResponse.Simple.from(runnerPost.getRunner()),
-                    convertToTags(runnerPost, runnerPostTags)
             );
         }
     }
@@ -191,13 +174,6 @@ public record RunnerPostResponse() {
         return runnerPost.getRunnerPostTags()
                 .getRunnerPostTags()
                 .stream()
-                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
-                .toList();
-    }
-
-    private static List<String> convertToTags(final RunnerPost runnerPost, final List<RunnerPostTag> runnerPostTags) {
-        return runnerPostTags.stream()
-                .filter(runnerPostTag -> runnerPostTag.getRunnerPost().getId() == runnerPost.getId())
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .toList();
     }

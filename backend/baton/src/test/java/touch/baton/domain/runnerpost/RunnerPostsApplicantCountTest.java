@@ -17,7 +17,7 @@ class RunnerPostsApplicantCountTest {
     void createByRunnerPostApplicantCountDto() {
         // given
         final List<RunnerPostApplicantCountDto> dtos = new ArrayList<>();
-        final long applicantCount = 3;
+        final long applicantCount = 3L;
         for (long runnerPostId = 1; runnerPostId <= 10; runnerPostId++) {
             dtos.add(new RunnerPostApplicantCountDto(runnerPostId, applicantCount));
         }
@@ -61,7 +61,7 @@ class RunnerPostsApplicantCountTest {
         // given
         final List<RunnerPostApplicantCountDto> dtos = new ArrayList<>();
         final Long runnerPostId = 1L;
-        final Long applicantCount = 3L;
+        final long applicantCount = 3L;
         dtos.add(new RunnerPostApplicantCountDto(runnerPostId, applicantCount));
         final RunnerPostsApplicantCount runnerPostsApplicantCount = RunnerPostsApplicantCount.from(dtos);
 
