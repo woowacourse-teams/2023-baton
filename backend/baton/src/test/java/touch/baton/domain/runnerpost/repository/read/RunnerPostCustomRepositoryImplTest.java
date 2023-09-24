@@ -7,6 +7,7 @@ import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
+import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
@@ -178,7 +179,7 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
     }
 
     private RunnerPost persistRunnerPost(final Runner runner, final ReviewStatus reviewStatus) {
-        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(100)), reviewStatus);
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(100)), reviewStatus, IsReviewed.notReviewed());
         em.persist(runnerPost);
         return runnerPost;
     }
