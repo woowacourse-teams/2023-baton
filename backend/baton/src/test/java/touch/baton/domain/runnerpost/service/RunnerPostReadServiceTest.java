@@ -3,13 +3,11 @@ package touch.baton.domain.runnerpost.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.runnerpost.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.tag.Tag;
@@ -36,9 +34,9 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
         runnerPostReadService = new RunnerPostReadService(runnerPostRepository);
     }
 
-    @DisplayName("러너 게시글을 태그 이름과 리뷰 상태를 조건으로 이용하여 페이징 조회에 성공한다.")
+    @DisplayName("러너 게시글을 태그 이름과 리뷰 상태를 조건으로 이용하여 첫 페이지 조회에 성공한다.")
     @Test
-    void readRunnerPostByTagNameAndReviewStatus() {
+    void readLatestByLimitAndTagNameAndReviewStatus() {
         // given
         final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
@@ -65,24 +63,17 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final PageRequest pageOne = PageRequest.of(0, 10, Sort.by(Sort.Order.desc("id")));
-        final Page<RunnerPost> actual = runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(
-                pageOne,
+        final RunnerPostResponses.Simple actual = runnerPostReadService.readLatestByLimitAndTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
+                10,
                 ReviewStatus.NOT_STARTED
         );
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(actual.isFirst()).isTrue();
-            softly.assertThat(actual.isEmpty()).isFalse();
-            softly.assertThat(actual.isLast()).isTrue();
-            softly.assertThat(actual.getTotalPages()).isEqualTo(1);
-            softly.assertThat(actual.getTotalElements()).isEqualTo(2);
-            softly.assertThat(actual.getSize()).isEqualTo(10);
-            softly.assertThat(actual.getNumberOfElements()).isEqualTo(2);
-            softly.assertThat(actual.getNumber()).isEqualTo(0);
-            softly.assertThat(actual.getContent()).containsExactly(expectedRunnerPostTwo, expectedRunnerPostOne);
+            softly.assertThat(actual.data()).hasSize(2);
+            softly.assertThat(actual.data().get(0).runnerPostId()).isEqualTo(expectedRunnerPostTwo.getId());
+            softly.assertThat(actual.data().get(1).runnerPostId()).isEqualTo(expectedRunnerPostOne.getId());
         });
     }
 

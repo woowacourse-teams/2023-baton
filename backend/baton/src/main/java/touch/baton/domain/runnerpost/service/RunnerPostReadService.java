@@ -9,6 +9,7 @@ import touch.baton.domain.runner.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.RunnerPostsApplicantCount;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
@@ -34,7 +35,7 @@ public class RunnerPostReadService {
         return runnerPostRepository.findByTagReducedNameAndReviewStatus(pageable, tagReducedName, reviewStatus);
     }
 
-    public List<RunnerPostResponse.Simple> readRunnerPostByPageInfoAndReviewStatus(final Long cursor,
+    public RunnerPostResponses.Simple readRunnerPostByPageInfoAndReviewStatus(final Long cursor,
                                                                                    final int limit,
                                                                                    final ReviewStatus reviewStatus
     ) {
@@ -44,7 +45,7 @@ public class RunnerPostReadService {
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
 
-    public List<RunnerPostResponse.Simple> readLatestByLimitAndReviewStatus(final int limit,
+    public RunnerPostResponses.Simple readLatestByLimitAndReviewStatus(final int limit,
                                                                             final ReviewStatus reviewStatus
     ) {
         final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndReviewStatus(limit, reviewStatus);
@@ -53,7 +54,7 @@ public class RunnerPostReadService {
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
 
-    public List<RunnerPostResponse.Simple> readRunnerPostByPageInfoAndTagNameAndReviewStatus(final String tagName,
+    public RunnerPostResponses.Simple readRunnerPostByPageInfoAndTagNameAndReviewStatus(final String tagName,
                                                                                              final Long cursor,
                                                                                              final int limit,
                                                                                              final ReviewStatus reviewStatus
@@ -64,7 +65,7 @@ public class RunnerPostReadService {
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
 
-    public List<RunnerPostResponse.Simple> readLatestByLimitAndTagNameAndReviewStatus(final String tagName,
+    public RunnerPostResponses.Simple readLatestByLimitAndTagNameAndReviewStatus(final String tagName,
                                                                                       final int limit,
                                                                                       final ReviewStatus reviewStatus
     ) {
@@ -82,13 +83,14 @@ public class RunnerPostReadService {
         return RunnerPostsApplicantCount.from(runnerPostApplicantCountDtos);
     }
 
-    private List<RunnerPostResponse.Simple> convertToSimpleResponses(final List<RunnerPost> runnerPosts,
-                                                                     final List<RunnerPostTag> runnerPostTags,
-                                                                     final RunnerPostsApplicantCount runnerPostsApplicantCount
+    private RunnerPostResponses.Simple convertToSimpleResponses(final List<RunnerPost> runnerPosts,
+                                                         final List<RunnerPostTag> runnerPostTags,
+                                                         final RunnerPostsApplicantCount runnerPostsApplicantCount
     ) {
-        return runnerPosts.stream()
+        final List<RunnerPostResponse.Simple> responses = runnerPosts.stream()
                 .map(runnerPost -> convertToSimpleResponse(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags))
                 .toList();
+        return RunnerPostResponses.Simple.from(responses);
     }
 
     private RunnerPostResponse.Simple convertToSimpleResponse(final RunnerPost runnerPost,

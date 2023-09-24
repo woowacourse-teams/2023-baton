@@ -7,11 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.common.exception.ClientRequestException;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.service.RunnerPostReadService;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-
-import java.util.List;
 
 import static touch.baton.domain.common.exception.ClientErrorCode.INVALID_QUERY_STRING_FORMAT;
 
@@ -23,7 +21,7 @@ public class RunnerPostReadController {
     private final RunnerPostReadService runnerPostReadService;
 
     @GetMapping("/tags/search")
-    public ResponseEntity<List<RunnerPostResponse.Simple>> readRunnerPostsByTagNamesAndReviewStatus(
+    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostsByTagNamesAndReviewStatus(
             @RequestParam(required = false) final String tagName,
             @RequestParam(required = false) final Long cursor,
             @RequestParam final int limit,
