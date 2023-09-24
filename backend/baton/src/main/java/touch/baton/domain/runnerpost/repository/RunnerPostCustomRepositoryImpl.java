@@ -81,7 +81,7 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
     }
 
     @Override
-    public List<RunnerPostTag> findByRunnerPosts(final List<RunnerPost> runnerPosts) {
+    public List<RunnerPostTag> findRunnerPostTagsByRunnerPosts(final List<RunnerPost> runnerPosts) {
         return jpaQueryFactory.selectFrom(runnerPostTag)
                 .join(runnerPostTag.tag, tag).fetchJoin()
                 .where(runnerPostTag.runnerPost.in(runnerPosts))

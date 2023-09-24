@@ -22,5 +22,5 @@ public interface RunnerPostCustomRepository {
                                                                 final TagReducedName tagReducedName,
                                                                 final ReviewStatus reviewStatus);
 
-    List<RunnerPostTag> findByRunnerPosts(final List<RunnerPost> runnerPosts);
+    List<RunnerPostTag> findRunnerPostTagsByRunnerPosts(final List<RunnerPost> runnerPosts);
 }

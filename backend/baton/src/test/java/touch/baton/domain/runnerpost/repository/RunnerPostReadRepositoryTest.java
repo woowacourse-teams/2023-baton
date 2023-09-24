@@ -1,44 +1,28 @@
 package touch.baton.domain.runnerpost.repository;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;
-import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.fixture.domain.RunnerPostFixture;
-import touch.baton.fixture.domain.RunnerPostTagFixture;
-import touch.baton.fixture.domain.SupporterFixture;
-import touch.baton.fixture.domain.SupporterRunnerPostFixture;
-import touch.baton.fixture.domain.TagFixture;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
     private RunnerPostRepository runnerPostRepository;
-
-    @Autowired
-    private EntityManager em;
 
     @DisplayName("러너 게시글 식별자값 목록으로 서포터 지원자 수를 조회에 성공한다.")
     @Test
@@ -87,36 +71,6 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
                 .isEqualTo(expected);
     }
 
-    private Runner persistRunner(final Member member) {
-        em.persist(member);
-        final Runner runner = RunnerFixture.createRunner(member);
-        em.persist(runner);
-
-        return runner;
-    }
-
-    private Supporter persistSupporter(final Member member) {
-        em.persist(member);
-        final Supporter supporter = SupporterFixture.create(member);
-        em.persist(supporter);
-
-        return supporter;
-    }
-
-    private RunnerPost persistRunnerPost(final Runner runner) {
-        final RunnerPost runnerPostOne = RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(100)));
-        em.persist(runnerPostOne);
-
-        return runnerPostOne;
-    }
-
-    private SupporterRunnerPost persistApplicant(final Supporter supporter, final RunnerPost runnerPost) {
-        final SupporterRunnerPost applicant = SupporterRunnerPostFixture.create(runnerPost, supporter);
-        em.persist(applicant);
-
-        return applicant;
-    }
-
     @DisplayName("축약된 태그 이름과 리뷰 상태로 러너 게시글 페이징 조회에 성공한다.")
     @Test
     void findByTagReducedNameAndReviewStatus() {
@@ -156,19 +110,5 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
         final List<RunnerPost> expected = List.of(runnerPostOne, runnerPostTwo, runnerPostThree, runnerPostFive);
 
         assertThat(foundRunnerPosts.getContent()).isEqualTo(expected);
-    }
-
-    private Tag persistTag(final String tagName) {
-        final Tag javaTag = TagFixture.create(tagName(tagName));
-        em.persist(javaTag);
-
-        return javaTag;
-    }
-
-    private RunnerPostTag persistRunnerPostTag(final RunnerPost runnerPost, final Tag tag) {
-        final RunnerPostTag runnerPostTag = RunnerPostTagFixture.create(runnerPost, tag);
-        em.persist(runnerPostTag);
-
-        return runnerPostTag;
     }
 }

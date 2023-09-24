@@ -60,7 +60,6 @@ public interface RunnerPostRepository extends JpaRepository<RunnerPost, Long>, R
             @Param("supporterId") final Long supporterId,
             @Param("reviewStatus") final ReviewStatus reviewStatus);
 
-    // FIXME: 원래 Read repo에 있었음
     @Query("""
             select new touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto(rp.id, coalesce(count(srp.id), 0L))
             from RunnerPost rp
