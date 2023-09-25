@@ -58,15 +58,15 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
 
-        final RunnerPost 현재_페이지_러너_게시글 = runnerPostRepository.getByRunnerPostId(다음_페이지_러너_게시글_식별자값);
-        final long 현재_페이지_게시글_서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(다음_페이지_러너_게시글_식별자값);
+        final RunnerPost 다음_페이지_러너_게시글 = runnerPostRepository.getByRunnerPostId(다음_페이지_러너_게시글_식별자값);
+        final long 다음_페이지_게시글_서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(다음_페이지_러너_게시글_식별자값);
         final int 페이지_크기 = 10;
 
         // when, then
         final RunnerPostResponse.Simple 기대된_러너_게시글_Simple_응답 = 러너_게시글_Simple_응답(
-                현재_페이지_러너_게시글,
+                다음_페이지_러너_게시글,
                 0,
-                현재_페이지_게시글_서포터_지원자_수,
+                다음_페이지_게시글_서포터_지원자_수,
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
@@ -78,7 +78,7 @@ class RunnerPostReadAssuredTest extends AssuredTestConfig {
                 .리뷰_상태로_러너_게시글_중간_페이지를_조회한다(이전_페이지_러너_게시글_식별자값, 페이지_크기, ReviewStatus.NOT_STARTED)
 
                 .서버_응답()
-                .태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(
+                .리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(
                         기대된_러너_게시글_전체_Simple_페이징_응답
                 );
     }

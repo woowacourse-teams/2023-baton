@@ -63,8 +63,9 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostReadService.readLatestByLimitAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostReadService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
+                null,
                 10,
                 ReviewStatus.NOT_STARTED
         );

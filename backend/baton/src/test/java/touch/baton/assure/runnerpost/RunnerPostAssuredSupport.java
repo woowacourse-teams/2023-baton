@@ -240,7 +240,7 @@ public class RunnerPostAssuredSupport {
                     "reviewStatus", 리뷰_상태
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/tags/search", new QueryParams(queryParams));
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
             return this;
         }
 
@@ -255,7 +255,7 @@ public class RunnerPostAssuredSupport {
                     "reviewStatus", 리뷰_상태
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/tags/search", new QueryParams(queryParams));
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
             return this;
         }
 
@@ -266,7 +266,7 @@ public class RunnerPostAssuredSupport {
                     "reviewStatus", 리뷰_상태
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/tags/search", new QueryParams(queryParams));
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
             return this;
         }
 
@@ -283,7 +283,7 @@ public class RunnerPostAssuredSupport {
                     "reviewStatus", 리뷰_상태
             );
 
-            response = AssuredSupport.get("/api/v1/posts/runner/tags/search", new QueryParams(queryParams));
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
             return this;
         }
 

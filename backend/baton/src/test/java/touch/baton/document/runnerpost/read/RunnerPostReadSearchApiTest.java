@@ -72,7 +72,7 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
                 .thenReturn(runnerPostResponses);
 
         // then
-        mockMvc.perform(get("/api/v1/posts/runner/tags/search")
+        mockMvc.perform(get("/api/v1/posts/runner")
                         .queryParam("tagName", javaTag.getTagName().getValue())
                         .queryParam("cursor", String.valueOf(1000L))
                         .queryParam("limit", String.valueOf(10))
@@ -81,10 +81,10 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
                         queryParameters(
-                                parameterWithName("cursor").description("이전 페이지 마지막 게시글 식별자값(id)"),
+                                parameterWithName("cursor").description("(Optional) 이전 페이지 마지막 게시글 식별자값(id)"),
                                 parameterWithName("limit").description("페이지 사이즈"),
-                                parameterWithName("reviewStatus").description("리뷰 상태"),
-                                parameterWithName("tagName").description("태그 이름")
+                                parameterWithName("reviewStatus").description("(Optional) 리뷰 상태"),
+                                parameterWithName("tagName").description("(Optional) 태그 이름")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
