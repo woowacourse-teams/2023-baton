@@ -1,5 +1,7 @@
 package touch.baton.domain.runnerpost.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -23,61 +25,39 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<RunnerPost> findByPageInfoAndReviewStatus(final Long previousLastId, final int limit, final ReviewStatus reviewStatus) {
-        return jpaQueryFactory.selectFrom(runnerPost)
-                .join(runnerPost.runner, runner).fetchJoin()
-                .join(runner.member, member).fetchJoin()
-                .where(runnerPost.id.lt(previousLastId).and(runnerPost.reviewStatus.eq(reviewStatus)))
-                .orderBy(runnerPost.id.desc())
-                .limit(limit)
-                .fetch();
-    }
-
-    @Override
-    public List<RunnerPost> findLatestByLimitAndReviewStatus(final int limit, final ReviewStatus reviewStatus) {
-        return jpaQueryFactory.selectFrom(runnerPost)
-                .join(runnerPost.runner, runner).fetchJoin()
-                .join(runner.member, member).fetchJoin()
-                .where(runnerPost.reviewStatus.eq(reviewStatus))
-                .orderBy(runnerPost.id.desc())
-                .limit(limit)
-                .fetch();
-    }
-
-    @Override
     public List<RunnerPost> findByPageInfoAndReviewStatusAndTagReducedName(final Long previousLastId,
                                                                            final int limit,
                                                                            final TagReducedName tagReducedName,
                                                                            final ReviewStatus reviewStatus
     ) {
-        return jpaQueryFactory.selectFrom(runnerPost)
+        final JPAQuery<RunnerPost> query = jpaQueryFactory.selectFrom(runnerPost)
                 .join(runnerPost.runner, runner).fetchJoin()
                 .join(runner.member, member).fetchJoin()
-                .leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
-                .leftJoin(runnerPostTag.tag, tag)
-                .where(tag.tagReducedName.eq(tagReducedName)
-                    .and(runnerPost.reviewStatus.eq(reviewStatus))
-                    .and(runnerPost.id.lt(previousLastId)))
+                .where(previousLastIdLt(previousLastId), reviewStatusEq(reviewStatus))
                 .orderBy(runnerPost.id.desc())
-                .limit(limit)
-                .fetch();
+                .limit(limit);
+
+        if (tagReducedName != null) {
+            query.leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
+                    .leftJoin(runnerPostTag.tag, tag)
+                    .where(tag.tagReducedName.eq(tagReducedName));
+        }
+
+        return query.fetch();
     }
 
-    @Override
-    public List<RunnerPost> findLatestByLimitAndTagNameAndReviewStatus(final int limit,
-                                                                       final TagReducedName tagReducedName,
-                                                                       final ReviewStatus reviewStatus
-    ) {
-        return jpaQueryFactory.selectFrom(runnerPost)
-                .join(runnerPost.runner, runner).fetchJoin()
-                .join(runner.member, member).fetchJoin()
-                .leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
-                .leftJoin(runnerPostTag.tag, tag)
-                .where(tag.tagReducedName.eq(tagReducedName)
-                        .and(runnerPost.reviewStatus.eq(reviewStatus)))
-                .orderBy(runnerPost.id.desc())
-                .limit(limit)
-                .fetch();
+    private BooleanExpression previousLastIdLt(final Long previousLastId) {
+        if (previousLastId == null) {
+            return null;
+        }
+        return runnerPost.id.lt(previousLastId);
+    }
+
+    private BooleanExpression reviewStatusEq(final ReviewStatus reviewStatus) {
+        if (reviewStatus == null) {
+            return null;
+        }
+        return runnerPost.reviewStatus.eq(reviewStatus);
     }
 
     @Override

@@ -26,6 +26,13 @@ public class TagReducedName {
         this.value = value;
     }
 
+    public static TagReducedName nullableInstance(final String notReducedValue) {
+        if (notReducedValue == null) {
+            return null;
+        }
+        return new TagReducedName(reduceName(notReducedValue));
+    }
+
     public static TagReducedName from(final String notReducedValue) {
         validateNotNull(notReducedValue);
         final String reducedValue = reduceName(notReducedValue);

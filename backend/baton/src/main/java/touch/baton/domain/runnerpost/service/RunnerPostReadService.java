@@ -24,41 +24,12 @@ public class RunnerPostReadService {
 
     private final RunnerPostRepository runnerPostRepository;
 
-    public RunnerPostResponses.Simple readRunnerPostByPageInfoAndReviewStatus(final Long cursor,
-                                                                              final int limit,
-                                                                              final ReviewStatus reviewStatus
-    ) {
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatus(cursor, limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
-        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
-    }
-
-    public RunnerPostResponses.Simple readLatestByLimitAndReviewStatus(final int limit,
-                                                                       final ReviewStatus reviewStatus
-    ) {
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndReviewStatus(limit, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
-        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
-    }
-
     public RunnerPostResponses.Simple readRunnerPostByPageInfoAndTagNameAndReviewStatus(final String tagName,
                                                                                         final Long cursor,
                                                                                         final int limit,
                                                                                         final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(cursor, limit, TagReducedName.from(tagName), reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
-        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
-    }
-
-    public RunnerPostResponses.Simple readLatestByLimitAndTagNameAndReviewStatus(final String tagName,
-                                                                                 final int limit,
-                                                                                 final ReviewStatus reviewStatus
-    ) {
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findLatestByLimitAndTagNameAndReviewStatus(limit, TagReducedName.from(tagName), reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(cursor, limit, TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);

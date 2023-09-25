@@ -9,18 +9,10 @@ import java.util.List;
 
 public interface RunnerPostCustomRepository {
 
-    List<RunnerPost> findByPageInfoAndReviewStatus(final Long previousLastId, final int limit, final ReviewStatus reviewStatus);
-
-    List<RunnerPost> findLatestByLimitAndReviewStatus(final int limit, final ReviewStatus reviewStatus);
-
     List<RunnerPost> findByPageInfoAndReviewStatusAndTagReducedName(final Long cursor,
                                                                     final int limit,
                                                                     final TagReducedName tagReducedName,
                                                                     final ReviewStatus reviewStatus);
-
-    List<RunnerPost> findLatestByLimitAndTagNameAndReviewStatus(final int limit,
-                                                                final TagReducedName tagReducedName,
-                                                                final ReviewStatus reviewStatus);
 
     List<RunnerPostTag> findRunnerPostTagsByRunnerPosts(final List<RunnerPost> runnerPosts);
 }
