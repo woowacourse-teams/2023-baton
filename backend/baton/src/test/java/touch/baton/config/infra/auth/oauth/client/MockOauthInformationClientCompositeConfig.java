@@ -4,12 +4,12 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.oauth.OauthInformation;
-import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.client.OauthInformationClientComposite;
-import touch.baton.domain.oauth.token.SocialToken;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.oauth.command.OauthInformation;
+import touch.baton.tobe.domain.oauth.command.OauthType;
+import touch.baton.tobe.domain.oauth.command.client.OauthInformationClientComposite;
+import touch.baton.tobe.domain.oauth.command.token.SocialToken;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;

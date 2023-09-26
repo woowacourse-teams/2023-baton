@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.feedback.service.FeedbackService;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
-import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
 
 import java.net.URI;
 

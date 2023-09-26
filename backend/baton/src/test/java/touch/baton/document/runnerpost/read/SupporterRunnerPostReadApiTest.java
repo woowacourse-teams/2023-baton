@@ -6,14 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.tobe.domain.member.command.Supporter;
-import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -21,6 +17,10 @@ import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 import touch.baton.fixture.domain.TagFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -78,7 +78,7 @@ class SupporterRunnerPostReadApiTest extends RestdocsConfig {
         given(spySupporter.getId()).willReturn(1L);
         given(spyRunnerPost.getId()).willReturn(1L);
         given(runnerPostService.readSupporterRunnerPostsByRunnerPostId(any(), any())).willReturn(List.of(supporterRunnerPost));
-        when(oauthRunnerRepository.joinByMemberSocialId(notNull()))
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(notNull()))
                 .thenReturn(Optional.ofNullable(runner));
 
         // then

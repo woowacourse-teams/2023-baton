@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.controller.response.LoginMemberInfoResponse;
-import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile")

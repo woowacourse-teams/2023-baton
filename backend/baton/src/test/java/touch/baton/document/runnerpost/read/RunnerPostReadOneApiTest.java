@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
@@ -17,6 +15,8 @@ import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.TagFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
 
 import java.util.List;
 import java.util.Optional;
@@ -79,7 +79,7 @@ class RunnerPostReadOneApiTest extends RestdocsConfig {
 
         final String token = getAccessTokenBySocialId(memberHyena.getSocialId().getValue());
 
-        when(oauthMemberRepository.findBySocialId(any()))
+        when(oauthMemberCommandRepository.findBySocialId(any()))
                 .thenReturn(Optional.ofNullable(memberHyena));
 
         // then

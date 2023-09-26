@@ -3,8 +3,8 @@ package touch.baton.config.infra.auth.oauth.authcode;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.authcode.AuthCodeRequestUrlProviderComposite;
+import touch.baton.tobe.domain.oauth.command.OauthType;
+import touch.baton.tobe.domain.oauth.command.authcode.AuthCodeRequestUrlProviderComposite;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.when;

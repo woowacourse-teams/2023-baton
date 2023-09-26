@@ -18,11 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.common.response.PageResponse;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
-import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
-import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
@@ -32,7 +27,12 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateReques
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthSupporterPrincipal;
 
 import java.net.URI;
 import java.util.List;

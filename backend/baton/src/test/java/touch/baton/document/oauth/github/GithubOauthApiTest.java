@@ -10,15 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.oauth.controller.OauthController;
-import touch.baton.domain.oauth.service.OauthService;
-import touch.baton.domain.oauth.token.AccessToken;
-import touch.baton.domain.oauth.token.ExpireDate;
-import touch.baton.domain.oauth.token.RefreshToken;
-import touch.baton.domain.oauth.token.Token;
-import touch.baton.domain.oauth.token.Tokens;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.oauth.command.controller.OauthCommandController;
+import touch.baton.tobe.domain.oauth.command.service.OauthCommandService;
+import touch.baton.tobe.domain.oauth.command.token.AccessToken;
+import touch.baton.tobe.domain.oauth.command.token.ExpireDate;
+import touch.baton.tobe.domain.oauth.command.token.RefreshToken;
+import touch.baton.tobe.domain.oauth.command.token.Token;
+import touch.baton.tobe.domain.oauth.command.token.Tokens;
 
 import java.time.LocalDateTime;
 
@@ -32,36 +32,34 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.responseC
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static touch.baton.domain.oauth.OauthType.GITHUB;
+import static touch.baton.tobe.domain.oauth.command.OauthType.GITHUB;
 
 @EnableConfigurationProperties(GithubOauthConfig.class)
 @TestPropertySource("classpath:application.yml")
-@WebMvcTest(OauthController.class)
+@WebMvcTest(OauthCommandController.class)
 class GithubOauthApiTest extends RestdocsConfig {
 
     @MockBean
-    private OauthService oauthService;
+    private OauthCommandService oauthCommandService;
 
     @Autowired
     private GithubOauthConfig githubOauthConfig;
 
     @BeforeEach
     void setUp() {
-        final OauthController oauthController = new OauthController(oauthService);
-        restdocsSetUp(oauthController);
+        final OauthCommandController oauthCommandController = new OauthCommandController(oauthCommandService);
+        restdocsSetUp(oauthCommandController);
     }
 
     @DisplayName("Github 소셜 로그인을 위한 AuthCode 를 받을 수 있도록 사용자를 redirect 한다.")
     @Test
     void github_redirect_auth_code() throws Exception {
         // given & when
-        when(oauthService.readAuthCodeRedirect(GITHUB))
+        when(oauthCommandService.readAuthCodeRedirect(GITHUB))
                 .thenReturn(githubOauthConfig.redirectUri());
 
         // then
@@ -92,7 +90,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                 .build();
         final Tokens tokens = new Tokens(new AccessToken("Bearer Jwt"), refreshToken);
 
-        when(oauthService.login(GITHUB, "authcode"))
+        when(oauthCommandService.login(GITHUB, "authcode"))
                 .thenReturn(tokens);
 
         // then

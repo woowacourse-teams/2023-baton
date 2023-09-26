@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
-import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.service.RunnerCommandService;
 import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
 
 import java.net.URI;
 

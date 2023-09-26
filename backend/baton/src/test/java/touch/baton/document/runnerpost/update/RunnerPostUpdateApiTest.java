@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
-import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.Supporter;
 
 import java.util.Optional;
 
@@ -26,9 +26,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -60,7 +58,7 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
 
         // when
         willDoNothing().given(runnerPostService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
 
         // then
         mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/supporters", 1L)
@@ -88,7 +86,7 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
 
         // when
         willDoNothing().given(runnerPostService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
 
         // then
         mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/done", 1L)

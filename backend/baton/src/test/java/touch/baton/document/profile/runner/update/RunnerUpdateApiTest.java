@@ -55,7 +55,7 @@ public class RunnerUpdateApiTest extends RestdocsConfig {
         final String token = getAccessTokenBySocialId(socialId);
 
         // when
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(judyRunner));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(judyRunner));
 
         // then
         mockMvc.perform(patch("/api/v1/profile/runner/me")

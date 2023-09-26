@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.tobe.domain.member.command.Runner;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class RunnerPostDeleteApiTest extends RestdocsConfig {
         final RunnerPost spyRunnerPost = spy(runnerPost);
 
         // when
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
         when(spyRunnerPost.getId()).thenReturn(1L);
 
         // then

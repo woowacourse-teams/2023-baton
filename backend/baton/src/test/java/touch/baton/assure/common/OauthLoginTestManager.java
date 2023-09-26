@@ -1,7 +1,7 @@
 package touch.baton.assure.common;
 
 import touch.baton.assure.oauth.OauthAssuredSupport;
-import touch.baton.domain.oauth.OauthType;
+import touch.baton.tobe.domain.oauth.command.OauthType;
 
 public class OauthLoginTestManager {
 

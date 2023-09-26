@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.tobe.domain.member.command.Runner;
@@ -14,6 +13,7 @@ import touch.baton.tobe.domain.member.query.controller.response.RunnerMyProfileR
 import touch.baton.tobe.domain.member.query.controller.response.RunnerProfileResponse;
 import touch.baton.tobe.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
 
 import java.util.List;
 

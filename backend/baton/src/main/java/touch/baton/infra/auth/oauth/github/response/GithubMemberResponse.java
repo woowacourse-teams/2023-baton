@@ -7,8 +7,8 @@ import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.oauth.OauthInformation;
-import touch.baton.domain.oauth.token.SocialToken;
+import touch.baton.tobe.domain.oauth.command.OauthInformation;
+import touch.baton.tobe.domain.oauth.command.token.SocialToken;
 
 import static com.fasterxml.jackson.databind.PropertyNamingStrategies.SnakeCaseStrategy;
 

@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,7 +59,7 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
 
         // when
         when(runnerPostService.createRunnerPost(any(Runner.class), any(RunnerPostCreateRequest.class))).thenReturn(1L);
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
 
         // then
         mockMvc.perform(post("/api/v1/posts/runner")

@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.tobe.domain.member.command.Supporter;
-import touch.baton.tobe.domain.member.query.controller.SupporterQueryController;
-import touch.baton.tobe.domain.member.query.service.SupporterQueryService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.tobe.domain.member.query.controller.SupporterQueryController;
+import touch.baton.tobe.domain.member.query.service.SupporterQueryService;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,9 +26,7 @@ import static org.mockito.Mockito.spy;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -96,7 +94,7 @@ class SupporterReadByGuestApiTest extends RestdocsConfig {
 
         // when
         when(spySupporter.getId()).thenReturn(1L);
-        when(oauthSupporterRepository.joinByMemberSocialId(any(SocialId.class))).thenReturn(Optional.ofNullable(spySupporter));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any(SocialId.class))).thenReturn(Optional.ofNullable(spySupporter));
 
         // then
         mockMvc.perform(get("/api/v1/profile/supporter/me").header(AUTHORIZATION, "Bearer " + accessToken))

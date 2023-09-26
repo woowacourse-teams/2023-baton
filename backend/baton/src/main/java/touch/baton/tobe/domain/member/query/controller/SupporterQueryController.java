@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.query.controller.response.SupporterResponse;
 import touch.baton.tobe.domain.member.query.service.SupporterQueryService;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthSupporterPrincipal;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile/supporter")

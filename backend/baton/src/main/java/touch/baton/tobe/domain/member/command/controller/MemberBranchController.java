@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.service.GithubBranchManageable;
 import touch.baton.tobe.domain.member.command.service.dto.GithubRepoNameRequest;
-import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
+import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 
 import java.net.URI;
 

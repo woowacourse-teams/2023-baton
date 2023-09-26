@@ -9,12 +9,12 @@ import touch.baton.assure.common.PathParams;
 import touch.baton.assure.common.QueryParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.token.AccessToken;
-import touch.baton.domain.oauth.token.ExpireDate;
-import touch.baton.domain.oauth.token.RefreshToken;
-import touch.baton.domain.oauth.token.Token;
-import touch.baton.domain.oauth.token.Tokens;
+import touch.baton.tobe.domain.oauth.command.OauthType;
+import touch.baton.tobe.domain.oauth.command.token.AccessToken;
+import touch.baton.tobe.domain.oauth.command.token.ExpireDate;
+import touch.baton.tobe.domain.oauth.command.token.RefreshToken;
+import touch.baton.tobe.domain.oauth.command.token.Token;
+import touch.baton.tobe.domain.oauth.command.token.Tokens;
 
 import java.time.LocalDateTime;
 import java.util.Map;

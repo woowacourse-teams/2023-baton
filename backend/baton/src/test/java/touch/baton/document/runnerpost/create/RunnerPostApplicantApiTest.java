@@ -6,19 +6,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.Supporter;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +70,7 @@ class RunnerPostApplicantApiTest extends RestdocsConfig {
         when(spyRunnerPost.getId()).thenReturn(1L);
         when(runnerPostService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
 
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
 
         final String token = getAccessTokenBySocialId(supporterHyena.getMember().getSocialId().getValue());
 

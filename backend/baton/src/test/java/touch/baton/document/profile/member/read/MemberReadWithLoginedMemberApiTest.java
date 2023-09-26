@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.query.controller.MemberQueryController;
-import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
 
@@ -53,7 +53,7 @@ public class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
         final String token = getAccessTokenBySocialId(socialId);
 
         // when
-        when(oauthMemberRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
+        when(oauthMemberCommandRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
 
         // then
         mockMvc.perform(get("/api/v1/profile/me").header(AUTHORIZATION, "Bearer " + token))
