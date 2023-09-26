@@ -4,7 +4,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.oauth.OauthInformation;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.client.OauthInformationClientComposite;

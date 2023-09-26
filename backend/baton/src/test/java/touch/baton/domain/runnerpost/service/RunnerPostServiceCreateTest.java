@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
@@ -70,7 +70,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
                 IMPLEMENTED_CONTENTS,
                 CURIOUS_CONTENTS,
                 POSTSCRIPT_CONTENTS);
-        final Member ethanMember = memberRepository.save(MemberFixture.createEthan());
+        final Member ethanMember = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner runner = runnerRepository.save(RunnerFixture.createRunner(ethanMember));
 
         // when
@@ -97,10 +97,10 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
     @Test
     void success_createRunnerPostApplicant() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitto = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitto, deadline(now().plusHours(100))));
@@ -127,10 +127,10 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
     @Test
     void fail_createRunnerPostApplicant_if_runnerPost_is_null() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitto = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         // when
@@ -145,10 +145,10 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
     @Test
     void fail_createRunnerPostApplicant_if_supporter_already_applied() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitto = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitto, deadline(now().plusHours(100))));

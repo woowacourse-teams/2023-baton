@@ -1,6 +1,6 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.RefreshToken;
 import touch.baton.domain.oauth.token.Token;

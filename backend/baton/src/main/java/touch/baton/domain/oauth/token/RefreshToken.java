@@ -11,7 +11,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.oauth.token.exception.RefreshTokenDomainException;
 
 import static jakarta.persistence.FetchType.LAZY;

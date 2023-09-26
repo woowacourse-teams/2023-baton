@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
-import touch.baton.assure.repository.TestMemberRepository;
+import touch.baton.assure.repository.TestMemberCommandRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
 import touch.baton.assure.repository.TestRunnerPostRepository;
 import touch.baton.assure.repository.TestRunnerRepository;
@@ -31,7 +31,7 @@ import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 public abstract class AssuredTestConfig {
 
     @Autowired
-    protected TestMemberRepository memberRepository;
+    protected TestMemberCommandRepository memberRepository;
 
     @Autowired
     protected TestRunnerRepository runnerRepository;

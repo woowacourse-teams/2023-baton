@@ -2,6 +2,7 @@ package touch.baton.domain.member.vo;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 

@@ -1,4 +1,4 @@
-package touch.baton.domain.member.vo;
+package touch.baton.tobe.domain.member.command.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -14,19 +14,19 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class SocialId {
+public class GithubUrl {
 
-    @Column(name = "social_id", nullable = false)
+    @Column(name = "github_url", nullable = false)
     private String value;
 
-    public SocialId(final String value) {
+    public GithubUrl(final String value) {
         validateNotNull(value);
         this.value = value;
     }
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("SocialId 객체 내부에 value 은 null 일 수 없습니다.");
+            throw new IllegalArgumentException("GithubUrl 객체 내부에 githubUrl 은 null 일 수 없습니다.");
         }
     }
 }

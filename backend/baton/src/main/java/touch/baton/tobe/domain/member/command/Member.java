@@ -1,4 +1,4 @@
-package touch.baton.domain.member;
+package touch.baton.tobe.domain.member.command;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -8,13 +8,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.member.exception.MemberDomainException;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.exception.MemberDomainException;
+import touch.baton.tobe.domain.member.command.vo.Company;
+import touch.baton.tobe.domain.member.command.vo.GithubUrl;
+import touch.baton.tobe.domain.member.command.vo.ImageUrl;
+import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 
 import java.util.Objects;
 

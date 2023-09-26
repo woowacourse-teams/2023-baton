@@ -4,8 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 class SupporterRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberCommandRepository;
 
     @Autowired
     private SupporterRepository supporterRepository;
@@ -27,7 +27,7 @@ class SupporterRepositoryTest extends RepositoryTestConfig {
     @Test
     void joinMemberBySupporterId() {
         // given
-        final Member savedMember = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporter = supporterRepository.save(SupporterFixture.create(savedMember));
 
         // when

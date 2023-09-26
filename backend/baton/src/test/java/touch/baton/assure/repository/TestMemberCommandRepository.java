@@ -1,12 +1,12 @@
 package touch.baton.assure.repository;
 
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 
 import java.util.Optional;
 
-public interface TestMemberRepository extends MemberRepository {
+public interface TestMemberCommandRepository extends MemberCommandRepository {
 
     default Member getBySocialId(final SocialId socialId) {
         return findBySocialId(socialId)

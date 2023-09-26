@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
@@ -40,7 +40,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     @Test
     void success_deleteByRunnerPostId() {
         // given
-        final Member member = memberRepository.save(MemberFixture.createDitoo());
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(10))));
 
@@ -54,7 +54,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     @DisplayName("RunnerPost 식별자값으로 존재하지 않는 RunnerPost 를 삭제 시도할 경우 예외가 발생한다.")
     @Test
     void fail_deleteByRunnerPostId_if_runnerPost_is_null() {
-        final Member member = memberRepository.save(MemberFixture.createDitoo());
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
         assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(0L, runner))
                 .isInstanceOf(RunnerPostBusinessException.class);
@@ -64,13 +64,13 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     @Test
     void fail_deleteByRunnerPostId_if_not_owner() {
         // given
-        final Member memberRunnerPostOwner = memberRepository.save(MemberFixture.createDitoo());
+        final Member memberRunnerPostOwner = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(memberRunnerPostOwner));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
                 runnerPostOwner,
                 deadline(LocalDateTime.now().plusHours(10))
         ));
-        final Member memberRunnerPostNotOwner = memberRepository.save(MemberFixture.createJudy());
+        final Member memberRunnerPostNotOwner = memberCommandRepository.save(MemberFixture.createJudy());
         final Runner runnerPostNotOwner = runnerRepository.save(RunnerFixture.createRunner(memberRunnerPostNotOwner));
 
         // when & then
@@ -82,13 +82,13 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     @Test
     void fail_deleteByRunnerPostId_if_reviewStatus_is_not_NOT_STARTED() {
         // given
-        final Member memberRunner = memberRepository.save(MemberFixture.createDitoo());
+        final Member memberRunner = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner runner = runnerRepository.save(RunnerFixture.createRunner(memberRunner));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
                 runner,
                 deadline(LocalDateTime.now().plusHours(10))
         ));
-        final Member memberSupporter = memberRepository.save(MemberFixture.createEthan());
+        final Member memberSupporter = memberCommandRepository.save(MemberFixture.createEthan());
         final Supporter supporter = supporterRepository.save(SupporterFixture.create(memberSupporter));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
         runnerPost.assignSupporter(supporter);
@@ -102,13 +102,13 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     @Test
     void fail_deleteByRunnerPostId_if_applicant_is_exist() {
         // given
-        final Member member = memberRepository.save(MemberFixture.createDitoo());
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
                 runner,
                 deadline(LocalDateTime.now().plusHours(10))
         ));
-        final Member memberSupporter = memberRepository.save(MemberFixture.createEthan());
+        final Member memberSupporter = memberCommandRepository.save(MemberFixture.createEthan());
         final Supporter supporter = supporterRepository.save(SupporterFixture.create(memberSupporter));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
 

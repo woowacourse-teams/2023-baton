@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
@@ -35,10 +35,10 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
     void setUp() {
         runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository, supporterRunnerPostRepository);
 
-        final Member applicantMember = memberRepository.save(MemberFixture.createDitoo());
+        final Member applicantMember = memberCommandRepository.save(MemberFixture.createDitoo());
         applicantSupporter = supporterRepository.save(SupporterFixture.create(applicantMember));
 
-        final Member revieweeMember = memberRepository.save(MemberFixture.createJudy());
+        final Member revieweeMember = memberCommandRepository.save(MemberFixture.createJudy());
         revieweeRunner = runnerRepository.save(RunnerFixture.createRunner(revieweeMember));
     }
 

@@ -4,8 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -34,7 +34,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     private SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberCommandRepository;
 
     @Autowired
     private RunnerRepository runnerRepository;
@@ -49,10 +49,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void countByRunnerPostIdIn() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createDitoo());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPostOne = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
@@ -95,10 +95,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void existsByRunnerPostIdAndMemberId_return_true() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
@@ -121,10 +121,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void existsByRunnerPostIdAndMemberId_if_supporterRunnerPost_is_not_exist_then_return_false() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
 
@@ -142,7 +142,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void existsByRunnerPostIdAndMemberId_if_runnerPost_is_not_exist_then_return_false() {
         // given
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createDitoo());
 
         // when
         final Long notExistRunnerPostId = -1L;
@@ -159,10 +159,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void existsByRunnerPostId() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createDitoo());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPostOfApplicantExist = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
@@ -185,10 +185,10 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void deleteBySupporterAndRunnerPostId() {
         // given
-        final Member reviewerMember = memberRepository.save(MemberFixture.createDitoo());
+        final Member reviewerMember = memberCommandRepository.save(MemberFixture.createDitoo());
         final Supporter reviewerSupporter = supporterRepository.save(SupporterFixture.create(reviewerMember));
 
-        final Member revieweeMember = memberRepository.save(MemberFixture.createJudy());
+        final Member revieweeMember = memberCommandRepository.save(MemberFixture.createJudy());
         final Runner revieweeRunner = runnerRepository.save(RunnerFixture.createRunner(revieweeMember));
 
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(

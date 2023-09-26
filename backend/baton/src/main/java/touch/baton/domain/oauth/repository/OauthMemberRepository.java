@@ -1,9 +1,9 @@
 package touch.baton.domain.oauth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 
 import java.util.Optional;
 

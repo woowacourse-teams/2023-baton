@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
@@ -37,7 +37,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostByPageInfoAndTagNameAndReviewStatus_firstPage() {
         // given
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
@@ -92,7 +92,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostByPageInfoAndTagNameAndReviewStatus_middlePage() {
         // given
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
@@ -154,7 +154,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostByPageInfoAndReviewStatus_firstPage() {
         // given
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
@@ -210,7 +210,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostByPageInfoAndReviewStatus_middlePage() {
         // given
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
@@ -273,7 +273,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostByPageInfoAndTagName_firstPage() {
         // given
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
@@ -321,7 +321,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostByPageInfoAndTagName_middlePage() {
         // given
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));

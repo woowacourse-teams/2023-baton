@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.tobe.domain.member.command.vo.Company;
+import touch.baton.tobe.domain.member.command.vo.GithubUrl;
+import touch.baton.tobe.domain.member.command.vo.ImageUrl;
+import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberCommandRepository;
 
     @Autowired
     private RunnerRepository runnerRepository;
@@ -56,7 +56,7 @@ class RunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 .company(new Company("우아한형제들"))
                 .imageUrl(new ImageUrl("홍혁준"))
                 .build();
-        final Member saveMember = memberRepository.saveAndFlush(member);
+        final Member saveMember = memberCommandRepository.saveAndFlush(member);
 
         final Runner runner = Runner.builder()
                 .member(saveMember)

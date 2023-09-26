@@ -4,11 +4,11 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.vo.GithubUrl;
+import touch.baton.tobe.domain.member.command.vo.ImageUrl;
+import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.oauth.token.SocialToken;
 
 import static lombok.AccessLevel.PROTECTED;

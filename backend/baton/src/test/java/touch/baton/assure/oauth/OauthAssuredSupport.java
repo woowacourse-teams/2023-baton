@@ -8,7 +8,7 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.assure.common.QueryParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.oauth.OauthType;
 import touch.baton.domain.oauth.token.AccessToken;
 import touch.baton.domain.oauth.token.ExpireDate;

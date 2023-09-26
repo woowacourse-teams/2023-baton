@@ -1,6 +1,6 @@
-package touch.baton.domain.member.controller.response;
+package touch.baton.tobe.domain.member.command.controller.response;
 
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 
 public record LoginMemberInfoResponse(String name, String imageUrl) {
 

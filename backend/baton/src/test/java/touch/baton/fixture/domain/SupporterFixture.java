@@ -1,6 +1,6 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;

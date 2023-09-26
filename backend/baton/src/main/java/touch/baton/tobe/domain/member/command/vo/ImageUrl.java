@@ -1,4 +1,4 @@
-package touch.baton.domain.member.vo;
+package touch.baton.tobe.domain.member.command.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -14,19 +14,19 @@ import static lombok.AccessLevel.PROTECTED;
 @Getter
 @NoArgsConstructor(access = PROTECTED)
 @Embeddable
-public class OauthId {
+public class ImageUrl {
 
-    @Column(name = "oauth_id", nullable = false)
+    @Column(name = "image_url", nullable = false)
     private String value;
 
-    public OauthId(final String value) {
+    public ImageUrl(final String value) {
         validateNotNull(value);
         this.value = value;
     }
 
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
-            throw new IllegalArgumentException("OauthId 객체 내부에 oauthId 는 null 일 수 없습니다.");
+            throw new IllegalArgumentException("ImageUrl 객체 내부에 imageUrl 은 null 일 수 없습니다.");
         }
     }
 }

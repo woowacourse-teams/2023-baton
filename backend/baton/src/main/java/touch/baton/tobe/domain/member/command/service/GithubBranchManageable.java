@@ -1,4 +1,4 @@
-package touch.baton.domain.member.service.dto;
+package touch.baton.tobe.domain.member.command.service;
 
 public interface GithubBranchManageable {
 

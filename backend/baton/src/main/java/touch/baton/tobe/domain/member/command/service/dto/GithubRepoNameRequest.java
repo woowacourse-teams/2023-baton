@@ -1,4 +1,4 @@
-package touch.baton.domain.member.service.dto;
+package touch.baton.tobe.domain.member.command.service.dto;
 
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.validator.ValidNotNull;

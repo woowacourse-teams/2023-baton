@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.controller.MemberBranchController;
-import touch.baton.domain.member.service.dto.GithubBranchManageable;
-import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.controller.MemberBranchController;
+import touch.baton.tobe.domain.member.command.service.GithubBranchManageable;
+import touch.baton.tobe.domain.member.command.service.dto.GithubRepoNameRequest;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;

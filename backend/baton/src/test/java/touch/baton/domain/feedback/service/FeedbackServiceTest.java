@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.feedback.exception.FeedbackBusinessException;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.Supporter;
@@ -31,9 +31,9 @@ class FeedbackServiceTest extends ServiceTestConfig {
     @BeforeEach
     void setUp() {
         feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterRepository);
-        final Member ethan = memberRepository.save(MemberFixture.createEthan());
+        final Member ethan = memberCommandRepository.save(MemberFixture.createEthan());
         exactRunner = runnerRepository.save(RunnerFixture.createRunner(ethan));
-        final Member ditoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member ditoo = memberCommandRepository.save(MemberFixture.createDitoo());
         reviewedSupporter = supporterRepository.save(SupporterFixture.create(ditoo));
         runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, reviewedSupporter));
 
@@ -57,7 +57,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
     @Test
     void fail_createSupporterFeedback_if_not_owner_runner() {
         // given
-        final Member differentMember = memberRepository.save(MemberFixture.createHyena());
+        final Member differentMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Runner notOwner = runnerRepository.save(RunnerFixture.createRunner(differentMember));
 
         // when, then
@@ -69,7 +69,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
     @Test
     void fail_createSupporterFeedback_if_not_review_supporter_runner() {
         // given
-        final Member differentMember = memberRepository.save(MemberFixture.createHyena());
+        final Member differentMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter notReviewSupporter = supporterRepository.save(SupporterFixture.create(differentMember));
         final SupporterFeedBackCreateRequest notReviewSupporterRequest = new SupporterFeedBackCreateRequest("GOOD", new ArrayList<>(), notReviewSupporter.getId(), runnerPost.getId());
 

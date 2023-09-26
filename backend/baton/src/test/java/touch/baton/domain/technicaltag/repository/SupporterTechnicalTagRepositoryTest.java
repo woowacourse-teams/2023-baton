@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
 import touch.baton.domain.technicaltag.TechnicalTag;

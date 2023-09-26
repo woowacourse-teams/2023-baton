@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.supporter.Supporter;
 

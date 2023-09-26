@@ -12,11 +12,11 @@ import touch.baton.domain.tag.vo.TagReducedName;
 
 import java.util.List;
 
-import static touch.baton.domain.member.QMember.member;
 import static touch.baton.domain.runner.QRunner.runner;
 import static touch.baton.domain.runnerpost.QRunnerPost.runnerPost;
 import static touch.baton.domain.tag.QRunnerPostTag.runnerPostTag;
 import static touch.baton.domain.tag.QTag.tag;
+import static touch.baton.tobe.domain.member.command.QMember.member;
 
 @RequiredArgsConstructor
 @Repository

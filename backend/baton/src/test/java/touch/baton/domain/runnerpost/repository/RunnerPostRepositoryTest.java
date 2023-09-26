@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -29,7 +29,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class RunnerPostRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberCommandRepository;
 
     @Autowired
     private RunnerRepository runnerRepository;
@@ -47,14 +47,14 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void findBySupporterIdAndReviewStatus() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
-        final Member savedMemberJudy = memberRepository.save(MemberFixture.createJudy());
+        final Member savedMemberJudy = memberCommandRepository.save(MemberFixture.createJudy());
         final Runner savedRunnerJudy = runnerRepository.save(RunnerFixture.createRunner(savedMemberJudy));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPostOne = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));
@@ -95,14 +95,14 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void joinSupporterRunnerPostBySupporterIdAndReviewStatus() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
-        final Member savedMemberJudy = memberRepository.save(MemberFixture.createJudy());
+        final Member savedMemberJudy = memberCommandRepository.save(MemberFixture.createJudy());
         final Runner savedRunnerJudy = runnerRepository.save(RunnerFixture.createRunner(savedMemberJudy));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedApplicantHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPostOne = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));
@@ -135,7 +135,7 @@ class RunnerPostRepositoryTest extends RepositoryTestConfig {
     @Test
     void findByRunnerIdAndReviewStatus() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final RunnerPost runnerPostOne = RunnerPostFixture.create(savedRunnerDitoo, new Deadline(LocalDateTime.now().plusHours(100)));

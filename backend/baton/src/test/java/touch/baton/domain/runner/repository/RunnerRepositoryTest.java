@@ -5,14 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.tobe.domain.member.command.vo.Company;
+import touch.baton.tobe.domain.member.command.vo.GithubUrl;
+import touch.baton.tobe.domain.member.command.vo.ImageUrl;
+import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
@@ -35,7 +35,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
     private RunnerRepository runnerRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberCommandRepository;
 
     private Runner runner;
 
@@ -49,7 +49,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
                 .company(company)
                 .imageUrl(imageUrl)
                 .build();
-        memberRepository.save(member);
+        memberCommandRepository.save(member);
 
         runner = Runner.builder()
                 .member(member)

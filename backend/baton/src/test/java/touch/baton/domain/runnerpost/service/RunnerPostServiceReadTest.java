@@ -9,13 +9,13 @@ import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.vo.Company;
+import touch.baton.tobe.domain.member.command.vo.GithubUrl;
+import touch.baton.tobe.domain.member.command.vo.ImageUrl;
+import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.member.command.vo.OauthId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
@@ -78,7 +78,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
                 .company(new Company("우아한형제들"))
                 .imageUrl(new ImageUrl("홍혁준"))
                 .build();
-        memberRepository.save(member);
+        memberCommandRepository.save(member);
 
         final Runner runner = Runner.builder()
                 .member(member)
@@ -138,7 +138,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     void success_findByRunnerId() {
         // given
         final Member ditoo = MemberFixture.createDitoo();
-        memberRepository.save(ditoo);
+        memberCommandRepository.save(ditoo);
         final Runner runner = RunnerFixture.createRunner(ditoo);
         runnerRepository.save(runner);
         final RunnerPost expected = RunnerPostFixture.create(runner, new Deadline(now().plusHours(100)));
@@ -158,10 +158,10 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void readRunnerPostsBySupporterIdAndReviewStatusIsNot_NOT_STARTED() {
         // given
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
@@ -186,7 +186,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void readRunnerPostsByRunnerIdAndReviewStatus() {
         // given
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
 
         final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
@@ -208,10 +208,10 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void readCountByRunnerPostId() {
         // given
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
@@ -230,7 +230,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void readCountByRunnerPostId_is_null_then_return_zero() {
         // given
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
 
         final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
@@ -247,10 +247,10 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void readRunnerPostsBySupporterIdAndReviewStatusIs_NOT_STARTED() {
         // given
-        final Member savedMemberEthan = memberRepository.save(MemberFixture.createEthan());
+        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerRepository.save(RunnerFixture.createRunner(savedMemberEthan));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
@@ -274,10 +274,10 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void existsRunnerPostApplicantByRunnerPostIdAndMemberId() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
@@ -298,10 +298,10 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void existsRunnerPostApplicantByRunnerPostIdAndMemberId_if_runnerPost_is_not_exist_then_return_false() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
-        final Member savedMemberHyena = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
 
         // when
         final Long notExistRunnerPostId = -1L;
@@ -318,7 +318,7 @@ class RunnerPostServiceReadTest extends ServiceTestConfig {
     @Test
     void existsRunnerPostApplicantByRunnerPostIdAndMemberId_if_member_is_not_exist_then_return_false() {
         // given
-        final Member savedMemberDitoo = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
         final Runner savedRunnerDitoo = runnerRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));

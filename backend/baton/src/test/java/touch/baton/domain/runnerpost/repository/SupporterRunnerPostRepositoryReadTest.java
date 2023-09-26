@@ -4,8 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.repository.MemberRepository;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.runner.Runner;
 import touch.baton.domain.runner.repository.RunnerRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
@@ -30,7 +30,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     private SupporterRunnerPostRepository supporterRunnerPostRepository;
 
     @Autowired
-    private MemberRepository memberRepository;
+    private MemberCommandRepository memberCommandRepository;
 
     @Autowired
     private RunnerRepository runnerRepository;
@@ -45,12 +45,12 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     @Test
     void existsByRunnerPostIdAndSupporterId() {
         // given
-        final Member ehtanMember = memberRepository.save(MemberFixture.createEthan());
+        final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
         final RunnerPost runner = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
                 deadline(LocalDateTime.now().plusDays(10))));
 
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter supporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runner, supporter));
 
@@ -70,18 +70,18 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     @Test
     void countByRunnerPostIds() {
         // given
-        final Member ehtanMember = memberRepository.save(MemberFixture.createEthan());
+        final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
         final RunnerPost firstRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
                 deadline(LocalDateTime.now().plusDays(10))));
         final RunnerPost twoRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
                 deadline(LocalDateTime.now().plusDays(10))));
 
-        final Member hyenaMember = memberRepository.save(MemberFixture.createHyena());
+        final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter hyenaSupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(firstRunnerPost, hyenaSupporter));
 
-        final Member judyMember = memberRepository.save(MemberFixture.createJudy());
+        final Member judyMember = memberCommandRepository.save(MemberFixture.createJudy());
         final Supporter judySupporter = supporterRepository.save(SupporterFixture.create(judyMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(firstRunnerPost, judySupporter));
 

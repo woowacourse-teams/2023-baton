@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.member.Member;
+import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
@@ -30,7 +30,7 @@ class SupporterServiceTest extends ServiceTestConfig {
     @Test
     void readBySupporterId() {
         // given
-        final Member savedMember = memberRepository.save(MemberFixture.createHyena());
+        final Member savedMember = memberCommandRepository.save(MemberFixture.createHyena());
         final Supporter savedSupporter = supporterRepository.save(SupporterFixture.create(savedMember));
 
         // when
@@ -50,7 +50,7 @@ class SupporterServiceTest extends ServiceTestConfig {
     @Test
     void updateSupporter() {
         // given
-        final Member savedMember = memberRepository.save(MemberFixture.createDitoo());
+        final Member savedMember = memberCommandRepository.save(MemberFixture.createDitoo());
         final Supporter savedSupporter = supporterRepository.save(SupporterFixture.create(savedMember));
         final SupporterUpdateRequest request = new SupporterUpdateRequest("디투랜드", "두나무", "소개글입니다.", List.of("golang", "rust"));
 

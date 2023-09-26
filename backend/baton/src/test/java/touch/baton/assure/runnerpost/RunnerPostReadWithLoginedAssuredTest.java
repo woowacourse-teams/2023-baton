@@ -3,7 +3,7 @@ package touch.baton.assure.runnerpost;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.domain.member.vo.SocialId;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.supporter.Supporter;
 

@@ -1,4 +1,4 @@
-package touch.baton.domain.member.vo;
+package touch.baton.tobe.domain.member.command.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
