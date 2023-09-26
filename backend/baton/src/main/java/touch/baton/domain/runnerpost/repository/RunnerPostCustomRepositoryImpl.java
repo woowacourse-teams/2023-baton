@@ -21,14 +21,14 @@ import static touch.baton.domain.tag.QTag.tag;
 @RequiredArgsConstructor
 @Repository
 public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepository {
-
+// TODO: 클래스 명 RunnerPostQueryRepository
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<RunnerPost> findByPageInfoAndReviewStatusAndTagReducedName(final Long previousLastId,
-                                                                           final int limit,
-                                                                           final TagReducedName tagReducedName,
-                                                                           final ReviewStatus reviewStatus
+    public List<RunnerPost> pageByReviewStatusAndTagReducedName(final Long previousLastId,
+                                                                final int limit,
+                                                                final TagReducedName tagReducedName,
+                                                                final ReviewStatus reviewStatus
     ) {
         final JPAQuery<RunnerPost> query = jpaQueryFactory.selectFrom(runnerPost)
                 .join(runnerPost.runner, runner).fetchJoin()

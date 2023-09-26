@@ -29,7 +29,7 @@ public class RunnerPostReadService {
                                                                                         final int limit,
                                                                                         final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(cursor, limit, TagReducedName.nullableInstance(tagName), reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostRepository.pageByReviewStatusAndTagReducedName(cursor, limit, TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);

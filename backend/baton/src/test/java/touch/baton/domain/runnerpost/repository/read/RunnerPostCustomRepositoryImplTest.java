@@ -46,7 +46,7 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
         final int limit = 10;
 
         // when
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(previousLastId, limit, null, reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds.subList(1, 1 + limit);
 
@@ -72,7 +72,7 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
         final int limit = 10;
 
         // when
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(null, limit, null, reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostRepository.pageByReviewStatusAndTagReducedName(null, limit, null, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds;
 
@@ -107,7 +107,7 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
 
         // when
         final TagReducedName tagReducedName = TagReducedName.from(tagName);
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(previousLastId, limit, tagReducedName, reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, tagReducedName, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds.subList(1, 1 + limit);
 
@@ -139,7 +139,7 @@ class RunnerPostCustomRepositoryImplTest extends RepositoryTestConfig {
 
         // when
         final TagReducedName tagReducedName = TagReducedName.from(tagName);
-        final List<RunnerPost> runnerPosts = runnerPostRepository.findByPageInfoAndReviewStatusAndTagReducedName(null, limit, tagReducedName, reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostRepository.pageByReviewStatusAndTagReducedName(null, limit, tagReducedName, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds;
 
