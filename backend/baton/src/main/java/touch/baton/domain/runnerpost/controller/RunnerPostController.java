@@ -87,28 +87,6 @@ public class RunnerPostController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping
-    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostsByReviewStatus(
-            @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,
-            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
-    ) {
-        final Page<RunnerPost> pageRunnerPosts = runnerPostService.readRunnerPostsByReviewStatus(pageable, reviewStatus);
-        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
-        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
-        final List<RunnerPostResponse.Simple> responses = IntStream.range(0, foundRunnerPosts.size())
-                .mapToObj(index -> {
-                    final RunnerPost runnerPost = foundRunnerPosts.get(index);
-                    final Long applicantCount = applicantCounts.get(index);
-
-                    return RunnerPostResponse.Simple.from(runnerPost, applicantCount);
-                }).toList();
-
-        final Page<RunnerPostResponse.Simple> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
-
-        return ResponseEntity.ok(PageResponse.from(pageResponse));
-    }
-
     @GetMapping("/search")
     public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
             @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,

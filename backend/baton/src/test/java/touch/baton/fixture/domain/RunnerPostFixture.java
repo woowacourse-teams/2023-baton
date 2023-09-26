@@ -93,7 +93,7 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final Deadline deadline, List<Tag> tags) {
+    public static RunnerPost create(final Runner runner, final Deadline deadline, final List<Tag> tags) {
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .implementedContents(new ImplementedContents("테스트 내용"))
@@ -103,6 +103,35 @@ public abstract class RunnerPostFixture {
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
+                .isReviewed(IsReviewed.notReviewed())
+                .runner(runner)
+                .supporter(null)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+
+        final List<RunnerPostTag> runnerPostTags = tags.stream()
+                .map(tag -> RunnerPostTagFixture.create(runnerPost, tag))
+                .toList();
+
+        runnerPost.addAllRunnerPostTags(runnerPostTags);
+
+        return runnerPost;
+    }
+
+    public static RunnerPost create(final Runner runner,
+                                    final Deadline deadline,
+                                    final List<Tag> tags,
+                                    final ReviewStatus reviewStatus
+    ) {
+        final RunnerPost runnerPost = RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .implementedContents(new ImplementedContents("테스트 내용"))
+                .curiousContents(new CuriousContents("테스트 궁금 점"))
+                .postscriptContents(new PostscriptContents("테스트 참고 사항"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(deadline)
+                .watchedCount(new WatchedCount(0))
+                .reviewStatus(reviewStatus)
                 .isReviewed(IsReviewed.notReviewed())
                 .runner(runner)
                 .supporter(null)
@@ -135,10 +164,10 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost createWithReviewStatus(final Runner runner,
-                                                    final Supporter supporter,
-                                                    final ReviewStatus reviewStatus,
-                                                    final IsReviewed isReviewed
+    public static RunnerPost createWithSupporter(final Runner runner,
+                                                 final Supporter supporter,
+                                                 final ReviewStatus reviewStatus,
+                                                 final IsReviewed isReviewed
     ) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))

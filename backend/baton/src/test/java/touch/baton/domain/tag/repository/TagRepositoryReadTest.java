@@ -1,11 +1,9 @@
 package touch.baton.domain.tag.repository;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.TagFixture;
@@ -13,7 +11,6 @@ import touch.baton.fixture.vo.TagNameFixture;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -22,9 +19,6 @@ class TagRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
     private TagRepository tagRepository;
-
-    @Autowired
-    private EntityManager em;
 
     @DisplayName("이름으로 단건 검색한다.")
     @Test
@@ -105,12 +99,5 @@ class TagRepositoryReadTest extends RepositoryTestConfig {
 
         // then
         assertThat(actual.isEmpty()).isTrue();
-    }
-
-    private Tag persistTag(final String tagName) {
-        final Tag tag = TagFixture.create(TagNameFixture.tagName(tagName));
-        em.persist(tag);
-
-        return tag;
     }
 }
