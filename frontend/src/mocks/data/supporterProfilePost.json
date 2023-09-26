@@ -3,7 +3,7 @@
     {
       "runnerPostId": 1,
       "title": "이 서포터가 완료한 리뷰 1",
-      "deadline": "마감기한",
+      "deadline": "2022-10-13T11:30",
       "tags": ["java", "JAVA"],
       "watchedCount": 341,
       "applicantCount": 4,
@@ -12,7 +12,7 @@
     {
       "runnerPostId": 2,
       "title": "이 서포터가 완료한 리뷰 2",
-      "deadline": "마감기한",
+      "deadline": "2022-10-13T11:30",
       "tags": ["java", "JAVA"],
       "watchedCount": 34,
       "applicantCount": 41,
@@ -21,7 +21,7 @@
     {
       "runnerPostId": 3,
       "title": "이 서포터가 완료한 리뷰 3",
-      "deadline": "마감기한",
+      "deadline": "2022-10-13T11:30",
       "tags": ["java", "JAVA"],
       "watchedCount": 2224,
       "applicantCount": 4,
