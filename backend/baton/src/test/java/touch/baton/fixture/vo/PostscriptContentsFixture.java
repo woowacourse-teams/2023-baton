@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.runnerpost.vo.PostscriptContents;
+import touch.baton.tobe.domain.runnerpost.command.vo.PostscriptContents;
 
 public abstract class PostscriptContentsFixture {
 

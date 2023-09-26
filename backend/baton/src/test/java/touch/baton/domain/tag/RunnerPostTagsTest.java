@@ -2,16 +2,16 @@ package touch.baton.domain.tag;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.GithubUrl;
 import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

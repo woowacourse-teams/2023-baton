@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.query.controller.RunnerQueryController;
-import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.controller.RunnerQueryController;
+import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
+import touch.baton.tobe.domain.runnerpost.query.service.RunnerPostQueryService;
 
 import java.util.List;
 
@@ -37,14 +37,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @MockBean
     private RunnerQueryService runnerQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerPostService, runnerQueryService);
+        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerPostQueryService, runnerQueryService);
         restdocsSetUp(runnerQueryController);
     }
 

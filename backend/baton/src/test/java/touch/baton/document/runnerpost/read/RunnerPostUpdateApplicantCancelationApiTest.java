@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -17,6 +13,10 @@ import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.tobe.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.tobe.domain.runnerpost.command.vo.Deadline;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -40,16 +40,16 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostCommandController.class)
 public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostCommandController runnerPostCommandController = new RunnerPostCommandController(runnerPostCommandService);
+        restdocsSetUp(runnerPostCommandController);
     }
 
     @DisplayName("러너 게시글에 리뷰 제안한 서포터가 리뷰 제안 철회 API")
@@ -75,7 +75,7 @@ public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig 
         // when
         when(spyRunnerPost.getId()).thenReturn(1L);
         when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
-        runnerPostService.deleteSupporterRunnerPost(any(), eq(1L));
+        runnerPostCommandService.deleteSupporterRunnerPost(any(), eq(1L));
 
         // then
         mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/cancelation", 1L)

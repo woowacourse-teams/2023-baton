@@ -6,11 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
-import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -19,6 +14,11 @@ import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.tobe.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
+import touch.baton.tobe.domain.runnerpost.command.vo.Deadline;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,16 +42,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostCommandController.class)
 class RunnerPostApplicantApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostCommandController runnerPostCommandController = new RunnerPostCommandController(runnerPostCommandService);
+        restdocsSetUp(runnerPostCommandController);
     }
 
     @DisplayName("Supporter 가 RunnerPost 에 리뷰를 제안한다.")
@@ -68,7 +68,7 @@ class RunnerPostApplicantApiTest extends RestdocsConfig {
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
         when(spyRunnerPost.getId()).thenReturn(1L);
-        when(runnerPostService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
+        when(runnerPostCommandService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
 
         when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
 

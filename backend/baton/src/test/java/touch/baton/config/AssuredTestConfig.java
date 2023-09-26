@@ -14,11 +14,11 @@ import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
 import touch.baton.assure.repository.TestMemberCommandRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
-import touch.baton.assure.repository.TestRunnerPostRepository;
+import touch.baton.assure.repository.TestRunnerPostQueryRepository;
 import touch.baton.assure.repository.TestRunnerQueryRepository;
 import touch.baton.assure.repository.TestSupporterQueryRepository;
 import touch.baton.assure.repository.TestSupporterRunnerPostQueryRepository;
-import touch.baton.assure.repository.TestTagRepository;
+import touch.baton.assure.repository.TestTagQueryRepository;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.infra.auth.MockAuthTestConfig;
 import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
@@ -40,13 +40,13 @@ public abstract class AssuredTestConfig {
     protected TestSupporterQueryRepository supporterRepository;
 
     @Autowired
-    protected TestRunnerPostRepository runnerPostRepository;
+    protected TestRunnerPostQueryRepository runnerPostRepository;
 
     @Autowired
     protected TestSupporterRunnerPostQueryRepository supporterRunnerPostRepository;
 
     @Autowired
-    protected TestTagRepository tagRepository;
+    protected TestTagQueryRepository tagRepository;
 
     @Autowired
     protected TestRefreshTokenRepository refreshTokenRepository;

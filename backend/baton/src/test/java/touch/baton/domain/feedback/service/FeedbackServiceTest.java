@@ -5,14 +5,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.feedback.exception.FeedbackBusinessException;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +30,12 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterQueryRepository);
+        feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostQueryRepository, supporterQueryRepository);
         final Member ethan = memberCommandRepository.save(MemberFixture.createEthan());
         exactRunner = runnerQueryRepository.save(RunnerFixture.createRunner(ethan));
         final Member ditoo = memberCommandRepository.save(MemberFixture.createDitoo());
         reviewedSupporter = supporterQueryRepository.save(SupporterFixture.create(ditoo));
-        runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, reviewedSupporter));
+        runnerPost = runnerPostQueryRepository.save(RunnerPostFixture.create(exactRunner, reviewedSupporter));
 
         request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), reviewedSupporter.getId(), runnerPost.getId());
     }

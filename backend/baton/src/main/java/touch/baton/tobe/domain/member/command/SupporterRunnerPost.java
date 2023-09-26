@@ -11,9 +11,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.tobe.domain.member.command.vo.Message;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.exception.RunnerPostDomainException;
 
 import java.util.Objects;
 

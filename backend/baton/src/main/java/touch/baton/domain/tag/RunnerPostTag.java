@@ -9,8 +9,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 
 import java.util.Objects;
 

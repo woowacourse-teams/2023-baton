@@ -1,6 +1,6 @@
 package touch.baton.tobe.domain.member.query.controller.response;
 
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
+import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponse;
 
 import java.util.List;
 

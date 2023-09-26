@@ -18,8 +18,8 @@ import touch.baton.domain.feedback.exception.SupporterFeedbackException;
 import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 
 import java.util.Objects;
 

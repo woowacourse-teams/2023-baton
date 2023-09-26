@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponse;
+import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

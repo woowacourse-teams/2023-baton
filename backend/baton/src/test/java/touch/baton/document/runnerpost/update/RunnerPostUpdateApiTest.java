@@ -6,15 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.tobe.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostUpdateRequest;
 
 import java.util.Optional;
 
@@ -34,15 +34,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostCommandController.class)
 public class RunnerPostUpdateApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerPostController(runnerPostService));
+        restdocsSetUp(new RunnerPostCommandController(runnerPostCommandService));
     }
 
     @DisplayName("제안한 서포터 목록 중에서 서포터로 선택하는 API")
@@ -57,7 +57,7 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
         final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(1L);
 
         // when
-        willDoNothing().given(runnerPostService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
+        willDoNothing().given(runnerPostCommandService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
         when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
 
         // then
@@ -85,7 +85,7 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
         final String accessToken = getAccessTokenBySocialId(ditooSocialId);
 
         // when
-        willDoNothing().given(runnerPostService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
+        willDoNothing().given(runnerPostCommandService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
         when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
 
         // then

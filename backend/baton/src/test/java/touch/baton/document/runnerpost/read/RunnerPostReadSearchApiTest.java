@@ -6,20 +6,20 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostReadController;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.controller.response.RunnerPostResponses;
-import touch.baton.domain.runnerpost.service.RunnerPostReadService;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.TagFixture;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponse;
+import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponses;
+import touch.baton.tobe.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.tobe.domain.runnerpost.command.vo.Deadline;
+import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.tobe.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.tobe.domain.runnerpost.query.service.RunnerPostQueryService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -40,19 +40,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostReadController.class)
+@WebMvcTest(RunnerPostQueryController.class)
 class RunnerPostReadSearchApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostReadService runnerPostReadService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostReadController runnerPostReadController = new RunnerPostReadController(runnerPostReadService);
-        restdocsSetUp(runnerPostReadController);
+        final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
+        restdocsSetUp(runnerPostQueryController);
     }
 
     @DisplayName("태그 이름과 리뷰 상태를 조건으로 러너 게시글 페이징 조회 API")
@@ -72,7 +72,7 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         // when
         final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(spyRunnerPost, 0L);
         final RunnerPostResponses.Simple runnerPostResponses = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
-        when(runnerPostReadService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(anyString(), anyLong(), anyInt(), any(ReviewStatus.class)))
+        when(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(anyString(), anyLong(), anyInt(), any(ReviewStatus.class)))
                 .thenReturn(runnerPostResponses);
 
         // then

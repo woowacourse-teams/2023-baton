@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -21,6 +17,10 @@ import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.runnerpost.command.vo.Deadline;
+import touch.baton.tobe.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.tobe.domain.runnerpost.query.service.RunnerPostQueryService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,16 +46,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostQueryController.class)
 class SupporterRunnerPostReadApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
+        restdocsSetUp(runnerPostQueryController);
     }
 
     @DisplayName("러너 게시글의 지원한 서포터 목록 조회 API")
@@ -77,7 +77,7 @@ class SupporterRunnerPostReadApiTest extends RestdocsConfig {
         // when
         given(spySupporter.getId()).willReturn(1L);
         given(spyRunnerPost.getId()).willReturn(1L);
-        given(runnerPostService.readSupporterRunnerPostsByRunnerPostId(any(), any())).willReturn(List.of(supporterRunnerPost));
+        given(runnerPostQueryService.readSupporterRunnerPostsByRunnerPostId(any(), any())).willReturn(List.of(supporterRunnerPost));
         when(oauthRunnerCommandRepository.joinByMemberSocialId(notNull()))
                 .thenReturn(Optional.ofNullable(runner));
 

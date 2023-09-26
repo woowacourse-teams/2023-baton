@@ -5,8 +5,8 @@ import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
+import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
