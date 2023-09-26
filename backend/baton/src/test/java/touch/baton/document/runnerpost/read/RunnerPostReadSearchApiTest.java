@@ -51,7 +51,7 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        final RunnerPostReadController runnerPostReadController = new RunnerPostReadController(runnerPostReadService, runnerPostService);
+        final RunnerPostReadController runnerPostReadController = new RunnerPostReadController(runnerPostReadService);
         restdocsSetUp(runnerPostReadController);
     }
 

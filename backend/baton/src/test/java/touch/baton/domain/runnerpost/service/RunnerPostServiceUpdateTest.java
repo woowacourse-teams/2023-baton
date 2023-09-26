@@ -142,7 +142,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void updateRunnerPostReviewStatusDone() {
         // given
         final IsReviewed isReviewed = IsReviewed.notReviewed();
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS, isReviewed));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithSupporter(runner, assignedSupporter, IN_PROGRESS, isReviewed));
 
         // when
         runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter);
@@ -159,7 +159,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostReviewStatusDone_if_invalid_runnerPostId() {
         // given
         final IsReviewed isReviewed = IsReviewed.notReviewed();
-        runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS, isReviewed));
+        runnerPostRepository.save(RunnerPostFixture.createWithSupporter(runner, assignedSupporter, IN_PROGRESS, isReviewed));
         final Long unsavedRunnerPostId = 100000L;
 
         // when, then
@@ -172,7 +172,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostReviewStatusDone_if_supporter_is_null() {
         // given
         final IsReviewed isReviewed = IsReviewed.notReviewed();
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, null, IN_PROGRESS, isReviewed));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithSupporter(runner, null, IN_PROGRESS, isReviewed));
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
@@ -184,7 +184,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostReviewStatusDone_if_different_supporter_is_assigned() {
         // given
         final IsReviewed isReviewed = IsReviewed.notReviewed();
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, IN_PROGRESS, isReviewed));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithSupporter(runner, assignedSupporter, IN_PROGRESS, isReviewed));
         final Member differentMember = memberRepository.save(MemberFixture.createHyena());
         final Supporter differentSupporter = supporterRepository.save(SupporterFixture.create(differentMember));
 
@@ -198,7 +198,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostReviewStatusDone_if_reviewStatus_is_overdue() {
         // given
         final IsReviewed isReviewed = IsReviewed.notReviewed();
-        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithReviewStatus(runner, assignedSupporter, OVERDUE, isReviewed));
+        final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithSupporter(runner, assignedSupporter, OVERDUE, isReviewed));
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter))
