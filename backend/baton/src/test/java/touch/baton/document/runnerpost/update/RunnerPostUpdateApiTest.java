@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.controller.RunnerPostController;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;

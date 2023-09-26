@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.supporter.Supporter;
@@ -41,7 +41,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     void success_deleteByRunnerPostId() {
         // given
         final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(10))));
 
         // when
@@ -55,7 +55,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     @Test
     void fail_deleteByRunnerPostId_if_runnerPost_is_null() {
         final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
         assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(0L, runner))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }
@@ -65,13 +65,13 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     void fail_deleteByRunnerPostId_if_not_owner() {
         // given
         final Member memberRunnerPostOwner = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(memberRunnerPostOwner));
+        final Runner runnerPostOwner = runnerQueryRepository.save(RunnerFixture.createRunner(memberRunnerPostOwner));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
                 runnerPostOwner,
                 deadline(LocalDateTime.now().plusHours(10))
         ));
         final Member memberRunnerPostNotOwner = memberCommandRepository.save(MemberFixture.createJudy());
-        final Runner runnerPostNotOwner = runnerRepository.save(RunnerFixture.createRunner(memberRunnerPostNotOwner));
+        final Runner runnerPostNotOwner = runnerQueryRepository.save(RunnerFixture.createRunner(memberRunnerPostNotOwner));
 
         // when & then
         assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(runnerPost.getId(), runnerPostNotOwner))
@@ -83,7 +83,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     void fail_deleteByRunnerPostId_if_reviewStatus_is_not_NOT_STARTED() {
         // given
         final Member memberRunner = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(memberRunner));
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(memberRunner));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
                 runner,
                 deadline(LocalDateTime.now().plusHours(10))
@@ -103,7 +103,7 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
     void fail_deleteByRunnerPostId_if_applicant_is_exist() {
         // given
         final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner runner = runnerRepository.save(RunnerFixture.createRunner(member));
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
         final RunnerPost runnerPost = runnerPostRepository.save(RunnerPostFixture.create(
                 runner,
                 deadline(LocalDateTime.now().plusHours(10))

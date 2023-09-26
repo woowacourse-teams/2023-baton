@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 

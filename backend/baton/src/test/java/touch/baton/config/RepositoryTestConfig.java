@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.SupporterRunnerPost;

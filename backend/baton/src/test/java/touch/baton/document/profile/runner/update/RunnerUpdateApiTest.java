@@ -7,26 +7,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.RunnerProfileController;
-import touch.baton.domain.runner.service.RunnerService;
-import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.controller.RunnerCommandController;
+import touch.baton.tobe.domain.member.command.service.RunnerCommandService;
+import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -36,19 +31,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RunnerProfileController.class)
+@WebMvcTest(RunnerCommandController.class)
 public class RunnerUpdateApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerService runnerService;
-
-    @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerCommandService runnerCommandService;
 
     @BeforeEach
     void setUp() {
-        final RunnerProfileController runnerProfileController = new RunnerProfileController(runnerPostService, runnerService);
-        restdocsSetUp(runnerProfileController);
+        final RunnerCommandController runnerCommandController = new RunnerCommandController(runnerCommandService);
+        restdocsSetUp(runnerCommandController);
     }
 
     @DisplayName("러너 프로필 수정 API")

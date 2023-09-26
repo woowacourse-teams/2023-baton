@@ -1,13 +1,13 @@
-package touch.baton.domain.runner.repository;
+package touch.baton.tobe.domain.member.query.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 
 import java.util.Optional;
 
-public interface RunnerRepository extends JpaRepository<Runner, Long> {
+public interface RunnerQueryRepository extends JpaRepository<Runner, Long> {
 
     @Query("""
             select r

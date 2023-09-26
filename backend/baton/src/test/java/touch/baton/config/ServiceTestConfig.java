@@ -3,7 +3,7 @@ package touch.baton.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.domain.feedback.repository.SupporterFeedbackRepository;
 import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
-import touch.baton.domain.runner.repository.RunnerRepository;
+import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.supporter.repository.SupporterRepository;
 import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
@@ -19,7 +19,7 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
     protected MemberCommandRepository memberCommandRepository;
 
     @Autowired
-    protected RunnerRepository runnerRepository;
+    protected RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
     protected SupporterRepository supporterRepository;

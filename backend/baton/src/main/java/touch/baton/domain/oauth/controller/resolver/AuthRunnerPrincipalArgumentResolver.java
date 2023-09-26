@@ -12,7 +12,7 @@ import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 import touch.baton.domain.oauth.repository.OauthRunnerRepository;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
 @Component

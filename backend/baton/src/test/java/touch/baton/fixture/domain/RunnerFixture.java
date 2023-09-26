@@ -2,7 +2,7 @@ package touch.baton.fixture.domain;
 
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
 import touch.baton.domain.technicaltag.TechnicalTag;

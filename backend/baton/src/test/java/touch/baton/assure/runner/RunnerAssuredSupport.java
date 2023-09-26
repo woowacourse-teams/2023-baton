@@ -8,10 +8,10 @@ import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.assure.common.PathParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.response.ErrorResponse;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.response.RunnerProfileResponse;
-import touch.baton.domain.runner.controller.response.RunnerResponse;
-import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.controller.response.RunnerProfileResponse;
+import touch.baton.tobe.domain.member.query.controller.response.RunnerResponse;
+import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
 import java.util.Map;

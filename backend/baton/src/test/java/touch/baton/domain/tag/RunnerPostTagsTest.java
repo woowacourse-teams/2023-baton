@@ -9,7 +9,7 @@ import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 

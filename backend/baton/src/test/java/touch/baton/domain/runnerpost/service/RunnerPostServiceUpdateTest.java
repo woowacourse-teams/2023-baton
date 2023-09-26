@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
@@ -50,7 +50,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         );
 
         final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());
-        runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
+        runnerPostOwner = runnerQueryRepository.save(RunnerFixture.createRunner(ehtanMember));
         targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
                 deadline(LocalDateTime.now().plusDays(10))));
 
@@ -59,7 +59,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(targetRunnerPost, applySupporter));
 
         final Member runnerMember = memberCommandRepository.save(MemberFixture.createEthan());
-        runner = runnerRepository.save(RunnerFixture.createRunner(runnerMember));
+        runner = runnerQueryRepository.save(RunnerFixture.createRunner(runnerMember));
 
         final Member supporterMember = memberCommandRepository.save(MemberFixture.createDitoo());
         assignedSupporter = supporterRepository.save(SupporterFixture.create(supporterMember));
@@ -128,7 +128,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostAppliedSupporter_if_is_not_owner_of_runnerPost() {
         // given
         final Member ditooMember = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner notOwnerRunner = runnerRepository.save(RunnerFixture.createRunner(ditooMember));
+        final Runner notOwnerRunner = runnerQueryRepository.save(RunnerFixture.createRunner(ditooMember));
 
         final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(applySupporter.getId());
 

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -39,7 +39,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
         applicantSupporter = supporterRepository.save(SupporterFixture.create(applicantMember));
 
         final Member revieweeMember = memberCommandRepository.save(MemberFixture.createJudy());
-        revieweeRunner = runnerRepository.save(RunnerFixture.createRunner(revieweeMember));
+        revieweeRunner = runnerQueryRepository.save(RunnerFixture.createRunner(revieweeMember));
     }
 
     @DisplayName("성공한다.")

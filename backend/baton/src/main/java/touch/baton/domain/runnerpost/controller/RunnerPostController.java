@@ -22,7 +22,7 @@ import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipal;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipal;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResponse;

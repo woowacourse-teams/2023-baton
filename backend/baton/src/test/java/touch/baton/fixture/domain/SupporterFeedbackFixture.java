@@ -3,7 +3,7 @@ package touch.baton.fixture.domain;
 import touch.baton.domain.feedback.SupporterFeedback;
 import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.Supporter;
 

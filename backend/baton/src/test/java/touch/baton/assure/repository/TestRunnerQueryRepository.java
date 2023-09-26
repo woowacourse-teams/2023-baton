@@ -3,12 +3,12 @@ package touch.baton.assure.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.repository.RunnerRepository;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 
 import java.util.Optional;
 
-public interface TestRunnerRepository extends RunnerRepository {
+public interface TestRunnerQueryRepository extends RunnerQueryRepository {
 
     default Runner getBySocialId(final SocialId socialId) {
         return joinMemberBySocialId(socialId)

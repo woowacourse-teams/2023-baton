@@ -7,9 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.RunnerProfileController;
-import touch.baton.domain.runner.service.RunnerService;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.controller.RunnerQueryController;
+import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
@@ -33,19 +33,19 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RunnerProfileController.class)
+@WebMvcTest(RunnerQueryController.class)
 public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
 
     @MockBean
-    private RunnerService runnerService;
+    private RunnerQueryService runnerQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerProfileController runnerProfileController = new RunnerProfileController(runnerPostService, runnerService);
-        restdocsSetUp(runnerProfileController);
+        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerPostService, runnerQueryService);
+        restdocsSetUp(runnerQueryController);
     }
 
     @DisplayName("러너 프로필 상세 조회 API")
@@ -60,7 +60,7 @@ public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
 
         // when
         when(spyRunner.getId()).thenReturn(1L);
-        when(runnerService.readByRunnerId(anyLong())).thenReturn(spyRunner);
+        when(runnerQueryService.readByRunnerId(anyLong())).thenReturn(spyRunner);
 
         // then
         mockMvc.perform(get("/api/v1/profile/runner/{runnerId}", 1L))

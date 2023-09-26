@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
 import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;

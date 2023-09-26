@@ -5,8 +5,8 @@ import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
 

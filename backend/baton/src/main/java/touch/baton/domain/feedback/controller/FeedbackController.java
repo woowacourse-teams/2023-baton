@@ -11,7 +11,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import touch.baton.domain.feedback.service.FeedbackService;
 import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
 import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipal;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 
 import java.net.URI;
 

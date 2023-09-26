@@ -1,6 +1,6 @@
 package touch.baton.domain.runnerpost.controller.response;
 
-import touch.baton.domain.runner.controller.response.RunnerResponse;
+import touch.baton.tobe.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
 

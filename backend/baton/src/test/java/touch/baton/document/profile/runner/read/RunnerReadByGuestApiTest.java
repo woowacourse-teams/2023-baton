@@ -7,9 +7,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.RunnerProfileController;
-import touch.baton.domain.runner.service.RunnerService;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.controller.RunnerQueryController;
+import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
@@ -38,18 +38,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerProfileController.class)
+@WebMvcTest(RunnerQueryController.class)
 class RunnerReadByGuestApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
 
     @MockBean
-    private RunnerService runnerService;
+    private RunnerQueryService runnerQueryService;
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerProfileController(runnerPostService, runnerService));
+        restdocsSetUp(new RunnerQueryController(runnerPostService, runnerQueryService));
     }
 
     @DisplayName("러너 본인 프로필 조회 API")
@@ -95,7 +95,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
 
         // when
         when(spyRunner.getId()).thenReturn(1L);
-        when(runnerService.readByRunnerId(anyLong())).thenReturn(spyRunner);
+        when(runnerQueryService.readByRunnerId(anyLong())).thenReturn(spyRunner);
 
         // then
         mockMvc.perform(get("/api/v1/profile/runner/{runnerId}", 1L))

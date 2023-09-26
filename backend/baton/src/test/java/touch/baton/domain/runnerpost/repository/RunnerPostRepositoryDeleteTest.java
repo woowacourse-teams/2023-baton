@@ -14,8 +14,8 @@ import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.repository.RunnerRepository;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.CuriousContents;
 import touch.baton.domain.runnerpost.vo.Deadline;
@@ -39,7 +39,7 @@ class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
     private MemberCommandRepository memberCommandRepository;
 
     @Autowired
-    private RunnerRepository runnerRepository;
+    private RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
     private RunnerPostRepository runnerPostRepository;
@@ -62,7 +62,7 @@ class RunnerPostRepositoryDeleteTest extends RepositoryTestConfig {
                 .member(saveMember)
                 .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
                 .build();
-        final Runner saveRunner = runnerRepository.saveAndFlush(runner);
+        final Runner saveRunner = runnerQueryRepository.saveAndFlush(runner);
 
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("제 코드 리뷰 좀 해주세요!!"))

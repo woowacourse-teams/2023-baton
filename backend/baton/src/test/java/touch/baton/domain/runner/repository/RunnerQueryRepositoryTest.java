@@ -13,8 +13,9 @@ import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
+import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -22,7 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class RunnerRepositoryTest extends RepositoryTestConfig {
+class RunnerQueryRepositoryTest extends RepositoryTestConfig {
 
     private static final MemberName memberName = new MemberName("헤에디주");
     private static final SocialId socialId = new SocialId("testSocialId");
@@ -32,7 +33,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
     private static final ImageUrl imageUrl = new ImageUrl("김석호");
 
     @Autowired
-    private RunnerRepository runnerRepository;
+    private RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
     private MemberCommandRepository memberCommandRepository;
@@ -61,10 +62,10 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
     @Test
     void findByIdJoinMember() {
         // given
-        final Runner expected = runnerRepository.save(runner);
+        final Runner expected = runnerQueryRepository.save(runner);
 
         // when
-        final Optional<Runner> actual = runnerRepository.joinMemberByRunnerId(expected.getId());
+        final Optional<Runner> actual = runnerQueryRepository.joinMemberByRunnerId(expected.getId());
 
         // then
         assertThat(actual).isPresent();
@@ -83,7 +84,7 @@ class RunnerRepositoryTest extends RepositoryTestConfig {
     @Test
     void findByIdJoinMember_if_id_is_not_exists() {
         // when
-        final Optional<Runner> actual = runnerRepository.joinMemberByRunnerId(999L);
+        final Optional<Runner> actual = runnerQueryRepository.joinMemberByRunnerId(999L);
 
         // then
         assertThat(actual).isEmpty();

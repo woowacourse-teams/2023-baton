@@ -3,7 +3,7 @@ package touch.baton.domain.runnerpost.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import touch.baton.domain.runner.controller.response.RunnerResponse;
+import touch.baton.tobe.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.RunnerPostsApplicantCount;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;

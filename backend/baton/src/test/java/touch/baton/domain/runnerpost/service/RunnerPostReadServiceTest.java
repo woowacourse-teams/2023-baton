@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponses;
@@ -38,7 +38,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     void readRunnerPostByPageInfoAndTagNameAndReviewStatus_firstPage() {
         // given
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
+        final Runner hyenaRunner = runnerQueryRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagRepository.save(TagFixture.create(tagName("스프링")));
@@ -93,7 +93,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     void readRunnerPostByPageInfoAndTagNameAndReviewStatus_middlePage() {
         // given
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
+        final Runner hyenaRunner = runnerQueryRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagRepository.save(TagFixture.create(tagName("스프링")));
@@ -155,7 +155,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     void readRunnerPostByPageInfoAndReviewStatus_firstPage() {
         // given
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
+        final Runner hyenaRunner = runnerQueryRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagRepository.save(TagFixture.create(tagName("스프링")));
@@ -211,7 +211,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     void readRunnerPostByPageInfoAndReviewStatus_middlePage() {
         // given
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
+        final Runner hyenaRunner = runnerQueryRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagRepository.save(TagFixture.create(tagName("스프링")));
@@ -274,7 +274,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     void readRunnerPostByPageInfoAndTagName_firstPage() {
         // given
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
+        final Runner hyenaRunner = runnerQueryRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagRepository.save(TagFixture.create(tagName("스프링")));
@@ -322,7 +322,7 @@ class RunnerPostReadServiceTest extends ServiceTestConfig {
     void readRunnerPostByPageInfoAndTagName_middlePage() {
         // given
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner hyenaRunner = runnerRepository.save(RunnerFixture.createRunner(hyenaMember));
+        final Runner hyenaRunner = runnerQueryRepository.save(RunnerFixture.createRunner(hyenaMember));
 
         final Tag javaTag = tagRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagRepository.save(TagFixture.create(tagName("스프링")));

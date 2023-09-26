@@ -1,6 +1,6 @@
-package touch.baton.domain.runner.controller.response;
+package touch.baton.tobe.domain.member.query.controller.response;
 
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 
 import java.util.List;
 

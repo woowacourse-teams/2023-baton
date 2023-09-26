@@ -10,7 +10,8 @@ import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.runner.exception.RunnerDomainException;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.exception.RunnerDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
 
 import java.util.ArrayList;

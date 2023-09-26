@@ -24,7 +24,7 @@ import touch.baton.domain.oauth.token.ExpireDate;
 import touch.baton.domain.oauth.token.RefreshToken;
 import touch.baton.domain.oauth.token.Token;
 import touch.baton.domain.oauth.token.Tokens;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.vo.ReviewCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;

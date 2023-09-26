@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.feedback.exception.FeedbackBusinessException;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
@@ -32,7 +32,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
     void setUp() {
         feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterRepository);
         final Member ethan = memberCommandRepository.save(MemberFixture.createEthan());
-        exactRunner = runnerRepository.save(RunnerFixture.createRunner(ethan));
+        exactRunner = runnerQueryRepository.save(RunnerFixture.createRunner(ethan));
         final Member ditoo = memberCommandRepository.save(MemberFixture.createDitoo());
         reviewedSupporter = supporterRepository.save(SupporterFixture.create(ditoo));
         runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, reviewedSupporter));
@@ -58,7 +58,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
     void fail_createSupporterFeedback_if_not_owner_runner() {
         // given
         final Member differentMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Runner notOwner = runnerRepository.save(RunnerFixture.createRunner(differentMember));
+        final Runner notOwner = runnerQueryRepository.save(RunnerFixture.createRunner(differentMember));
 
         // when, then
         assertThatThrownBy(() -> feedbackService.createSupporterFeedback(notOwner, request))

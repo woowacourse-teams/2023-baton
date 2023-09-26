@@ -5,24 +5,25 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class RunnerServiceReadTest extends ServiceTestConfig {
+class RunnerQueryServiceTest extends ServiceTestConfig {
 
-    private RunnerService runnerService;
+    private RunnerQueryService runnerQueryService;
 
     @BeforeEach
     void setUp() {
-        runnerService = new RunnerService(runnerRepository, runnerTechnicalTagRepository, technicalTagRepository);
+        runnerQueryService = new RunnerQueryService(runnerQueryRepository);
     }
 
     @DisplayName("러너를 사용자와 함께 조회한다.")
@@ -34,10 +35,10 @@ class RunnerServiceReadTest extends ServiceTestConfig {
         final TechnicalTag javaTag = technicalTagRepository.save(TechnicalTagFixture.createJava());
         final TechnicalTag reactTag = technicalTagRepository.save(TechnicalTagFixture.createReact());
         final List<TechnicalTag> technicalTags = List.of(javaTag, reactTag);
-        final Runner expectedRunner = runnerRepository.save(RunnerFixture.createRunner(expectedMember, technicalTags));
+        final Runner expectedRunner = runnerQueryRepository.save(RunnerFixture.createRunner(expectedMember, technicalTags));
 
         // when
-        final Runner actualRunner = runnerService.readByRunnerId(expectedRunner.getId());
+        final Runner actualRunner = runnerQueryService.readByRunnerId(expectedRunner.getId());
 
         // then
         final Member actualMember = actualRunner.getMember();

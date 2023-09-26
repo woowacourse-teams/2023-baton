@@ -5,11 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.service.dto.RunnerUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.command.service.RunnerCommandService;
+import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
 
@@ -17,13 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class RunnerServiceUpdateTest extends ServiceTestConfig {
+class RunnerCommandServiceTest extends ServiceTestConfig {
 
-    private RunnerService runnerService;
+    private RunnerCommandService runnerCommandService;
 
     @BeforeEach
     void setUp() {
-        runnerService = new RunnerService(runnerRepository, runnerTechnicalTagRepository, technicalTagRepository);
+        runnerCommandService = new RunnerCommandService(runnerTechnicalTagRepository, technicalTagRepository);
     }
 
     @DisplayName("Runner 의 프로필을 수정한다.")
@@ -31,11 +32,11 @@ class RunnerServiceUpdateTest extends ServiceTestConfig {
     void updateRunnerProfile() {
         // given
         final Member memberJudy = memberCommandRepository.save(MemberFixture.createJudy());
-        final Runner runnerJudy = runnerRepository.save(RunnerFixture.createRunner(memberJudy));
+        final Runner runnerJudy = runnerQueryRepository.save(RunnerFixture.createRunner(memberJudy));
         final RunnerUpdateRequest runnerUpdateRequest = new RunnerUpdateRequest("변경된 이름", "변경된 회사", "변경된 자기소개", List.of("changedTag1", "changedTag2"));
 
         // when, then
-        assertThatCode(() -> runnerService.updateRunner(runnerJudy, runnerUpdateRequest))
+        assertThatCode(() -> runnerCommandService.updateRunner(runnerJudy, runnerUpdateRequest))
                 .doesNotThrowAnyException();
     }
 
@@ -44,11 +45,11 @@ class RunnerServiceUpdateTest extends ServiceTestConfig {
     void readUpdatedRunnerProfile() {
         // given
         final Member memberJudy = memberCommandRepository.save(MemberFixture.createJudy());
-        final Runner runnerJudy = runnerRepository.save(RunnerFixture.createRunner(memberJudy));
+        final Runner runnerJudy = runnerQueryRepository.save(RunnerFixture.createRunner(memberJudy));
         final RunnerUpdateRequest runnerUpdateRequest = new RunnerUpdateRequest("변경된 이름", "변경된 회사", "변경된 자기소개", List.of("changedTag1", "changedTag2"));
 
-        runnerService.updateRunner(runnerJudy, runnerUpdateRequest);
-        final Runner foundRunnerJudy = runnerRepository.findById(runnerJudy.getId()).get();
+        runnerCommandService.updateRunner(runnerJudy, runnerUpdateRequest);
+        final Runner foundRunnerJudy = runnerQueryRepository.findById(runnerJudy.getId()).get();
 
         // when, then
         assertAll(

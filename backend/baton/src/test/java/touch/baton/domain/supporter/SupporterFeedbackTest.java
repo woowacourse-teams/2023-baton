@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.domain.feedback.exception.SupporterFeedbackException;
 import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
-import touch.baton.domain.runner.Runner;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.supporter.vo.ReviewCount;

@@ -1,4 +1,4 @@
-package touch.baton.domain.runner;
+package touch.baton.tobe.domain.member.command;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -12,10 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
-import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
-import touch.baton.domain.runner.exception.RunnerDomainException;
+import touch.baton.tobe.domain.member.exception.RunnerDomainException;
 import touch.baton.domain.supporter.exception.SupporterDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;

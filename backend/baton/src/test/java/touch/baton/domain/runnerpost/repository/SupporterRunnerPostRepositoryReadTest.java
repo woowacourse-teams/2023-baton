@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.repository.RunnerRepository;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.supporter.Supporter;
 import touch.baton.domain.supporter.repository.SupporterRepository;
@@ -33,7 +33,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     private MemberCommandRepository memberCommandRepository;
 
     @Autowired
-    private RunnerRepository runnerRepository;
+    private RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
     private SupporterRepository supporterRepository;
@@ -46,7 +46,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     void existsByRunnerPostIdAndSupporterId() {
         // given
         final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());
-        final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
+        final Runner runnerPostOwner = runnerQueryRepository.save(RunnerFixture.createRunner(ehtanMember));
         final RunnerPost runner = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
                 deadline(LocalDateTime.now().plusDays(10))));
 
@@ -71,7 +71,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     void countByRunnerPostIds() {
         // given
         final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());
-        final Runner runnerPostOwner = runnerRepository.save(RunnerFixture.createRunner(ehtanMember));
+        final Runner runnerPostOwner = runnerQueryRepository.save(RunnerFixture.createRunner(ehtanMember));
         final RunnerPost firstRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,
                 deadline(LocalDateTime.now().plusDays(10))));
         final RunnerPost twoRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(runnerPostOwner,

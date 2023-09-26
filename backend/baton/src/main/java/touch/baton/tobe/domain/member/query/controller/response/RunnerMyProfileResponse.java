@@ -1,4 +1,4 @@
-package touch.baton.domain.runner.controller.response;
+package touch.baton.tobe.domain.member.query.controller.response;
 
 import touch.baton.domain.runnerpost.controller.response.RunnerPostResponse;
 

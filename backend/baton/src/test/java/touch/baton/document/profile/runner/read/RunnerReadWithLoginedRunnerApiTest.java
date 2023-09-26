@@ -6,9 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.RunnerProfileController;
-import touch.baton.domain.runner.service.RunnerService;
+import touch.baton.tobe.domain.member.command.Runner;
+import touch.baton.tobe.domain.member.query.controller.RunnerQueryController;
+import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.runnerpost.service.RunnerPostService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
@@ -31,19 +31,19 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerProfileController.class)
+@WebMvcTest(RunnerQueryController.class)
 class RunnerReadWithLoginedRunnerApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostService runnerPostService;
 
     @MockBean
-    private RunnerService runnerService;
+    private RunnerQueryService runnerQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerProfileController runnerProfileController = new RunnerProfileController(runnerPostService, runnerService);
-        restdocsSetUp(runnerProfileController);
+        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerPostService, runnerQueryService);
+        restdocsSetUp(runnerQueryController);
     }
 
     @DisplayName("러너 본인 프로필 조회 API")
