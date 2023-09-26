@@ -29,7 +29,7 @@ import { useFetch } from '@/hooks/useFetch';
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToMainPage } = usePageRouter();
+  const { goBack, goToResultPage } = usePageRouter();
   const { postRequestWithAuth } = useFetch();
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
@@ -173,7 +173,7 @@ const RunnerPostCreatePage = () => {
       async () => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
 
-        goToMainPage();
+        goToResultPage();
       },
       body,
     );

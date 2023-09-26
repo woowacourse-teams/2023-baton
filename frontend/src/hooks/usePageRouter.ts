@@ -73,6 +73,7 @@ export const usePageRouter = () => {
     goToSupporterFeedbackPage,
     goToProfileEditPage,
     goToNoticePage,
+    goToResultPage,
     goBack,
   };
 };
