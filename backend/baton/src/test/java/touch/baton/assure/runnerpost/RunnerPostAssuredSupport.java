@@ -23,7 +23,7 @@ import touch.baton.domain.runnerpost.controller.response.SupporterRunnerPostResp
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 
 import java.time.LocalDateTime;
 import java.util.List;

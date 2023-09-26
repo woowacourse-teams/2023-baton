@@ -11,8 +11,8 @@ import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.repository.SupporterRepository;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,11 +23,11 @@ public class FeedbackService {
 
     private final SupporterFeedbackRepository supporterFeedbackRepository;
     private final RunnerPostRepository runnerPostRepository;
-    private final SupporterRepository supporterRepository;
+    private final SupporterQueryRepository supporterQueryRepository;
 
     @Transactional
     public Long createSupporterFeedback(final Runner runner, final SupporterFeedBackCreateRequest request) {
-        final Supporter foundSupporter = supporterRepository.findById(request.supporterId())
+        final Supporter foundSupporter = supporterQueryRepository.findById(request.supporterId())
                 .orElseThrow(() -> new FeedbackBusinessException("서포터를 찾을 수 없습니다."));
         final RunnerPost foundRunnerPost = runnerPostRepository.findById(request.runnerPostId())
                 .orElseThrow(() -> new FeedbackBusinessException("러너 게시글을 찾을 수 없습니다."));

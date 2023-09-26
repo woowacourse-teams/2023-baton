@@ -1,43 +1,29 @@
-package touch.baton.domain.supporter.service;
+package touch.baton.tobe.domain.member.command.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.tobe.domain.member.command.vo.Company;
-import touch.baton.tobe.domain.member.command.vo.MemberName;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.exception.SupporterBusinessException;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.domain.technicaltag.repository.SupporterTechnicalTagRepository;
 import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.service.dto.SupporterUpdateRequest;
+import touch.baton.tobe.domain.member.command.vo.Company;
+import touch.baton.tobe.domain.member.command.vo.MemberName;
 
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 @Service
-public class SupporterService {
+public class SupporterCommandService {
 
-    private final SupporterRepository supporterRepository;
     private final TechnicalTagRepository technicalTagRepository;
     private final SupporterTechnicalTagRepository supporterTechnicalTagRepository;
 
-    public List<Supporter> readAllSupporters() {
-        return supporterRepository.findAll();
-    }
-
-    public Supporter readBySupporterId(final Long supporterId) {
-        return supporterRepository.joinMemberBySupporterId(supporterId)
-                .orElseThrow(() -> new SupporterBusinessException("존재하지 않는 서포터 식별자값으로 조회할 수 없습니다."));
-    }
-
-    @Transactional
     public void updateSupporter(final Supporter supporter, final SupporterUpdateRequest supporterUpdateRequest) {
         supporter.updateMemberName(new MemberName(supporterUpdateRequest.name()));
         supporter.updateCompany(new Company(supporterUpdateRequest.company()));

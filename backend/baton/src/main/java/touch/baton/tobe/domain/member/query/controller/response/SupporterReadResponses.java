@@ -1,4 +1,4 @@
-package touch.baton.domain.supporter.controller.response;
+package touch.baton.tobe.domain.member.query.controller.response;
 
 import java.util.List;
 

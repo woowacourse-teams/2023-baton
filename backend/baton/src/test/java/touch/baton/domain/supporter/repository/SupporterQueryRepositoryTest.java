@@ -6,32 +6,33 @@ import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class SupporterRepositoryTest extends RepositoryTestConfig {
+class SupporterQueryRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
     private MemberCommandRepository memberCommandRepository;
 
     @Autowired
-    private SupporterRepository supporterRepository;
+    private SupporterQueryRepository supporterQueryRepository;
 
     @DisplayName("Supporter 식별자값으로 Member 를 패치 조인하여 조회한다.")
     @Test
     void joinMemberBySupporterId() {
         // given
         final Member savedMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporter = supporterRepository.save(SupporterFixture.create(savedMember));
+        final Supporter savedSupporter = supporterQueryRepository.save(SupporterFixture.create(savedMember));
 
         // when
-        final Optional<Supporter> maybeSupporter = supporterRepository.joinMemberBySupporterId(savedSupporter.getId());
+        final Optional<Supporter> maybeSupporter = supporterQueryRepository.joinMemberBySupporterId(savedSupporter.getId());
 
         // then
         assertAll(

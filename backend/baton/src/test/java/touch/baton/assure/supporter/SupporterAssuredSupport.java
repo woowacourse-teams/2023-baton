@@ -7,9 +7,9 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.response.ErrorResponse;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.controller.response.SupporterResponse;
-import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.query.controller.response.SupporterResponse;
+import touch.baton.tobe.domain.member.command.service.dto.SupporterUpdateRequest;
 
 import java.util.List;
 import java.util.Map;

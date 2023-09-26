@@ -1,7 +1,7 @@
 package touch.baton.domain.runnerpost.controller.response;
 
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
 
 import java.util.List;
 

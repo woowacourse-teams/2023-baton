@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
 
 public interface SupporterTechnicalTagRepository extends JpaRepository<SupporterTechnicalTag, Long> {

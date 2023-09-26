@@ -5,8 +5,8 @@ import touch.baton.domain.feedback.repository.SupporterFeedbackRepository;
 import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
+import touch.baton.tobe.domain.member.query.repository.SupporterRunnerPostQueryRepository;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
 import touch.baton.domain.tag.repository.TagRepository;
 import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
@@ -22,13 +22,13 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
     protected RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
-    protected SupporterRepository supporterRepository;
+    protected SupporterQueryRepository supporterQueryRepository;
 
     @Autowired
     protected RunnerPostRepository runnerPostRepository;
 
     @Autowired
-    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
+    protected SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
     @Autowired
     protected RunnerPostTagRepository runnerPostTagRepository;

@@ -1,4 +1,4 @@
-package touch.baton.domain.supporter;
+package touch.baton.tobe.domain.member.command;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -12,11 +12,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
-import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
-import touch.baton.domain.supporter.exception.SupporterDomainException;
-import touch.baton.domain.supporter.vo.ReviewCount;
+import touch.baton.tobe.domain.member.exception.SupporterDomainException;
+import touch.baton.tobe.domain.member.command.vo.ReviewCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTag;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 

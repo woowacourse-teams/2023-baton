@@ -11,9 +11,11 @@ import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
 import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.supporter.vo.Message;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
+import touch.baton.tobe.domain.member.query.repository.SupporterRunnerPostQueryRepository;
+import touch.baton.tobe.domain.member.command.vo.Message;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -28,10 +30,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
-class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
+class SupporterRunnerPostQueryRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private SupporterRunnerPostRepository supporterRunnerPostRepository;
+    private SupporterRunnerPostQueryRepository supporterRunnerPostRepository;
 
     @Autowired
     private MemberCommandRepository memberCommandRepository;
@@ -40,7 +42,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     private RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
-    private SupporterRepository supporterRepository;
+    private SupporterQueryRepository supporterQueryRepository;
 
     @Autowired
     private RunnerPostRepository runnerPostRepository;
@@ -53,7 +55,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
         final Runner savedRunnerDitoo = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPostOne = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
         final RunnerPost savedRunnerPostTwo = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
@@ -99,7 +101,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
         final Runner savedRunnerDitoo = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
 
@@ -163,7 +165,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
         final Runner savedRunnerDitoo = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost runnerPostOfApplicantExist = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
         final RunnerPost runnerPostOfApplicantNotExist = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitoo, new Deadline(now().plusHours(100))));
@@ -186,7 +188,7 @@ class SupporterRunnerPostRepositoryTest extends RepositoryTestConfig {
     void deleteBySupporterAndRunnerPostId() {
         // given
         final Member reviewerMember = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Supporter reviewerSupporter = supporterRepository.save(SupporterFixture.create(reviewerMember));
+        final Supporter reviewerSupporter = supporterQueryRepository.save(SupporterFixture.create(reviewerMember));
 
         final Member revieweeMember = memberCommandRepository.save(MemberFixture.createJudy());
         final Runner revieweeRunner = runnerQueryRepository.save(RunnerFixture.createRunner(revieweeMember));

@@ -6,8 +6,8 @@ import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.domain.oauth.exception.OauthRequestException;
 import touch.baton.domain.oauth.repository.OauthSupporterRepository;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.vo.ReviewCount;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.vo.ReviewCount;
 import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 

@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.supporter.vo.Message;
+import touch.baton.tobe.domain.member.command.vo.Message;
 
 public abstract class MessageFixture {
 

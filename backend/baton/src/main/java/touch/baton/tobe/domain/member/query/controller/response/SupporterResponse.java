@@ -1,6 +1,6 @@
-package touch.baton.domain.supporter.controller.response;
+package touch.baton.tobe.domain.member.query.controller.response;
 
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 
 import java.util.List;
 

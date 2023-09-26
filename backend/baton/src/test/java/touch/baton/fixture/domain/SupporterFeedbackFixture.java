@@ -5,7 +5,7 @@ import touch.baton.domain.feedback.vo.Description;
 import touch.baton.domain.feedback.vo.ReviewType;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 
 import static touch.baton.fixture.vo.DescriptionFixture.description;
 

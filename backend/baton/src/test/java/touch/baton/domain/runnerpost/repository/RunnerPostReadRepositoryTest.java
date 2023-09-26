@@ -12,7 +12,7 @@ import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
 import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;

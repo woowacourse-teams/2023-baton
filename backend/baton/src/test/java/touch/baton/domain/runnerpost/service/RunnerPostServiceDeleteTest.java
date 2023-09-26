@@ -8,7 +8,7 @@ import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -31,8 +31,8 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
                 runnerPostRepository,
                 runnerPostTagRepository,
                 tagRepository,
-                supporterRepository,
-                supporterRunnerPostRepository
+                supporterQueryRepository,
+                supporterRunnerPostQueryRepository
         );
     }
 
@@ -89,8 +89,8 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
                 deadline(LocalDateTime.now().plusHours(10))
         ));
         final Member memberSupporter = memberCommandRepository.save(MemberFixture.createEthan());
-        final Supporter supporter = supporterRepository.save(SupporterFixture.create(memberSupporter));
-        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+        final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(memberSupporter));
+        supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
         runnerPost.assignSupporter(supporter);
 
         // when & then
@@ -109,8 +109,8 @@ class RunnerPostServiceDeleteTest extends ServiceTestConfig {
                 deadline(LocalDateTime.now().plusHours(10))
         ));
         final Member memberSupporter = memberCommandRepository.save(MemberFixture.createEthan());
-        final Supporter supporter = supporterRepository.save(SupporterFixture.create(memberSupporter));
-        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+        final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(memberSupporter));
+        supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
 
         // when & then
         assertThatThrownBy(() -> runnerPostService.deleteByRunnerPostId(runnerPost.getId(), runner))

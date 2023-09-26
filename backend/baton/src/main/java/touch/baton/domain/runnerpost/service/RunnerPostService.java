@@ -14,11 +14,11 @@ import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateReques
 import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
-import touch.baton.domain.supporter.vo.Message;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
+import touch.baton.tobe.domain.member.query.repository.SupporterRunnerPostQueryRepository;
+import touch.baton.tobe.domain.member.command.vo.Message;
 import touch.baton.domain.tag.RunnerPostTag;
 import touch.baton.domain.tag.Tag;
 import touch.baton.domain.tag.repository.RunnerPostTagRepository;
@@ -36,8 +36,8 @@ public class RunnerPostService {
     private final RunnerPostRepository runnerPostRepository;
     private final RunnerPostTagRepository runnerPostTagRepository;
     private final TagRepository tagRepository;
-    private final SupporterRepository supporterRepository;
-    private final SupporterRunnerPostRepository supporterRunnerPostRepository;
+    private final SupporterQueryRepository supporterQueryRepository;
+    private final SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
     @Transactional
     public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
@@ -97,7 +97,7 @@ public class RunnerPostService {
             throw new RunnerPostBusinessException("RunnerPost 의 작성자가 아닙니다.");
         }
 
-        return supporterRunnerPostRepository.readByRunnerPostId(runnerPostId);
+        return supporterRunnerPostQueryRepository.readByRunnerPostId(runnerPostId);
     }
 
     @Transactional
@@ -115,7 +115,7 @@ public class RunnerPostService {
         if (runnerPost.isReviewStatusStarted()) {
             throw new RunnerPostBusinessException("삭제할 수 없는 상태의 리뷰 상태입니다.");
         }
-        if (supporterRunnerPostRepository.existsByRunnerPostId(runnerPostId)) {
+        if (supporterRunnerPostQueryRepository.existsByRunnerPostId(runnerPostId)) {
             throw new RunnerPostBusinessException("지원자가 존재하여 삭제할 수 없습니다.");
         }
         runnerPostRepository.deleteById(runnerPostId);
@@ -132,7 +132,7 @@ public class RunnerPostService {
                                           final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = getRunnerPostOrThrowException(runnerPostId);
-        final boolean isApplicantHistoryExist = supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, supporter.getId());
+        final boolean isApplicantHistoryExist = supporterRunnerPostQueryRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, supporter.getId());
         if (isApplicantHistoryExist) {
             throw new RunnerPostBusinessException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
         }
@@ -143,7 +143,7 @@ public class RunnerPostService {
                 .message(new Message(request.message()))
                 .build();
 
-        return supporterRunnerPostRepository.save(runnerPostApplicant).getId();
+        return supporterRunnerPostQueryRepository.save(runnerPostApplicant).getId();
     }
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
@@ -168,7 +168,7 @@ public class RunnerPostService {
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return supporterRunnerPostRepository.countByRunnerPostIds(runnerPostIds);
+        return supporterRunnerPostQueryRepository.countByRunnerPostIds(runnerPostIds);
     }
 
     @Transactional
@@ -188,7 +188,7 @@ public class RunnerPostService {
     }
 
     public long readCountByRunnerPostId(final Long runnerPostId) {
-        return supporterRunnerPostRepository.countByRunnerPostId(runnerPostId).orElse(0L);
+        return supporterRunnerPostQueryRepository.countByRunnerPostId(runnerPostId).orElse(0L);
     }
 
     @Transactional
@@ -198,7 +198,7 @@ public class RunnerPostService {
         if (!runnerPost.isReviewStatusNotStarted()) {
             throw new RunnerPostBusinessException("이미 진행 중인 러너 게시글의 서포터 지원은 철회할 수 없습니다.");
         }
-        supporterRunnerPostRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
+        supporterRunnerPostQueryRepository.deleteBySupporterIdAndRunnerPostId(supporter.getId(), runnerPostId);
     }
 
     @Transactional
@@ -206,7 +206,7 @@ public class RunnerPostService {
                                                  final Long runnerPostId,
                                                  final RunnerPostUpdateRequest.SelectSupporter request
     ) {
-        final Supporter foundApplySupporter = supporterRepository.findById(request.supporterId())
+        final Supporter foundApplySupporter = supporterQueryRepository.findById(request.supporterId())
                 .orElseThrow(() -> new RunnerPostBusinessException("해당하는 식별자값의 서포터를 찾을 수 없습니다."));
         final RunnerPost foundRunnerPost = runnerPostRepository.findById(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
@@ -222,10 +222,10 @@ public class RunnerPostService {
     }
 
     private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
-        return !supporterRunnerPostRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
+        return !supporterRunnerPostQueryRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
     }
 
     public boolean existsRunnerPostApplicantByRunnerPostIdAndMemberId(final Long runnerPostId, final Long memberId) {
-        return supporterRunnerPostRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
+        return supporterRunnerPostQueryRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
     }
 }

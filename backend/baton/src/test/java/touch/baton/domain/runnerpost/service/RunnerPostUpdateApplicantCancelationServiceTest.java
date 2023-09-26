@@ -11,8 +11,8 @@ import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -33,10 +33,10 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
 
     @BeforeEach
     void setUp() {
-        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterRepository, supporterRunnerPostRepository);
+        runnerPostService = new RunnerPostService(runnerPostRepository, runnerPostTagRepository, tagRepository, supporterQueryRepository, supporterRunnerPostQueryRepository);
 
         final Member applicantMember = memberCommandRepository.save(MemberFixture.createDitoo());
-        applicantSupporter = supporterRepository.save(SupporterFixture.create(applicantMember));
+        applicantSupporter = supporterQueryRepository.save(SupporterFixture.create(applicantMember));
 
         final Member revieweeMember = memberCommandRepository.save(MemberFixture.createJudy());
         revieweeRunner = runnerQueryRepository.save(RunnerFixture.createRunner(revieweeMember));
@@ -53,13 +53,13 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                         new Deadline(LocalDateTime.now().plusHours(100))
                 ));
         final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
-        supporterRunnerPostRepository.save(supporterRunnerPost);
+        supporterRunnerPostQueryRepository.save(supporterRunnerPost);
 
         // when
         runnerPostService.deleteSupporterRunnerPost(applicantSupporter, runnerPost.getId());
 
         // then
-        assertThat(supporterRunnerPostRepository.findById(supporterRunnerPost.getId())).isNotPresent();
+        assertThat(supporterRunnerPostQueryRepository.findById(supporterRunnerPost.getId())).isNotPresent();
     }
 
     @DisplayName("RunnerPost 가 존재하지 않으면 실패한다.")
@@ -73,7 +73,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                         new Deadline(LocalDateTime.now().plusHours(100))
                 ));
         final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
-        supporterRunnerPostRepository.save(supporterRunnerPost);
+        supporterRunnerPostQueryRepository.save(supporterRunnerPost);
         runnerPostRepository.delete(runnerPost);
 
         // when & then
@@ -95,7 +95,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                         isReviewed
                 ));
         final SupporterRunnerPost supporterRunnerPost = SupporterRunnerPostFixture.create(runnerPost, applicantSupporter);
-        supporterRunnerPostRepository.save(supporterRunnerPost);
+        supporterRunnerPostQueryRepository.save(supporterRunnerPost);
 
 
         // when & then

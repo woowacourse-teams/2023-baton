@@ -3,12 +3,12 @@ package touch.baton.assure.repository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.repository.SupporterRepository;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
 
 import java.util.Optional;
 
-public interface TestSupporterRepository extends SupporterRepository {
+public interface TestSupporterQueryRepository extends SupporterQueryRepository {
 
     default Supporter getBySocialId(final SocialId socialId) {
         return joinMemberBySocialId(socialId)

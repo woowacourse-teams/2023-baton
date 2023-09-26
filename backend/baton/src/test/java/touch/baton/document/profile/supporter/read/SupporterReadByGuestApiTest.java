@@ -8,9 +8,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.controller.SupporterProfileController;
-import touch.baton.domain.supporter.service.SupporterService;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.query.controller.SupporterQueryController;
+import touch.baton.tobe.domain.member.query.service.SupporterQueryService;
 import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
@@ -38,16 +38,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(SupporterProfileController.class)
+@WebMvcTest(SupporterQueryController.class)
 class SupporterReadByGuestApiTest extends RestdocsConfig {
 
     @MockBean
-    private SupporterService supporterService;
+    private SupporterQueryService supporterQueryService;
 
     @BeforeEach
     void setUp() {
-        final SupporterProfileController supporterProfileController = new SupporterProfileController(supporterService);
-        restdocsSetUp(supporterProfileController);
+        final SupporterQueryController supporterQueryController = new SupporterQueryController(supporterQueryService);
+        restdocsSetUp(supporterQueryController);
     }
 
     @DisplayName("서포터 프로필 조회 API")
@@ -60,7 +60,7 @@ class SupporterReadByGuestApiTest extends RestdocsConfig {
         final Supporter spySupporter = spy(supporter);
 
         when(spySupporter.getId()).thenReturn(1L);
-        when(supporterService.readBySupporterId(spySupporter.getId())).thenReturn(spySupporter);
+        when(supporterQueryService.readBySupporterId(spySupporter.getId())).thenReturn(spySupporter);
 
         // then
         mockMvc.perform(get("/api/v1/profile/supporter/{supporterId}", 1L))

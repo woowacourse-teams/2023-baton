@@ -1,4 +1,4 @@
-package touch.baton.domain.supporter.exception;
+package touch.baton.tobe.domain.member.exception;
 
 import touch.baton.domain.common.exception.DomainException;
 

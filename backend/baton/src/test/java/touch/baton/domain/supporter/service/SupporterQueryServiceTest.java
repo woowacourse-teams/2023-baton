@@ -4,26 +4,23 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
-
-import java.util.List;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.query.service.SupporterQueryService;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 
-class SupporterServiceTest extends ServiceTestConfig {
+class SupporterQueryServiceTest extends ServiceTestConfig {
 
-    private SupporterService supporterService;
+    private SupporterQueryService supporterQueryService;
 
     @BeforeEach
     void setUp() {
-        supporterService = new SupporterService(supporterRepository, technicalTagRepository, supporterTechnicalTagRepository);
+        supporterQueryService = new SupporterQueryService(supporterQueryRepository);
     }
 
     @DisplayName("Supporter 식별자 값으로 Member 패치 조인하여 Supporter 를 조회한다.")
@@ -31,10 +28,10 @@ class SupporterServiceTest extends ServiceTestConfig {
     void readBySupporterId() {
         // given
         final Member savedMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporter = supporterRepository.save(SupporterFixture.create(savedMember));
+        final Supporter savedSupporter = supporterQueryRepository.save(SupporterFixture.create(savedMember));
 
         // when
-        final Supporter foundSupporter = supporterService.readBySupporterId(savedSupporter.getId());
+        final Supporter foundSupporter = supporterQueryService.readBySupporterId(savedSupporter.getId());
 
         // then
         assertAll(
@@ -44,18 +41,5 @@ class SupporterServiceTest extends ServiceTestConfig {
                 () -> assertThat(foundSupporter.getSupporterTechnicalTags()).isEqualTo(savedSupporter.getSupporterTechnicalTags()),
                 () -> assertThat(foundSupporter.getMember()).isEqualTo(savedMember)
         );
-    }
-
-    @DisplayName("Supporter 정보를 수정한다.")
-    @Test
-    void updateSupporter() {
-        // given
-        final Member savedMember = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Supporter savedSupporter = supporterRepository.save(SupporterFixture.create(savedMember));
-        final SupporterUpdateRequest request = new SupporterUpdateRequest("디투랜드", "두나무", "소개글입니다.", List.of("golang", "rust"));
-
-        // when & then
-        assertThatCode(() -> supporterService.updateSupporter(savedSupporter, request))
-                .doesNotThrowAnyException();
     }
 }

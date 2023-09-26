@@ -15,7 +15,7 @@ import touch.baton.domain.common.vo.Introduction;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.exception.RunnerDomainException;
-import touch.baton.domain.supporter.exception.SupporterDomainException;
+import touch.baton.tobe.domain.member.exception.SupporterDomainException;
 import touch.baton.domain.technicaltag.RunnerTechnicalTag;
 import touch.baton.domain.technicaltag.RunnerTechnicalTags;
 

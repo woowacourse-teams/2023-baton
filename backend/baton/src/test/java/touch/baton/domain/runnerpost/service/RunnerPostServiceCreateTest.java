@@ -17,8 +17,8 @@ import touch.baton.domain.runnerpost.vo.Deadline;
 import touch.baton.domain.runnerpost.vo.ImplementedContents;
 import touch.baton.domain.runnerpost.vo.PostscriptContents;
 import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -54,8 +54,8 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
                 runnerPostRepository,
                 runnerPostTagRepository,
                 tagRepository,
-                supporterRepository,
-                supporterRunnerPostRepository
+                supporterQueryRepository,
+                supporterRunnerPostQueryRepository
         );
     }
 
@@ -101,7 +101,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         final Runner savedRunnerDitto = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitto, deadline(now().plusHours(100))));
 
@@ -109,7 +109,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         final RunnerPostApplicantCreateRequest request = new RunnerPostApplicantCreateRequest("안녕하세요. 서포터 헤나입니다.");
         final Long savedRunnerPostApplicantId = runnerPostService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId());
 
-        final Optional<SupporterRunnerPost> maybeRunnerPostApplicant = supporterRunnerPostRepository.findById(savedRunnerPostApplicantId);
+        final Optional<SupporterRunnerPost> maybeRunnerPostApplicant = supporterRunnerPostQueryRepository.findById(savedRunnerPostApplicantId);
 
         // then
         assertSoftly(softly -> {
@@ -131,7 +131,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         final Runner savedRunnerDitto = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
 
         // when
         final RunnerPostApplicantCreateRequest request = new RunnerPostApplicantCreateRequest("안녕하세요. 서포터 헤나입니다.");
@@ -149,7 +149,7 @@ class RunnerPostServiceCreateTest extends ServiceTestConfig {
         final Runner savedRunnerDitto = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
 
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterRepository.save(SupporterFixture.create(savedMemberHyena));
+        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
 
         final RunnerPost savedRunnerPost = runnerPostRepository.save(RunnerPostFixture.create(savedRunnerDitto, deadline(now().plusHours(100))));
 

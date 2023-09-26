@@ -8,7 +8,7 @@ import touch.baton.domain.feedback.exception.FeedbackBusinessException;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -30,11 +30,11 @@ class FeedbackServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterRepository);
+        feedbackService = new FeedbackService(supporterFeedbackRepository, runnerPostRepository, supporterQueryRepository);
         final Member ethan = memberCommandRepository.save(MemberFixture.createEthan());
         exactRunner = runnerQueryRepository.save(RunnerFixture.createRunner(ethan));
         final Member ditoo = memberCommandRepository.save(MemberFixture.createDitoo());
-        reviewedSupporter = supporterRepository.save(SupporterFixture.create(ditoo));
+        reviewedSupporter = supporterQueryRepository.save(SupporterFixture.create(ditoo));
         runnerPost = runnerPostRepository.save(RunnerPostFixture.create(exactRunner, reviewedSupporter));
 
         request = new SupporterFeedBackCreateRequest("GOOD", List.of("코드리뷰가 맛있어요.", "말투가 친절해요."), reviewedSupporter.getId(), runnerPost.getId());
@@ -70,7 +70,7 @@ class FeedbackServiceTest extends ServiceTestConfig {
     void fail_createSupporterFeedback_if_not_review_supporter_runner() {
         // given
         final Member differentMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter notReviewSupporter = supporterRepository.save(SupporterFixture.create(differentMember));
+        final Supporter notReviewSupporter = supporterQueryRepository.save(SupporterFixture.create(differentMember));
         final SupporterFeedBackCreateRequest notReviewSupporterRequest = new SupporterFeedBackCreateRequest("GOOD", new ArrayList<>(), notReviewSupporter.getId(), runnerPost.getId());
 
         // when, then

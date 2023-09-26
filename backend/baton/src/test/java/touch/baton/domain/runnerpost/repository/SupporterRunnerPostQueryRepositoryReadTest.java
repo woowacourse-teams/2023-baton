@@ -9,9 +9,9 @@ import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
+import touch.baton.tobe.domain.member.query.repository.SupporterRunnerPostQueryRepository;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -24,10 +24,10 @@ import java.util.List;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
-class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
+class SupporterRunnerPostQueryRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
-    private SupporterRunnerPostRepository supporterRunnerPostRepository;
+    private SupporterRunnerPostQueryRepository supporterRunnerPostRepository;
 
     @Autowired
     private MemberCommandRepository memberCommandRepository;
@@ -36,7 +36,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
     private RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
-    private SupporterRepository supporterRepository;
+    private SupporterQueryRepository supporterQueryRepository;
 
     @Autowired
     private RunnerPostRepository runnerPostRepository;
@@ -51,7 +51,7 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 deadline(LocalDateTime.now().plusDays(10))));
 
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter supporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
+        final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(hyenaMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(runner, supporter));
 
         final Long notSavedRunnerPostId = -1L;
@@ -78,11 +78,11 @@ class SupporterRunnerPostRepositoryReadTest extends RepositoryTestConfig {
                 deadline(LocalDateTime.now().plusDays(10))));
 
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter hyenaSupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
+        final Supporter hyenaSupporter = supporterQueryRepository.save(SupporterFixture.create(hyenaMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(firstRunnerPost, hyenaSupporter));
 
         final Member judyMember = memberCommandRepository.save(MemberFixture.createJudy());
-        final Supporter judySupporter = supporterRepository.save(SupporterFixture.create(judyMember));
+        final Supporter judySupporter = supporterQueryRepository.save(SupporterFixture.create(judyMember));
         supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(firstRunnerPost, judySupporter));
 
         // when

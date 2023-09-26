@@ -12,7 +12,7 @@ import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
 import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
 import touch.baton.domain.runnerpost.vo.IsReviewed;
 import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -45,8 +45,8 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
                 runnerPostRepository,
                 runnerPostTagRepository,
                 tagRepository,
-                supporterRepository,
-                supporterRunnerPostRepository
+                supporterQueryRepository,
+                supporterRunnerPostQueryRepository
         );
 
         final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());
@@ -55,14 +55,14 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
                 deadline(LocalDateTime.now().plusDays(10))));
 
         final Member hyenaMember = memberCommandRepository.save(MemberFixture.createHyena());
-        applySupporter = supporterRepository.save(SupporterFixture.create(hyenaMember));
-        supporterRunnerPostRepository.save(SupporterRunnerPostFixture.create(targetRunnerPost, applySupporter));
+        applySupporter = supporterQueryRepository.save(SupporterFixture.create(hyenaMember));
+        supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(targetRunnerPost, applySupporter));
 
         final Member runnerMember = memberCommandRepository.save(MemberFixture.createEthan());
         runner = runnerQueryRepository.save(RunnerFixture.createRunner(runnerMember));
 
         final Member supporterMember = memberCommandRepository.save(MemberFixture.createDitoo());
-        assignedSupporter = supporterRepository.save(SupporterFixture.create(supporterMember));
+        assignedSupporter = supporterQueryRepository.save(SupporterFixture.create(supporterMember));
     }
 
     @DisplayName("러너는 자신의 글에 제안한 서포터를 서포터로 선택할 수 있다.")
@@ -102,7 +102,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
     void fail_updateRunnerPostAppliedSupporter_if_not_apply_supporter() {
         // given
         final Member ditooMember = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Supporter notApplySupporter = supporterRepository.save(SupporterFixture.create(ditooMember));
+        final Supporter notApplySupporter = supporterQueryRepository.save(SupporterFixture.create(ditooMember));
 
         final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(notApplySupporter.getId());
 
@@ -186,7 +186,7 @@ class RunnerPostServiceUpdateTest extends ServiceTestConfig {
         final IsReviewed isReviewed = IsReviewed.notReviewed();
         final RunnerPost targetRunnerPost = runnerPostRepository.save(RunnerPostFixture.createWithSupporter(runner, assignedSupporter, IN_PROGRESS, isReviewed));
         final Member differentMember = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter differentSupporter = supporterRepository.save(SupporterFixture.create(differentMember));
+        final Supporter differentSupporter = supporterQueryRepository.save(SupporterFixture.create(differentMember));
 
         // when, then
         assertThatThrownBy(() -> runnerPostService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), differentSupporter))

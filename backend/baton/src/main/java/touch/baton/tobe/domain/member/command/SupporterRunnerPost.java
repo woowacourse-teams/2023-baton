@@ -1,4 +1,4 @@
-package touch.baton.domain.supporter;
+package touch.baton.tobe.domain.member.command;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.runnerpost.RunnerPost;
 import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
-import touch.baton.domain.supporter.vo.Message;
+import touch.baton.tobe.domain.member.command.vo.Message;
 
 import java.util.Objects;
 

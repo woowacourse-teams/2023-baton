@@ -7,25 +7,21 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.controller.SupporterProfileController;
-import touch.baton.domain.supporter.service.SupporterService;
-import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.member.command.controller.SupporterCommandController;
+import touch.baton.tobe.domain.member.command.service.SupporterCommandService;
+import touch.baton.tobe.domain.member.command.service.dto.SupporterUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -41,16 +37,16 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(SupporterProfileController.class)
+@WebMvcTest(SupporterCommandController.class)
 public class SupporterUpdateApiTest extends RestdocsConfig {
 
     @MockBean
-    private SupporterService supporterService;
+    private SupporterCommandService supporterCommandService ;
 
     @BeforeEach
     void setUp() {
-        final SupporterProfileController supporterProfileController = new SupporterProfileController(supporterService);
-        restdocsSetUp(supporterProfileController);
+        final SupporterCommandController supporterCommandController = new SupporterCommandController(supporterCommandService );
+        restdocsSetUp(supporterCommandController);
     }
 
     @DisplayName("서포터 프로필 수정 API")

@@ -1,13 +1,13 @@
-package touch.baton.domain.supporter.repository;
+package touch.baton.tobe.domain.member.query.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.tobe.domain.member.command.Supporter;
 
 import java.util.Optional;
 
-public interface SupporterRepository extends JpaRepository<Supporter, Long> {
+public interface SupporterQueryRepository extends JpaRepository<Supporter, Long> {
 
     @Query("""
             select s
