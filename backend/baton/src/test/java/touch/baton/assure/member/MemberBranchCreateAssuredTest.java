@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.service.dto.GithubRepoNameRequest;
+import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
 
 import static org.springframework.http.HttpStatus.CREATED;
 

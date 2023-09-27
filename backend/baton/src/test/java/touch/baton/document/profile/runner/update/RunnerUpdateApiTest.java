@@ -7,13 +7,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.controller.RunnerCommandController;
+import touch.baton.domain.member.command.service.RunnerCommandService;
+import touch.baton.domain.member.command.service.dto.RunnerUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.command.controller.RunnerCommandController;
-import touch.baton.tobe.domain.member.command.service.RunnerCommandService;
-import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;

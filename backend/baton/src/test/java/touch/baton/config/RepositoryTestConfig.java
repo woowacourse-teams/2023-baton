@@ -4,19 +4,19 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.SupporterRunnerPost;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.tag.command.RunnerPostTag;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 import touch.baton.fixture.domain.TagFixture;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.command.Supporter;
-import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
-import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
-import touch.baton.tobe.domain.tag.command.RunnerPostTag;
-import touch.baton.tobe.domain.tag.command.Tag;
 
 import java.time.LocalDateTime;
 

@@ -2,9 +2,9 @@ package touch.baton.assure.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.query.repository.RunnerQueryRepository;
 
 import java.util.Optional;
 

@@ -1,11 +1,11 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.tobe.domain.feedback.command.SupporterFeedback;
-import touch.baton.tobe.domain.feedback.command.vo.Description;
-import touch.baton.tobe.domain.feedback.command.vo.ReviewType;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.command.Supporter;
-import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.feedback.command.SupporterFeedback;
+import touch.baton.domain.feedback.command.vo.Description;
+import touch.baton.domain.feedback.command.vo.ReviewType;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
 
 import static touch.baton.fixture.vo.DescriptionFixture.description;
 

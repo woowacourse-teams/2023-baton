@@ -1,7 +1,7 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.tobe.domain.tag.command.RunnerPostTag;
-import touch.baton.tobe.domain.tag.command.RunnerPostTags;
+import touch.baton.domain.tag.command.RunnerPostTag;
+import touch.baton.domain.tag.command.RunnerPostTags;
 
 import java.util.List;
 

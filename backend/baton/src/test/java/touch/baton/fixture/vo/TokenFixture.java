@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.Token;
 
 public abstract class TokenFixture {
 

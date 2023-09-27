@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.TagName;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
+import touch.baton.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 import touch.baton.fixture.domain.TechnicalTagFixture;
 import touch.baton.fixture.vo.TagNameFixture;
-import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
-import touch.baton.tobe.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 
 import java.util.Optional;
 

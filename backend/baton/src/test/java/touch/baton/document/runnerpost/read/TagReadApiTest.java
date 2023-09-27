@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.tag.query.controller.TagQueryController;
+import touch.baton.domain.tag.query.service.TagQueryService;
 import touch.baton.fixture.domain.TagFixture;
-import touch.baton.tobe.domain.tag.command.Tag;
-import touch.baton.tobe.domain.tag.query.controller.TagQueryController;
-import touch.baton.tobe.domain.tag.query.service.TagQueryService;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.runnerpost.command.vo.CuriousContents;
+import touch.baton.domain.runnerpost.command.vo.CuriousContents;
 
 public abstract class CuriousContentsFixture {
 

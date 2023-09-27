@@ -12,9 +12,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import touch.baton.config.ArgumentResolverConfig;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 
 import java.time.LocalDateTime;
 

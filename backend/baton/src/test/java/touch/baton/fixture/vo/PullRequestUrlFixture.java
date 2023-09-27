@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.runnerpost.command.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
 
 public abstract class PullRequestUrlFixture {
 

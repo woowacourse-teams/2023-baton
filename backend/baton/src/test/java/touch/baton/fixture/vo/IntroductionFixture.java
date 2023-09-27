@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.common.vo.Introduction;
+import touch.baton.domain.member.command.vo.Introduction;
 
 public abstract class IntroductionFixture {
 

@@ -4,16 +4,13 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
+import touch.baton.domain.member.command.service.dto.RunnerUpdateRequest;
 
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static touch.baton.assure.runner.RunnerAssuredSupport.러너_본인_프로필_수정_요청;
-import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_INTRODUCTION_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.RUNNER_TECHNICAL_TAGS_ARE_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerUpdateAssuredTest extends AssuredTestConfig {

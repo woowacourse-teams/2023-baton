@@ -4,10 +4,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
+import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.tag.query.service.TagQueryService;
 import touch.baton.fixture.domain.TagFixture;
 import touch.baton.fixture.vo.TagNameFixture;
-import touch.baton.tobe.domain.tag.command.Tag;
-import touch.baton.tobe.domain.tag.query.service.TagQueryService;
 
 import java.util.List;
 

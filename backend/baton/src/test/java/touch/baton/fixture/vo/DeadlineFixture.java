@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
 
 import java.time.LocalDateTime;
 

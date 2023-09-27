@@ -3,18 +3,18 @@ package touch.baton.assure.runnerpost;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponse;
-import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
-import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.vo.SocialId;
+import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
 import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Detail_응답;
-import static touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.NOT_STARTED;
 
 @SuppressWarnings("NonAsciiCharacters")
 class RunnerPostAssuredCreateTest extends AssuredTestConfig {

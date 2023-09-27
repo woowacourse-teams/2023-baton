@@ -23,13 +23,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.converter.OauthTypeConverter;
 import touch.baton.config.converter.ReviewStatusConverter;
+import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
+import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
+import touch.baton.domain.oauth.command.repository.OauthSupporterCommandRepository;
+import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 import touch.baton.infra.auth.jwt.JwtDecoder;
-import touch.baton.tobe.domain.oauth.command.repository.OauthMemberCommandRepository;
-import touch.baton.tobe.domain.oauth.command.repository.OauthRunnerCommandRepository;
-import touch.baton.tobe.domain.oauth.command.repository.OauthSupporterCommandRepository;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 
 import java.util.UUID;
 

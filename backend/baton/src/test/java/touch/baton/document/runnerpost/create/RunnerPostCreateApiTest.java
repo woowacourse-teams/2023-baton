@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.runnerpost.command.controller.RunnerPostCommandController;
-import touch.baton.tobe.domain.runnerpost.command.service.RunnerPostCommandService;
-import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;

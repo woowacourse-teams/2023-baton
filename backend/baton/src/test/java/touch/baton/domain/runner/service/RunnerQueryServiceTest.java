@@ -4,13 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.query.service.RunnerQueryService;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
-import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
 import java.util.List;
 

@@ -4,12 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
-import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.domain.member.query.repository.SupporterQueryRepository;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
-import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
 
 import java.util.Optional;
 

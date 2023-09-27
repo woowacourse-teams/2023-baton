@@ -1,7 +1,7 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTag;
-import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
+import touch.baton.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.domain.technicaltag.command.SupporterTechnicalTags;
 
 import java.util.List;
 

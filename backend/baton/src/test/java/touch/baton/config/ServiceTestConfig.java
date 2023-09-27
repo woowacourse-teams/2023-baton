@@ -1,21 +1,21 @@
 package touch.baton.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import touch.baton.tobe.domain.feedback.command.repository.SupporterFeedbackCommandRepository;
-import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
-import touch.baton.tobe.domain.member.command.repository.SupporterCommandRepository;
-import touch.baton.tobe.domain.member.command.repository.SupporterRunnerPostCommandRepository;
-import touch.baton.tobe.domain.member.query.repository.RunnerQueryRepository;
-import touch.baton.tobe.domain.member.query.repository.SupporterQueryRepository;
-import touch.baton.tobe.domain.member.query.repository.SupporterRunnerPostQueryRepository;
-import touch.baton.tobe.domain.runnerpost.command.repository.RunnerPostCommandRepository;
-import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostQueryRepository;
-import touch.baton.tobe.domain.tag.command.repository.TagCommandRepository;
-import touch.baton.tobe.domain.tag.query.repository.RunnerPostTagQueryRepository;
-import touch.baton.tobe.domain.tag.query.repository.TagQueryRepository;
-import touch.baton.tobe.domain.technicaltag.command.repository.RunnerTechnicalTagCommandRepository;
-import touch.baton.tobe.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
-import touch.baton.tobe.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
+import touch.baton.domain.feedback.command.repository.SupporterFeedbackCommandRepository;
+import touch.baton.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.domain.member.command.repository.SupporterCommandRepository;
+import touch.baton.domain.member.command.repository.SupporterRunnerPostCommandRepository;
+import touch.baton.domain.member.query.repository.RunnerQueryRepository;
+import touch.baton.domain.member.query.repository.SupporterQueryRepository;
+import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
+import touch.baton.domain.runnerpost.command.repository.RunnerPostCommandRepository;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
+import touch.baton.domain.tag.command.repository.TagCommandRepository;
+import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
+import touch.baton.domain.tag.query.repository.TagQueryRepository;
+import touch.baton.domain.technicaltag.command.repository.RunnerTechnicalTagCommandRepository;
+import touch.baton.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
+import touch.baton.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 
 public abstract class ServiceTestConfig extends RepositoryTestConfig {
 

@@ -3,8 +3,8 @@ package touch.baton.assure.member;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import touch.baton.assure.common.AssuredSupport;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.controller.response.LoginMemberInfoResponse;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.controller.response.LoginMemberInfoResponse;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 

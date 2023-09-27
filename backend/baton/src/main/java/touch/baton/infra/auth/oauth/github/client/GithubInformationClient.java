@@ -2,14 +2,14 @@ package touch.baton.infra.auth.oauth.github.client;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import touch.baton.domain.oauth.command.OauthInformation;
+import touch.baton.domain.oauth.command.OauthType;
+import touch.baton.domain.oauth.command.client.OauthInformationClient;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 import touch.baton.infra.auth.oauth.github.http.GithubHttpInterface;
 import touch.baton.infra.auth.oauth.github.request.GithubTokenRequest;
 import touch.baton.infra.auth.oauth.github.response.GithubMemberResponse;
 import touch.baton.infra.auth.oauth.github.token.GithubToken;
-import touch.baton.tobe.domain.oauth.command.OauthInformation;
-import touch.baton.tobe.domain.oauth.command.OauthType;
-import touch.baton.tobe.domain.oauth.command.client.OauthInformationClient;
 
 @RequiredArgsConstructor
 @Component

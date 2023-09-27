@@ -10,15 +10,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.oauth.command.controller.OauthCommandController;
+import touch.baton.domain.oauth.command.service.OauthCommandService;
+import touch.baton.domain.oauth.command.token.AccessToken;
+import touch.baton.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.oauth.command.controller.OauthCommandController;
-import touch.baton.tobe.domain.oauth.command.service.OauthCommandService;
-import touch.baton.tobe.domain.oauth.command.token.AccessToken;
-import touch.baton.tobe.domain.oauth.command.token.ExpireDate;
-import touch.baton.tobe.domain.oauth.command.token.RefreshToken;
-import touch.baton.tobe.domain.oauth.command.token.Token;
-import touch.baton.tobe.domain.oauth.command.token.Tokens;
 
 import java.time.LocalDateTime;
 
@@ -36,7 +36,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static touch.baton.tobe.domain.oauth.command.OauthType.GITHUB;
+import static touch.baton.domain.oauth.command.OauthType.GITHUB;
 
 @EnableConfigurationProperties(GithubOauthConfig.class)
 @TestPropertySource("classpath:application.yml")

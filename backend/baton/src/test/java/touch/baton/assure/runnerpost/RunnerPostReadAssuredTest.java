@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
-import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponse;
-import touch.baton.tobe.domain.runnerpost.command.controller.response.RunnerPostResponses;
-import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponses;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;

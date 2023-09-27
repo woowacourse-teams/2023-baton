@@ -2,10 +2,10 @@ package touch.baton.assure.repository;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.query.Param;
-import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
-import touch.baton.tobe.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
-import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostCustomRepository;
-import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostQueryRepository;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostCustomRepository;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 
 import java.util.List;
 

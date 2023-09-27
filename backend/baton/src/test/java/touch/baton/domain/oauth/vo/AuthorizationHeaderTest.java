@@ -3,7 +3,7 @@ package touch.baton.domain.oauth.vo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.tobe.domain.oauth.command.AuthorizationHeader;
+import touch.baton.domain.oauth.command.AuthorizationHeader;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;

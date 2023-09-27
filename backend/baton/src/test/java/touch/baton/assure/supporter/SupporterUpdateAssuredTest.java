@@ -8,10 +8,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static touch.baton.assure.supporter.SupporterAssuredSupport.서포터_본인_정보_수정_요청;
-import static touch.baton.domain.common.exception.ClientErrorCode.COMPANY_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.NAME_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_INTRODUCTION_IS_NULL;
-import static touch.baton.domain.common.exception.ClientErrorCode.SUPPORTER_TECHNICAL_TAGS_ARE_NULL;
+import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @SuppressWarnings("NonAsciiCharacters")
 class SupporterUpdateAssuredTest extends AssuredTestConfig {

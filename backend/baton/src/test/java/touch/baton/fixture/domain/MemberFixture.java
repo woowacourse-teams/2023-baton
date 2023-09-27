@@ -1,12 +1,12 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.vo.Company;
-import touch.baton.tobe.domain.member.command.vo.GithubUrl;
-import touch.baton.tobe.domain.member.command.vo.ImageUrl;
-import touch.baton.tobe.domain.member.command.vo.MemberName;
-import touch.baton.tobe.domain.member.command.vo.OauthId;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.vo.Company;
+import touch.baton.domain.member.command.vo.GithubUrl;
+import touch.baton.domain.member.command.vo.ImageUrl;
+import touch.baton.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.OauthId;
+import touch.baton.domain.member.command.vo.SocialId;
 
 import static touch.baton.fixture.vo.CompanyFixture.company;
 import static touch.baton.fixture.vo.GithubUrlFixture.githubUrl;

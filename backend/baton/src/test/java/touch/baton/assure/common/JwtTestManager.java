@@ -3,7 +3,7 @@ package touch.baton.assure.common;
 import io.jsonwebtoken.Claims;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.context.annotation.Profile;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
 import static touch.baton.fixture.vo.AuthorizationHeaderFixture.bearerAuthorizationHeader;

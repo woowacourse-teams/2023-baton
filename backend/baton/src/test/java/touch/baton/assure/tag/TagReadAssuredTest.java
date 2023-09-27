@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.tag.command.Tag;
-import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
+import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.tag.command.vo.TagReducedName;
 
 import java.time.LocalDateTime;
 import java.util.List;

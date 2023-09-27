@@ -1,8 +1,8 @@
 package touch.baton.assure.repository;
 
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.domain.member.command.vo.SocialId;
 
 import java.util.Optional;
 

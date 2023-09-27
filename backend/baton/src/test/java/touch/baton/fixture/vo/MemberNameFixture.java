@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.MemberName;
 
 public abstract class MemberNameFixture {
 

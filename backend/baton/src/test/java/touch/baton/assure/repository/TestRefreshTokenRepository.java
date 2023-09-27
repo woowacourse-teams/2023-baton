@@ -5,9 +5,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import touch.baton.tobe.domain.oauth.command.token.ExpireDate;
-import touch.baton.tobe.domain.oauth.command.token.RefreshToken;
-import touch.baton.tobe.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
 
 public interface TestRefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
 

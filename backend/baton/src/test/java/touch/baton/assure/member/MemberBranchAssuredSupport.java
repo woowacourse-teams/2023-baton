@@ -4,7 +4,7 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
-import touch.baton.tobe.domain.member.command.service.dto.GithubRepoNameRequest;
+import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.LOCATION;

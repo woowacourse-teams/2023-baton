@@ -3,8 +3,8 @@ package touch.baton.assure.member;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.vo.SocialId;
 
 import static touch.baton.assure.member.MemberAssuredSupport.로그인한_사용자_프로필_응답;
 

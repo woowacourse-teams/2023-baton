@@ -5,7 +5,7 @@ import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.common.response.ErrorResponse;
-import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;

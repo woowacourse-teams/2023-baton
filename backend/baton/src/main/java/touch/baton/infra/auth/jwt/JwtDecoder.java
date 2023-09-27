@@ -12,8 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
-import touch.baton.tobe.domain.oauth.command.AuthorizationHeader;
-import touch.baton.tobe.domain.oauth.command.exception.OauthRequestException;
+import touch.baton.domain.oauth.command.AuthorizationHeader;
+import touch.baton.domain.oauth.command.exception.OauthRequestException;
 
 @Profile("!test")
 @RequiredArgsConstructor

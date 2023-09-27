@@ -3,9 +3,9 @@ package touch.baton.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
-import touch.baton.tobe.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.command.vo.SocialId;
 
 public abstract class SocialIdFixture {
 

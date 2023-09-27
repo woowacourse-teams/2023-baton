@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.service.dto.RunnerUpdateRequest;
+import touch.baton.domain.member.command.vo.SocialId;
 
 import java.util.List;
 

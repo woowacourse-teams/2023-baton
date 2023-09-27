@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.tobe.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.ExpireDate;
 
 import java.time.LocalDateTime;
 
