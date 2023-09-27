@@ -2,9 +2,6 @@ package touch.baton.fixture.domain;
 
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.RunnerPostTags;
-import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.vo.DeadlineFixture;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
@@ -16,6 +13,9 @@ import touch.baton.tobe.domain.runnerpost.command.vo.IsReviewed;
 import touch.baton.tobe.domain.runnerpost.command.vo.PostscriptContents;
 import touch.baton.tobe.domain.runnerpost.command.vo.PullRequestUrl;
 import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.tobe.domain.tag.command.RunnerPostTag;
+import touch.baton.tobe.domain.tag.command.RunnerPostTags;
+import touch.baton.tobe.domain.tag.command.Tag;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

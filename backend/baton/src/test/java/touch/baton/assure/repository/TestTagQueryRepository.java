@@ -1,6 +1,6 @@
 package touch.baton.assure.repository;
 
-import touch.baton.domain.tag.repository.TagQueryRepository;
+import touch.baton.tobe.domain.tag.query.repository.TagQueryRepository;
 
 public interface TestTagQueryRepository extends TagQueryRepository {
 }

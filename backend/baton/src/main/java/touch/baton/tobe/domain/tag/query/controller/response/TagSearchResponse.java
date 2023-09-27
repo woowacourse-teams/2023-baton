@@ -1,6 +1,6 @@
-package touch.baton.domain.tag.controller.response;
+package touch.baton.tobe.domain.tag.query.controller.response;
 
-import touch.baton.domain.tag.Tag;
+import touch.baton.tobe.domain.tag.command.Tag;
 
 public record TagSearchResponse() {
 

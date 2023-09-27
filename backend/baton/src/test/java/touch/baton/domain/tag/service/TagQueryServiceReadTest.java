@@ -4,21 +4,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.tag.Tag;
 import touch.baton.fixture.domain.TagFixture;
 import touch.baton.fixture.vo.TagNameFixture;
+import touch.baton.tobe.domain.tag.command.Tag;
+import touch.baton.tobe.domain.tag.query.service.TagQueryService;
 
 import java.util.List;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
-class TagServiceReadTest extends ServiceTestConfig {
+class TagQueryServiceReadTest extends ServiceTestConfig {
 
-    private TagService tagService;
+    private TagQueryService tagQueryService;
 
     @BeforeEach
     void setUp() {
-        tagService = new TagService(tagQueryRepository);
+        tagQueryService = new TagQueryService(tagQueryRepository);
     }
 
     @DisplayName("Tag의 이름으로 Tag를 오름차순으로 10개 조회한다.")
@@ -38,7 +39,7 @@ class TagServiceReadTest extends ServiceTestConfig {
         tagQueryRepository.save(TagFixture.create(TagNameFixture.tagName("ju ja")));
 
         // when
-        final List<Tag> actual = tagService.readTagsByReducedName("j a");
+        final List<Tag> actual = tagQueryService.readTagsByReducedName("j a");
 
         // then
         assertSoftly(softly -> {

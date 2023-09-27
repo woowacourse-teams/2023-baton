@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.Tag;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.command.SupporterRunnerPost;
@@ -18,6 +16,8 @@ import touch.baton.tobe.domain.runnerpost.command.repository.RunnerPostCommandRe
 import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostUpdateRequest;
+import touch.baton.tobe.domain.tag.command.RunnerPostTag;
+import touch.baton.tobe.domain.tag.command.Tag;
 import touch.baton.tobe.domain.tag.command.repository.TagCommandRepository;
 
 import java.util.ArrayList;

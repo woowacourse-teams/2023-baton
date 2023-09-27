@@ -2,8 +2,6 @@ package touch.baton.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.domain.feedback.repository.SupporterFeedbackRepository;
-import touch.baton.domain.tag.repository.RunnerPostTagQueryRepository;
-import touch.baton.domain.tag.repository.TagQueryRepository;
 import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
 import touch.baton.domain.technicaltag.repository.SupporterTechnicalTagRepository;
 import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
@@ -16,6 +14,8 @@ import touch.baton.tobe.domain.member.query.repository.SupporterRunnerPostQueryR
 import touch.baton.tobe.domain.runnerpost.command.repository.RunnerPostCommandRepository;
 import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.tobe.domain.tag.command.repository.TagCommandRepository;
+import touch.baton.tobe.domain.tag.query.repository.RunnerPostTagQueryRepository;
+import touch.baton.tobe.domain.tag.query.repository.TagQueryRepository;
 
 public abstract class ServiceTestConfig extends RepositoryTestConfig {
 

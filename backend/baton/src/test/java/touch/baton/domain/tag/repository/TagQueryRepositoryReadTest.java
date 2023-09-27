@@ -4,10 +4,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.TagFixture;
 import touch.baton.fixture.vo.TagNameFixture;
+import touch.baton.tobe.domain.tag.command.Tag;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
+import touch.baton.tobe.domain.tag.query.repository.TagQueryRepository;
 
 import java.util.List;
 import java.util.Optional;

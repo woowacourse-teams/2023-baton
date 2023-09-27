@@ -1,4 +1,4 @@
-package touch.baton.domain.tag;
+package touch.baton.tobe.domain.tag.command;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.OneToMany;

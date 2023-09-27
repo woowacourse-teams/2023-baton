@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.exception.TechnicalTagDomainException;
+import touch.baton.tobe.domain.tag.exception.TechnicalTagDomainException;
 
 import java.util.Objects;
 

@@ -6,10 +6,10 @@ import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.QueryParams;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.controller.response.TagSearchResponse;
-import touch.baton.domain.tag.controller.response.TagSearchResponses;
 import touch.baton.tobe.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
+import touch.baton.tobe.domain.tag.command.Tag;
+import touch.baton.tobe.domain.tag.query.controller.response.TagSearchResponse;
+import touch.baton.tobe.domain.tag.query.controller.response.TagSearchResponses;
 
 import java.util.List;
 import java.util.Map;

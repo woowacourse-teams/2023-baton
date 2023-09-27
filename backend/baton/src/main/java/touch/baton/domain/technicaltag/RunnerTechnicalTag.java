@@ -10,7 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.domain.tag.exception.SupporterTechnicalTagDomainException;
+import touch.baton.tobe.domain.tag.exception.SupporterTechnicalTagDomainException;
 
 import java.util.Objects;
 

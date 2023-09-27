@@ -1,9 +1,9 @@
-package touch.baton.domain.tag.repository;
+package touch.baton.tobe.domain.tag.query.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.domain.tag.RunnerPostTag;
+import touch.baton.tobe.domain.tag.command.RunnerPostTag;
 
 import java.util.List;
 

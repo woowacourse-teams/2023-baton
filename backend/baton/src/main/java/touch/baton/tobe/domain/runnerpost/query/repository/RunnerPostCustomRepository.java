@@ -1,9 +1,9 @@
 package touch.baton.tobe.domain.runnerpost.query.repository;
 
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.tobe.domain.tag.command.RunnerPostTag;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
 
 import java.util.List;
 

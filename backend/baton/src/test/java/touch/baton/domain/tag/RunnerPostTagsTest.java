@@ -12,6 +12,9 @@ import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.tag.command.RunnerPostTag;
+import touch.baton.tobe.domain.tag.command.RunnerPostTags;
+import touch.baton.tobe.domain.tag.command.Tag;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ class RunnerPostTagsTest {
     @Test
     void addAllRunnerPostTags() {
         // given
-        RunnerPostTags postTags = new RunnerPostTags();
+        RunnerPostTags postTags = new RunnerPostTags(new ArrayList<>());
         Member member = Member.builder()
                 .memberName(new MemberName("러너 사용자"))
                 .socialId(new SocialId("testSocialId"))

@@ -5,18 +5,18 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.tobe.domain.tag.command.RunnerPostTag;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
 
 import java.util.List;
 
-import static touch.baton.domain.tag.QRunnerPostTag.runnerPostTag;
-import static touch.baton.domain.tag.QTag.tag;
 import static touch.baton.tobe.domain.member.command.QMember.member;
 import static touch.baton.tobe.domain.member.command.QRunner.runner;
 import static touch.baton.tobe.domain.runnerpost.command.QRunnerPost.runnerPost;
+import static touch.baton.tobe.domain.tag.command.QRunnerPostTag.runnerPostTag;
+import static touch.baton.tobe.domain.tag.command.QTag.tag;
 
 @RequiredArgsConstructor
 @Repository

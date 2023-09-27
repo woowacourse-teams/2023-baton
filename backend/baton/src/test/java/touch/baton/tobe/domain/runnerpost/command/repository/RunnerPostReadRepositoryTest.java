@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
@@ -17,6 +15,8 @@ import touch.baton.tobe.domain.runnerpost.command.repository.dto.RunnerPostAppli
 import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.tobe.domain.runnerpost.query.repository.dto.ApplicantCountMappingDto;
+import touch.baton.tobe.domain.tag.command.Tag;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
 
 import java.util.List;
 import java.util.Map;

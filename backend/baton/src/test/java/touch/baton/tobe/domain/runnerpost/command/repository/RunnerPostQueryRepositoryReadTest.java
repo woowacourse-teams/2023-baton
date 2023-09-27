@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.tag.RunnerPostTags;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
@@ -27,6 +26,7 @@ import touch.baton.tobe.domain.runnerpost.command.vo.PostscriptContents;
 import touch.baton.tobe.domain.runnerpost.command.vo.PullRequestUrl;
 import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostQueryRepository;
+import touch.baton.tobe.domain.tag.command.RunnerPostTags;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

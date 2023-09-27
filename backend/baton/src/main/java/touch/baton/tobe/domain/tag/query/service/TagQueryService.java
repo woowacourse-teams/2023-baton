@@ -1,24 +1,22 @@
-package touch.baton.domain.tag.service;
+package touch.baton.tobe.domain.tag.query.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.repository.TagQueryRepository;
-import touch.baton.domain.tag.vo.TagReducedName;
+import touch.baton.tobe.domain.tag.command.Tag;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
+import touch.baton.tobe.domain.tag.query.repository.TagQueryRepository;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class TagService {
+public class TagQueryService {
 
     private final TagQueryRepository tagQueryRepository;
 
     public List<Tag> readTagsByReducedName(final String tagName) {
-        final String reducedName = TagReducedName.from(tagName).getValue();
-
         return tagQueryRepository.readTagsByReducedName(TagReducedName.from(tagName));
     }
 }

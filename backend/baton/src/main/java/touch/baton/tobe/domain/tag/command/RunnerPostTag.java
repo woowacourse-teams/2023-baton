@@ -1,4 +1,4 @@
-package touch.baton.domain.tag;
+package touch.baton.tobe.domain.tag.command;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -9,8 +9,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
 import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
+import touch.baton.tobe.domain.tag.exception.RunnerPostTagDomainException;
 
 import java.util.Objects;
 

@@ -5,10 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import touch.baton.domain.tag.vo.TagReducedName;
 import touch.baton.tobe.domain.runnerpost.command.RunnerPost;
 import touch.baton.tobe.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
 
 import java.util.List;
 import java.util.Optional;

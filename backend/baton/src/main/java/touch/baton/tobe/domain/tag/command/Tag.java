@@ -1,6 +1,5 @@
-package touch.baton.domain.tag;
+package touch.baton.tobe.domain.tag.command;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,8 +8,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.exception.TagDomainException;
-import touch.baton.domain.tag.vo.TagReducedName;
+import touch.baton.tobe.domain.tag.command.vo.TagReducedName;
+import touch.baton.tobe.domain.tag.exception.TagDomainException;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package touch.baton.domain.tag.controller.response;
+package touch.baton.tobe.domain.tag.query.controller.response;
 
 import java.util.List;
 

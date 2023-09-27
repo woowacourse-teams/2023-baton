@@ -1,4 +1,4 @@
-package touch.baton.domain.tag.exception;
+package touch.baton.tobe.domain.tag.exception;
 
 import touch.baton.domain.common.exception.BusinessException;
 
