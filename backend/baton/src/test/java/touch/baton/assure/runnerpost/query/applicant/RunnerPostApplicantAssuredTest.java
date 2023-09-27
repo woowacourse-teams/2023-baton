@@ -1,6 +1,9 @@
-package touch.baton.assure.runnerpost;
+package touch.baton.assure.runnerpost.query.applicant;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
+import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport;
+import touch.baton.assure.runnerpost.support.query.applicant.RunnerPostApplicantQuerySupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Supporter;
@@ -11,12 +14,12 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.지원한_서포터_응답;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.지원한_서포터_응답_목록_응답;
+import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.support.query.applicant.RunnerPostApplicantQuerySupport.지원한_서포터_목록_응답;
+import static touch.baton.assure.runnerpost.support.query.applicant.RunnerPostApplicantQuerySupport.지원한_서포터_응답;
 
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
+class RunnerPostApplicantAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너의_게시글_식별자값으로_지원한_서포터_목록_조회에_성공한다() {
@@ -39,20 +42,20 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
         );
 
         // then
-        RunnerPostAssuredSupport
+        RunnerPostApplicantQuerySupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너_게시글_식별자값으로_지원한_서포터_목록을_조회한다(디투_러너_게시글_식별자값)
 
                 .서버_응답()
-                .지원한_서포터_목록_조회_성공을_검증한다(지원한_서포터_응답_목록_응답(List.of(지원한_서포터_헤나_응답)));
+                .지원한_서포터_목록_조회_성공을_검증한다(지원한_서포터_목록_응답(List.of(지원한_서포터_헤나_응답)));
     }
 
     private Long 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(final String 헤나_액세스_토큰) {
-        return RunnerPostAssuredCreateSupport
+        return RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
-                .러너가_러너_게시글을_작성한다(
+                .러너_게시글_등록_요청한다(
                         러너_게시글_생성_요청(
                                 "테스트용_러너_게시글_제목",
                                 List.of("자바", "스프링"),
@@ -70,7 +73,7 @@ class RunnerPostReadWithLoginedAssuredTest extends AssuredTestConfig {
     }
 
     private void 서포터가_러너_게시글에_리뷰_신청을_성공한다(final String 서포터_액세스_토큰, final Long 러너_게시글_식별자값) {
-        RunnerPostAssuredCreateSupport
+        RunnerPostApplicantCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(서포터_액세스_토큰)
                 .서포터가_러너_게시글에_리뷰를_신청한다(러너_게시글_식별자값, "안녕하세요. 서포터 헤나입니다.")

@@ -3,8 +3,8 @@ package touch.baton.assure.feedback;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
-import touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport;
-import touch.baton.assure.runnerpost.RunnerPostAssuredSupport;
+import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
+import touch.baton.assure.runnerpost.support.command.RunnerPostUpdateSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Supporter;
@@ -15,8 +15,9 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 import static touch.baton.assure.feedback.SupporterFeedbackAssuredSupport.서포터_피드백_요청;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너의_서포터_선택_요청;
+import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport.러너의_서포터_선택_요청;
+import static touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport.클라이언트_요청;
 
 @SuppressWarnings("NonAsciiCharacters")
 class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
@@ -49,11 +50,10 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
     }
 
     private Long 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(final String 헤나_액세스_토큰) {
-        return RunnerPostAssuredCreateSupport
+        return RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
-                .러너가_러너_게시글을_작성한다(
-                        러너_게시글_생성_요청(
+                .러너_게시글_등록_요청한다(러너_게시글_생성_요청(
                                 "테스트용_러너_게시글_제목",
                                 List.of("자바", "스프링"),
                                 "https://test-pull-request.com",
@@ -70,8 +70,7 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
     }
 
     private void 서포터가_러너_게시글에_리뷰_신청을_성공한다(final String 헤나_액세스_토큰, final Long 디투_러너_게시글_식별자값) {
-        RunnerPostAssuredCreateSupport
-                .클라이언트_요청()
+        클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .서포터가_러너_게시글에_리뷰를_신청한다(디투_러너_게시글_식별자값, "안녕하세요. 서포터 헤나입니다.")
 
@@ -80,7 +79,7 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
     }
 
     private void 러너가_서포터의_리뷰_신청_선택에_성공한다(final Supporter 서포터_헤나, final String 디투_액세스_토큰, final Long 디투_러너_게시글_식별자값) {
-        RunnerPostAssuredSupport
+        RunnerPostUpdateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .러너가_서포터를_선택한다(디투_러너_게시글_식별자값, 러너의_서포터_선택_요청(서포터_헤나.getId()))
@@ -90,7 +89,7 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
     }
 
     private void 서포터가_러너_게시글의_리뷰를_완료로_변경하는_것을_성공한다(final String 헤나_액세스_토큰, final Long 디투_러너_게시글_식별자값) {
-        RunnerPostAssuredSupport
+        RunnerPostUpdateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .서포터가_리뷰를_완료하고_리뷰완료_버튼을_누른다(디투_러너_게시글_식별자값)

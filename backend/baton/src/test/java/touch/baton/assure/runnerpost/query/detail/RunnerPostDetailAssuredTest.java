@@ -1,6 +1,8 @@
-package touch.baton.assure.runnerpost;
+package touch.baton.assure.runnerpost.query.detail;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
+import touch.baton.assure.runnerpost.support.query.detail.RunnerPostDetailSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Runner;
@@ -11,12 +13,12 @@ import touch.baton.domain.runnerpost.command.controller.response.RunnerPostRespo
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Detail_응답;
+import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.support.query.detail.RunnerPostDetailSupport.러너_게시글_Detail_응답;
 import static touch.baton.fixture.vo.WatchedCountFixture.watchedCount;
 
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
+class RunnerPostDetailAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너의_게시글_식별자값으로_러너_게시글_상세_정보_조회에_성공한다() {
@@ -38,7 +40,7 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostDetailSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(헤나_러너_게시글_식별자값)
@@ -48,10 +50,10 @@ class RunnerPostReadByRunnerPostIdAssuredTest extends AssuredTestConfig {
     }
 
     private Long 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환에_성공한다(final String 헤나_액세스_토큰) {
-        return RunnerPostAssuredCreateSupport
+        return RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
-                .러너가_러너_게시글을_작성한다(
+                .러너_게시글_등록_요청한다(
                         러너_게시글_생성_요청(
                                 "테스트용_러너_게시글_제목",
                                 List.of("자바", "스프링"),

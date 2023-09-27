@@ -1,7 +1,6 @@
 package touch.baton.assure.tag;
 
 import org.junit.jupiter.api.Test;
-import touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.tag.command.Tag;
@@ -10,7 +9,8 @@ import touch.baton.domain.tag.command.vo.TagReducedName;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.클라이언트_요청;
 import static touch.baton.assure.tag.TagAssuredSupport.태그_검색_Detail_응답;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -37,10 +37,9 @@ class TagReadAssuredTest extends AssuredTestConfig {
     }
 
     public static void 러너_게시글_생성을_성공한다(final String 사용자_액세스_토큰, final List<String> 태그_목록) {
-        RunnerPostAssuredCreateSupport
-                .클라이언트_요청()
+        클라이언트_요청()
                 .액세스_토큰으로_로그인한다(사용자_액세스_토큰)
-                .러너가_러너_게시글을_작성한다(
+                .러너_게시글_등록_요청한다(
                         러너_게시글_생성_요청(
                                 "테스트용_러너_게시글_제목",
                                 태그_목록,

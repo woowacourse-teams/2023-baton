@@ -1,7 +1,8 @@
-package touch.baton.assure.runnerpost;
+package touch.baton.assure.runnerpost.command;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
+import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.common.response.ErrorResponse;
@@ -30,7 +31,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -54,7 +55,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -78,7 +79,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -102,7 +103,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -126,7 +127,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -150,7 +151,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -174,7 +175,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -198,7 +199,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -222,7 +223,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)
@@ -246,7 +247,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
         );
 
         // when, then
-        RunnerPostAssuredSupport
+        RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(게시글_생성_요청)

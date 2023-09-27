@@ -1,6 +1,9 @@
-package touch.baton.assure.runnerpost;
+package touch.baton.assure.runnerpost.command.applicant;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
+import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport;
+import touch.baton.assure.runnerpost.support.query.detail.RunnerPostDetailSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Runner;
@@ -12,12 +15,12 @@ import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredCreateSupport.러너_게시글_생성_요청;
-import static touch.baton.assure.runnerpost.RunnerPostAssuredSupport.러너_게시글_Detail_응답;
+import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
+import static touch.baton.assure.runnerpost.support.query.detail.RunnerPostDetailSupport.러너_게시글_Detail_응답;
 import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.NOT_STARTED;
 
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerPostAssuredCreateTest extends AssuredTestConfig {
+class RunnerPostApplicantCreateAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너가_러너_게시글을_생성하고_서포터가_러너_게시글에_리뷰를_신청한다() {
@@ -25,10 +28,10 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 러너_게시글_생성_요청 = 러너_게시글_생성_요청을_생성한다();
-        final Long 에단의_러너_게시글_식별자값 = RunnerPostAssuredCreateSupport
+        final Long 에단의_러너_게시글_식별자값 = RunnerPostCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(에단_액세스_토큰)
-                .러너가_러너_게시글을_작성한다(러너_게시글_생성_요청)
+                .러너_게시글_등록_요청한다(러너_게시글_생성_요청)
 
                 .서버_응답()
                 .러너_게시글_생성_성공을_검증한다()
@@ -38,7 +41,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
         final Runner 러너_에단 = runnerRepository.getBySocialId(에단의_소셜_아이디);
 
         final RunnerPostResponse.Detail 리뷰가_시작되지_않은_에단의_러너_게시글_Detail_응답 = 러너_게시글_Detail_응답을_생성한다(러너_에단, 러너_게시글_생성_요청, NOT_STARTED, 에단의_러너_게시글_식별자값, 1, 0L, false);
-        RunnerPostAssuredSupport
+        RunnerPostDetailSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(에단_액세스_토큰)
                 .러너_게시글_식별자값으로_러너_게시글을_조회한다(에단의_러너_게시글_식별자값)
@@ -46,7 +49,7 @@ class RunnerPostAssuredCreateTest extends AssuredTestConfig {
                 .서버_응답()
                 .러너_게시글_단건_조회_성공을_검증한다(리뷰가_시작되지_않은_에단의_러너_게시글_Detail_응답);
 
-        RunnerPostAssuredCreateSupport
+        RunnerPostApplicantCreateSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .서포터가_러너_게시글에_리뷰를_신청한다(에단의_러너_게시글_식별자값, "안녕하세요. 서포터 헤나입니다.")
