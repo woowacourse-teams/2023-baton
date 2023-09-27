@@ -6,15 +6,15 @@ interface Props {
 }
 
 export const ModalContext = createContext({
-  open: (contents: React.ReactNode) => {},
-  close: () => {},
+  openModal: (contents: React.ReactNode) => {},
+  closeModal: () => {},
 });
 
 const ModalProvider = ({ children }: Props) => {
   const [contents, setContents] = useState<React.ReactNode>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  const open = useCallback(
+  const openModal = useCallback(
     (contents: React.ReactNode) => {
       setContents(contents);
       setIsOpen(true);
@@ -23,14 +23,14 @@ const ModalProvider = ({ children }: Props) => {
     [contents],
   );
 
-  const close = useCallback(() => {
+  const closeModal = useCallback(() => {
     setIsOpen(false);
   }, [contents]);
 
   return (
-    <ModalContext.Provider value={{ open, close }}>
+    <ModalContext.Provider value={{ openModal, closeModal }}>
       {children}
-      {isOpen && <Modal closeModal={close}>{contents}</Modal>}
+      {isOpen && <Modal closeModal={closeModal}>{contents}</Modal>}
     </ModalContext.Provider>
   );
 };
