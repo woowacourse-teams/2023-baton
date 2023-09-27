@@ -29,7 +29,7 @@ import { useFetch } from '@/hooks/useFetch';
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToMainPage } = usePageRouter();
+  const { goBack, goToResultPage } = usePageRouter();
   const { postRequestWithAuth } = useFetch();
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
@@ -38,7 +38,7 @@ const RunnerPostCreatePage = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
-  const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 1)));
+  const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 10)));
   const [implementedContents, setImplementedContents] = useState<string>('');
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');
@@ -173,7 +173,7 @@ const RunnerPostCreatePage = () => {
       async () => {
         showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
 
-        goToMainPage();
+        goToResultPage();
       },
       body,
     );

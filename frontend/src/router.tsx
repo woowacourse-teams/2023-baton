@@ -13,6 +13,7 @@ const SupporterFeedbackPage = React.lazy(() => import('./pages/SupporterFeedback
 const SupporterProfilePage = React.lazy(() => import('./pages/SupporterProfilePage'));
 const RunnerProfilePage = React.lazy(() => import('./pages/RunnerProfilePage'));
 const NoticePage = React.lazy(() => import('./pages/NoticePage'));
+const ResultPage = React.lazy(() => import('./pages/ResultPage'));
 
 export const ROUTER_PATH = {
   MAIN: '/',
@@ -28,6 +29,7 @@ export const ROUTER_PATH = {
   SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
   GITHUB_CALLBACK: '/oauth/github/callback',
   NOTICE: '/notice',
+  RESULT: '/result',
 };
 
 export const router = createBrowserRouter(
@@ -80,6 +82,7 @@ export const router = createBrowserRouter(
           path: ROUTER_PATH.NOTICE,
           element: <NoticePage />,
         },
+        { path: ROUTER_PATH.RESULT, element: <ResultPage /> },
       ],
     },
   ],

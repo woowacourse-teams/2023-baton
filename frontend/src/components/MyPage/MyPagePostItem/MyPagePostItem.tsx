@@ -99,7 +99,7 @@ const S = {
       gap: 12px;
     }
 
-    & button:hover {
+    & button:hover:enabled {
       transition: all 0.3s ease;
       background-color: var(--baton-red);
       color: var(--white-color);

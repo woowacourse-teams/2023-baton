@@ -30,7 +30,7 @@ const Button = ({
         data-type={dataType}
         $colorTheme={colorTheme}
         type={type}
-        $disabled={disabled}
+        disabled={disabled}
         $fontSize={fontSize}
         $fontWeight={fontWeight}
         onClick={onClick}
@@ -71,7 +71,9 @@ const S = {
     font-size: ${({ $fontSize }) => $fontSize || '18px'};
     font-weight: ${({ $fontWeight }) => $fontWeight || '400'};
 
-    display: ${({ $disabled }) => ($disabled ? 'none' : 'block')};
+    &:disabled {
+      ${() => themeStyles['GRAY']}
+    }
 
     @media (max-width: 768px) {
       width: ${({ $width }) => $width || '180px'};
