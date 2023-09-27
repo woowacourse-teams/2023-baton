@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Modal from '../common/Modal/Modal';
 import Button from '../common/Button/Button';
 import { styled } from 'styled-components';
 import useViewport from '@/hooks/useViewport';
@@ -28,26 +27,24 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
   }, []);
 
   return (
-    <Modal width={isMobile ? '340px' : '540px'} height={isMobile ? '250px' : '211px'} closeModal={closeModal}>
-      <S.ConfirmModalContainer>
-        <S.ConfirmMessage>{contents}</S.ConfirmMessage>
-        <S.ButtonContainer>
-          <Button colorTheme="GRAY" width="134px" height="35px" fontSize="16px" fontWeight={700} onClick={closeModal}>
-            {cancelText || '취소'}
-          </Button>
-          <Button
-            colorTheme="WHITE"
-            width="134px"
-            height="35px"
-            fontSize={isMobile ? '12px' : '14px'}
-            fontWeight={700}
-            onClick={handleClickConfirmButton}
-          >
-            {confirmText || '확인'}
-          </Button>
-        </S.ButtonContainer>
-      </S.ConfirmModalContainer>
-    </Modal>
+    <S.ConfirmModalContainer>
+      <S.ConfirmMessage>{contents}</S.ConfirmMessage>
+      <S.ButtonContainer>
+        <Button colorTheme="GRAY" width="134px" height="35px" fontSize="16px" fontWeight={700} onClick={closeModal}>
+          {cancelText || '취소'}
+        </Button>
+        <Button
+          colorTheme="WHITE"
+          width="134px"
+          height="35px"
+          fontSize={isMobile ? '12px' : '14px'}
+          fontWeight={700}
+          onClick={handleClickConfirmButton}
+        >
+          {confirmText || '확인'}
+        </Button>
+      </S.ButtonContainer>
+    </S.ConfirmModalContainer>
   );
 };
 
@@ -60,12 +57,13 @@ const S = {
     align-items: center;
     justify-content: center;
 
-    width: 100%;
-    height: 100%;
-    padding: 20px 0;
+    width: 540px;
+    height: 250px;
+    padding: 20px;
 
     @media (max-width: 768px) {
-      padding: 10px 20px;
+      width: 90vw;
+      padding: 15px 10px;
     }
   `,
 
