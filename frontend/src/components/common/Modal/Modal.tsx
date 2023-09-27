@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import styled from 'styled-components';
 
@@ -7,13 +7,25 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
   closeModal: () => void;
 }
 
-const Modal = ({ children, closeModal, width, height }: Props) => {
+const Modal = ({ children, closeModal, ...rest }: Props) => {
+  useEffect(() => {
+    document.body.style.cssText = `
+    position: fixed; 
+    top: -${window.scrollY}px;
+    overflow-y: scroll;
+    width: 100%;`;
+
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = '';
+      window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    };
+  });
+
   return createPortal(
-    <S.ModalContainer aria-label="서포터 선택 모달창" aria-modal="true" role="서포터 선택 모달창">
+    <S.ModalContainer aria-modal="true">
       <S.BackDrop onClick={closeModal} />
-      <S.ModalViewContainer $width={width} $height={height}>
-        {children}
-      </S.ModalViewContainer>
+      <S.ModalViewContainer {...rest}>{children}</S.ModalViewContainer>
     </S.ModalContainer>,
     document.getElementById('modal-root') as HTMLDivElement,
   );
@@ -34,17 +46,16 @@ const S = {
     background: rgba(0, 0, 0, 0.25);
   `,
 
-  ModalViewContainer: styled.div<{ $width?: string | number; $height?: string | number }>`
+  ModalViewContainer: styled.div`
     position: fixed;
     top: 50%;
     left: 50%;
 
-    width: ${({ $width }) => $width || '300px'};
-    height: ${({ $height }) => $height || '300px'};
     padding: 20px;
 
     border-radius: 8px;
     background: white;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
 
     z-index: 999;
     transform: translate(-50%, -50%);
