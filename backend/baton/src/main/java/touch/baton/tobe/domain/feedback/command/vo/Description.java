@@ -1,4 +1,4 @@
-package touch.baton.domain.feedback.vo;
+package touch.baton.tobe.domain.feedback.command.vo;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

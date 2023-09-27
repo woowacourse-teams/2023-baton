@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.feedback.vo.Description;
+import touch.baton.tobe.domain.feedback.command.vo.Description;
 
 public abstract class DescriptionFixture {
 

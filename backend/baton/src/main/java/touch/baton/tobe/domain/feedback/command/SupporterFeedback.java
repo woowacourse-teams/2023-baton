@@ -1,4 +1,4 @@
-package touch.baton.domain.feedback;
+package touch.baton.tobe.domain.feedback.command;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -14,9 +14,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import touch.baton.domain.common.BaseEntity;
-import touch.baton.domain.feedback.exception.SupporterFeedbackException;
-import touch.baton.domain.feedback.vo.Description;
-import touch.baton.domain.feedback.vo.ReviewType;
+import touch.baton.tobe.domain.feedback.command.vo.Description;
+import touch.baton.tobe.domain.feedback.command.vo.ReviewType;
+import touch.baton.tobe.domain.feedback.exception.SupporterFeedbackException;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.runnerpost.command.RunnerPost;

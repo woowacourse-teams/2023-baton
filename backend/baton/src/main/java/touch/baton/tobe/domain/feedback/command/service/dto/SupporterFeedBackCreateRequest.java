@@ -1,4 +1,4 @@
-package touch.baton.domain.feedback.service;
+package touch.baton.tobe.domain.feedback.command.service.dto;
 
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.validator.ValidNotNull;

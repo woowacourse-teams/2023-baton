@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 import org.springframework.http.HttpHeaders;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
-import touch.baton.domain.feedback.service.SupporterFeedBackCreateRequest;
+import touch.baton.tobe.domain.feedback.command.service.dto.SupporterFeedBackCreateRequest;
 
 import java.util.List;
 

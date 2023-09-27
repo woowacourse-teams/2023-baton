@@ -1,4 +1,4 @@
-package touch.baton.domain.feedback.exception;
+package touch.baton.tobe.domain.feedback.exception;
 
 import touch.baton.domain.common.exception.DomainException;
 
