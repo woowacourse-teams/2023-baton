@@ -5,6 +5,7 @@ import TextArea from '@/components/Textarea/Textarea';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ModalContext } from '@/contexts/ModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -26,6 +27,7 @@ const ProfileEditPage = () => {
   const { getRequestWithAuth, patchRequestWithAuth } = useFetch();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { openModal, closeModal } = useContext(ModalContext);
   const { goBack } = usePageRouter();
 
   const [isRunner, setIsRunner] = useState(true);
@@ -37,8 +39,6 @@ const ProfileEditPage = () => {
   const [company, setCompany] = useState<string | null>(null);
   const [introduction, setIntroduction] = useState<string | null>(null);
   const [technicalTags, setTechnicalTags] = useState<Technic[] | null>(null);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     getRunnerProfile();
@@ -201,12 +201,14 @@ const ProfileEditPage = () => {
     updateProfileInputValue(supporterProfile);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const openTechTagSelectModal = () => {
+    openModal(
+      <TechTagSelectModal
+        closeModal={closeModal}
+        confirmTagSelect={confirmTagSelect}
+        defaultTags={technicalTags ?? undefined}
+      />,
+    );
   };
 
   const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
@@ -328,7 +330,7 @@ const ProfileEditPage = () => {
                     <TechLabelButton tag={tag} handleClickTag={popTag} isDeleteButton={true} />
                   </S.TagButtonWrapper>
                 ))}
-                <S.AddTagButton type="button" onClick={openModal}>
+                <S.AddTagButton type="button" onClick={openTechTagSelectModal}>
                   +
                 </S.AddTagButton>
               </S.TechTagsList>
@@ -336,14 +338,6 @@ const ProfileEditPage = () => {
           </S.Form>
         ) : null}
       </S.ProfileContainer>
-
-      {isModalOpen && (
-        <TechTagSelectModal
-          closeModal={closeModal}
-          confirmTagSelect={confirmTagSelect}
-          defaultTags={technicalTags ?? undefined}
-        />
-      )}
     </Layout>
   );
 };

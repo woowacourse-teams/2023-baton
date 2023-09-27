@@ -3,6 +3,7 @@ import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { ModalContext } from '@/contexts/ModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -23,18 +24,9 @@ const SupporterCardItem = ({ supporter }: Props) => {
   const { patchRequestWithAuth } = useFetch();
 
   const { showCompletionToast } = useContext(ToastContext);
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { openModal, closeModal } = useContext(ModalContext);
 
   const { isMobile } = useViewport();
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   const viewProfile = () => {
     goToSupporterProfilePage(supporter.supporterId);
@@ -51,6 +43,16 @@ const SupporterCardItem = ({ supporter }: Props) => {
         goToMyPage();
       },
       body,
+    );
+  };
+
+  const openSelectModal = () => {
+    openModal(
+      <ConfirmModal
+        contents={`정말 ${supporter.name}님을 서포터로 선택하시겠습니까?`}
+        closeModal={closeModal}
+        handleClickConfirmButton={selectSupporter}
+      />,
     );
   };
 
@@ -86,17 +88,17 @@ const SupporterCardItem = ({ supporter }: Props) => {
         <Button colorTheme="BLACK" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={viewProfile}>
           프로필 보기
         </Button>
-        <Button colorTheme="WHITE" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={openModal}>
+        <Button
+          colorTheme="WHITE"
+          width="94px"
+          height="35px"
+          fontSize="14px"
+          fontWeight={700}
+          onClick={openSelectModal}
+        >
           선택하기
         </Button>
       </S.ButtonContainer>
-      {isModalOpen && (
-        <ConfirmModal
-          contents={`정말 ${supporter.name}님을 서포터로 선택하시겠습니까?`}
-          closeModal={closeModal}
-          handleClickConfirmButton={selectSupporter}
-        />
-      )}
     </S.SupporterCardItemContainer>
   );
 };
