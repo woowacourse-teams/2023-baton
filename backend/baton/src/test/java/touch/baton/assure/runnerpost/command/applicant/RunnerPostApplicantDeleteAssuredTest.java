@@ -1,8 +1,9 @@
-package touch.baton.assure.supporter;
+package touch.baton.assure.runnerpost.command.applicant;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport;
+import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantDeleteAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 
@@ -14,7 +15,7 @@ import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupp
 import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.클라이언트_요청;
 
 @SuppressWarnings("NonAsciiCharacters")
-class SupporterRunnerPostDeleteAssuredTest extends AssuredTestConfig {
+class RunnerPostApplicantDeleteAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너_게시글에_보낸_리뷰_제안을_취소한다() {
@@ -27,7 +28,7 @@ class SupporterRunnerPostDeleteAssuredTest extends AssuredTestConfig {
         서포터가_러너_게시글에_리뷰_신청을_성공한다(헤나_액세스_토큰, 디투_러너_게시글_식별자값);
 
         // then
-        SupporterRunnerPostAssuredSupport
+        RunnerPostApplicantDeleteAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .서포터가_리뷰_제안을_취소한다(디투_러너_게시글_식별자값)

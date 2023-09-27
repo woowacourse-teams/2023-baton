@@ -1,7 +1,8 @@
-package touch.baton.assure.member;
+package touch.baton.assure.member.command;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
+import touch.baton.assure.member.support.command.MemberBranchAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
@@ -9,7 +10,7 @@ import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @SuppressWarnings("NonAsciiCharacters")
-class MemberBranchCreateAssuredTest extends AssuredTestConfig {
+class MemberBranchAssuredTest extends AssuredTestConfig {
 
     @Test
     void 로그인_한_사용자가_요청한_레포의_브랜치를_생성한다() {

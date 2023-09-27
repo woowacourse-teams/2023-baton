@@ -1,8 +1,9 @@
-package touch.baton.assure.feedback;
+package touch.baton.assure.feedback.command;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
+import touch.baton.assure.feedback.support.command.SupporterFeedbackAssuredSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostUpdateSupport;
 import touch.baton.config.AssuredTestConfig;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static touch.baton.assure.feedback.SupporterFeedbackAssuredSupport.서포터_피드백_요청;
+import static touch.baton.assure.feedback.support.command.SupporterFeedbackAssuredSupport.서포터_피드백_요청;
 import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
 import static touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport.러너의_서포터_선택_요청;
 import static touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport.클라이언트_요청;

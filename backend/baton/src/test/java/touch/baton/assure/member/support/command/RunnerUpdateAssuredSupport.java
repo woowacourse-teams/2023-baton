@@ -1,4 +1,4 @@
-package touch.baton.assure.runner;
+package touch.baton.assure.member.support.command;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -19,9 +19,9 @@ import java.util.Map;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class RunnerAssuredSupport {
+public class RunnerUpdateAssuredSupport {
 
-    private RunnerAssuredSupport() {
+    private RunnerUpdateAssuredSupport() {
     }
 
     public static RunnerClientRequestBuilder 클라이언트_요청() {

@@ -1,15 +1,16 @@
-package touch.baton.assure.member;
+package touch.baton.assure.member.query;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.member.support.query.MemberQueryAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.vo.SocialId;
 
-import static touch.baton.assure.member.MemberAssuredSupport.로그인한_사용자_프로필_응답;
+import static touch.baton.assure.member.support.query.MemberQueryAssuredSupport.로그인한_사용자_프로필_응답;
 
 @SuppressWarnings("NonAsciiCharacters")
-class MemberReadWithLoginedMemberAssuredTest extends AssuredTestConfig {
+class MemberQueryAssuredTest extends AssuredTestConfig {
 
     @Test
     void 로그인_한_사용자_프로필을_조회한다() {
@@ -18,7 +19,7 @@ class MemberReadWithLoginedMemberAssuredTest extends AssuredTestConfig {
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Member 사용자_헤나 = memberRepository.getBySocialId(헤나_소셜_아이디);
 
-        MemberAssuredSupport
+        MemberQueryAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .사용자_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다()

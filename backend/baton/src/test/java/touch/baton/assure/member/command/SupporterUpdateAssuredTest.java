@@ -1,13 +1,14 @@
-package touch.baton.assure.supporter;
+package touch.baton.assure.member.command;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.member.support.command.SupporterUpdateAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.NO_CONTENT;
-import static touch.baton.assure.supporter.SupporterAssuredSupport.서포터_본인_정보_수정_요청;
+import static touch.baton.assure.member.support.command.SupporterUpdateAssuredSupport.서포터_본인_정보_수정_요청;
 import static touch.baton.domain.common.exception.ClientErrorCode.*;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -19,7 +20,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
         // when, then
-        SupporterAssuredSupport
+        SupporterUpdateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(
@@ -36,7 +37,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
         // when, then
-        SupporterAssuredSupport
+        SupporterUpdateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(
@@ -53,7 +54,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
         // when, then
-        SupporterAssuredSupport
+        SupporterUpdateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(
@@ -70,7 +71,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
         // when, then
-        SupporterAssuredSupport
+        SupporterUpdateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(
@@ -87,7 +88,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
 
         // when, then
-        SupporterAssuredSupport
+        SupporterUpdateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인_한다(헤나_액세스_토큰)
                 .서포터_본인_프로필을_수정한다(

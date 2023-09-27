@@ -1,6 +1,7 @@
-package touch.baton.assure.runner;
+package touch.baton.assure.member.query;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.member.support.command.RunnerUpdateAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Runner;
@@ -8,10 +9,8 @@ import touch.baton.domain.member.command.vo.SocialId;
 
 import java.util.Collections;
 
-import static touch.baton.assure.runner.RunnerAssuredSupport.러너_본인_프로필_응답;
-
 @SuppressWarnings("NonAsciiCharacters")
-class RunnerReadWithLoginedRunnerAssuredTest extends AssuredTestConfig {
+class RunnerQueryAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너_본인_프로필을_가지고_있는_액세스_토큰으로_조회에_성공한다() {
@@ -22,12 +21,12 @@ class RunnerReadWithLoginedRunnerAssuredTest extends AssuredTestConfig {
         final Runner 러너_헤나 = runnerRepository.getBySocialId(헤나_소셜_아이디);
 
         // when, then
-        RunnerAssuredSupport
+        RunnerUpdateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다()
 
                 .서버_응답()
-                .러너_본인_프로필_조회_성공을_검증한다(러너_본인_프로필_응답(러너_헤나, Collections.emptyList()));
+                .러너_본인_프로필_조회_성공을_검증한다(RunnerUpdateAssuredSupport.러너_본인_프로필_응답(러너_헤나, Collections.emptyList()));
     }
 }

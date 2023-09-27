@@ -1,4 +1,4 @@
-package touch.baton.assure.feedback;
+package touch.baton.assure.feedback.support.command;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

@@ -1,22 +1,25 @@
-package touch.baton.assure.member;
+package touch.baton.assure.member.support.query;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import touch.baton.assure.common.AssuredSupport;
-import touch.baton.assure.common.HttpStatusAndLocationHeader;
-import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.controller.response.LoginMemberInfoResponse;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.springframework.http.HttpHeaders.LOCATION;
 
 @SuppressWarnings("NonAsciiCharacters")
-class MemberBranchAssuredSupport {
+public class MemberQueryAssuredSupport {
 
-    private MemberBranchAssuredSupport() {
+    private MemberQueryAssuredSupport() {
     }
 
     public static MemberClientRequestBuilder 클라이언트_요청() {
         return new MemberClientRequestBuilder();
+    }
+
+    public static LoginMemberInfoResponse 로그인한_사용자_프로필_응답(final Member 맴버) {
+        return LoginMemberInfoResponse.from(맴버);
     }
 
     public static class MemberClientRequestBuilder {
@@ -35,11 +38,6 @@ class MemberBranchAssuredSupport {
             return this;
         }
 
-        public MemberClientRequestBuilder 입력받은_레포에_사용자_github_계정명으로_된_브랜치를_생성한다(final GithubRepoNameRequest 레포_이름_요청) {
-            response = AssuredSupport.post("/api/v1/branch", accessToken, 레포_이름_요청);
-            return this;
-        }
-
         public MemberServerResponseBuilder 서버_응답() {
             return new MemberServerResponseBuilder(response);
         }
@@ -53,12 +51,13 @@ class MemberBranchAssuredSupport {
             this.response = response;
         }
 
-        public void 레포에_브랜치_등록_성공을_검증한다(final HttpStatusAndLocationHeader 예상_성공_응답) {
+        public void 로그인한_사용자_프로필_조회_성공을_검증한다(final LoginMemberInfoResponse 맴버_로그인_프로필_응답) {
+            final LoginMemberInfoResponse actual = this.response.as(LoginMemberInfoResponse.class);
+
             assertSoftly(softly -> {
-                        softly.assertThat(response.statusCode()).isEqualTo(예상_성공_응답.getHttpStatus().value());
-                        softly.assertThat(response.header(LOCATION)).contains(예상_성공_응답.getLocation());
-                    }
-            );
+                softly.assertThat(actual.name()).isEqualTo(맴버_로그인_프로필_응답.name());
+                softly.assertThat(actual.imageUrl()).isEqualTo(맴버_로그인_프로필_응답.imageUrl());
+            });
         }
     }
 }

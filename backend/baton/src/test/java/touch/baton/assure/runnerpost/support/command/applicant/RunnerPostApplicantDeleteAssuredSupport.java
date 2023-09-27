@@ -1,4 +1,4 @@
-package touch.baton.assure.supporter;
+package touch.baton.assure.runnerpost.support.command.applicant;
 
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -12,9 +12,9 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class SupporterRunnerPostAssuredSupport {
+public class RunnerPostApplicantDeleteAssuredSupport {
 
-    private SupporterRunnerPostAssuredSupport() {
+    private RunnerPostApplicantDeleteAssuredSupport() {
     }
 
     public static SupporterRunnerPostClientRequestBuilder 클라이언트_요청() {
