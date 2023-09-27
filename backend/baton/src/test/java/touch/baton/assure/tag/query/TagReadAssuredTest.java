@@ -1,6 +1,8 @@
-package touch.baton.assure.tag;
+package touch.baton.assure.tag.query;
 
 import org.junit.jupiter.api.Test;
+import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
+import touch.baton.assure.tag.support.query.TagAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.tag.command.Tag;
@@ -10,8 +12,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
-import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.클라이언트_요청;
-import static touch.baton.assure.tag.TagAssuredSupport.태그_검색_Detail_응답;
+import static touch.baton.assure.tag.support.query.TagAssuredSupport.태그_검색_Detail_응답;
+
 
 @SuppressWarnings("NonAsciiCharacters")
 class TagReadAssuredTest extends AssuredTestConfig {
@@ -20,7 +22,7 @@ class TagReadAssuredTest extends AssuredTestConfig {
     void 태그_검색에_성공한다() {
         // given
         final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
-        러너_게시글_생성을_성공한다(헤나_액세스_토큰, List.of("java", "javascript", "script"));
+        러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(헤나_액세스_토큰, List.of("java", "javascript", "script"));
         final TagReducedName reducedName = TagReducedName.from("ja");
         final List<Tag> 검색된_태그_목록 = tagRepository.readTagsByReducedName(reducedName);
 
@@ -36,9 +38,10 @@ class TagReadAssuredTest extends AssuredTestConfig {
                 );
     }
 
-    public static void 러너_게시글_생성을_성공한다(final String 사용자_액세스_토큰, final List<String> 태그_목록) {
-        클라이언트_요청()
-                .액세스_토큰으로_로그인한다(사용자_액세스_토큰)
+    private void 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(final String 헤나_액세스_토큰, final List<String> 태그_목록) {
+        RunnerPostCreateSupport
+                .클라이언트_요청()
+                .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_게시글_등록_요청한다(
                         러너_게시글_생성_요청(
                                 "테스트용_러너_게시글_제목",
