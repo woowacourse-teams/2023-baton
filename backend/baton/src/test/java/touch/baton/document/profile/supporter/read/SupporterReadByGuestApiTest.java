@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
@@ -15,6 +14,7 @@ import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.tobe.domain.member.query.controller.SupporterQueryController;
 import touch.baton.tobe.domain.member.query.service.SupporterQueryService;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
 import java.util.List;
 import java.util.Optional;

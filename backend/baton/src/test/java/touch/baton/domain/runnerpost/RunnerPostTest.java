@@ -8,7 +8,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import touch.baton.domain.common.vo.Title;
 import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Runner;
@@ -32,6 +31,7 @@ import touch.baton.tobe.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.tobe.domain.tag.command.RunnerPostTag;
 import touch.baton.tobe.domain.tag.command.RunnerPostTags;
 import touch.baton.tobe.domain.tag.command.Tag;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -14,10 +14,10 @@ import touch.baton.domain.common.BaseEntity;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
-import touch.baton.tobe.domain.member.exception.SupporterDomainException;
 import touch.baton.tobe.domain.member.command.vo.ReviewCount;
-import touch.baton.domain.technicaltag.SupporterTechnicalTag;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
+import touch.baton.tobe.domain.member.exception.SupporterDomainException;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
 
 import java.util.List;
 import java.util.Objects;

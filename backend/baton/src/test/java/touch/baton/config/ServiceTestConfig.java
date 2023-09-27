@@ -2,9 +2,6 @@ package touch.baton.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.domain.feedback.repository.SupporterFeedbackRepository;
-import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
-import touch.baton.domain.technicaltag.repository.SupporterTechnicalTagRepository;
-import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 import touch.baton.tobe.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.tobe.domain.member.command.repository.SupporterCommandRepository;
 import touch.baton.tobe.domain.member.command.repository.SupporterRunnerPostCommandRepository;
@@ -16,6 +13,9 @@ import touch.baton.tobe.domain.runnerpost.query.repository.RunnerPostQueryReposi
 import touch.baton.tobe.domain.tag.command.repository.TagCommandRepository;
 import touch.baton.tobe.domain.tag.query.repository.RunnerPostTagQueryRepository;
 import touch.baton.tobe.domain.tag.query.repository.TagQueryRepository;
+import touch.baton.tobe.domain.technicaltag.command.repository.RunnerTechnicalTagCommandRepository;
+import touch.baton.tobe.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
+import touch.baton.tobe.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 
 public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
@@ -44,13 +44,13 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
     protected SupporterFeedbackRepository supporterFeedbackRepository;
 
     @Autowired
-    protected TechnicalTagRepository technicalTagRepository;
+    protected TechnicalTagQueryRepository technicalTagQueryRepository;
 
     @Autowired
-    protected RunnerTechnicalTagRepository runnerTechnicalTagRepository;
+    protected RunnerTechnicalTagCommandRepository runnerTechnicalTagCommandRepository;
 
     @Autowired
-    protected SupporterTechnicalTagRepository supporterTechnicalTagRepository;
+    protected SupporterTechnicalTagCommandRepository supporterTechnicalTagCommandRepository;
 
     @Autowired
     protected RunnerPostCommandRepository runnerPostCommandRepository;

@@ -3,13 +3,17 @@ package touch.baton.domain.technicaltag;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterTechnicalTagFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +35,7 @@ class SupporterTechnicalTagsTest {
     @Test
     void addAll() {
         // given
-        final SupporterTechnicalTags supporterTechnicalTags = new SupporterTechnicalTags();
+        final SupporterTechnicalTags supporterTechnicalTags = new SupporterTechnicalTags(new ArrayList<>());
 
         // when
         supporterTechnicalTags.addAll(List.of(supporterTechnicalTag));

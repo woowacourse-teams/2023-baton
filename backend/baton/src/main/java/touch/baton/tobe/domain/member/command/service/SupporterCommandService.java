@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.technicaltag.SupporterTechnicalTag;
-import touch.baton.domain.technicaltag.TechnicalTag;
-import touch.baton.domain.technicaltag.repository.SupporterTechnicalTagRepository;
-import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.command.service.dto.SupporterUpdateRequest;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
+import touch.baton.tobe.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 
 import java.util.Optional;
 
@@ -21,21 +21,21 @@ import java.util.Optional;
 @Service
 public class SupporterCommandService {
 
-    private final TechnicalTagRepository technicalTagRepository;
-    private final SupporterTechnicalTagRepository supporterTechnicalTagRepository;
+    private final TechnicalTagQueryRepository technicalTagQueryRepository;
+    private final SupporterTechnicalTagCommandRepository supporterTechnicalTagCommandRepository;
 
     public void updateSupporter(final Supporter supporter, final SupporterUpdateRequest supporterUpdateRequest) {
         supporter.updateMemberName(new MemberName(supporterUpdateRequest.name()));
         supporter.updateCompany(new Company(supporterUpdateRequest.company()));
         supporter.updateIntroduction(new Introduction(supporterUpdateRequest.introduction()));
-        supporterTechnicalTagRepository.deleteBySupporter(supporter);
+        supporterTechnicalTagCommandRepository.deleteBySupporter(supporter);
         supporterUpdateRequest.technicalTags()
                 .forEach(tagName -> createSupporterTechnicalTag(supporter, new TagName(tagName)));
     }
 
     private SupporterTechnicalTag createSupporterTechnicalTag(final Supporter supporter, final TagName tagName) {
         final TechnicalTag technicalTag = findTechnicalTagIfExistElseCreate(tagName);
-        return supporterTechnicalTagRepository.save(SupporterTechnicalTag.builder()
+        return supporterTechnicalTagCommandRepository.save(SupporterTechnicalTag.builder()
                 .supporter(supporter)
                 .technicalTag(technicalTag)
                 .build()
@@ -43,9 +43,9 @@ public class SupporterCommandService {
     }
 
     private TechnicalTag findTechnicalTagIfExistElseCreate(final TagName tagName) {
-        final Optional<TechnicalTag> maybeTechnicalTag = technicalTagRepository.findByTagName(tagName);
+        final Optional<TechnicalTag> maybeTechnicalTag = technicalTagQueryRepository.findByTagName(tagName);
         return maybeTechnicalTag.orElseGet(() ->
-                technicalTagRepository.save(TechnicalTag.builder()
+                technicalTagQueryRepository.save(TechnicalTag.builder()
                         .tagName(tagName)
                         .build()
                 ));

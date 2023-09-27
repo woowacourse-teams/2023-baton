@@ -5,29 +5,27 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.Introduction;
+import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterTechnicalTagFixture;
+import touch.baton.fixture.domain.TechnicalTagFixture;
 import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.GithubUrl;
 import touch.baton.tobe.domain.member.command.vo.ImageUrl;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.command.vo.OauthId;
-import touch.baton.tobe.domain.member.command.vo.SocialId;
-import touch.baton.tobe.domain.member.command.Supporter;
-import touch.baton.tobe.domain.member.exception.SupporterDomainException;
 import touch.baton.tobe.domain.member.command.vo.ReviewCount;
-import touch.baton.domain.technicaltag.SupporterTechnicalTag;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
-import touch.baton.domain.technicaltag.TechnicalTag;
-import touch.baton.fixture.domain.SupporterFixture;
-import touch.baton.fixture.domain.SupporterTechnicalTagFixture;
-import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.tobe.domain.member.command.vo.SocialId;
+import touch.baton.tobe.domain.member.exception.SupporterDomainException;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class SupporterTest {

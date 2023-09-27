@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 import touch.baton.tobe.domain.member.command.Member;
@@ -30,6 +29,7 @@ import touch.baton.tobe.domain.oauth.command.token.ExpireDate;
 import touch.baton.tobe.domain.oauth.command.token.RefreshToken;
 import touch.baton.tobe.domain.oauth.command.token.Token;
 import touch.baton.tobe.domain.oauth.command.token.Tokens;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

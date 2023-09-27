@@ -5,14 +5,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.Introduction;
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.technicaltag.RunnerTechnicalTag;
-import touch.baton.domain.technicaltag.TechnicalTag;
-import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
-import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
 import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.command.service.dto.RunnerUpdateRequest;
 import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
+import touch.baton.tobe.domain.technicaltag.command.RunnerTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.repository.RunnerTechnicalTagCommandRepository;
+import touch.baton.tobe.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 
 import java.util.List;
 
@@ -21,8 +21,8 @@ import java.util.List;
 @Service
 public class RunnerCommandService {
 
-    private final RunnerTechnicalTagRepository runnerTechnicalTagRepository;
-    private final TechnicalTagRepository technicalTagRepository;
+    private final RunnerTechnicalTagCommandRepository runnerTechnicalTagCommandRepository;
+    private final TechnicalTagQueryRepository technicalTagQueryRepository;
 
     public void updateRunner(Runner runner, RunnerUpdateRequest runnerUpdateRequest) {
         runner.updateMemberName(new MemberName(runnerUpdateRequest.name()));
@@ -32,7 +32,7 @@ public class RunnerCommandService {
     }
 
     private void updateTechnicalTags(final Runner runner, final List<String> technicalTags) {
-        runnerTechnicalTagRepository.deleteByRunner(runner);
+        runnerTechnicalTagCommandRepository.deleteByRunner(runner);
         createRunnerTechnicalTags(runner, technicalTags);
     }
 
@@ -48,8 +48,8 @@ public class RunnerCommandService {
     }
 
     private TechnicalTag findTechnicalTagIfExistElseCreate(final TagName tagName) {
-        return technicalTagRepository.findByTagName(tagName)
-                .orElseGet(() -> technicalTagRepository.save(
+        return technicalTagQueryRepository.findByTagName(tagName)
+                .orElseGet(() -> technicalTagQueryRepository.save(
                         TechnicalTag.builder()
                                 .tagName(tagName)
                                 .build())
@@ -61,6 +61,6 @@ public class RunnerCommandService {
                 .runner(runner)
                 .technicalTag(technicalTag)
                 .build();
-        return runnerTechnicalTagRepository.save(runnerTechnicalTag);
+        return runnerTechnicalTagCommandRepository.save(runnerTechnicalTag);
     }
 }

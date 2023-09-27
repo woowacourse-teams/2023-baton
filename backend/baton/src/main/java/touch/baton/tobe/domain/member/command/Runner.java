@@ -16,8 +16,8 @@ import touch.baton.tobe.domain.member.command.vo.Company;
 import touch.baton.tobe.domain.member.command.vo.MemberName;
 import touch.baton.tobe.domain.member.exception.RunnerDomainException;
 import touch.baton.tobe.domain.member.exception.SupporterDomainException;
-import touch.baton.domain.technicaltag.RunnerTechnicalTag;
-import touch.baton.domain.technicaltag.RunnerTechnicalTags;
+import touch.baton.tobe.domain.technicaltag.command.RunnerTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.RunnerTechnicalTags;
 
 import java.util.List;
 import java.util.Objects;

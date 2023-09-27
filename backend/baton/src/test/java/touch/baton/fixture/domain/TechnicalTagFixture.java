@@ -1,7 +1,7 @@
 package touch.baton.fixture.domain;
 
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 

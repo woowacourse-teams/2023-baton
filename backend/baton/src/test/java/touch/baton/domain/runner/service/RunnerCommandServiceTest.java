@@ -24,7 +24,7 @@ class RunnerCommandServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerCommandService = new RunnerCommandService(runnerTechnicalTagRepository, technicalTagRepository);
+        runnerCommandService = new RunnerCommandService(runnerTechnicalTagCommandRepository, technicalTagQueryRepository);
     }
 
     @DisplayName("Runner 의 프로필을 수정한다.")

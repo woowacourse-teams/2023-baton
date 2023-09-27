@@ -1,4 +1,4 @@
-package touch.baton.domain.technicaltag;
+package touch.baton.tobe.domain.technicaltag.command;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

@@ -22,7 +22,7 @@ class SupporterCommandServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        supporterCommandService = new SupporterCommandService(technicalTagRepository, supporterTechnicalTagRepository);
+        supporterCommandService = new SupporterCommandService(technicalTagQueryRepository, supporterTechnicalTagCommandRepository);
     }
 
     @DisplayName("Supporter 정보를 수정한다.")

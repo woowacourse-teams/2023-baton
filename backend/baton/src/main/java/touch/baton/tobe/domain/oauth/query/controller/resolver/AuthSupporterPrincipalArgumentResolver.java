@@ -3,13 +3,13 @@ package touch.baton.tobe.domain.oauth.query.controller.resolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import touch.baton.domain.common.exception.ClientErrorCode;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.tobe.domain.member.command.Supporter;
 import touch.baton.tobe.domain.member.command.vo.ReviewCount;
 import touch.baton.tobe.domain.member.command.vo.SocialId;
 import touch.baton.tobe.domain.oauth.command.exception.OauthRequestException;
 import touch.baton.tobe.domain.oauth.command.repository.OauthSupporterCommandRepository;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTags;
 
 import java.util.Collections;
 

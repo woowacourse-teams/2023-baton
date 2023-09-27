@@ -4,13 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.tobe.domain.member.command.Member;
-import touch.baton.tobe.domain.member.command.Runner;
-import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
+import touch.baton.tobe.domain.member.command.Member;
+import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
 import java.util.List;
 
@@ -32,8 +32,8 @@ class RunnerQueryServiceTest extends ServiceTestConfig {
         // given
         final Member expectedMember = memberCommandRepository.save(MemberFixture.createEthan());
 
-        final TechnicalTag javaTag = technicalTagRepository.save(TechnicalTagFixture.createJava());
-        final TechnicalTag reactTag = technicalTagRepository.save(TechnicalTagFixture.createReact());
+        final TechnicalTag javaTag = technicalTagQueryRepository.save(TechnicalTagFixture.createJava());
+        final TechnicalTag reactTag = technicalTagQueryRepository.save(TechnicalTagFixture.createReact());
         final List<TechnicalTag> technicalTags = List.of(javaTag, reactTag);
         final Runner expectedRunner = runnerQueryRepository.save(RunnerFixture.createRunner(expectedMember, technicalTags));
 

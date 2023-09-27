@@ -5,14 +5,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.technicaltag.SupporterTechnicalTag;
-import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterTechnicalTagFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
 import touch.baton.tobe.domain.member.command.Member;
 import touch.baton.tobe.domain.member.command.Supporter;
+import touch.baton.tobe.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
+import touch.baton.tobe.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SupporterTechnicalTagQueryRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private SupporterTechnicalTagRepository supporterTechnicalTagRepository;
+    private SupporterTechnicalTagCommandRepository supporterTechnicalTagCommandRepository;
 
     @Autowired
     private EntityManager em;
@@ -44,13 +45,13 @@ class SupporterTechnicalTagQueryRepositoryTest extends RepositoryTestConfig {
         final SupporterTechnicalTag supporterTechnicalTag2 = SupporterTechnicalTagFixture.create(supporter, technicalTag2);
         final SupporterTechnicalTag supporterTechnicalTag3 = SupporterTechnicalTagFixture.create(supporter, technicalTag3);
         final List<SupporterTechnicalTag> savedSupporterTechnicalTags = List.of(supporterTechnicalTag1, supporterTechnicalTag2, supporterTechnicalTag3);
-        supporterTechnicalTagRepository.saveAll(savedSupporterTechnicalTags);
+        supporterTechnicalTagCommandRepository.saveAll(savedSupporterTechnicalTags);
         em.flush();
         em.close();
 
         // when
         final int expected = savedSupporterTechnicalTags.size();
-        final int actual = supporterTechnicalTagRepository.deleteBySupporter(supporter);
+        final int actual = supporterTechnicalTagCommandRepository.deleteBySupporter(supporter);
 
         // then
         assertThat(expected).isEqualTo(actual);

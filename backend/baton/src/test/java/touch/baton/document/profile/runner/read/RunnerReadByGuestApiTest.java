@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.technicaltag.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
@@ -15,6 +14,7 @@ import touch.baton.tobe.domain.member.command.Runner;
 import touch.baton.tobe.domain.member.query.controller.RunnerQueryController;
 import touch.baton.tobe.domain.member.query.service.RunnerQueryService;
 import touch.baton.tobe.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.tobe.domain.technicaltag.command.TechnicalTag;
 
 import java.util.List;
 import java.util.Optional;
