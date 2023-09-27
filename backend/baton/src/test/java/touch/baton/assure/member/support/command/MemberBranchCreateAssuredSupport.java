@@ -10,41 +10,41 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.springframework.http.HttpHeaders.LOCATION;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class MemberBranchAssuredSupport {
+public class MemberBranchCreateAssuredSupport {
 
-    private MemberBranchAssuredSupport() {
+    private MemberBranchCreateAssuredSupport() {
     }
 
-    public static MemberClientRequestBuilder 클라이언트_요청() {
-        return new MemberClientRequestBuilder();
+    public static MemberBranchCreateBuilder 클라이언트_요청() {
+        return new MemberBranchCreateBuilder();
     }
 
-    public static class MemberClientRequestBuilder {
+    public static class MemberBranchCreateBuilder {
 
         private ExtractableResponse<Response> response;
 
         private String accessToken;
 
-        public MemberClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
+        public MemberBranchCreateBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
             accessToken = 액세스_토큰;
             return this;
         }
 
-        public MemberClientRequestBuilder 입력받은_레포에_사용자_github_계정명으로_된_브랜치를_생성한다(final GithubRepoNameRequest 레포_이름_요청) {
+        public MemberBranchCreateBuilder 입력받은_레포에_사용자_github_계정명으로_된_브랜치를_생성한다(final GithubRepoNameRequest 레포_이름_요청) {
             response = AssuredSupport.post("/api/v1/branch", accessToken, 레포_이름_요청);
             return this;
         }
 
-        public MemberServerResponseBuilder 서버_응답() {
-            return new MemberServerResponseBuilder(response);
+        public MemberBranchCreateResponseBuilder 서버_응답() {
+            return new MemberBranchCreateResponseBuilder(response);
         }
     }
 
-    public static class MemberServerResponseBuilder {
+    public static class MemberBranchCreateResponseBuilder {
 
         private final ExtractableResponse<Response> response;
 
-        public MemberServerResponseBuilder(final ExtractableResponse<Response> response) {
+        public MemberBranchCreateResponseBuilder(final ExtractableResponse<Response> response) {
             this.response = response;
         }
 

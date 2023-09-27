@@ -14,40 +14,40 @@ public class MemberQueryAssuredSupport {
     private MemberQueryAssuredSupport() {
     }
 
-    public static MemberClientRequestBuilder 클라이언트_요청() {
-        return new MemberClientRequestBuilder();
+    public static MemberQueryBuilder 클라이언트_요청() {
+        return new MemberQueryBuilder();
     }
 
     public static LoginMemberInfoResponse 로그인한_사용자_프로필_응답(final Member 맴버) {
         return LoginMemberInfoResponse.from(맴버);
     }
 
-    public static class MemberClientRequestBuilder {
+    public static class MemberQueryBuilder {
 
         private ExtractableResponse<Response> response;
 
         private String accessToken;
 
-        public MemberClientRequestBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
+        public MemberQueryBuilder 액세스_토큰으로_로그인_한다(final String 액세스_토큰) {
             accessToken = 액세스_토큰;
             return this;
         }
 
-        public MemberClientRequestBuilder 사용자_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다() {
+        public MemberQueryBuilder 사용자_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다() {
             response = AssuredSupport.get("api/v1/profile/me", accessToken);
             return this;
         }
 
-        public MemberServerResponseBuilder 서버_응답() {
-            return new MemberServerResponseBuilder(response);
+        public MemberQueryResponseBuilder 서버_응답() {
+            return new MemberQueryResponseBuilder(response);
         }
     }
 
-    public static class MemberServerResponseBuilder {
+    public static class MemberQueryResponseBuilder {
 
         private final ExtractableResponse<Response> response;
 
-        public MemberServerResponseBuilder(final ExtractableResponse<Response> response) {
+        public MemberQueryResponseBuilder(final ExtractableResponse<Response> response) {
             this.response = response;
         }
 

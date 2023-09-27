@@ -5,7 +5,6 @@ import io.restassured.response.Response;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.domain.member.command.Supporter;
-import touch.baton.domain.member.command.service.dto.SupporterUpdateRequest;
 import touch.baton.domain.member.query.controller.response.SupporterResponse;
 
 import java.util.List;
@@ -59,11 +58,6 @@ public class SupporterQueryAssuredSupport {
 
         public SupporterQueryBuilder 서포터_프로필을_서포터_식별자값으로_조회한다(final Long 서포터_식별자값) {
             response = AssuredSupport.get("/api/v1/profile/supporter/{supporterId}", new PathParams(Map.of("supporterId", 서포터_식별자값)));
-            return this;
-        }
-
-        public SupporterQueryBuilder 서포터_본인_프로필을_수정한다(final SupporterUpdateRequest 서포터_업데이트_요청) {
-            response = AssuredSupport.patch("/api/v1/profile/supporter/me", accessToken, 서포터_업데이트_요청);
             return this;
         }
 

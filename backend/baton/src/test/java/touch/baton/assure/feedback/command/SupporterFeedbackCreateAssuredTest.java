@@ -3,7 +3,7 @@ package touch.baton.assure.feedback.command;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
-import touch.baton.assure.feedback.support.command.SupporterFeedbackAssuredSupport;
+import touch.baton.assure.feedback.support.command.SupporterFeedbackCreateAssuredSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostUpdateSupport;
 import touch.baton.config.AssuredTestConfig;
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static touch.baton.assure.feedback.support.command.SupporterFeedbackAssuredSupport.서포터_피드백_요청;
+import static touch.baton.assure.feedback.support.command.SupporterFeedbackCreateAssuredSupport.서포터_피드백_요청;
 import static touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport.러너_게시글_생성_요청;
 import static touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport.러너의_서포터_선택_요청;
 import static touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport.클라이언트_요청;
@@ -39,7 +39,7 @@ class SupporterFeedbackCreateAssuredTest extends AssuredTestConfig {
         서포터가_러너_게시글의_리뷰를_완료로_변경하는_것을_성공한다(헤나_액세스_토큰, 디투_러너_게시글_식별자값);
 
         // then
-        SupporterFeedbackAssuredSupport
+        SupporterFeedbackCreateAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(디투_액세스_토큰)
                 .서포터_피드백을_등록한다(
