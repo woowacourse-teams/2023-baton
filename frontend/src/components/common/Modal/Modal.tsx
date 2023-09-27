@@ -51,8 +51,6 @@ const S = {
     top: 50%;
     left: 50%;
 
-    padding: 20px;
-
     border-radius: 8px;
     background: white;
     box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
