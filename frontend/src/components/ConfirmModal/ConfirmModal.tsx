@@ -30,14 +30,21 @@ const ConfirmModal = ({ contents, closeModal, handleClickConfirmButton, confirmT
     <S.ConfirmModalContainer>
       <S.ConfirmMessage>{contents}</S.ConfirmMessage>
       <S.ButtonContainer>
-        <Button colorTheme="GRAY" width="134px" height="35px" fontSize="16px" fontWeight={700} onClick={closeModal}>
+        <Button
+          colorTheme="GRAY"
+          width={isMobile ? '120px' : '134px'}
+          height="35px"
+          fontSize={isMobile ? '14px' : '16px'}
+          fontWeight={700}
+          onClick={closeModal}
+        >
           {cancelText || '취소'}
         </Button>
         <Button
           colorTheme="WHITE"
-          width="134px"
+          width={isMobile ? '120px' : '134px'}
           height="35px"
-          fontSize={isMobile ? '12px' : '14px'}
+          fontSize={isMobile ? '14px' : '16px'}
           fontWeight={700}
           onClick={handleClickConfirmButton}
         >
