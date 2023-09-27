@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -27,9 +27,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -42,16 +40,16 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostCommandController.class)
 public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostCommandController runnerPostCommandController = new RunnerPostCommandController(runnerPostCommandService);
+        restdocsSetUp(runnerPostCommandController);
     }
 
     @DisplayName("러너 게시글에 리뷰 제안한 서포터가 리뷰 제안 철회 API")
@@ -76,8 +74,8 @@ public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig 
 
         // when
         when(spyRunnerPost.getId()).thenReturn(1L);
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
-        runnerPostService.deleteSupporterRunnerPost(any(), eq(1L));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
+        runnerPostCommandService.deleteSupporterRunnerPost(any(), eq(1L));
 
         // then
         mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/cancelation", 1L)

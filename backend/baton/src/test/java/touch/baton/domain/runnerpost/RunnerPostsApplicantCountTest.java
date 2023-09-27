@@ -2,8 +2,9 @@ package touch.baton.domain.runnerpost;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.runnerpost.exception.RunnerPostBusinessException;
-import touch.baton.domain.runnerpost.repository.dto.RunnerPostApplicantCountDto;
+import touch.baton.domain.runnerpost.command.RunnerPostsApplicantCount;
+import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessException;
+import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
 
 import java.util.ArrayList;
 import java.util.List;

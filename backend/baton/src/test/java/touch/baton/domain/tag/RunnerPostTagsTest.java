@@ -2,15 +2,18 @@ package touch.baton.domain.tag;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.vo.Company;
+import touch.baton.domain.member.command.vo.GithubUrl;
+import touch.baton.domain.member.command.vo.ImageUrl;
+import touch.baton.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.OauthId;
+import touch.baton.domain.member.command.vo.SocialId;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.tag.command.RunnerPostTag;
+import touch.baton.domain.tag.command.RunnerPostTags;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
@@ -25,7 +28,7 @@ class RunnerPostTagsTest {
     @Test
     void addAllRunnerPostTags() {
         // given
-        RunnerPostTags postTags = new RunnerPostTags();
+        RunnerPostTags postTags = new RunnerPostTags(new ArrayList<>());
         Member member = Member.builder()
                 .memberName(new MemberName("러너 사용자"))
                 .socialId(new SocialId("testSocialId"))

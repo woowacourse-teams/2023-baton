@@ -6,10 +6,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.vo.Deadline;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -17,7 +17,7 @@ import touch.baton.fixture.domain.RunnerPostFixture;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static touch.baton.domain.runnerpost.vo.ReviewStatus.OVERDUE;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.OVERDUE;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostDeadlineCheckSchedulerTest extends ServiceTestConfig {

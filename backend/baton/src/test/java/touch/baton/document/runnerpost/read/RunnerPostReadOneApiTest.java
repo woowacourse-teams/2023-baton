@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -40,16 +40,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostQueryController.class)
 class RunnerPostReadOneApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
+        restdocsSetUp(runnerPostQueryController);
     }
 
     @DisplayName("러너 게시글 상세 조회 API")
@@ -72,14 +72,14 @@ class RunnerPostReadOneApiTest extends RestdocsConfig {
         final RunnerPost spyRunnerPost = spy(runnerPost);
         when(spyRunnerPost.getId()).thenReturn(1L);
 
-        when(runnerPostService.readByRunnerPostId(any()))
+        when(runnerPostQueryService.readByRunnerPostId(any()))
                 .thenReturn(spyRunnerPost);
-        when(runnerPostService.readCountByRunnerPostId(any()))
+        when(runnerPostQueryService.readCountByRunnerPostId(any()))
                 .thenReturn(3L);
 
         final String token = getAccessTokenBySocialId(memberHyena.getSocialId().getValue());
 
-        when(oauthMemberRepository.findBySocialId(any()))
+        when(oauthMemberCommandRepository.findBySocialId(any()))
                 .thenReturn(Optional.ofNullable(memberHyena));
 
         // then

@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostCreateRequest;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 
@@ -28,15 +28,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostCommandController.class)
 class RunnerPostCreateApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerPostController(runnerPostService));
+        restdocsSetUp(new RunnerPostCommandController(runnerPostCommandService));
     }
 
     @DisplayName("러너 게시글 등록 API")
@@ -58,8 +58,8 @@ class RunnerPostCreateApiTest extends RestdocsConfig {
         );
 
         // when
-        when(runnerPostService.createRunnerPost(any(Runner.class), any(RunnerPostCreateRequest.class))).thenReturn(1L);
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
+        when(runnerPostCommandService.createRunnerPost(any(Runner.class), any(RunnerPostCreateRequest.class))).thenReturn(1L);
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
 
         // then
         mockMvc.perform(post("/api/v1/posts/runner")

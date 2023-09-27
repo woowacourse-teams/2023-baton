@@ -1,7 +1,7 @@
 package touch.baton.config.converter;
 
 import org.springframework.core.convert.converter.Converter;
-import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.command.OauthType;
 
 public class OauthTypeConverter implements Converter<String, OauthType> {
 

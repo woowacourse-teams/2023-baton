@@ -6,10 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.controller.MemberBranchController;
-import touch.baton.domain.member.service.dto.GithubBranchManageable;
-import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.controller.MemberBranchController;
+import touch.baton.domain.member.command.service.GithubBranchManageable;
+import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
@@ -46,7 +46,7 @@ class GithubBranchApiTest extends RestdocsConfig {
         final GithubRepoNameRequest request = new GithubRepoNameRequest("drunken-ditoo");
 
         // when
-        when(oauthMemberRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
+        when(oauthMemberCommandRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
         doNothing().when(githubBranchManageable).createBranch(eq(socialId), anyString());
 
         // then

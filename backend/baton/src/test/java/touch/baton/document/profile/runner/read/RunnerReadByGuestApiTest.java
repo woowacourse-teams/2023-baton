@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runner.controller.RunnerProfileController;
-import touch.baton.domain.runner.service.RunnerService;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.query.controller.RunnerQueryController;
+import touch.baton.domain.member.query.service.RunnerQueryService;
+import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.TechnicalTagFixture;
@@ -38,18 +38,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerProfileController.class)
+@WebMvcTest(RunnerQueryController.class)
 class RunnerReadByGuestApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @MockBean
-    private RunnerService runnerService;
+    private RunnerQueryService runnerQueryService;
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerProfileController(runnerPostService, runnerService));
+        restdocsSetUp(new RunnerQueryController(runnerPostQueryService, runnerQueryService));
     }
 
     @DisplayName("러너 본인 프로필 조회 API")
@@ -61,7 +61,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
         final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena(), List.of(java, spring));
         final String token = getAccessTokenBySocialId(runner.getMember().getSocialId().getValue());
 
-        when(oauthRunnerRepository.joinByMemberSocialId(notNull())).thenReturn(Optional.ofNullable(runner));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(notNull())).thenReturn(Optional.ofNullable(runner));
 
         // then
         mockMvc.perform(get("/api/v1/profile/runner/me")
@@ -95,7 +95,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
 
         // when
         when(spyRunner.getId()).thenReturn(1L);
-        when(runnerService.readByRunnerId(anyLong())).thenReturn(spyRunner);
+        when(runnerQueryService.readByRunnerId(anyLong())).thenReturn(spyRunner);
 
         // then
         mockMvc.perform(get("/api/v1/profile/runner/{runnerId}", 1L))

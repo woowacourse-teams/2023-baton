@@ -1,50 +1,66 @@
 package touch.baton.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import touch.baton.domain.feedback.repository.SupporterFeedbackRepository;
-import touch.baton.domain.member.repository.MemberRepository;
-import touch.baton.domain.runner.repository.RunnerRepository;
-import touch.baton.domain.runnerpost.repository.RunnerPostRepository;
-import touch.baton.domain.supporter.repository.SupporterRepository;
-import touch.baton.domain.supporter.repository.SupporterRunnerPostRepository;
-import touch.baton.domain.tag.repository.RunnerPostTagRepository;
-import touch.baton.domain.tag.repository.TagRepository;
-import touch.baton.domain.technicaltag.repository.RunnerTechnicalTagRepository;
-import touch.baton.domain.technicaltag.repository.SupporterTechnicalTagRepository;
-import touch.baton.domain.technicaltag.repository.TechnicalTagRepository;
+import touch.baton.domain.feedback.command.repository.SupporterFeedbackCommandRepository;
+import touch.baton.domain.member.command.repository.MemberCommandRepository;
+import touch.baton.domain.member.command.repository.SupporterCommandRepository;
+import touch.baton.domain.member.command.repository.SupporterRunnerPostCommandRepository;
+import touch.baton.domain.member.query.repository.RunnerQueryRepository;
+import touch.baton.domain.member.query.repository.SupporterQueryRepository;
+import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
+import touch.baton.domain.runnerpost.command.repository.RunnerPostCommandRepository;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
+import touch.baton.domain.tag.command.repository.TagCommandRepository;
+import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
+import touch.baton.domain.tag.query.repository.TagQueryRepository;
+import touch.baton.domain.technicaltag.command.repository.RunnerTechnicalTagCommandRepository;
+import touch.baton.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
+import touch.baton.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
 
 public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
-    protected MemberRepository memberRepository;
+    protected MemberCommandRepository memberCommandRepository;
 
     @Autowired
-    protected RunnerRepository runnerRepository;
+    protected RunnerQueryRepository runnerQueryRepository;
 
     @Autowired
-    protected SupporterRepository supporterRepository;
+    protected SupporterQueryRepository supporterQueryRepository;
 
     @Autowired
-    protected RunnerPostRepository runnerPostRepository;
+    protected RunnerPostQueryRepository runnerPostQueryRepository;
 
     @Autowired
-    protected SupporterRunnerPostRepository supporterRunnerPostRepository;
+    protected SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
     @Autowired
-    protected RunnerPostTagRepository runnerPostTagRepository;
+    protected RunnerPostTagQueryRepository runnerPostTagQueryRepository;
 
     @Autowired
-    protected TagRepository tagRepository;
+    protected TagQueryRepository tagQueryRepository;
 
     @Autowired
-    protected SupporterFeedbackRepository supporterFeedbackRepository;
+    protected SupporterFeedbackCommandRepository supporterFeedbackCommandRepository;
 
     @Autowired
-    protected TechnicalTagRepository technicalTagRepository;
+    protected TechnicalTagQueryRepository technicalTagQueryRepository;
 
     @Autowired
-    protected RunnerTechnicalTagRepository runnerTechnicalTagRepository;
+    protected RunnerTechnicalTagCommandRepository runnerTechnicalTagCommandRepository;
 
     @Autowired
-    protected SupporterTechnicalTagRepository supporterTechnicalTagRepository;
+    protected SupporterTechnicalTagCommandRepository supporterTechnicalTagCommandRepository;
+
+    @Autowired
+    protected RunnerPostCommandRepository runnerPostCommandRepository;
+
+    @Autowired
+    protected TagCommandRepository tagCommandRepository;
+
+    @Autowired
+    protected SupporterCommandRepository supporterCommandRepository;
+
+    @Autowired
+    protected SupporterRunnerPostCommandRepository supporterRunnerPostCommandRepository;
 }

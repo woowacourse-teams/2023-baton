@@ -6,15 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.controller.TagController;
-import touch.baton.domain.tag.service.TagService;
+import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.tag.query.controller.TagQueryController;
+import touch.baton.domain.tag.query.service.TagQueryService;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -29,16 +28,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(TagController.class)
+@WebMvcTest(TagQueryController.class)
 class TagReadApiTest extends RestdocsConfig {
 
     @MockBean
-    private TagService tagService;
+    private TagQueryService tagQueryService;
 
     @BeforeEach
     void setUp() {
-        final TagController tagController = new TagController(tagService);
-        restdocsSetUp(tagController);
+        final TagQueryController tagQueryController = new TagQueryController(tagQueryService);
+        restdocsSetUp(tagQueryController);
     }
 
     @DisplayName("태그 검색 API")
@@ -51,7 +50,7 @@ class TagReadApiTest extends RestdocsConfig {
         final Tag javascriptTagSpy = spy(javascriptTag);
 
         // when
-        when(tagService.readTagsByReducedName("java"))
+        when(tagQueryService.readTagsByReducedName("java"))
                 .thenReturn(List.of(javaTagSpy, javascriptTagSpy));
         when(javaTagSpy.getId())
                 .thenReturn(1L);

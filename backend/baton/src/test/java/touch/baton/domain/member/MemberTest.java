@@ -4,18 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.vo.Company;
+import touch.baton.domain.member.command.vo.GithubUrl;
+import touch.baton.domain.member.command.vo.ImageUrl;
+import touch.baton.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.OauthId;
+import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.member.exception.MemberDomainException;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.fixture.domain.MemberFixture;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class MemberTest {
 

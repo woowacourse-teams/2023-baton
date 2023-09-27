@@ -12,13 +12,13 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
-import touch.baton.assure.repository.TestMemberRepository;
+import touch.baton.assure.repository.TestMemberCommandRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
-import touch.baton.assure.repository.TestRunnerPostRepository;
-import touch.baton.assure.repository.TestRunnerRepository;
-import touch.baton.assure.repository.TestSupporterRepository;
-import touch.baton.assure.repository.TestSupporterRunnerPostRepository;
-import touch.baton.assure.repository.TestTagRepository;
+import touch.baton.assure.repository.TestRunnerPostQueryRepository;
+import touch.baton.assure.repository.TestRunnerQueryRepository;
+import touch.baton.assure.repository.TestSupporterQueryRepository;
+import touch.baton.assure.repository.TestSupporterRunnerPostQueryRepository;
+import touch.baton.assure.repository.TestTagQueryRepository;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.infra.auth.MockAuthTestConfig;
 import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
@@ -31,22 +31,22 @@ import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 public abstract class AssuredTestConfig {
 
     @Autowired
-    protected TestMemberRepository memberRepository;
+    protected TestMemberCommandRepository memberRepository;
 
     @Autowired
-    protected TestRunnerRepository runnerRepository;
+    protected TestRunnerQueryRepository runnerRepository;
 
     @Autowired
-    protected TestSupporterRepository supporterRepository;
+    protected TestSupporterQueryRepository supporterRepository;
 
     @Autowired
-    protected TestRunnerPostRepository runnerPostRepository;
+    protected TestRunnerPostQueryRepository runnerPostRepository;
 
     @Autowired
-    protected TestSupporterRunnerPostRepository supporterRunnerPostRepository;
+    protected TestSupporterRunnerPostQueryRepository supporterRunnerPostRepository;
 
     @Autowired
-    protected TestTagRepository tagRepository;
+    protected TestTagQueryRepository tagRepository;
 
     @Autowired
     protected TestRefreshTokenRepository refreshTokenRepository;

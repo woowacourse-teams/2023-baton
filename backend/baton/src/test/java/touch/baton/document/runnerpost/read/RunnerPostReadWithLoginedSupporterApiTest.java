@@ -8,15 +8,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -36,10 +36,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
-import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -55,16 +52,16 @@ import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostQueryController.class)
 public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
+        restdocsSetUp(runnerPostQueryController);
     }
 
     @DisplayName("로그인한 서포터가 참여한 러너 게시글 페이징 조회 API")
@@ -92,15 +89,15 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
         final Supporter spyLoginedSupporter = spy(loginedSupporter);
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(spyLoginedSupporter));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(spyLoginedSupporter));
         when(spyRunnerPost.getId()).thenReturn(1L);
 
         final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
         final PageRequest pageOne = PageRequest.of(1, 10);
         final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
-        when(runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
+        when(runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
-        when(runnerPostService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
+        when(runnerPostQueryService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/me/supporter")

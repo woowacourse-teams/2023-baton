@@ -8,14 +8,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -45,16 +45,16 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.ReviewCountFixture.reviewCount;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostQueryController.class)
 class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostQueryService runnerPostQueryService;
 
     @BeforeEach
     void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
+        final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
+        restdocsSetUp(runnerPostQueryController);
     }
 
     @DisplayName("서포터와 연관된 러너 게시글 페이징 조회 API")
@@ -78,9 +78,9 @@ class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
         final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
         final PageRequest pageOne = PageRequest.of(1, 10);
         final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
-        when(runnerPostService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
+        when(runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
                 .thenReturn(pageRunnerPosts);
-        when(runnerPostService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
+        when(runnerPostQueryService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/search")

@@ -5,8 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.controller.MemberProfileController;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.query.controller.MemberQueryController;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
@@ -29,12 +29,12 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(MemberProfileController.class)
+@WebMvcTest(MemberQueryController.class)
 public class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new MemberProfileController());
+        restdocsSetUp(new MemberQueryController());
     }
 
     @DisplayName("로그인 한 맴버 정보 조회 API")
@@ -53,7 +53,7 @@ public class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
         final String token = getAccessTokenBySocialId(socialId);
 
         // when
-        when(oauthMemberRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
+        when(oauthMemberCommandRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
 
         // then
         mockMvc.perform(get("/api/v1/profile/me").header(AUTHORIZATION, "Bearer " + token))

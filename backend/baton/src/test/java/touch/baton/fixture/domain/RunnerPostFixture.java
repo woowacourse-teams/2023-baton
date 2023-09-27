@@ -1,20 +1,20 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.vo.CuriousContents;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ImplementedContents;
-import touch.baton.domain.runnerpost.vo.IsReviewed;
-import touch.baton.domain.runnerpost.vo.PostscriptContents;
-import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.RunnerPostTags;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.CuriousContents;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.command.vo.IsReviewed;
+import touch.baton.domain.runnerpost.command.vo.PostscriptContents;
+import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.command.vo.Title;
+import touch.baton.domain.runnerpost.command.vo.WatchedCount;
+import touch.baton.domain.tag.command.RunnerPostTag;
+import touch.baton.domain.tag.command.RunnerPostTags;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.vo.DeadlineFixture;
 
 import java.time.LocalDateTime;

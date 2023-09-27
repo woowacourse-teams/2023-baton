@@ -6,12 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostUpdateRequest;
-import touch.baton.domain.supporter.Supporter;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.domain.runnerpost.command.service.dto.RunnerPostUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.SupporterFixture;
@@ -26,9 +26,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -36,15 +34,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RunnerPostController.class)
+@WebMvcTest(RunnerPostCommandController.class)
 public class RunnerPostUpdateApiTest extends RestdocsConfig {
 
     @MockBean
-    private RunnerPostService runnerPostService;
+    private RunnerPostCommandService runnerPostCommandService;
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerPostController(runnerPostService));
+        restdocsSetUp(new RunnerPostCommandController(runnerPostCommandService));
     }
 
     @DisplayName("제안한 서포터 목록 중에서 서포터로 선택하는 API")
@@ -59,8 +57,8 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
         final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(1L);
 
         // when
-        willDoNothing().given(runnerPostService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
+        willDoNothing().given(runnerPostCommandService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
 
         // then
         mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/supporters", 1L)
@@ -87,8 +85,8 @@ public class RunnerPostUpdateApiTest extends RestdocsConfig {
         final String accessToken = getAccessTokenBySocialId(ditooSocialId);
 
         // when
-        willDoNothing().given(runnerPostService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
+        willDoNothing().given(runnerPostCommandService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
 
         // then
         mockMvc.perform(patch("/api/v1/posts/runner/{runnerPostId}/done", 1L)

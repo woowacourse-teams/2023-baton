@@ -23,12 +23,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.converter.OauthTypeConverter;
 import touch.baton.config.converter.ReviewStatusConverter;
-import touch.baton.domain.oauth.controller.resolver.AuthMemberPrincipalArgumentResolver;
-import touch.baton.domain.oauth.controller.resolver.AuthRunnerPrincipalArgumentResolver;
-import touch.baton.domain.oauth.controller.resolver.AuthSupporterPrincipalArgumentResolver;
-import touch.baton.domain.oauth.repository.OauthMemberRepository;
-import touch.baton.domain.oauth.repository.OauthRunnerRepository;
-import touch.baton.domain.oauth.repository.OauthSupporterRepository;
+import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
+import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
+import touch.baton.domain.oauth.command.repository.OauthSupporterCommandRepository;
+import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
+import touch.baton.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
 import java.util.UUID;
@@ -36,9 +36,7 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
 @ExtendWith(RestDocumentationExtension.class)
 @Import({RestDocsResultConfig.class, ConverterConfig.class})
@@ -62,13 +60,13 @@ public abstract class RestdocsConfig {
     protected JwtDecoder jwtDecoder;
 
     @MockBean
-    protected OauthMemberRepository oauthMemberRepository;
+    protected OauthMemberCommandRepository oauthMemberCommandRepository;
 
     @MockBean
-    protected OauthRunnerRepository oauthRunnerRepository;
+    protected OauthRunnerCommandRepository oauthRunnerCommandRepository;
 
     @MockBean
-    protected OauthSupporterRepository oauthSupporterRepository;
+    protected OauthSupporterCommandRepository oauthSupporterCommandRepository;
 
     @Autowired
     protected MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
@@ -77,9 +75,9 @@ public abstract class RestdocsConfig {
     protected Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder;
 
     protected void restdocsSetUp(final Object controller) {
-        authMemberPrincipalArgumentResolver = new AuthMemberPrincipalArgumentResolver(jwtDecoder, oauthMemberRepository);
-        authRunnerPrincipalArgumentResolver = new AuthRunnerPrincipalArgumentResolver(jwtDecoder, oauthRunnerRepository);
-        authSupporterPrincipalArgumentResolver = new AuthSupporterPrincipalArgumentResolver(jwtDecoder, oauthSupporterRepository);
+        authMemberPrincipalArgumentResolver = new AuthMemberPrincipalArgumentResolver(jwtDecoder, oauthMemberCommandRepository);
+        authRunnerPrincipalArgumentResolver = new AuthRunnerPrincipalArgumentResolver(jwtDecoder, oauthRunnerCommandRepository);
+        authSupporterPrincipalArgumentResolver = new AuthSupporterPrincipalArgumentResolver(jwtDecoder, oauthSupporterCommandRepository);
 
         final FormattingConversionService formattingConversionService = new FormattingConversionService();
         formattingConversionService.addConverter(new OauthTypeConverter());
