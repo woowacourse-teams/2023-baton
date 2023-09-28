@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost.query.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +27,7 @@ import touch.baton.domain.runnerpost.command.controller.response.SupporterRunner
 import touch.baton.domain.runnerpost.command.controller.response.SupporterRunnerPostResponses;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 
 import java.util.List;
 import java.util.stream.IntStream;
@@ -39,13 +42,12 @@ public class RunnerPostQueryController {
     private final RunnerPostQueryService runnerPostQueryService;
 
     @GetMapping
-    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostsByTagNamesAndReviewStatus(
-            @RequestParam final int limit,
-            @RequestParam(required = false) final Long cursor,
+    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostsByTagNameAndReviewStatus(
+            @Valid @ModelAttribute PageParams pageParams,
             @RequestParam(required = false) final String tagName,
             @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
-        return ResponseEntity.ok(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(tagName, cursor, limit, reviewStatus));
+        return ResponseEntity.ok(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(tagName, pageParams, reviewStatus));
     }
 
     @GetMapping("/{runnerPostId}")

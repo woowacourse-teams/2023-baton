@@ -15,6 +15,7 @@ import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -24,7 +25,8 @@ import touch.baton.fixture.domain.TagFixture;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -72,7 +74,7 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         // when
         final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(spyRunnerPost, 0L);
         final RunnerPostResponses.Simple runnerPostResponses = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
-        when(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(anyString(), anyLong(), anyInt(), any(ReviewStatus.class)))
+        when(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(anyString(), any(PageParams.class), any(ReviewStatus.class)))
                 .thenReturn(runnerPostResponses);
 
         // then

@@ -17,6 +17,7 @@ import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessExcepti
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
+import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.vo.TagReducedName;
 import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
@@ -34,11 +35,10 @@ public class RunnerPostQueryService {
     private final SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
     public RunnerPostResponses.Simple readRunnerPostByPageInfoAndTagNameAndReviewStatus(final String tagName,
-                                                                                        final Long cursor,
-                                                                                        final int limit,
+                                                                                        final PageParams pageParams,
                                                                                         final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPost> runnerPosts = runnerPostQueryRepository.pageByReviewStatusAndTagReducedName(cursor, limit, TagReducedName.nullableInstance(tagName), reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostQueryRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.limit(), TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostQueryRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface RunnerPostCustomRepository {
 
-    List<RunnerPost> pageByReviewStatusAndTagReducedName(final Long cursor,
+    List<RunnerPost> pageByReviewStatusAndTagReducedName(final Long previousLastId,
                                                          final int limit,
                                                          final TagReducedName tagReducedName,
                                                          final ReviewStatus reviewStatus);
