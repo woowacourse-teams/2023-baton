@@ -59,6 +59,25 @@ public class RunnerPostPageSupport {
             return this;
         }
 
+        public RunnerPostPageBuilder 조건_없이_러너_게시글_첫_페이지를_조회한다(final int 페이지_크기) {
+            final Map<String, Object> queryParams = Map.of(
+                    "limit", 페이지_크기
+            );
+
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
+            return this;
+        }
+
+        public RunnerPostPageBuilder 조건_없이_러너_게시글_중간_페이지를_조회한다(final Long 이전_페이지_마지막_게시글_식별자값, final int 페이지_크기) {
+            final Map<String, Object> queryParams = Map.of(
+                    "cursor", 이전_페이지_마지막_게시글_식별자값,
+                    "limit", 페이지_크기
+            );
+
+            response = AssuredSupport.get("/api/v1/posts/runner", new QueryParams(queryParams));
+            return this;
+        }
+
         public RunnerPostPageBuilder 리뷰_상태로_러너_게시글_첫_페이지를_조회한다(final int 페이지_크기, final ReviewStatus 리뷰_상태) {
             final Map<String, Object> queryParams = Map.of(
                     "limit", 페이지_크기,
