@@ -70,7 +70,6 @@ const S = {
 
     @media (max-width: 768px) {
       width: 90vw;
-      padding: 15px 10px;
     }
   `,
 
