@@ -24,41 +24,7 @@ public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Lon
             """)
     Optional<RunnerPost> joinMemberByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
-    Page<RunnerPost> findByReviewStatus(final Pageable pageable, final ReviewStatus reviewStatus);
-
-    @Query(countQuery = """
-            select count(1)
-            from RunnerPost rp
-            where rp.runner.id = :runnerId
-            and rp.reviewStatus = :reviewStatus
-            """)
-    Page<RunnerPost> findByRunnerIdAndReviewStatus(final Pageable pageable,
-                                                   @Param("runnerId") final Long runnerId,
-                                                   @Param("reviewStatus") final ReviewStatus reviewStatus);
-
     List<RunnerPost> findByRunnerId(final Long runnerId);
-
-    @Query(countQuery = """
-            select count(1)
-            from RunnerPost rp
-            where rp.supporter.id = :supporterId
-            and rp.reviewStatus = :reviewStatus
-            """)
-    Page<RunnerPost> findBySupporterIdAndReviewStatus(final Pageable pageable,
-                                                      @Param("supporterId") final Long supporterId,
-                                                      @Param("reviewStatus") final ReviewStatus reviewStatus);
-
-    @Query("""
-            select rp
-            from RunnerPost rp
-            join fetch SupporterRunnerPost srp on srp.runnerPost.id = rp.id
-            where srp.supporter.id = :supporterId
-            and rp.reviewStatus = :reviewStatus
-            """)
-    Page<RunnerPost> joinSupporterRunnerPostBySupporterIdAndReviewStatus(
-            final Pageable pageable,
-            @Param("supporterId") final Long supporterId,
-            @Param("reviewStatus") final ReviewStatus reviewStatus);
 
     @Query("""
             select new touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto(rp.id, coalesce(count(srp.id), 0L))

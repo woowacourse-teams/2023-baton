@@ -2,7 +2,6 @@ package touch.baton.domain.runnerpost.query.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -92,20 +91,11 @@ public class RunnerPostQueryController {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporter.getId(), reviewStatus));
     }
 
-    @GetMapping("/me/runner")
-    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerMyPage(
+    @GetMapping("/me/runner") public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerPostByLoginedRunnerAndReviewStatus(
             @AuthRunnerPrincipal final Runner runner,
             @Valid @ModelAttribute final PageParams pageParams,
             @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(pageParams, runner.getId(), reviewStatus));
-    }
-
-    private List<Long> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {
-        final List<Long> runnerPostIds = pageRunnerPosts.stream()
-                .map(RunnerPost::getId)
-                .toList();
-
-        return runnerPostQueryService.readCountsByRunnerPostIds(runnerPostIds);
     }
 }

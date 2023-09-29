@@ -3,17 +3,12 @@ package touch.baton.domain.runnerpost.command.repository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
-import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
-import touch.baton.domain.tag.command.Tag;
-import touch.baton.domain.tag.command.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.ArrayList;
@@ -127,46 +122,5 @@ class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
         ));
 
         assertThat(actual).isEqualTo(expected);
-    }
-
-    @DisplayName("축약된 태그 이름과 리뷰 상태로 러너 게시글 페이징 조회에 성공한다.")
-    @Test
-    void findByTagReducedNameAndReviewStatus() {
-        // given
-        final Runner hyenaRunner = persistRunner(MemberFixture.createHyena());
-
-        final RunnerPost runnerPostOne = persistRunnerPost(hyenaRunner);
-        final RunnerPost runnerPostTwo = persistRunnerPost(hyenaRunner);
-        final RunnerPost runnerPostThree = persistRunnerPost(hyenaRunner);
-        final RunnerPost runnerPostFour = persistRunnerPost(hyenaRunner);
-        final RunnerPost runnerPostFive = persistRunnerPost(hyenaRunner);
-        final RunnerPost runnerPostSix = persistRunnerPost(hyenaRunner);
-
-        final Tag javaTag = persistTag("자바");
-        final Tag springTag = persistTag("스프링");
-
-        persistRunnerPostTag(runnerPostOne, javaTag);
-        persistRunnerPostTag(runnerPostTwo, javaTag);
-        persistRunnerPostTag(runnerPostThree, javaTag);
-        persistRunnerPostTag(runnerPostFour, springTag);
-        persistRunnerPostTag(runnerPostFive, javaTag);
-        persistRunnerPostTag(runnerPostSix, springTag);
-
-        em.flush();
-        em.close();
-
-        // when
-        final PageRequest pageOne = PageRequest.of(0, 10);
-
-        final Page<RunnerPost> foundRunnerPosts = runnerPostQueryRepository.findByTagReducedNameAndReviewStatus(
-                pageOne,
-                TagReducedName.from("자바"),
-                ReviewStatus.NOT_STARTED
-        );
-
-        // then
-        final List<RunnerPost> expected = List.of(runnerPostOne, runnerPostTwo, runnerPostThree, runnerPostFive);
-
-        assertThat(foundRunnerPosts.getContent()).isEqualTo(expected);
     }
 }

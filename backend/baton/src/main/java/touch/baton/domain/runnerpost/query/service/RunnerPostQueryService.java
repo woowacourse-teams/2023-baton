@@ -118,10 +118,6 @@ public class RunnerPostQueryService {
         return runnerPostQueryRepository.findByRunnerId(runnerId);
     }
 
-    public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {
-        return supporterRunnerPostQueryRepository.countByRunnerPostIds(runnerPostIds);
-    }
-
     public boolean existsRunnerPostApplicantByRunnerPostIdAndMemberId(final Long runnerPostId, final Long memberId) {
         return supporterRunnerPostQueryRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
     }
