@@ -36,23 +36,23 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-one-api-test
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-runner-api-test/read-runner-post-by-logined-runner-and-review-status/http-request.adoc[]
 
 ===== *Http Request Headers*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/request-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-runner-api-test/read-runner-post-by-logined-runner-and-review-status/request-headers.adoc[]
 
 ===== *Http Request Query Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/query-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-runner-api-test/read-runner-post-by-logined-runner-and-review-status/query-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-runner-api-test/read-runner-post-by-logined-runner-and-review-status/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-all-api-test/read-runner-my-page/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-runner-api-test/read-runner-post-by-logined-runner-and-review-status/response-fields.adoc[]
 
 ==== *리뷰 지원한 서포터 조회 API*
 
