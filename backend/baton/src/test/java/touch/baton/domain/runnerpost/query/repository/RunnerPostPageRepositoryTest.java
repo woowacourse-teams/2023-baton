@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.command.repository.read;
+package touch.baton.domain.runnerpost.query.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,7 +9,6 @@ import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.IsReviewed;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
-import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.domain.tag.command.vo.TagReducedName;

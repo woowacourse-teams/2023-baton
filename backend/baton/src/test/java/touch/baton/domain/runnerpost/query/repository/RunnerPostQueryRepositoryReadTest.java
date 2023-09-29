@@ -1,6 +1,5 @@
-package touch.baton.domain.runnerpost.command.repository.read;
+package touch.baton.domain.runnerpost.query.repository;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,6 @@ import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.IsReviewed;
-import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
@@ -41,9 +39,6 @@ class RunnerPostQueryRepositoryReadTest extends RepositoryTestConfig {
 
     @Autowired
     private RunnerPostTagQueryRepository runnerPostTagQueryRepository;
-
-    @Autowired
-    private EntityManager em;
 
     @DisplayName("RunnerPost 식별자로 RunnerPostTag 목록을 조회할 때 Tag 가 있으면 조회된다.")
     @Test

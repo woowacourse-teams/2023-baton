@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.command.repository;
+package touch.baton.domain.runnerpost.query.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,6 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
-import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class RunnerPostReadRepositoryTest extends RepositoryTestConfig {
+class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
     private RunnerPostQueryRepository runnerPostQueryRepository;

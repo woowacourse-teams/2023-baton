@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.command.service;
+package touch.baton.domain.runnerpost.query.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -28,7 +28,6 @@ import touch.baton.domain.runnerpost.command.vo.Title;
 import touch.baton.domain.runnerpost.command.vo.WatchedCount;
 import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
-import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.RunnerPostTags;
