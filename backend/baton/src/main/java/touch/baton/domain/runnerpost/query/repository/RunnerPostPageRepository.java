@@ -74,6 +74,20 @@ public class RunnerPostPageRepository {
                 .fetch();
     }
 
+    public List<RunnerPost> pageByRunnerIdAndReviewStatus(final Long previousLastId,
+                                                          final int limit,
+                                                          final Long runnerId,
+                                                          final ReviewStatus reviewStatus
+    ) {
+        return jpaQueryFactory.selectFrom(runnerPost)
+                .join(runnerPost.runner, runner).fetchJoin()
+                .join(runner.member, member).fetchJoin()
+                .where(previousLastIdLt(previousLastId), runnerIdEq(runnerId), reviewStatusEq(reviewStatus))
+                .orderBy(runnerPost.id.desc())
+                .limit(limit)
+                .fetch();
+    }
+
     private BooleanExpression previousLastIdLt(final Long previousLastId) {
         if (previousLastId == null) {
             return null;
@@ -90,6 +104,10 @@ public class RunnerPostPageRepository {
 
     private BooleanExpression supporterIdEq(final Long supporterId) {
         return runnerPost.supporter.id.eq(supporterId);
+    }
+
+    private BooleanExpression runnerIdEq(final Long runnerId) {
+        return runnerPost.runner.id.eq(runnerId);
     }
 
     private BooleanExpression supporterIdEqInSupporterRunnerPost(final Long supporterId) {

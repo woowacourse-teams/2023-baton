@@ -365,6 +365,74 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         });
     }
 
+    @DisplayName("러너 외래키로 리뷰 상태가 NOT_STARTED 인 러너 게시글을 페이징 조회한다 (중간 페이지 조회)")
+    @Test
+    void findByPageInfoAndRunnerIdAndReviewStatus_NOT_STARTED() {
+        // given
+        final String tagName = "Javascript";
+        final Tag tag = persistTag(tagName);
+        final Runner runner = persistRunner(MemberFixture.createDitoo());
+
+        final List<Long> runnerPostIds = new ArrayList<>();
+        final int persistSize = 30;
+        for (int i = 0; i < persistSize; i++) {
+            final RunnerPost runnerPost = persistRunnerPost(runner, NOT_STARTED);
+            persistRunnerPostTag(runnerPost, tag);
+            runnerPostIds.add(runnerPost.getId());
+
+        }
+        final int lastIndex = persistSize - 1;
+        final Long previousLastId = runnerPostIds.get(lastIndex);
+        final int limit = 10;
+
+        // when
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(previousLastId, limit, runner.getId(), NOT_STARTED);
+        runnerPostIds.sort(Comparator.reverseOrder());
+        final List<Long> expected = runnerPostIds.stream()
+                .filter(id -> id < previousLastId)
+                .limit(limit)
+                .toList();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(runnerPosts).hasSize(limit);
+            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+                    .isEqualTo(expected);
+        });
+    }
+
+    @DisplayName("러너 외래키로 리뷰 상태가 OVERDUE 인 러너 게시글을 페이징 조회한다 (첫 페이지 조회)")
+    @Test
+    void findLatestByLimitAndRunnerIdAndReviewStatus_OVERDUE() {
+        // given
+        final String tagName = "Java";
+        final Tag tag = persistTag(tagName);
+        final Runner runner = persistRunner(MemberFixture.createDitoo());
+
+        final List<Long> runnerPostIds = new ArrayList<>();
+        final int persistSize = 30;
+        for (int i = 0; i < persistSize; i++) {
+            final RunnerPost runnerPost = persistRunnerPost(runner, OVERDUE);
+            persistRunnerPostTag(runnerPost, tag);
+            runnerPostIds.add(runnerPost.getId());
+        }
+        final int limit = 10;
+
+        // when
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(null, limit, runner.getId(), OVERDUE);
+        runnerPostIds.sort(Comparator.reverseOrder());
+        final List<Long> expected = runnerPostIds.stream()
+                .limit(limit)
+                .toList();
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(runnerPosts).hasSize(limit);
+            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+                    .isEqualTo(expected);
+        });
+    }
+
     @DisplayName("RunnerPost 목록으로 RunnerPostTag 목록을 조회한다.")
     @Test
     void findRunnerPostTagsByRunnerPosts() {
