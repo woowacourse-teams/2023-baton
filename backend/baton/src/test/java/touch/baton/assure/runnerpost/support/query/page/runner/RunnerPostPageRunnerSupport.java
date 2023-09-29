@@ -11,7 +11,7 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.QueryParams;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 
 import java.util.List;

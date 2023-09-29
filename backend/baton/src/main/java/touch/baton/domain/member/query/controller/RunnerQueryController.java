@@ -12,7 +12,7 @@ import touch.baton.domain.member.query.controller.response.RunnerProfileResponse
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
-import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 
 import java.util.List;

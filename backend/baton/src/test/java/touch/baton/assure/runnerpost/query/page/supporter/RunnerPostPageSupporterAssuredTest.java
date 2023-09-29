@@ -11,8 +11,8 @@ import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponses;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 

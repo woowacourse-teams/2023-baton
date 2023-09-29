@@ -6,8 +6,8 @@ import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponses;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 
 import java.time.LocalDateTime;

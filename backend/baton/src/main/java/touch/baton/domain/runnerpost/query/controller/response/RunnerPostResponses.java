@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.command.controller.response;
+package touch.baton.domain.runnerpost.query.controller.response;
 
 import java.util.List;
 
