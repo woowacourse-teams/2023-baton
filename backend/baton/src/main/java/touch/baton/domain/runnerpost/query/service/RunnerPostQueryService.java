@@ -16,6 +16,7 @@ import touch.baton.domain.runnerpost.command.controller.response.RunnerPostRespo
 import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.RunnerPostTag;
@@ -31,6 +32,7 @@ import java.util.Objects;
 public class RunnerPostQueryService {
 
     private final RunnerPostQueryRepository runnerPostQueryRepository;
+    private final RunnerPostPageRepository runnerPostPageRepository;
     private final RunnerPostTagQueryRepository runnerPostTagQueryRepository;
     private final SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
@@ -38,8 +40,8 @@ public class RunnerPostQueryService {
                                                                              final PageParams pageParams,
                                                                              final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPost> runnerPosts = runnerPostQueryRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.limit(), TagReducedName.nullableInstance(tagName), reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostQueryRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.limit(), TagReducedName.nullableInstance(tagName), reviewStatus);
+        final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
@@ -96,7 +98,7 @@ public class RunnerPostQueryService {
                                                                                  final ReviewStatus reviewStatus
     ) {
         final List<RunnerPost> runnerPosts = pageRunnerPostFromSupporterByReviewStatus(pageParams, supporterId, reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostQueryRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
+        final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
     }
@@ -106,9 +108,9 @@ public class RunnerPostQueryService {
                                                                        final ReviewStatus reviewStatus
     ) {
         if (reviewStatus == ReviewStatus.NOT_STARTED) {
-            return runnerPostQueryRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), pageParams.limit(), supporterId);
+            return runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), pageParams.limit(), supporterId);
         }
-        return runnerPostQueryRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), pageParams.limit(), supporterId, reviewStatus);
+        return runnerPostPageRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), pageParams.limit(), supporterId, reviewStatus);
     }
 
     public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Runner runner, final Long runnerPostId) {

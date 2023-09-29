@@ -29,6 +29,7 @@ import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.command.vo.Title;
 import touch.baton.domain.runnerpost.command.vo.WatchedCount;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.RunnerPostTag;
@@ -63,7 +64,11 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        runnerPostQueryService = new RunnerPostQueryService(runnerPostQueryRepository, runnerPostTagQueryRepository, supporterRunnerPostQueryRepository);
+        runnerPostQueryService = new RunnerPostQueryService(
+                runnerPostQueryRepository,
+                new RunnerPostPageRepository(jpaQueryFactory),
+                runnerPostTagQueryRepository,
+                supporterRunnerPostQueryRepository);
     }
 
     @DisplayName("태그 이름과 리뷰 상태를 조건으로 러너 게시글 첫 페이지 조회에 성공한다.")

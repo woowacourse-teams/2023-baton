@@ -22,11 +22,10 @@ import static touch.baton.domain.tag.command.QTag.tag;
 
 @RequiredArgsConstructor
 @Repository
-public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepository {
-// TODO: 클래스 명 RunnerPostQueryRepository
+public class RunnerPostPageRepository {
+
     private final JPAQueryFactory jpaQueryFactory;
 
-    @Override
     public List<RunnerPost> pageByReviewStatusAndTagReducedName(final Long previousLastId,
                                                                 final int limit,
                                                                 final TagReducedName tagReducedName,
@@ -48,7 +47,6 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
         return query.fetch();
     }
 
-    @Override
     public List<RunnerPost> pageBySupporterIdAndReviewStatus(final Long previousLastId,
                                                              final int limit,
                                                              final Long supporterId,
@@ -64,7 +62,6 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
                 .fetch();
     }
 
-    @Override
     public List<RunnerPost> pageBySupporterIdAndReviewStatusNotStarted(final Long previousLastId, final int limit, final Long supporterId) {
         return jpaQueryFactory.select(supporterRunnerPost.runnerPost)
                 .from(supporterRunnerPost)
@@ -99,7 +96,6 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
         return supporterRunnerPost.supporter.id.eq(supporterId);
     }
 
-    @Override
     public List<RunnerPostTag> findRunnerPostTagsByRunnerPosts(final List<RunnerPost> runnerPosts) {
         return jpaQueryFactory.selectFrom(runnerPostTag)
                 .join(runnerPostTag.tag, tag).fetchJoin()

@@ -1,5 +1,6 @@
 package touch.baton.config;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -29,6 +30,9 @@ public abstract class RepositoryTestConfig {
 
     @Autowired
     protected EntityManager em;
+
+    @Autowired
+    protected JPAQueryFactory jpaQueryFactory;
 
     protected Runner persistRunner(final Member member) {
         em.persist(member);

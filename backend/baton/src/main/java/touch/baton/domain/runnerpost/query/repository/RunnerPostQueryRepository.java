@@ -13,7 +13,7 @@ import touch.baton.domain.tag.command.vo.TagReducedName;
 import java.util.List;
 import java.util.Optional;
 
-public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Long>, RunnerPostCustomRepository {
+public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Long> {
 
     @Query(value = """
             select rp, r, m
