@@ -80,37 +80,37 @@ include::{snippets}/../../build/generated-snippets/supporter-runner-post-read-ap
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-posts-by-logined-supporter-and-review-status/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-post-by-logined-supporter-and-review-status/http-request.adoc[]
 
 ===== *Http Request Query Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-posts-by-logined-supporter-and-review-status/query-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-post-by-logined-supporter-and-review-status/query-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-posts-by-logined-supporter-and-review-status/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-post-by-logined-supporter-and-review-status/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-posts-by-logined-supporter-and-review-status/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-post-by-logined-supporter-and-review-status/response-fields.adoc[]
 
 ==== *서포터 리뷰 완료한 게시글 조회 API*
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-referenced-by-supporter/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-runner-post-by-supporter-id-and-review-status/http-request.adoc[]
 
 ===== *Http Request Query Parameters*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-referenced-by-supporter/query-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-runner-post-by-supporter-id-and-review-status/query-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-referenced-by-supporter/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-runner-post-by-supporter-id-and-review-status/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-referenced-by-supporter/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-runner-post-by-supporter-id-and-review-status/response-fields.adoc[]
 
 ==== *태그 이름과 리뷰 상태를 조건으로 러너 게시글 페이징 조회 API*
 
