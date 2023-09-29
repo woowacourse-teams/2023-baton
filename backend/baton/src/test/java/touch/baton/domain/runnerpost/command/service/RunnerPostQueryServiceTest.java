@@ -105,7 +105,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
                 new PageParams(null, 10),
                 ReviewStatus.NOT_STARTED
@@ -166,7 +166,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
                 new PageParams(previousRunnerPost.getId(), 10),
                 ReviewStatus.NOT_STARTED
@@ -220,7 +220,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
                 new PageParams(null, 10),
                 ReviewStatus.NOT_STARTED
@@ -282,7 +282,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
                 new PageParams(previousRunnerPost.getId(), 10),
                 ReviewStatus.NOT_STARTED
@@ -330,7 +330,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
                 new PageParams(null, 10),
                 null
@@ -384,7 +384,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
                 new PageParams(previousRunnerPost.getId(), 10),
                 null
@@ -431,7 +431,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
                 new PageParams(null, 10),
                 null
@@ -486,7 +486,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(
+        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
                 new PageParams(previousRunnerPost.getId(), 10),
                 null
@@ -590,9 +590,9 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         });
     }
 
-    @DisplayName("Supporter 외래키와 ReviewStatus 가 NOT_STARTED 가 아닌 것으로 러너 게시글을 조회한다.")
+    @DisplayName("Supporter 외래키와 ReviewStatus 로 러너 게시글을 조회한다. (NOT_STARTED 제외)")
     @Test
-    void readRunnerPostsBySupporterIdAndReviewStatusIsNot_NOT_STARTED() {
+    void readRunnerPostsBySupporterIdAndReviewStatus() {
         // given
         final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
         final Runner savedRunnerEthan = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberEthan));
@@ -607,15 +607,38 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
 
         // when
-        final PageRequest pageable = PageRequest.of(0, 10);
-        final Page<RunnerPost> pageRunnerPosts
-                = runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), IN_PROGRESS);
+        final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(savedRunnerPost, 1L);
+        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
+        final RunnerPostResponses.Simple actual
+                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, 10), savedSupporterHyena.getId(), IN_PROGRESS);
 
         // then
-        assertAll(
-                () -> assertThat(pageRunnerPosts.getPageable()).isEqualTo(pageable),
-                () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
-        );
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("Supporter 외래키와 ReviewStatus 로 러너 게시글을 조회한다. (NOT_STARTED 인 경우)")
+    @Test
+    void readRunnerPostsBySupporterIdAndReviewStatusIs_NOT_STARTED() {
+        // given
+        final Member member = memberCommandRepository.save(MemberFixture.createEthan());
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
+
+        final Member supporterMember = memberCommandRepository.save(MemberFixture.createHyena());
+        final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(supporterMember));
+
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(now().plusHours(100)));
+        final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(runnerPost);
+
+        supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+
+        // when
+        final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(savedRunnerPost, 1L);
+        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
+        final RunnerPostResponses.Simple actual
+                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, 10), supporter.getId(), NOT_STARTED);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
     }
 
     @DisplayName("Runner 외래키와 ReviewStatus 로 러너 게시글을 조회한다.")
@@ -632,72 +655,6 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         final PageRequest pageable = PageRequest.of(0, 10);
         final Page<RunnerPost> pageRunnerPosts
                 = runnerPostQueryService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, savedRunnerEthan.getId(), ReviewStatus.NOT_STARTED);
-
-        // then
-        assertAll(
-                () -> assertThat(pageRunnerPosts.getPageable()).isEqualTo(pageable),
-                () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
-        );
-    }
-
-    @DisplayName("RunnerPost 식별자값으로 Supporter 지원자수를 count 한다.")
-    @Test
-    void readCountByRunnerPostId() {
-        // given
-        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
-        final Runner savedRunnerEthan = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberEthan));
-
-        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
-
-        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
-        final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(runnerPost);
-        savedRunnerPost.assignSupporter(savedSupporterHyena);
-        supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
-
-        // when
-        final long foundApplicantCount = runnerPostQueryService.readCountByRunnerPostId(savedRunnerPost.getId());
-
-        // then
-        assertThat(foundApplicantCount).isEqualTo(1);
-    }
-
-    @DisplayName("RunnerPost 식별자값으로 찾은 Supporter 지원자가 아무도 없을 경우 count 로 0을 반환한다.")
-    @Test
-    void readCountByRunnerPostId_is_null_then_return_zero() {
-        // given
-        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
-        final Runner savedRunnerEthan = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberEthan));
-
-        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
-        final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(runnerPost);
-
-        // when
-        final long foundApplicantCount = runnerPostQueryService.readCountByRunnerPostId(savedRunnerPost.getId());
-
-        // then1
-        assertThat(foundApplicantCount).isZero();
-    }
-
-    @DisplayName("Supporter 외래키와 ReviewStatus 가 NOT_STARTED 로 러너 게시글을 조회한다.")
-    @Test
-    void readRunnerPostsBySupporterIdAndReviewStatusIs_NOT_STARTED() {
-        // given
-        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
-        final Runner savedRunnerEthan = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberEthan));
-
-        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
-
-        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
-        final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(runnerPost);
-
-        supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
-
-        // when
-        final PageRequest pageable = PageRequest.of(0, 10);
-        final Page<RunnerPost> pageRunnerPosts
-                = runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, savedSupporterHyena.getId(), NOT_STARTED);
 
         // then
         assertAll(

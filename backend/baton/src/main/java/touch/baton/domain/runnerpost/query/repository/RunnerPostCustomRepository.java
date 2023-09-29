@@ -15,4 +15,13 @@ public interface RunnerPostCustomRepository {
                                                          final ReviewStatus reviewStatus);
 
     List<RunnerPostTag> findRunnerPostTagsByRunnerPosts(final List<RunnerPost> runnerPosts);
+
+    List<RunnerPost> pageBySupporterIdAndReviewStatus(final Long previousLastId,
+                                                      final int limit,
+                                                      final Long supporterId,
+                                                      final ReviewStatus reviewStatus);
+
+    List<RunnerPost> pageBySupporterIdAndReviewStatusNotStarted(final Long previousLastId,
+                                                                final int limit,
+                                                                final Long supporterId);
 }

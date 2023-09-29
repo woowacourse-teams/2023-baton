@@ -34,9 +34,9 @@ public class RunnerPostQueryService {
     private final RunnerPostTagQueryRepository runnerPostTagQueryRepository;
     private final SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
-    public RunnerPostResponses.Simple readRunnerPostByPageInfoAndTagNameAndReviewStatus(final String tagName,
-                                                                                        final PageParams pageParams,
-                                                                                        final ReviewStatus reviewStatus
+    public RunnerPostResponses.Simple pageRunnerPostByTagNameAndReviewStatus(final String tagName,
+                                                                             final PageParams pageParams,
+                                                                             final ReviewStatus reviewStatus
     ) {
         final List<RunnerPost> runnerPosts = runnerPostQueryRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.limit(), TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostQueryRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
@@ -91,6 +91,26 @@ public class RunnerPostQueryService {
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
     }
 
+    public RunnerPostResponses.Simple pageRunnerPostBySupporterIdAndReviewStatus(final PageParams pageParams,
+                                                                                 final Long supporterId,
+                                                                                 final ReviewStatus reviewStatus
+    ) {
+        final List<RunnerPost> runnerPosts = pageRunnerPostFromSupporterByReviewStatus(pageParams, supporterId, reviewStatus);
+        final List<RunnerPostTag> runnerPostTags = runnerPostQueryRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
+        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
+        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
+    }
+
+    private List<RunnerPost> pageRunnerPostFromSupporterByReviewStatus(final PageParams pageParams,
+                                                                       final Long supporterId,
+                                                                       final ReviewStatus reviewStatus
+    ) {
+        if (reviewStatus == ReviewStatus.NOT_STARTED) {
+            return runnerPostQueryRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), pageParams.limit(), supporterId);
+        }
+        return runnerPostQueryRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), pageParams.limit(), supporterId, reviewStatus);
+    }
+
     public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Runner runner, final Long runnerPostId) {
         final RunnerPost foundRunnerPost = runnerPostQueryRepository.joinMemberByRunnerPostId(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException(("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다.")));
@@ -111,16 +131,6 @@ public class RunnerPostQueryService {
                                                                      final ReviewStatus reviewStatus
     ) {
         return runnerPostQueryRepository.findByRunnerIdAndReviewStatus(pageable, runnerId, reviewStatus);
-    }
-
-    public Page<RunnerPost> readRunnerPostsBySupporterIdAndReviewStatus(final Pageable pageable,
-                                                                        final Long supporterId,
-                                                                        final ReviewStatus reviewStatus
-    ) {
-        if (reviewStatus.isSameAsNotStarted()) {
-            return runnerPostQueryRepository.joinSupporterRunnerPostBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
-        }
-        return runnerPostQueryRepository.findBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {

@@ -14,6 +14,8 @@ import java.util.List;
 
 import static touch.baton.domain.member.command.QMember.member;
 import static touch.baton.domain.member.command.QRunner.runner;
+import static touch.baton.domain.member.command.QSupporter.supporter;
+import static touch.baton.domain.member.command.QSupporterRunnerPost.supporterRunnerPost;
 import static touch.baton.domain.runnerpost.command.QRunnerPost.runnerPost;
 import static touch.baton.domain.tag.command.QRunnerPostTag.runnerPostTag;
 import static touch.baton.domain.tag.command.QTag.tag;
@@ -46,6 +48,35 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
         return query.fetch();
     }
 
+    @Override
+    public List<RunnerPost> pageBySupporterIdAndReviewStatus(final Long previousLastId,
+                                                             final int limit,
+                                                             final Long supporterId,
+                                                             final ReviewStatus reviewStatus
+    ) {
+        return jpaQueryFactory.selectFrom(runnerPost)
+                .join(runnerPost.runner, runner).fetchJoin()
+                .join(runner.member, member).fetchJoin()
+                .join(runnerPost.supporter, supporter).fetchJoin()
+                .where(previousLastIdLt(previousLastId), supporterIdEq(supporterId), reviewStatusEq(reviewStatus))
+                .orderBy(runnerPost.id.desc())
+                .limit(limit)
+                .fetch();
+    }
+
+    @Override
+    public List<RunnerPost> pageBySupporterIdAndReviewStatusNotStarted(final Long previousLastId, final int limit, final Long supporterId) {
+        return jpaQueryFactory.select(supporterRunnerPost.runnerPost)
+                .from(supporterRunnerPost)
+                .join(supporterRunnerPost.runnerPost, runnerPost)
+                .join(runnerPost.runner, runner).fetchJoin()
+                .join(runner.member, member).fetchJoin()
+                .where(previousLastIdLt(previousLastId), supporterIdEqInSupporterRunnerPost(supporterId), reviewStatusEq(ReviewStatus.NOT_STARTED))
+                .orderBy(runnerPost.id.desc())
+                .limit(limit)
+                .fetch();
+    }
+
     private BooleanExpression previousLastIdLt(final Long previousLastId) {
         if (previousLastId == null) {
             return null;
@@ -58,6 +89,14 @@ public class RunnerPostCustomRepositoryImpl implements RunnerPostCustomRepositor
             return null;
         }
         return runnerPost.reviewStatus.eq(reviewStatus);
+    }
+
+    private BooleanExpression supporterIdEq(final Long supporterId) {
+        return runnerPost.supporter.id.eq(supporterId);
+    }
+
+    private BooleanExpression supporterIdEqInSupporterRunnerPost(final Long supporterId) {
+        return supporterRunnerPost.supporter.id.eq(supporterId);
     }
 
     @Override

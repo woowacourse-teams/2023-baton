@@ -10,7 +10,6 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.command.controller.response.RunnerPostResponses;
-import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
@@ -48,9 +47,6 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
     @MockBean
     private RunnerPostQueryService runnerPostQueryService;
 
-    @MockBean
-    private RunnerPostCommandService runnerPostCommandService;
-
     @BeforeEach
     void setUp() {
         final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
@@ -74,7 +70,7 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         // when
         final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(spyRunnerPost, 0L);
         final RunnerPostResponses.Simple runnerPostResponses = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
-        when(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(anyString(), any(PageParams.class), any(ReviewStatus.class)))
+        when(runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(anyString(), any(PageParams.class), any(ReviewStatus.class)))
                 .thenReturn(runnerPostResponses);
 
         // then

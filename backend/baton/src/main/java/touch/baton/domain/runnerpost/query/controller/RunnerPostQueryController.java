@@ -43,11 +43,11 @@ public class RunnerPostQueryController {
 
     @GetMapping
     public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostsByTagNameAndReviewStatus(
-            @Valid @ModelAttribute PageParams pageParams,
+            @Valid @ModelAttribute final PageParams pageParams,
             @RequestParam(required = false) final String tagName,
             @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
-        return ResponseEntity.ok(runnerPostQueryService.readRunnerPostByPageInfoAndTagNameAndReviewStatus(tagName, pageParams, reviewStatus));
+        return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(tagName, pageParams, reviewStatus));
     }
 
     @GetMapping("/{runnerPostId}")
@@ -71,26 +71,11 @@ public class RunnerPostQueryController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readReferencedBySupporter(
-            @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,
-            @RequestParam("supporterId") final Long supporterId,
-            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
+    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostBySupporterIdAndReviewStatusDone(
+            @Valid @ModelAttribute final PageParams pageParams,
+            @RequestParam("supporterId") final Long supporterId
     ) {
-        final Page<RunnerPost> pageRunnerPosts = runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporterId, reviewStatus);
-        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
-        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
-        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
-                .mapToObj(index -> {
-                    final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
-                    final long applicantCount = applicantCounts.get(index);
-
-                    return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
-                }).toList();
-
-        final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
-
-        return ResponseEntity.ok(PageResponse.from(pageResponse));
+        return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporterId, ReviewStatus.DONE));
     }
 
     @GetMapping("/{runnerPostId}/supporters")
@@ -106,26 +91,12 @@ public class RunnerPostQueryController {
     }
 
     @GetMapping("/me/supporter")
-    public ResponseEntity<PageResponse<RunnerPostResponse.ReferencedBySupporter>> readRunnerPostsByLoginedSupporterAndReviewStatus(
-            @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,
+    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostByLoginedSupporterAndReviewStatus(
             @AuthSupporterPrincipal final Supporter supporter,
-            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
+            @Valid @ModelAttribute final PageParams pageParams,
+            @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
-        final Page<RunnerPost> pageRunnerPosts = runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(pageable, supporter.getId(), reviewStatus);
-        final List<RunnerPost> foundRunnerPosts = pageRunnerPosts.getContent();
-        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
-        final List<RunnerPostResponse.ReferencedBySupporter> responses = IntStream.range(0, foundRunnerPosts.size())
-                .mapToObj(index -> {
-                    final RunnerPost foundRunnerPost = foundRunnerPosts.get(index);
-                    final Long applicantCount = applicantCounts.get(index);
-
-                    return RunnerPostResponse.ReferencedBySupporter.of(foundRunnerPost, applicantCount);
-                }).toList();
-
-        final Page<RunnerPostResponse.ReferencedBySupporter> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
-
-        return ResponseEntity.ok(PageResponse.from(pageResponse));
+        return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporter.getId(), reviewStatus));
     }
 
     @GetMapping("/me/runner")
