@@ -3,6 +3,7 @@ package touch.baton.domain.runnerpost.query.controller.response;
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.tag.command.RunnerPostTag;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,8 +61,9 @@ public record RunnerPostResponse() {
                          List<String> tags
     ) {
 
-        public static Simple from(final RunnerPost runnerPost,
-                                  final long applicantCount
+        public static Simple of(final RunnerPost runnerPost,
+                                final long applicantCount,
+                                final List<RunnerPostTag> runnerPostTags
         ) {
             return new Simple(
                     runnerPost.getId(),
@@ -71,28 +73,7 @@ public record RunnerPostResponse() {
                     applicantCount,
                     runnerPost.getReviewStatus().name(),
                     RunnerResponse.Simple.from(runnerPost.getRunner()),
-                    convertToTags(runnerPost)
-            );
-        }
-    }
-
-    public record LoginedSupporter(Long runnerPostId,
-                                   String title,
-                                   LocalDateTime deadline,
-                                   List<String> tags,
-                                   int watchedCount,
-                                   int applicantCount
-
-    ) {
-
-        public static LoginedSupporter from(final RunnerPost runnerPost, final int applicantCount) {
-            return new LoginedSupporter(
-                    runnerPost.getId(),
-                    runnerPost.getTitle().getValue(),
-                    runnerPost.getDeadline().getValue(),
-                    convertToTags(runnerPost),
-                    runnerPost.getWatchedCount().getValue(),
-                    applicantCount
+                    convertToTags(runnerPost, runnerPostTags)
             );
         }
     }
@@ -115,31 +96,32 @@ public record RunnerPostResponse() {
         }
     }
 
-    public record SimpleInMyPage(Long runnerPostId,
-                                 Long supporterId,
+    public record SimpleByRunner(Long runnerPostId,
                                  String title,
                                  LocalDateTime deadline,
-                                 List<String> tags,
                                  int watchedCount,
                                  long applicantCount,
                                  String reviewStatus,
-                                 boolean isReviewed
+                                 boolean isReviewed,
+                                 Long supporterId,
+                                 List<String> tags
 
     ) {
 
-        public static SimpleInMyPage from(final RunnerPost runnerPost,
-                                          final long applicantCount
+        public static SimpleByRunner of(final RunnerPost runnerPost,
+                                        final long applicantCount,
+                                        final List<RunnerPostTag> runnerPostTags
         ) {
-            return new SimpleInMyPage(
+            return new SimpleByRunner(
                     runnerPost.getId(),
-                    getSupporterIdByRunnerPost(runnerPost),
                     runnerPost.getTitle().getValue(),
                     runnerPost.getDeadline().getValue(),
-                    convertToTags(runnerPost),
                     runnerPost.getWatchedCount().getValue(),
                     applicantCount,
                     runnerPost.getReviewStatus().name(),
-                    runnerPost.getIsReviewed().getValue()
+                    runnerPost.getIsReviewed().getValue(),
+                    getSupporterIdByRunnerPost(runnerPost),
+                    convertToTags(runnerPost, runnerPostTags)
             );
         }
 
@@ -151,32 +133,17 @@ public record RunnerPostResponse() {
         }
     }
 
-    public record ReferencedBySupporter(Long runnerPostId,
-                                        String title,
-                                        LocalDateTime deadline,
-                                        List<String> tags,
-                                        int watchedCount,
-                                        long applicantCount,
-                                        String reviewStatus
-    ) {
-
-        public static ReferencedBySupporter of(final RunnerPost runnerPost, final long applicantCount) {
-            return new ReferencedBySupporter(
-                    runnerPost.getId(),
-                    runnerPost.getTitle().getValue(),
-                    runnerPost.getDeadline().getValue(),
-                    convertToTags(runnerPost),
-                    runnerPost.getWatchedCount().getValue(),
-                    applicantCount,
-                    runnerPost.getReviewStatus().name()
-            );
-        }
-    }
-
     private static List<String> convertToTags(final RunnerPost runnerPost) {
         return runnerPost.getRunnerPostTags()
                 .getRunnerPostTags()
                 .stream()
+                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
+                .toList();
+    }
+
+    private static List<String> convertToTags(final RunnerPost runnerPost, final List<RunnerPostTag> runnerPostTags) {
+        return runnerPostTags.stream()
+                .filter(runnerPostTag -> Objects.equals(runnerPostTag.getRunnerPost().getId(), runnerPost.getId()))
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .toList();
     }

@@ -1,21 +1,18 @@
 package touch.baton.domain.runnerpost.query.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.SupporterRunnerPost;
-import touch.baton.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.RunnerPostsApplicantCount;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
@@ -24,26 +21,63 @@ import touch.baton.domain.tag.command.vo.TagReducedName;
 import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
 
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class RunnerPostQueryService {
 
+    private static final int ADDITIONAL_QUERY_DATA_COUNT = 1;
+
     private final RunnerPostQueryRepository runnerPostQueryRepository;
     private final RunnerPostPageRepository runnerPostPageRepository;
     private final RunnerPostTagQueryRepository runnerPostTagQueryRepository;
     private final SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;
 
-    public RunnerPostResponses.Simple pageRunnerPostByTagNameAndReviewStatus(final String tagName,
-                                                                             final PageParams pageParams,
-                                                                             final ReviewStatus reviewStatus
+    public RunnerPost readByRunnerPostId(final Long runnerPostId) {
+        runnerPostTagQueryRepository.joinTagByRunnerPostId(runnerPostId);
+        return runnerPostQueryRepository.joinMemberByRunnerPostId(runnerPostId)
+                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
+    }
+
+    public PageResponse<RunnerPostResponse.Simple> pageRunnerPostByTagNameAndReviewStatus(final String tagName,
+                                                                                          final PageParams pageParams,
+                                                                                          final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.limit(), TagReducedName.nullableInstance(tagName), reviewStatus);
+        final int queryCount = pageParams.limit() + ADDITIONAL_QUERY_DATA_COUNT;
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), queryCount, TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
+        return PageResponse.of(
+                runnerPosts,
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags),
+                pageParams.limit()
+        );
+    }
+
+    public PageResponse<RunnerPostResponse.Simple> pageRunnerPostBySupporterIdAndReviewStatus(final PageParams pageParams,
+                                                                                              final Long supporterId,
+                                                                                              final ReviewStatus reviewStatus
+    ) {
+        final List<RunnerPost> runnerPosts = pageRunnerPostFromSupporterByReviewStatus(pageParams, supporterId, reviewStatus);
+        final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
+        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
+        return PageResponse.of(
+                runnerPosts,
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags),
+                pageParams.limit()
+        );
+    }
+
+    private List<RunnerPost> pageRunnerPostFromSupporterByReviewStatus(final PageParams pageParams,
+                                                                       final Long supporterId,
+                                                                       final ReviewStatus reviewStatus
+    ) {
+        final int queryCount = pageParams.limit() + ADDITIONAL_QUERY_DATA_COUNT;
+        if (reviewStatus == ReviewStatus.NOT_STARTED) {
+            return runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), queryCount, supporterId);
+        }
+        return runnerPostPageRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), queryCount, supporterId, reviewStatus);
     }
 
     private RunnerPostsApplicantCount readRunnerPostsApplicantCount(final List<RunnerPost> runnerPosts) {
@@ -54,63 +88,19 @@ public class RunnerPostQueryService {
         return RunnerPostsApplicantCount.from(runnerPostApplicantCountDtos);
     }
 
-    private RunnerPostResponses.Simple convertToSimpleResponses(final List<RunnerPost> runnerPosts,
-                                                                final List<RunnerPostTag> runnerPostTags,
-                                                                final RunnerPostsApplicantCount runnerPostsApplicantCount
+    public PageResponse<RunnerPostResponse.SimpleByRunner> pageRunnerPostByRunnerIdAndReviewStatus(final PageParams pageParams,
+                                                                                                   final Long runnerId,
+                                                                                                   final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPostResponse.Simple> responses = runnerPosts.stream()
-                .map(runnerPost -> convertToSimpleResponse(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags))
-                .toList();
-        return RunnerPostResponses.Simple.from(responses);
-    }
-
-    private RunnerPostResponse.Simple convertToSimpleResponse(final RunnerPost runnerPost,
-                                                              final long applicantCount,
-                                                              final List<RunnerPostTag> runnerPostTags
-    ) {
-        return new RunnerPostResponse.Simple(
-                runnerPost.getId(),
-                runnerPost.getTitle().getValue(),
-                runnerPost.getDeadline().getValue(),
-                runnerPost.getWatchedCount().getValue(),
-                applicantCount,
-                runnerPost.getReviewStatus().name(),
-                RunnerResponse.Simple.from(runnerPost.getRunner()),
-                convertToTags(runnerPost, runnerPostTags)
-        );
-    }
-
-    private List<String> convertToTags(final RunnerPost runnerPost, final List<RunnerPostTag> runnerPostTags) {
-        return runnerPostTags.stream()
-                .filter(runnerPostTag -> Objects.equals(runnerPostTag.getRunnerPost().getId(), runnerPost.getId()))
-                .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
-                .toList();
-    }
-
-    public RunnerPost readByRunnerPostId(final Long runnerPostId) {
-        runnerPostTagQueryRepository.joinTagByRunnerPostId(runnerPostId);
-        return runnerPostQueryRepository.joinMemberByRunnerPostId(runnerPostId)
-                .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
-    }
-
-    public RunnerPostResponses.Simple pageRunnerPostBySupporterIdAndReviewStatus(final PageParams pageParams,
-                                                                                 final Long supporterId,
-                                                                                 final ReviewStatus reviewStatus
-    ) {
-        final List<RunnerPost> runnerPosts = pageRunnerPostFromSupporterByReviewStatus(pageParams, supporterId, reviewStatus);
+        final int queryCount = pageParams.limit() + ADDITIONAL_QUERY_DATA_COUNT;
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(pageParams.cursor(), queryCount, runnerId, reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return convertToSimpleResponses(runnerPosts, runnerPostTags, runnerPostsApplicantCount);
-    }
-
-    private List<RunnerPost> pageRunnerPostFromSupporterByReviewStatus(final PageParams pageParams,
-                                                                       final Long supporterId,
-                                                                       final ReviewStatus reviewStatus
-    ) {
-        if (reviewStatus == ReviewStatus.NOT_STARTED) {
-            return runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), pageParams.limit(), supporterId);
-        }
-        return runnerPostPageRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), pageParams.limit(), supporterId, reviewStatus);
+        return PageResponse.of(
+                runnerPosts,
+                runnerPost -> RunnerPostResponse.SimpleByRunner.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags),
+                pageParams.limit()
+        );
     }
 
     public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Runner runner, final Long runnerPostId) {
@@ -126,13 +116,6 @@ public class RunnerPostQueryService {
 
     public List<RunnerPost> readRunnerPostsByRunnerId(final Long runnerId) {
         return runnerPostQueryRepository.findByRunnerId(runnerId);
-    }
-
-    public Page<RunnerPost> readRunnerPostsByRunnerIdAndReviewStatus(final Pageable pageable,
-                                                                     final Long runnerId,
-                                                                     final ReviewStatus reviewStatus
-    ) {
-        return runnerPostQueryRepository.findByRunnerIdAndReviewStatus(pageable, runnerId, reviewStatus);
     }
 
     public List<Long> readCountsByRunnerPostIds(final List<Long> runnerPostIds) {

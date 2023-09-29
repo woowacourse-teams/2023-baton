@@ -3,9 +3,6 @@ package touch.baton.domain.runnerpost.query.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,18 +18,14 @@ import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
 import touch.baton.domain.oauth.query.controller.resolver.AuthSupporterPrincipal;
 import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponses;
-import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 
 import java.util.List;
-import java.util.stream.IntStream;
-
-import static org.springframework.data.domain.Sort.Direction.DESC;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/posts/runner")
@@ -42,7 +35,7 @@ public class RunnerPostQueryController {
     private final RunnerPostQueryService runnerPostQueryService;
 
     @GetMapping
-    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostsByTagNameAndReviewStatus(
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostsByTagNameAndReviewStatus(
             @Valid @ModelAttribute final PageParams pageParams,
             @RequestParam(required = false) final String tagName,
             @RequestParam(required = false) final ReviewStatus reviewStatus
@@ -71,9 +64,9 @@ public class RunnerPostQueryController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostBySupporterIdAndReviewStatusDone(
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostBySupporterIdAndReviewStatusDone(
             @Valid @ModelAttribute final PageParams pageParams,
-            @RequestParam("supporterId") final Long supporterId
+            @RequestParam final Long supporterId
     ) {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporterId, ReviewStatus.DONE));
     }
@@ -91,7 +84,7 @@ public class RunnerPostQueryController {
     }
 
     @GetMapping("/me/supporter")
-    public ResponseEntity<RunnerPostResponses.Simple> readRunnerPostByLoginedSupporterAndReviewStatus(
+    public ResponseEntity<PageResponse<RunnerPostResponse.Simple>> readRunnerPostByLoginedSupporterAndReviewStatus(
             @AuthSupporterPrincipal final Supporter supporter,
             @Valid @ModelAttribute final PageParams pageParams,
             @RequestParam(required = false) final ReviewStatus reviewStatus
@@ -100,26 +93,12 @@ public class RunnerPostQueryController {
     }
 
     @GetMapping("/me/runner")
-    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleInMyPage>> readRunnerMyPage(
-            @PageableDefault(sort = "id", direction = DESC) final Pageable pageable,
+    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerMyPage(
             @AuthRunnerPrincipal final Runner runner,
-            @RequestParam("reviewStatus") final ReviewStatus reviewStatus
+            @Valid @ModelAttribute final PageParams pageParams,
+            @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
-        final Page<RunnerPost> pageRunnerPosts = runnerPostQueryService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, runner.getId(), reviewStatus);
-        final List<Long> applicantCounts = collectApplicantCounts(pageRunnerPosts);
-
-        final List<RunnerPostResponse.SimpleInMyPage> responses = IntStream.range(0, pageRunnerPosts.getContent().size())
-                .mapToObj(index -> {
-                            final Long applicantCount = applicantCounts.get(index);
-                            final RunnerPost runnerPost = pageRunnerPosts.getContent().get(index);
-                            return RunnerPostResponse.SimpleInMyPage.from(runnerPost, applicantCount);
-                        }
-                ).toList();
-
-        final Page<RunnerPostResponse.SimpleInMyPage> pageResponse
-                = new PageImpl<>(responses, pageable, pageRunnerPosts.getTotalElements());
-
-        return ResponseEntity.ok(PageResponse.from(pageResponse));
+        return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(pageParams, runner.getId(), reviewStatus));
     }
 
     private List<Long> collectApplicantCounts(final Page<RunnerPost> pageRunnerPosts) {

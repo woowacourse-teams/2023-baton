@@ -6,20 +6,21 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
 
@@ -73,9 +74,14 @@ class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
         given(spyRunnerPost.getId()).willReturn(1L);
 
         // when
-        final RunnerPostResponses.Simple responses = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(spyRunnerPost, 0L)
-        ));
+        final PageResponse<RunnerPostResponse.Simple> responses = PageResponse.of(
+                List.of(spyRunnerPost),
+                eachRunnerPost -> RunnerPostResponse.Simple.of(
+                        eachRunnerPost,
+                        0L,
+                        List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag))),
+                10
+                );
         when(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(any(PageParams.class), anyLong(), any(ReviewStatus.class)))
                 .thenReturn(responses);
 
@@ -103,7 +109,8 @@ class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글의 리뷰 상태"),
                                 fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
                                 fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
-                                fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록")
+                                fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
+                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부")
                         ))
                 );
     }

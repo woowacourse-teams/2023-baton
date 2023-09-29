@@ -1,15 +1,16 @@
 package touch.baton.assure.runnerpost.support;
 
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.QueryParams;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -43,8 +44,11 @@ public class RunnerPostPageSupport {
         );
     }
 
-    public static RunnerPostResponses.Simple 러너_게시글_전체_Simple_페이징_응답(final List<RunnerPostResponse.Simple> 러너_게시글_목록) {
-        return RunnerPostResponses.Simple.from(러너_게시글_목록);
+    public static PageResponse<RunnerPostResponse.Simple> 러너_게시글_전체_Simple_페이징_응답(
+            final List<RunnerPostResponse.Simple> 러너_게시글_목록,
+            final PageResponse.PageInfo 페이징_정보
+    ) {
+        return new PageResponse<>(러너_게시글_목록, 페이징_정보);
     }
 
     public static class RunnerPostPageBuilder {
@@ -88,10 +92,9 @@ public class RunnerPostPageSupport {
             return this;
         }
 
-        public RunnerPostPageBuilder 리뷰_상태로_러너_게시글_중간_페이지를_조회한다(
-                final Long 이전_페이지_마지막_게시글_식별자값,
-                final int 페이지_크기,
-                final ReviewStatus 리뷰_상태
+        public RunnerPostPageBuilder 리뷰_상태로_러너_게시글_중간_페이지를_조회한다(final Long 이전_페이지_마지막_게시글_식별자값,
+                                                                final int 페이지_크기,
+                                                                final ReviewStatus 리뷰_상태
         ) {
             final Map<String, Object> queryParams = Map.of(
                     "cursor", 이전_페이지_마지막_게시글_식별자값,
@@ -103,7 +106,10 @@ public class RunnerPostPageSupport {
             return this;
         }
 
-        public RunnerPostPageBuilder 태그_이름과_리뷰_상태를_조건으로_러너_게시글_첫_페이지를_조회한다(final int 페이지_크기, final String 태그_이름, final ReviewStatus 리뷰_상태) {
+        public RunnerPostPageBuilder 태그_이름과_리뷰_상태를_조건으로_러너_게시글_첫_페이지를_조회한다(final int 페이지_크기,
+                                                                           final String 태그_이름,
+                                                                           final ReviewStatus 리뷰_상태
+        ) {
             final Map<String, Object> queryParams = Map.of(
                     "limit", 페이지_크기,
                     "tagName", 태그_이름,
@@ -114,11 +120,10 @@ public class RunnerPostPageSupport {
             return this;
         }
 
-        public RunnerPostPageBuilder 태그_이름과_리뷰_상태를_조건으로_러너_게시글_중간_페이지를_조회한다(
-                final Long 이전_페이지_마지막_게시글_식별자값,
-                final int 페이지_크기,
-                final String 태그_이름,
-                final ReviewStatus 리뷰_상태
+        public RunnerPostPageBuilder 태그_이름과_리뷰_상태를_조건으로_러너_게시글_중간_페이지를_조회한다(final Long 이전_페이지_마지막_게시글_식별자값,
+                                                                            final int 페이지_크기,
+                                                                            final String 태그_이름,
+                                                                            final ReviewStatus 리뷰_상태
         ) {
             final Map<String, Object> queryParams = Map.of(
                     "cursor", 이전_페이지_마지막_게시글_식별자값,
@@ -145,8 +150,11 @@ public class RunnerPostPageSupport {
             this.response = response;
         }
 
-        public void 리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(final RunnerPostResponses.Simple 러너_게시글_페이징_응답) {
-            final RunnerPostResponses.Simple actual = this.response.as(RunnerPostResponses.Simple.class);
+        public void 리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(
+                final PageResponse<RunnerPostResponse.Simple> 러너_게시글_페이징_응답
+        ) {
+            final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<>() {
+            });
 
             assertSoftly(softly -> {
                         softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());
@@ -155,8 +163,11 @@ public class RunnerPostPageSupport {
             );
         }
 
-        public void 태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(final RunnerPostResponses.Simple 러너_게시글_페이징_응답) {
-            final RunnerPostResponses.Simple actual = this.response.as(RunnerPostResponses.Simple.class);
+        public void 태그_이름과_리뷰_상태를_조건으로_러너_게시글_페이징_조회_성공을_검증한다(
+                final PageResponse<RunnerPostResponse.Simple> 러너_게시글_페이징_응답
+        ) {
+            final PageResponse<RunnerPostResponse.Simple> actual = this.response.as(new TypeRef<>() {
+            });
 
             assertSoftly(softly -> {
                         softly.assertThat(this.response.statusCode()).isEqualTo(HttpStatus.OK.value());

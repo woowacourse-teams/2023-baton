@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RunnerQueryController.class)
-public class RunnerReadByRunnerIdApiTest extends RestdocsConfig {
+public class RunnerReadSimpleByRunnerIdApiTest extends RestdocsConfig {
 
     @MockBean
     private RunnerPostQueryService runnerPostQueryService;

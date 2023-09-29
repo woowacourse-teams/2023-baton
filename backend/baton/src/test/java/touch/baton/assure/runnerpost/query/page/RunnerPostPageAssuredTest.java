@@ -5,10 +5,10 @@ import touch.baton.assure.runnerpost.support.RunnerPostPageSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,7 +39,11 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final RunnerPostResponses.Simple 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(List.of(기대된_러너_게시글_Simple_응답));
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
+                List.of(기대된_러너_게시글_Simple_응답),
+                기대된_페이징_정보
+        );
 
         RunnerPostPageSupport
                 .클라이언트_요청()
@@ -72,7 +76,11 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final RunnerPostResponses.Simple 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(List.of(기대된_러너_게시글_Simple_응답));
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
+                List.of(기대된_러너_게시글_Simple_응답),
+                기대된_페이징_정보
+        );
 
         RunnerPostPageSupport
                 .클라이언트_요청()
@@ -104,7 +112,11 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final RunnerPostResponses.Simple 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(List.of(기대된_러너_게시글_Simple_응답));
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
+                List.of(기대된_러너_게시글_Simple_응답),
+                기대된_페이징_정보
+        );
 
         RunnerPostPageSupport
                 .클라이언트_요청()
@@ -137,7 +149,11 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final RunnerPostResponses.Simple 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(List.of(기대된_러너_게시글_Simple_응답));
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
+                List.of(기대된_러너_게시글_Simple_응답),
+                기대된_페이징_정보
+        );
 
         RunnerPostPageSupport
                 .클라이언트_요청()
@@ -169,7 +185,11 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final RunnerPostResponses.Simple 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(List.of(기대된_러너_게시글_Simple_응답));
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
+                List.of(기대된_러너_게시글_Simple_응답),
+                기대된_페이징_정보
+        );
 
         RunnerPostPageSupport
                 .클라이언트_요청()
@@ -202,7 +222,11 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final RunnerPostResponses.Simple 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(List.of(기대된_러너_게시글_Simple_응답));
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
+                List.of(기대된_러너_게시글_Simple_응답),
+                기대된_페이징_정보
+        );
 
         RunnerPostPageSupport
                 .클라이언트_요청()

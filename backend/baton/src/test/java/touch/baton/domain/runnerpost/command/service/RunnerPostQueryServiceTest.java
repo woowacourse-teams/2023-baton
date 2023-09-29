@@ -3,9 +3,8 @@ package touch.baton.domain.runnerpost.command.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import touch.baton.config.ServiceTestConfig;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
@@ -17,8 +16,6 @@ import touch.baton.domain.member.command.vo.MemberName;
 import touch.baton.domain.member.command.vo.OauthId;
 import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponses;
 import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.command.vo.CuriousContents;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
@@ -29,6 +26,7 @@ import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.command.vo.Title;
 import touch.baton.domain.runnerpost.command.vo.WatchedCount;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
@@ -39,6 +37,7 @@ import touch.baton.domain.tag.command.vo.TagReducedName;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.SupporterRunnerPostFixture;
@@ -46,13 +45,13 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.time.LocalDateTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.IN_PROGRESS;
 import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.NOT_STARTED;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
@@ -85,7 +84,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag, springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -99,27 +98,34 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(null, 10),
-                ReviewStatus.NOT_STARTED
+                new PageParams(null, limit),
+                NOT_STARTED
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -139,7 +145,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag, springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -153,34 +159,41 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost previousRunnerPost = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(previousRunnerPost.getId(), 10),
-                ReviewStatus.NOT_STARTED
+                new PageParams(previousRunnerPost.getId(), limit),
+                NOT_STARTED
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -200,21 +213,21 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag, springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostTwo = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostThree = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -225,17 +238,24 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(null, 10),
-                ReviewStatus.NOT_STARTED
+                new PageParams(null, limit),
+                NOT_STARTED
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostThree, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -255,21 +275,21 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag, springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostTwo = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostThree = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -283,22 +303,28 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(previousRunnerPost.getId(), 10),
-                ReviewStatus.NOT_STARTED
+                new PageParams(previousRunnerPost.getId(), limit),
+                NOT_STARTED
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostThree, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
-
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
         // then
         assertThat(actual).isEqualTo(expected);
     }
@@ -324,7 +350,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -335,16 +361,23 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(null, 10),
+                new PageParams(null, limit),
                 null
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -364,7 +397,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag, springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostTwo = runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -385,20 +418,27 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(previousRunnerPost.getId(), 10),
+                new PageParams(previousRunnerPost.getId(), limit),
                 null
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -425,7 +465,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostThree = runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -436,17 +476,24 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(null, 10),
+                new PageParams(null, limit),
                 null
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostThree, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -466,7 +513,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(LocalDateTime.now().plusHours(100)),
                 List.of(javaTag, springTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         final RunnerPost expectedRunnerPostTwo = runnerPostQueryRepository.save(RunnerPostFixture.create(
@@ -487,21 +534,28 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(javaTag),
-                ReviewStatus.NOT_STARTED
+                NOT_STARTED
         ));
 
         // when
-        final RunnerPostResponses.Simple actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(previousRunnerPost.getId(), 10),
+                new PageParams(previousRunnerPost.getId(), limit),
                 null
         );
 
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(
-                RunnerPostResponse.Simple.from(expectedRunnerPostThree, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostTwo, 0),
-                RunnerPostResponse.Simple.from(expectedRunnerPostOne, 0)
-        ));
+        final List<RunnerPostTag> runnerPostTags = List.of(
+                RunnerPostTagFixture.create(expectedRunnerPostOne, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
+                RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag),
+                RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
+        );
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
+                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -612,10 +666,14 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
 
         // when
-        final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(savedRunnerPost, 1L);
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
-        final RunnerPostResponses.Simple actual
-                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, 10), savedSupporterHyena.getId(), IN_PROGRESS);
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual
+                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, limit), savedSupporterHyena.getId(), IN_PROGRESS);
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(savedRunnerPost),
+                eachRunnerPost -> RunnerPostResponse.Simple.of(eachRunnerPost, 1L, Collections.emptyList()),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -637,10 +695,14 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
 
         // when
-        final RunnerPostResponse.Simple runnerPostResponse = RunnerPostResponse.Simple.from(savedRunnerPost, 1L);
-        final RunnerPostResponses.Simple expected = RunnerPostResponses.Simple.from(List.of(runnerPostResponse));
-        final RunnerPostResponses.Simple actual
-                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, 10), supporter.getId(), NOT_STARTED);
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.Simple> actual
+                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, limit), supporter.getId(), NOT_STARTED);
+        final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
+                List.of(savedRunnerPost),
+                eachRunnerPost -> RunnerPostResponse.Simple.of(eachRunnerPost, 1L, Collections.emptyList()),
+                limit
+        );
 
         // then
         assertThat(actual).isEqualTo(expected);
@@ -650,22 +712,24 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
     @Test
     void readRunnerPostsByRunnerIdAndReviewStatus() {
         // given
-        final Member savedMemberEthan = memberCommandRepository.save(MemberFixture.createEthan());
-        final Runner savedRunnerEthan = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberEthan));
+        final Member member = memberCommandRepository.save(MemberFixture.createEthan());
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
 
-        final RunnerPost runnerPost = RunnerPostFixture.create(savedRunnerEthan, deadline(now().plusHours(100)));
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(now().plusHours(100)));
         final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(runnerPost);
 
         // when
-        final PageRequest pageable = PageRequest.of(0, 10);
-        final Page<RunnerPost> pageRunnerPosts
-                = runnerPostQueryService.readRunnerPostsByRunnerIdAndReviewStatus(pageable, savedRunnerEthan.getId(), ReviewStatus.NOT_STARTED);
+        final int limit = 10;
+        final PageResponse<RunnerPostResponse.SimpleByRunner> actual
+                = runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(new PageParams(null, limit), runner.getId(), NOT_STARTED);
+        final PageResponse<RunnerPostResponse.SimpleByRunner> expected = PageResponse.of(
+            List.of(savedRunnerPost),
+            eachRunnerPost -> RunnerPostResponse.SimpleByRunner.of(eachRunnerPost, 0L, Collections.emptyList()),
+            limit
+        );
 
         // then
-        assertAll(
-                () -> assertThat(pageRunnerPosts.getPageable()).isEqualTo(pageable),
-                () -> assertThat(pageRunnerPosts.getContent()).containsExactly(savedRunnerPost)
-        );
+        assertThat(actual).isEqualTo(expected);
     }
 
     @DisplayName("Member 가 RunnerPost 에 지원한 이력이 있을 경우 true 를 반환한다.")
