@@ -1,10 +1,12 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
 import { Method } from '@/types/api';
+import { validateResponse } from './error';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
 const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
   return fetch(`${BATON_BASE_URL}${url}`, options).then(async (response) => {
+    await validateResponse(response);
     return response.json();
   });
 };
