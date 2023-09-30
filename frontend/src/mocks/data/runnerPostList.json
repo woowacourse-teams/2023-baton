@@ -108,6 +108,7 @@
     "totalPages": 4,
     "totalElements": 48,
     "currentPage": 1,
-    "currentSize": 10
+    "currentSize": 10,
+    "nextCursor": 1
   }
 }
