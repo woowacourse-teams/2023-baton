@@ -7,7 +7,7 @@ import { GetMyPagePostResponse, GetMyPageProfileResponse, MyPagePost } from '@/t
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
-import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
+import { PostOptions, runnerPostOptions } from '@/utils/postOption';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
 import { useFetch } from '@/hooks/useFetch';
@@ -15,21 +15,16 @@ import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 
-const MyPage = () => {
+const SupporterMyPage = () => {
   const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
   const [myPagePostList, setMyPagePostList] = useState<MyPagePost[]>([]);
-
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
-
-  const [isRunner, setIsRunner] = useState<boolean>(true);
-
   const [page, setPage] = useState<number>(1);
   const [isLast, setIsLast] = useState<boolean>(true);
 
   const { isLogin } = useLogin();
   const { getRequestWithAuth } = useFetch();
   const { goToProfileEditPage, goToLoginPage } = usePageRouter();
-
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
 
@@ -41,40 +36,38 @@ const MyPage = () => {
       return;
     }
 
-    const fetchMyPageData = async (role: 'runner' | 'supporter') => {
+    const fetchMyPageData = async () => {
       setIsLast(() => true);
       setPage(1);
 
-      getProfile(role);
-      getPostList(role, 1);
+      getProfile();
+      getPostList(1);
     };
 
-    fetchMyPageData(isRunner ? 'runner' : 'supporter');
-  }, [isRunner, postOptions]);
+    fetchMyPageData();
+  }, [postOptions]);
 
-  const getProfile = (role: 'runner' | 'supporter') => {
-    getRequestWithAuth(`/profile/${role}/me`, async (response) => {
+  const getProfile = () => {
+    getRequestWithAuth(`/profile/supporter/me`, async (response) => {
       const data: GetMyPageProfileResponse = await response.json();
 
       setMyPageProfile(data);
     });
   };
 
-  const getPostList = (role: 'runner' | 'supporter', currentPage: number) => {
+  const getPostList = (currentPage: number) => {
     const selectedPostOption = postOptions.filter((option) => option.selected)[0].value;
 
-    const rolePath =
-      role === 'runner'
-        ? `runner/me/runner?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`
-        : `runner/me/supporter?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`;
+    getRequestWithAuth(
+      `/posts/runner/me/supporter?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`,
+      async (response) => {
+        const data: GetMyPagePostResponse = await response.json();
 
-    getRequestWithAuth(`/posts/${rolePath}`, async (response) => {
-      const data: GetMyPagePostResponse = await response.json();
-
-      setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
-      setPage(() => data.pageInfo.currentPage);
-      setIsLast(data.pageInfo.isLast);
-    });
+        setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
+        setPage(() => data.pageInfo.currentPage);
+        setIsLast(data.pageInfo.isLast);
+      },
+    );
   };
 
   const selectOptions = (value: string | number) => {
@@ -89,16 +82,9 @@ const MyPage = () => {
     setPostOptions(newOptions);
   };
 
-  const handleClickSupporterButton = () => {
-    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
-    setIsRunner(!isRunner);
-  };
-
   const handleClickMoreButton = () => {
-    const role = isRunner ? 'runner' : 'supporter';
-
     setPage(() => page + 1);
-    getPostList(role, page + 1);
+    getPostList(page + 1);
   };
 
   const handleDeletePost = (runnerPostId: number) => {
@@ -109,18 +95,21 @@ const MyPage = () => {
 
   return (
     <Layout>
+      <S.TitleWrapper>
+        <S.Title>서포터 마이페이지</S.Title>
+        <Button
+          width={isMobile ? '60px' : '95px'}
+          height={isMobile ? '30px' : '38px'}
+          colorTheme="WHITE"
+          fontSize={isMobile ? '12px' : '16px'}
+          fontWeight={400}
+          onClick={goToProfileEditPage}
+        >
+          수정하기
+        </Button>
+      </S.TitleWrapper>
       <S.MyPageWrapper>
         <S.MyPageContainer>
-          {isMobile && (
-            <S.ButtonContainer>
-              <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-                러너
-              </S.RunnerSupporterButton>
-              <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-                서포터
-              </S.RunnerSupporterButton>
-            </S.ButtonContainer>
-          )}
           <S.ProfileContainer>
             <S.InfoContainer>
               <Avatar
@@ -129,12 +118,7 @@ const MyPage = () => {
                 height={isMobile ? '70px' : '100px'}
               />
               <S.InfoDetailContainer>
-                {myPageProfile?.name &&
-                  (isRunner ? (
-                    <S.Name>{'러너 - ' + myPageProfile?.name}</S.Name>
-                  ) : (
-                    <S.Name>{'서포터 - ' + myPageProfile?.name}</S.Name>
-                  ))}
+                <S.Name>{myPageProfile?.name}</S.Name>
                 <S.Company>{myPageProfile?.company}</S.Company>
                 <S.TechLabel>
                   {myPageProfile?.technicalTags.map((tag) => (
@@ -143,46 +127,12 @@ const MyPage = () => {
                 </S.TechLabel>
               </S.InfoDetailContainer>
             </S.InfoContainer>
-            {!isMobile && (
-              <S.ButtonContainer>
-                <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-                  러너
-                </S.RunnerSupporterButton>
-                <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-                  서포터
-                </S.RunnerSupporterButton>
-              </S.ButtonContainer>
-            )}
           </S.ProfileContainer>
+
           <S.IntroductionContainer>
             <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
-            {!isMobile && (
-              <Button
-                width="95px"
-                height="38px"
-                colorTheme="WHITE"
-                fontSize="16px"
-                fontWeight={400}
-                onClick={goToProfileEditPage}
-              >
-                수정하기
-              </Button>
-            )}
           </S.IntroductionContainer>
-          {isMobile && (
-            <S.MobileButtonWrapper>
-              <Button
-                width="75px"
-                height="30px"
-                colorTheme="WHITE"
-                fontSize="14px"
-                fontWeight={400}
-                onClick={goToProfileEditPage}
-              >
-                수정하기
-              </Button>
-            </S.MobileButtonWrapper>
-          )}
+
           <S.PostsContainer>
             <S.FilterWrapper>
               <ListFilter
@@ -192,7 +142,7 @@ const MyPage = () => {
                 fontSize={isMobile ? '16px' : '26px'}
               />
             </S.FilterWrapper>
-            <MyPagePostList handleDeletePost={handleDeletePost} filteredPostList={myPagePostList} isRunner={isRunner} />
+            <MyPagePostList handleDeletePost={handleDeletePost} filteredPostList={myPagePostList} isRunner={false} />
             <S.MoreButtonWrapper>
               {!isLast && (
                 <Button
@@ -213,9 +163,21 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default SupporterMyPage;
 
 const S = {
+  TitleWrapper: styled.header`
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 72px;
+
+    @media (max-width: 768px) {
+      margin: 40px 0 40px 0;
+      padding: 0 10px;
+    }
+  `,
+
   MyPageWrapper: styled.div`
     display: flex;
     flex-direction: column;
@@ -230,15 +192,13 @@ const S = {
     }
   `,
 
-  TitleContainer: styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-  `,
-
   Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
   `,
 
   ProfileContainer: styled.div`
@@ -266,8 +226,6 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    margin: 30px 0;
   `,
 
   Name: styled.div`
@@ -290,54 +248,6 @@ const S = {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-  `,
-
-  ButtonContainer: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-
-    margin-top: 30px;
-
-    @media (max-width: 768px) {
-      display: flex;
-      justify-content: end;
-
-      width: calc(85% + 40px);
-      margin-top: 50px;
-      margin-left: 10px;
-    }
-  `,
-
-  MobileButtonWrapper: styled.div`
-    display: flex;
-    justify-content: end;
-
-    width: calc(85% + 40px);
-    margin-bottom: 70px;
-  `,
-
-  RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 95px;
-    height: 38px;
-    border-radius: 18px;
-    border: 1px solid ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
-
-    background-color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'white')};
-
-    color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
-
-    @media (max-width: 768px) {
-      width: 70px;
-      height: 32px;
-
-      font-size: 14px;
-    }
   `,
 
   IntroductionContainer: styled.div`
