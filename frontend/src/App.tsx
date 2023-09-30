@@ -6,6 +6,9 @@ import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import { useLogin } from './hooks/useLogin';
 import LoadingPage from './pages/LoadingPage';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   const { checkLoginToken } = useLogin();
@@ -28,9 +31,11 @@ const App = () => {
   ) : (
     <ToastProvider>
       <S.AppContainer>
-        <Suspense fallback={<div></div>}>
-          <Outlet />
-        </Suspense>
+        <QueryClientProvider client={queryClient}>
+          <Suspense fallback={<div></div>}>
+            <Outlet />
+          </Suspense>
+        </QueryClientProvider>
       </S.AppContainer>
     </ToastProvider>
   );
