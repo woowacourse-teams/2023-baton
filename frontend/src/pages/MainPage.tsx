@@ -4,38 +4,31 @@ import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/Run
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
+import { useRunnerPostList } from '@/hooks/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
-import { GetRunnerPostResponse, ReviewStatus, RunnerPost } from '@/types/runnerPost';
+import { ReviewStatus } from '@/types/runnerPost';
 import { Tag } from '@/types/tags';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
 
   const { isLogin } = useLogin();
-  const { getRequest } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
   const { isMobile } = useViewport();
 
-  const [runnerPostList, setRunnerPostList] = useState<RunnerPost[]>([]);
-  const [isLast, setIsLast] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
+  const [enteredTag, setEnteredTag] = useState<string>('');
   const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
-  const [tag, setTag] = useState<string>('');
-  const [searchedTags, setSearchedTags] = useState<Tag[]>([]);
+
+  const { data: runnerPostList, hasNextPage, fetchNextPage } = useRunnerPostList(reviewStatus, enteredTag);
 
   const handleClickMoreButton = () => {
-    getNextPage();
+    fetchNextPage();
   };
-
-  useEffect(() => {
-    searchPosts(reviewStatus);
-  }, []);
 
   const handleClickPostButton = () => {
     if (!isLogin) {
@@ -48,52 +41,6 @@ const MainPage = () => {
     goToRunnerPostCreatePage();
   };
 
-  const getNextPage = () => {
-    const params = new URLSearchParams([
-      ['size', '10'],
-      ['page', (page + 1).toString()],
-      ['reviewStatus', reviewStatus],
-    ]);
-
-    if (tag) {
-      params.set('tagName', tag);
-    }
-
-    setIsLast(true);
-
-    getRequest(`/posts/runner/tags/search?${params.toString()}`, async (response) => {
-      const data: GetRunnerPostResponse = await response.json();
-
-      setRunnerPostList([...runnerPostList, ...data.data]);
-      setPage(data.pageInfo.currentPage);
-      setIsLast(data.pageInfo.isLast);
-    });
-  };
-
-  const searchPosts = (reviewStatus: ReviewStatus, tag?: string) => {
-    const params = new URLSearchParams([
-      ['size', '10'],
-      ['page', '1'],
-      ['reviewStatus', reviewStatus],
-    ]);
-
-    if (tag) {
-      params.set('tagName', tag);
-      setTag(tag);
-    }
-
-    setIsLast(true);
-    setRunnerPostList([]);
-
-    getRequest(`/posts/runner/tags/search?${params.toString()}`, async (response) => {
-      const data: GetRunnerPostResponse = await response.json();
-
-      setRunnerPostList(() => [...data.data]);
-      setPage(data.pageInfo.currentPage);
-      setIsLast(data.pageInfo.isLast);
-    });
-  };
-
   return (
     <Layout maxWidth="none">
       <Banner />
@@ -104,13 +51,10 @@ const MainPage = () => {
         <S.ControlPanelContainer>
           <S.LeftSideContainer>
             <RunnerPostSearchBox
-              tag={tag}
-              setTag={setTag}
-              reviewStatus={reviewStatus}
+              reviewStatus={reviewStatus ?? 'NOT_STARTED'}
               setReviewStatus={setReviewStatus}
-              searchedTags={searchedTags}
-              setSearchedTags={setSearchedTags}
-              searchPosts={searchPosts}
+              setEnteredTag={setEnteredTag}
+              fetchNextPage={fetchNextPage}
             />
           </S.LeftSideContainer>
           <S.RightSideContainer>
@@ -128,7 +72,7 @@ const MainPage = () => {
         <S.RunnerPostContainer>
           <RunnerPostList posts={runnerPostList} />
           <S.MoreButtonWrapper>
-            {!isLast && (
+            {hasNextPage && (
               <Button
                 colorTheme="RED"
                 width={isMobile ? '100%' : '1150px'}
