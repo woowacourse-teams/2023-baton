@@ -37,7 +37,7 @@ const RunnerPostCreatePage = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [title, setTitle] = useState<string>('');
   const [pullRequestUrl, setPullRequestUrl] = useState<string>('');
-  const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 1)));
+  const [deadline, setDeadline] = useState<string>(getDayLastTime(addDays(nowDate, 10)));
   const [implementedContents, setImplementedContents] = useState<string>('');
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');

@@ -95,7 +95,7 @@ describe('러너 E2E 테스트', () => {
         .then((cur) => {
           cy.wrap(ele)
             .find('button')
-            .should(Number(cur.text()) > 0 ? 'be.visible' : 'not.be.visible');
+            .should(Number(cur.text()) > 0 ? 'be.enabled' : 'be.disabled');
         });
     });
   });

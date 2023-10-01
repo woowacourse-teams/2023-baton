@@ -53,6 +53,10 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.NOTICE);
   };
 
+  const goToResultPage = () => {
+    navigate(ROUTER_PATH.RESULT);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -69,6 +73,7 @@ export const usePageRouter = () => {
     goToSupporterFeedbackPage,
     goToProfileEditPage,
     goToNoticePage,
+    goToResultPage,
     goBack,
   };
 };
