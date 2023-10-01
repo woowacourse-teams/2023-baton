@@ -3,13 +3,13 @@ import { ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { APIError } from '@/types/error';
 import { GetRunnerProfileResponse } from '@/types/profile';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
 
 export const useMyRunnerProfile = () => {
   const { showErrorToast } = useContext(ToastContext);
 
-  const queryResult = useQuery<GetRunnerProfileResponse, APIError>({
+  const queryResult = useSuspenseQuery<GetRunnerProfileResponse, APIError>({
     queryKey: ['myRunnerProfile'],
     queryFn: getMyRunnerProfile,
   });
