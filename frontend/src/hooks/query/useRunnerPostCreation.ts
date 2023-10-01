@@ -10,7 +10,7 @@ import { queryClient } from './queryClient';
 
 export const useRunnerPostCreation = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
-  const { goToMainPage } = usePageRouter();
+  const { goToResultPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, CreateRunnerPostRequest>({
     mutationFn: async (formData: CreateRunnerPostRequest) => {
@@ -21,7 +21,7 @@ export const useRunnerPostCreation = () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
       queryClient.invalidateQueries({ queryKey: ['runnerPost'] });
       queryClient.invalidateQueries({ queryKey: ['myRunnerPost', 'NOT_STARTED'] });
-      goToMainPage();
+      goToResultPage();
     },
 
     onError: () => {
