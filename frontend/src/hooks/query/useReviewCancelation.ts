@@ -10,7 +10,9 @@ export const useReviewCancelation = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, number>({
-    mutationFn: async (runnerPostId: number) => patchReviewCancelation(runnerPostId),
+    mutationFn: async (runnerPostId: number) => {
+      patchReviewCancelation(runnerPostId);
+    },
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);

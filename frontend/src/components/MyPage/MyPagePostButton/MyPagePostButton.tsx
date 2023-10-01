@@ -1,6 +1,8 @@
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useReviewCancelation } from '@/hooks/query/useReviewCancelation';
+import { useReviewComplete } from '@/hooks/query/useReviewComplete';
 import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
@@ -18,47 +20,26 @@ interface Props {
   handleDeletePost: (handleDeletePost: number) => void;
 }
 
-const MyPagePostButton = ({
-  runnerPostId,
-  reviewStatus,
-  isRunner,
-  supporterId,
-  applicantCount,
-  handleDeletePost,
-}: Props) => {
+const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, applicantCount }: Props) => {
   const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
 
   const { isMobile } = useViewport();
 
-  const { patchRequestWithAuth } = useFetch();
-  const { showCompletionToast, showErrorToast } = useContext(ToastContext);
+  const { showErrorToast } = useContext(ToastContext);
 
-  const cancelReview = () => {
-    patchRequestWithAuth(`/posts/runner/${runnerPostId}/cancelation`, async (response) => {
-      showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
-
-      handleDeletePost(runnerPostId);
-    });
-  };
-
-  const finishReview = () => {
-    patchRequestWithAuth(`/posts/runner/${runnerPostId}/done`, async (response) => {
-      showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPLETE);
-
-      handleDeletePost(runnerPostId);
-    });
-  };
+  const { mutate: cancelReview } = useReviewCancelation();
+  const { mutate: finishReview } = useReviewComplete();
 
   const handleClickCancelReviewButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    cancelReview();
+    cancelReview(runnerPostId);
   };
 
   const handleClickFinishButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
 
-    finishReview();
+    finishReview(runnerPostId);
   };
 
   const handleClickSupportSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {

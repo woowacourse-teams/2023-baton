@@ -6,11 +6,13 @@ import { patchReviewComplete } from '@/apis/apis';
 import { ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { queryClient } from './queryClient';
 
-export const useReviewCancelation = () => {
+export const useReviewComplete = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, number>({
-    mutationFn: async (runnerPostId: number) => patchReviewComplete(runnerPostId),
+    mutationFn: async (runnerPostId: number) => {
+      patchReviewComplete(runnerPostId);
+    },
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPLETE);
