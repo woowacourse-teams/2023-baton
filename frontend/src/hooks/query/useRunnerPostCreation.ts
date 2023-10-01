@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { APIError } from '@/types/error';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { postRunnerPostCreation } from '@/apis/apis';
-import { ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { usePageRouter } from '../usePageRouter';
 import { queryClient } from './queryClient';
 
@@ -13,13 +13,11 @@ export const useRunnerPostCreation = () => {
   const { goToMainPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, CreateRunnerPostRequest>({
-    mutationFn: async (formData: CreateRunnerPostRequest) => {
-      postRunnerPostCreation(formData);
-    },
-
+    mutationFn: async (formData: CreateRunnerPostRequest) => postRunnerPostCreation(formData),
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
-      queryClient.invalidateQueries({ queryKey: ['myRunnerPost', 'runnerPost'] });
+      queryClient.invalidateQueries({ queryKey: ['runnerPost'] });
+      queryClient.invalidateQueries({ queryKey: ['myRunnerPost', 'NOT_STARTED'] });
       goToMainPage();
     },
 
