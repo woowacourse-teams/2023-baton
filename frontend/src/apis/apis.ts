@@ -6,6 +6,7 @@ import {
   GetRunnerProfileResponse,
   GetSupporterProfileResponse,
   PatchRunnerProfileRequest,
+  PatchSupporterProfileRequest,
 } from '@/types/profile';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: any, tagName?: string) => {
@@ -50,5 +51,7 @@ export const patchReviewComplete = (runnerPostId: number) => {
 
 export const patchMyRunnerProfile = async (formData: PatchRunnerProfileRequest) => {
   const body = JSON.stringify(formData);
+  return request.patch<void>(`/profile/runner/me`, body);
+};
   return request.post<void>(`/profile/runner/me`, body);
 };
