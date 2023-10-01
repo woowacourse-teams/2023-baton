@@ -21,3 +21,8 @@ export const getSearchTag = (keyword: string) => {
 export const getHeaderProfile = () => {
   return request.get<GetHeaderProfileResponse>('/profile/me', true);
 };
+
+export const postRunnerPostCreation = async (formData: CreateRunnerPostRequest) => {
+  const body = JSON.stringify(formData);
+  return request.post<void>(`/posts/runner`, body);
+};

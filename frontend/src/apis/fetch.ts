@@ -4,11 +4,18 @@ import { validateResponse } from './error';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
+const parseJson = async (response: Response): Promise<any> => {
+  await validateResponse(response);
+
+  try {
+    return await response.json();
+  } catch (error) {
+    return new Promise<void>(() => {});
+  }
+};
+
 const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
-  return fetch(`${BATON_BASE_URL}${url}`, options).then(async (response) => {
-    await validateResponse(response);
-    return response.json();
-  });
+  return fetch(`${BATON_BASE_URL}${url}`, options).then(async (response) => parseJson(response));
 };
 
 const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
