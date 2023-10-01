@@ -4,13 +4,11 @@ import { useMutation } from '@tanstack/react-query';
 import { APIError } from '@/types/error';
 import { patchMyRunnerProfile } from '@/apis/apis';
 import { ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
-import { usePageRouter } from '../usePageRouter';
 import { queryClient } from './queryClient';
 import { PatchRunnerProfileRequest } from '@/types/profile';
 
 export const useRunnerProfileEdit = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
-  const { goToMainPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, PatchRunnerProfileRequest>({
     mutationFn: async (formData: PatchRunnerProfileRequest) => {
@@ -20,7 +18,6 @@ export const useRunnerProfileEdit = () => {
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE);
       queryClient.invalidateQueries({ queryKey: ['myRunnerProfile'] });
-      goToMainPage();
     },
 
     onError: () => {
