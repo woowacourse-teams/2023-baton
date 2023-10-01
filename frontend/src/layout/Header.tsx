@@ -9,26 +9,14 @@ import Button from '@/components/common/Button/Button';
 import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import useViewport from '@/hooks/useViewport';
+import { useHeaderProfile } from '@/hooks/useHeaderProfile';
 
 const Header = () => {
-  const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
-
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
   const { isLogin, logout } = useLogin();
   const { isMobile } = useViewport();
-  const { getRequestWithAuth } = useFetch();
 
-  useEffect(() => {
-    if (isLogin) getProfile();
-  }, []);
-
-  const getProfile = () => {
-    getRequestWithAuth(`/profile/me`, async (response) => {
-      const data: GetHeaderProfileResponse = await response.json();
-
-      setProfile(data);
-    });
-  };
+  const { data: profile } = useHeaderProfile(isLogin);
 
   const handleClickLogoutButton = () => {
     logout();
@@ -48,7 +36,7 @@ const Header = () => {
           {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
-                {isMobile ? null : <S.ProfileName>{profile?.name}</S.ProfileName>}
+                {!isMobile && <S.ProfileName>{profile?.name}</S.ProfileName>}
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
               </S.AvatarContainer>
               <Button
