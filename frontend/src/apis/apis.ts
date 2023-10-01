@@ -1,6 +1,7 @@
 import { GetRunnerPostResponse, ReviewStatus } from '@/types/runnerPost';
 import { request } from './fetch';
 import { GetSearchTagResponse } from '@/types/tags';
+import { GetHeaderProfileResponse } from '@/types/profile';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: any, tagName?: string) => {
   const params = new URLSearchParams({
@@ -15,4 +16,8 @@ export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor
 
 export const getSearchTag = (keyword: string) => {
   return request.get<GetSearchTagResponse>(`/tags/search?tagName=${keyword}`, false);
+};
+
+export const getHeaderProfile = () => {
+  return request.get<GetHeaderProfileResponse>('/profile/me', true);
 };
