@@ -1,9 +1,8 @@
 import Button from '@/components/common/Button/Button';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useReviewCancelation } from '@/hooks/query/useReviewCancelation';
 import { useReviewComplete } from '@/hooks/query/useReviewComplete';
-import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
 
@@ -20,7 +19,18 @@ interface Props {
   handleDeletePost: (handleDeletePost: number) => void;
 }
 
-const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, applicantCount }: Props) => {
+/*
+ * handleDeletePost:
+ * 리뷰 제안, 취소 후 데이터  refresh 확인 후 정상적으로 적용된다면 제거 해도 됨
+ */
+const MyPagePostButton = ({
+  runnerPostId,
+  reviewStatus,
+  isRunner,
+  supporterId,
+  applicantCount,
+  handleDeletePost,
+}: Props) => {
   const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
 
   const { isMobile } = useViewport();
