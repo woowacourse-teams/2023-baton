@@ -6,9 +6,8 @@ import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import { useLogin } from './hooks/useLogin';
 import LoadingPage from './pages/LoadingPage';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from '@tanstack/react-query';
+import { queryClient } from './hooks/query/queryClient';
 
 const App = () => {
   const { checkLoginToken } = useLogin();
