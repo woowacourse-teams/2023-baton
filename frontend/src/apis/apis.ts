@@ -1,7 +1,12 @@
 import { CreateRunnerPostRequest, GetRunnerPostResponse, ReviewStatus } from '@/types/runnerPost';
 import { request } from './fetch';
 import { GetSearchTagResponse } from '@/types/tags';
-import { GetHeaderProfileResponse, GetRunnerProfileResponse, GetSupporterProfileResponse } from '@/types/profile';
+import {
+  GetHeaderProfileResponse,
+  GetRunnerProfileResponse,
+  GetSupporterProfileResponse,
+  PatchRunnerProfileRequest,
+} from '@/types/profile';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: any, tagName?: string) => {
   const params = new URLSearchParams({
@@ -41,4 +46,9 @@ export const patchReviewCancelation = (runnerPostId: number) => {
 
 export const patchReviewComplete = (runnerPostId: number) => {
   return request.patch<void>(`/posts/runner/${runnerPostId}/done`);
+};
+
+export const patchMyRunnerProfile = async (formData: PatchRunnerProfileRequest) => {
+  const body = JSON.stringify(formData);
+  return request.post<void>(`/profile/runner/me`, body);
 };
