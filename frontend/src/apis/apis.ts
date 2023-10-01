@@ -34,3 +34,11 @@ export const postRunnerPostCreation = async (formData: CreateRunnerPostRequest) 
   const body = JSON.stringify(formData);
   return request.post<void>(`/posts/runner`, body);
 };
+
+export const patchReviewCancelation = (runnerPostId: number) => {
+  return request.patch<void>(`/posts/runner/${runnerPostId}/cancelation`);
+};
+
+export const patchReviewComplete = (runnerPostId: number) => {
+  return request.patch<void>(`/posts/runner/${runnerPostId}/done`);
+};
