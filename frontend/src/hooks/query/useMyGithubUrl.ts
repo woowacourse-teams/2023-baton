@@ -15,6 +15,7 @@ export const useMyGithubUrl = () => {
     select: (data) => {
       return data.githubUrl;
     },
+    staleTime: Infinity,
   });
 
   useEffect(() => {
