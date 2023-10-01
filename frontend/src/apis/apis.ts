@@ -1,7 +1,7 @@
-import { GetRunnerPostResponse, ReviewStatus } from '@/types/runnerPost';
+import { CreateRunnerPostRequest, GetRunnerPostResponse, ReviewStatus } from '@/types/runnerPost';
 import { request } from './fetch';
 import { GetSearchTagResponse } from '@/types/tags';
-import { GetHeaderProfileResponse } from '@/types/profile';
+import { GetHeaderProfileResponse, GetRunnerProfileResponse, GetSupporterProfileResponse } from '@/types/profile';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: any, tagName?: string) => {
   const params = new URLSearchParams({
@@ -20,6 +20,14 @@ export const getSearchTag = (keyword: string) => {
 
 export const getHeaderProfile = () => {
   return request.get<GetHeaderProfileResponse>('/profile/me', true);
+};
+
+export const getMyRunnerProfile = () => {
+  return request.get<GetRunnerProfileResponse>('/profile/runner/me', true);
+};
+
+export const getMySupporterProfile = () => {
+  return request.get<GetSupporterProfileResponse>('/profile/supporter/me', true);
 };
 
 export const postRunnerPostCreation = async (formData: CreateRunnerPostRequest) => {
