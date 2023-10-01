@@ -67,7 +67,12 @@ export const handlers = [
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/runner/me`, async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerProfile));
+    return res(
+      ctx.delay(1000),
+      ctx.status(200),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(myPageRunnerProfile),
+    );
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/supporter/me`, async (req, res, ctx) => {
