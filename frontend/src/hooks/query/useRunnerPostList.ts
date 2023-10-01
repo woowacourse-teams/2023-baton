@@ -4,7 +4,6 @@ import { ToastContext } from '@/contexts/ToastContext';
 import { APIError } from '@/types/error';
 import { GetRunnerPostResponse, ReviewStatus, RunnerPost } from '@/types/runnerPost';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { error } from 'cypress/types/jquery';
 import { useContext, useEffect } from 'react';
 
 const PAGE_LIMIT = 10;

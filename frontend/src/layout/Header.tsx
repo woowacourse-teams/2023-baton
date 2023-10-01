@@ -1,15 +1,13 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import useViewport from '@/hooks/useViewport';
-import { useHeaderProfile } from '@/hooks/useHeaderProfile';
+import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 
 const Header = () => {
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();

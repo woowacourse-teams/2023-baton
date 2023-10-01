@@ -3,9 +3,7 @@ import TagIcon from '@/assets/tag-icon.svg';
 import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
 import { ReviewStatus } from '@/types/runnerPost';
-import { GetSearchTagResponse, Tag } from '@/types/tags';
-import { useFetch } from '@/hooks/useFetch';
-import { useSearchTag } from '@/hooks/useSearchTag';
+import { useSearchTag } from '@/hooks/query/useSearchTag';
 
 interface Props {
   reviewStatus: ReviewStatus;

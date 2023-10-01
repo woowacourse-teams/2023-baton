@@ -1,12 +1,12 @@
 import { useContext } from 'react';
-import { usePageRouter } from './usePageRouter';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useMutation } from '@tanstack/react-query';
 import { APIError } from '@/types/error';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { postRunnerPostCreation } from '@/apis/apis';
 import { ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
-import { queryClient } from './query/queryClient';
+import { usePageRouter } from '../usePageRouter';
+import { queryClient } from './queryClient';
 
 export const useRunnerPostCreation = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);

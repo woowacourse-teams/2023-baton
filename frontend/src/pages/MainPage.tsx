@@ -6,11 +6,10 @@ import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useRunnerPostList } from '@/hooks/useRunnerPostList';
+import { useRunnerPostList } from '@/hooks/query/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
 import { ReviewStatus } from '@/types/runnerPost';
-import { Tag } from '@/types/tags';
 import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 

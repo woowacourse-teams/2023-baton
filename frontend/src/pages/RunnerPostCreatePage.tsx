@@ -4,7 +4,7 @@ import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import githubIcon from '@/assets/github-icon.svg';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
@@ -17,14 +17,14 @@ import {
   validateTags,
   validateTitle,
 } from '@/utils/validate';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
 
-import { useMyGithubUrl } from '@/hooks/useMyGithubUrl';
-import { useRunnerPostCreation } from '@/hooks/useRunnerPostCreation';
+import { useMyGithubUrl } from '@/hooks/query/useMyGithubUrl';
+import { useRunnerPostCreation } from '@/hooks/query/useRunnerPostCreation';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
