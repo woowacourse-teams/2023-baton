@@ -53,5 +53,8 @@ export const patchMyRunnerProfile = async (formData: PatchRunnerProfileRequest) 
   const body = JSON.stringify(formData);
   return request.patch<void>(`/profile/runner/me`, body);
 };
-  return request.post<void>(`/profile/runner/me`, body);
+
+export const patchMySupporterProfile = async (formData: PatchSupporterProfileRequest) => {
+  const body = JSON.stringify(formData);
+  return request.patch<void>(`/profile/runner/me`, body);
 };
