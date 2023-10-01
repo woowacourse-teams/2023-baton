@@ -9,8 +9,9 @@ import { useContext, useEffect } from 'react';
 export const useMyGithubUrl = () => {
   const { showErrorToast } = useContext(ToastContext);
 
+  /* githubUrl은 수정할 수 없으므로 staleTime을 Infinity로 설정 */
   const queryResult = useQuery<GetRunnerProfileResponse, APIError, string>({
-    queryKey: ['myRunnerProfile'],
+    queryKey: ['myGithubUrl'],
     queryFn: getMyRunnerProfile,
     select: (data) => {
       return data.githubUrl;
