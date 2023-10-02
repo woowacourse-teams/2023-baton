@@ -2,53 +2,25 @@ import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
-import { GetSupporterProfileResponse } from '@/types/profile';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import { GetRunnerPostResponse } from '@/types/runnerPost';
 import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
-import { useFetch } from '@/hooks/useFetch';
 import useViewport from '@/hooks/useViewport';
+import { useOtherSupporterProfile } from '@/hooks/query/useOtherSupporterProfile';
+import { useOtherSupporterPost } from '@/hooks/query/useOtherSupporterPost';
 
+/*
+ * api에 페이지네이션 도입 후 수정 필요
+ */
 const SupporterProfilePage = () => {
-  const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
-  const [supporterProfilePost, setSupporterProfilePost] = useState<GetRunnerPostResponse | null>(null);
-
   const { supporterId } = useParams();
-
-  const { getRequest } = useFetch();
 
   const { isMobile } = useViewport();
 
-  useEffect(() => {
-    getProfile();
-    getPost();
-  }, [supporterId]);
-
-  const getProfile = () => {
-    getRequest(`/profile/supporter/${supporterId}`, async (response) => {
-      const data: GetSupporterProfileResponse = await response.json();
-
-      setSupporterProfile(data);
-    });
-  };
-
-  const getPost = async () => {
-    if (supporterId === undefined || typeof Number(supporterId) !== 'number') return;
-
-    const params = new URLSearchParams([
-      ['supporterId', supporterId],
-      ['reviewStatus', 'DONE'],
-    ]);
-
-    getRequest(`/posts/runner/search?${params.toString()}`, async (response) => {
-      const data: GetRunnerPostResponse = await response.json();
-
-      setSupporterProfilePost(data);
-    });
-  };
+  const { data: supporterProfile } = useOtherSupporterProfile(Number(supporterId));
+  const { data: supporterProfilePost } = useOtherSupporterPost(Number(supporterId));
 
   return (
     <Layout>

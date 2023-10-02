@@ -6,7 +6,7 @@ import { GetRunnerPostResponse } from '@/types/runnerPost';
 import { useQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
 
-export const useOtherRunnerProfile = (userId: number) => {
+export const useOtherSupporterPost = (userId: number) => {
   const { showErrorToast } = useContext(ToastContext);
 
   const queryResult = useQuery<GetRunnerPostResponse, APIError>({

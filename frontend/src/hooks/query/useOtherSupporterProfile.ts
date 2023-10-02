@@ -2,7 +2,7 @@ import { getOtherSupporterProfile } from '@/apis/apis';
 import { ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { APIError } from '@/types/error';
-import { GetRunnerProfileResponse, GetSupporterProfileResponse } from '@/types/profile';
+import { GetSupporterProfileResponse } from '@/types/profile';
 import { useQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
 
