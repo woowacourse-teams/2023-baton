@@ -8,16 +8,16 @@ import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { useProposedSupporterList } from '@/hooks/query/useProposedSupporterList';
 
 const SupporterCardList = () => {
   const { runnerPostId } = useParams();
 
   const { isLogin } = useLogin();
-  const { getRequestWithAuth } = useFetch();
   const { showErrorToast } = useContext(ToastContext);
   const { goToLoginPage } = usePageRouter();
 
-  const [supporterList, setSupporterList] = useState<Candidate[]>([]);
+  const { data: supporterList } = useProposedSupporterList(Number(runnerPostId));
 
   useEffect(() => {
     if (!isLogin) {
@@ -26,19 +26,11 @@ const SupporterCardList = () => {
 
       return;
     }
-    getSupporterList();
   }, []);
-
-  const getSupporterList = async () => {
-    getRequestWithAuth(`/posts/runner/${runnerPostId}/supporters`, async (response) => {
-      const data = await response.json();
-      setSupporterList(data.data);
-    });
-  };
 
   return (
     <S.SupporterCardListContainer>
-      {supporterList.map((supporter) => (
+      {supporterList?.map((supporter) => (
         <SupporterCardItem key={supporter.supporterId} supporter={supporter} />
       ))}
     </S.SupporterCardListContainer>

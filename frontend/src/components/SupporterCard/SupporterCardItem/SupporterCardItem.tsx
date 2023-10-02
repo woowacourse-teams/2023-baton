@@ -4,6 +4,7 @@ import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
+import { useSelectionSupporter } from '@/hooks/query/useSelectionSupporter';
 import { useFetch } from '@/hooks/useFetch';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
@@ -17,16 +18,16 @@ interface Props {
 }
 
 const SupporterCardItem = ({ supporter }: Props) => {
-  const { runnerPostId } = useParams();
+  const supporterId = supporter.supporterId;
+  const { paramRunnerPostId } = useParams();
 
-  const { goToMyPage, goToSupporterProfilePage } = usePageRouter();
-  const { patchRequestWithAuth } = useFetch();
-
-  const { showCompletionToast } = useContext(ToastContext);
+  const { goToSupporterProfilePage } = usePageRouter();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const { isMobile } = useViewport();
+
+  const { mutate: selectSupporter } = useSelectionSupporter();
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -40,18 +41,10 @@ const SupporterCardItem = ({ supporter }: Props) => {
     goToSupporterProfilePage(supporter.supporterId);
   };
 
-  const selectSupporter = () => {
-    const body = JSON.stringify({ supporterId: supporter.supporterId });
+  const handleClickSelectButton = () => {
+    const runnerPostId = Number(paramRunnerPostId);
 
-    patchRequestWithAuth(
-      `/posts/runner/${runnerPostId}/supporters`,
-      async (response) => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);
-
-        goToMyPage();
-      },
-      body,
-    );
+    selectSupporter({ runnerPostId, supporterId });
   };
 
   return (
@@ -94,7 +87,7 @@ const SupporterCardItem = ({ supporter }: Props) => {
         <ConfirmModal
           contents={`정말 ${supporter.name}님을 서포터로 선택하시겠습니까?`}
           closeModal={closeModal}
-          handleClickConfirmButton={selectSupporter}
+          handleClickConfirmButton={handleClickSelectButton}
         />
       )}
     </S.SupporterCardItemContainer>
