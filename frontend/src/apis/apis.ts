@@ -81,3 +81,8 @@ export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
 };
 
+export const postFeedbackToSupporter = async (runnerPostId: number, formData: PostFeedbackRequest) => {
+  const body = JSON.stringify(formData);
+  return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
+};
+
