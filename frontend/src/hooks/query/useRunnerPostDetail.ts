@@ -10,7 +10,7 @@ export const useRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   const { showErrorToast } = useContext(ToastContext);
 
   const queryResult = useSuspenseQuery<GetDetailedRunnerPostResponse, APIError>({
-    queryKey: ['runner'],
+    queryKey: ['runnerPostDetail'],
     queryFn: async () => getRunnerPostDetail(runnerPostId, isLogin).then((res) => res),
   });
 
