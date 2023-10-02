@@ -6,8 +6,8 @@ import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
 
 const ProfileDropdown = () => {
-  const { logout } = useLogin();
-  const { goToRunnerMyPage, goToSupporterMyPage } = usePageRouter();
+  const { isLogin, logout } = useLogin();
+  const { goToMainPage, goToRunnerMyPage, goToSupporterMyPage } = usePageRouter();
 
   const handleClickRunnerMyPage = () => {
     goToRunnerMyPage();
@@ -72,8 +72,5 @@ const S = {
     }
   `,
 
-  DropdownListTitle: styled.button`
-    width: 100%;
-    height: 100%;
-  `,
+  DropdownListTitle: styled.p``,
 };
