@@ -40,9 +40,18 @@ export const getProposedSupporterList = async (runnerPostId: number) => {
   return request.get<GetSupporterCandidateResponse>(`/posts/runner/${runnerPostId}/supporters`, true);
 };
 
+export const getRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
+  return request.get<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}`, isLogin);
+};
+
 export const postRunnerPostCreation = async (formData: CreateRunnerPostRequest) => {
   const body = JSON.stringify(formData);
   return request.post<void>(`/posts/runner`, body);
+};
+
+export const postReviewSuggestionWithMessage = (runnerPostId: number, message: string) => {
+  const body = JSON.stringify({ message });
+  return request.post<void>(`/posts/runner/${runnerPostId}/application`, body);
 };
 
 export const patchReviewCancelation = (runnerPostId: number) => {
@@ -66,5 +75,9 @@ export const patchMySupporterProfile = async (formData: PatchSupporterProfileReq
 export const patchProposedSupporterSelection = async (runnerPostId: number, supporterId: number) => {
   const body = JSON.stringify({ supporterId });
   return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
+};
+
+export const deleteRunnerPost = (runnerPostId: number) => {
+  return request.delete<void>(`/posts/runner/${runnerPostId}`);
 };
 
