@@ -1,5 +1,10 @@
-import { CreateRunnerPostRequest, GetRunnerPostResponse, ReviewStatus } from '@/types/runnerPost';
 import { request } from './fetch';
+import {
+  CreateRunnerPostRequest,
+  GetDetailedRunnerPostResponse,
+  GetRunnerPostResponse,
+  ReviewStatus,
+} from '@/types/runnerPost';
 import { GetSearchTagResponse } from '@/types/tags';
 import {
   GetHeaderProfileResponse,
@@ -8,6 +13,9 @@ import {
   PatchRunnerProfileRequest,
   PatchSupporterProfileRequest,
 } from '@/types/profile';
+import { GetMyPagePostResponse } from '@/types/myPage';
+import { PostFeedbackRequest } from '@/types/feedback';
+import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: any, tagName?: string) => {
   const params = new URLSearchParams({
@@ -18,6 +26,26 @@ export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor
   });
 
   return request.get<GetRunnerPostResponse>(`/posts/runner?${params.toString()}`, false);
+};
+
+export const getMyRunnerPost = (size: number, page: number, reviewStatus?: ReviewStatus) => {
+  const params = new URLSearchParams({
+    size: size.toString(),
+    ...(page && { page: page.toString() }),
+    ...(reviewStatus && { reviewStatus }),
+  });
+
+  return request.get<GetMyPagePostResponse>(`runner/me/runner?${params.toString()}`, true);
+};
+
+export const getMySupporterPost = (size: number, page: number, reviewStatus?: ReviewStatus) => {
+  const params = new URLSearchParams({
+    size: size.toString(),
+    ...(page && { page: page.toString() }),
+    ...(reviewStatus && { reviewStatus }),
+  });
+
+  return request.get<GetMyPagePostResponse>(`runner/me/supporter?${params.toString()}`, true);
 };
 
 export const getSearchTag = (keyword: string) => {
@@ -54,6 +82,11 @@ export const postReviewSuggestionWithMessage = (runnerPostId: number, message: s
   return request.post<void>(`/posts/runner/${runnerPostId}/application`, body);
 };
 
+export const postFeedbackToSupporter = async (runnerPostId: number, formData: PostFeedbackRequest) => {
+  const body = JSON.stringify(formData);
+  return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
+};
+
 export const patchReviewCancelation = (runnerPostId: number) => {
   return request.patch<void>(`/posts/runner/${runnerPostId}/cancelation`);
 };
@@ -80,9 +113,3 @@ export const patchProposedSupporterSelection = async (runnerPostId: number, supp
 export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
 };
-
-export const postFeedbackToSupporter = async (runnerPostId: number, formData: PostFeedbackRequest) => {
-  const body = JSON.stringify(formData);
-  return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
-};
-
