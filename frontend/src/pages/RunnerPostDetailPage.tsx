@@ -26,7 +26,7 @@ import { useReviewSuggestion } from '@/hooks/query/useReviewSuggestion';
 const RunnerPostPage = () => {
   const { goBack, goToRunnerProfilePage, goToLoginPage } = usePageRouter();
 
-  const { paramRunnerPostId } = useParams();
+  const { runnerPostId: paramRunnerPostId } = useParams();
   const runnerPostId = Number(paramRunnerPostId);
 
   const { isLogin } = useLogin();

@@ -19,7 +19,7 @@ interface Props {
 
 const SupporterCardItem = ({ supporter }: Props) => {
   const supporterId = supporter.supporterId;
-  const { paramRunnerPostId } = useParams();
+  const { runnerPostId: paramRunnerPostId } = useParams();
 
   const { goToSupporterProfilePage } = usePageRouter();
 
