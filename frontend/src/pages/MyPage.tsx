@@ -54,13 +54,15 @@ const MyPage = () => {
       return { ...option, selected: false };
     });
 
-    setPostOptions(newOptions);
     setReviewStatus(value as ReviewStatus);
+    setPostOptions(newOptions);
   };
 
   const handleClickSupporterButton = () => {
     setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
     setIsRunner(!isRunner);
+
+    setReviewStatus('NOT_STARTED');
   };
 
   const handleClickMoreButton = () => {
