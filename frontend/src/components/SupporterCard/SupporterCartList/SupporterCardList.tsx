@@ -4,7 +4,6 @@ import { styled } from 'styled-components';
 import SupporterCardItem from '../SupporterCardItem/SupporterCardItem';
 import { useParams } from 'react-router-dom';
 import { ToastContext } from '@/contexts/ToastContext';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';

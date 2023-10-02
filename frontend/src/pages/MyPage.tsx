@@ -3,14 +3,12 @@ import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
-import { GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
@@ -18,7 +16,6 @@ import { ReviewStatus } from '@/types/runnerPost';
 import { useMyPostList } from '@/hooks/query/useMyPostList';
 import { useMySupporterProfile } from '@/hooks/query/useMySupporterProfile';
 import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
-import { queryClient } from '@/hooks/query/queryClient';
 
 const MyPage = () => {
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);

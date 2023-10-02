@@ -9,7 +9,6 @@ import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
 import { GetRunnerPostResponse } from '@/types/runnerPost';
 import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
-import { ToastContext } from '@/contexts/ToastContext';
 import { useFetch } from '@/hooks/useFetch';
 import useViewport from '@/hooks/useViewport';
 
