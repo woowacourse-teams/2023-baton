@@ -6,7 +6,7 @@ import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
 
 const ProfileDropdown = () => {
-  const { isLogin, logout } = useLogin();
+  const { logout } = useLogin();
   const { goToMainPage, goToRunnerMyPage, goToSupporterMyPage } = usePageRouter();
 
   const handleClickRunnerMyPage = () => {
@@ -20,6 +20,7 @@ const ProfileDropdown = () => {
   const handleClickLogoutButton = () => {
     logout();
 
+    goToMainPage();
     window.location.reload();
   };
 
