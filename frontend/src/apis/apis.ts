@@ -84,7 +84,7 @@ export const postReviewSuggestionWithMessage = (runnerPostId: number, message: s
 
 export const postFeedbackToSupporter = async (formData: PostFeedbackRequest) => {
   const body = JSON.stringify(formData);
-  return request.patch<void>(`/feedback/supporter`, body);
+  return request.post<void>(`/feedback/supporter`, body);
 };
 
 export const patchReviewCancelation = (runnerPostId: number) => {
