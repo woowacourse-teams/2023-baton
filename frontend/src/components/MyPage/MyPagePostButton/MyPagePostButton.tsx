@@ -16,21 +16,9 @@ interface Props {
   isRunner: boolean;
   supporterId?: number;
   applicantCount: number;
-  handleDeletePost: (handleDeletePost: number) => void;
 }
 
-/*
- * handleDeletePost:
- * 리뷰 제안, 취소 후 데이터  refresh 확인 후 정상적으로 적용된다면 제거 해도 됨
- */
-const MyPagePostButton = ({
-  runnerPostId,
-  reviewStatus,
-  isRunner,
-  supporterId,
-  applicantCount,
-  handleDeletePost,
-}: Props) => {
+const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, applicantCount }: Props) => {
   const { goToSupportSelectPage, goToSupporterFeedbackPage } = usePageRouter();
 
   const { isMobile } = useViewport();

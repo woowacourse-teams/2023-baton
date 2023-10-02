@@ -11,7 +11,6 @@ import useViewport from '@/hooks/useViewport';
 
 interface Props extends MyPagePost {
   isRunner: boolean;
-  handleDeletePost: (handleDeletePost: number) => void;
 }
 
 const MyPagePostItem = ({
@@ -24,7 +23,6 @@ const MyPagePostItem = ({
   applicantCount,
   isRunner,
   supporterId,
-  handleDeletePost,
 }: Props) => {
   const { goToRunnerPostPage } = usePageRouter();
 
@@ -64,7 +62,6 @@ const MyPagePostItem = ({
         </S.TagContainer>
 
         <MyPagePostButton
-          handleDeletePost={handleDeletePost}
           applicantCount={applicantCount}
           runnerPostId={runnerPostId}
           isRunner={isRunner}
