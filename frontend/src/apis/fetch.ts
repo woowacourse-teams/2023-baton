@@ -1,6 +1,7 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
 import { Method } from '@/types/api';
 import { validateResponse } from './error';
+import { CustomApiError } from '@/types/error';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
@@ -15,7 +16,11 @@ const parseJson = async (response: Response): Promise<any> => {
 };
 
 const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
-  return fetch(`${BATON_BASE_URL}${url}`, options).then(async (response) => parseJson(response));
+  return fetch(`${BATON_BASE_URL}${url}`, options)
+    .then(async (response) => parseJson(response))
+    .catch(() => {
+      throw new CustomApiError('', '요청이 잘못되었어요');
+    });
 };
 
 const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {

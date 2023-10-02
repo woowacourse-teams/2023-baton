@@ -25,3 +25,7 @@ export const validateResponse = async (response: Response) => {
 
   throw new CustomApiError(ERROR_TITLE.REQUEST, `${response.status}: ` + ERROR_DESCRIPTION.UNEXPECTED);
 };
+
+export const throwErrorBadRequest = () => {
+  throw new CustomApiError('', '요청이 잘못되었어요');
+};
