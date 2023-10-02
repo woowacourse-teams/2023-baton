@@ -35,7 +35,7 @@ export const getMyRunnerPost = (size: number, page: number, reviewStatus?: Revie
     ...(reviewStatus && { reviewStatus }),
   });
 
-  return request.get<GetMyPagePostResponse>(`runner/me/runner?${params.toString()}`, true);
+  return request.get<GetMyPagePostResponse>(`/posts/runner/me/runner?${params.toString()}`, true);
 };
 
 export const getMySupporterPost = (size: number, page: number, reviewStatus?: ReviewStatus) => {
@@ -45,7 +45,7 @@ export const getMySupporterPost = (size: number, page: number, reviewStatus?: Re
     ...(reviewStatus && { reviewStatus }),
   });
 
-  return request.get<GetMyPagePostResponse>(`runner/me/supporter?${params.toString()}`, true);
+  return request.get<GetMyPagePostResponse>(`/posts/runner/me/supporter?${params.toString()}`, true);
 };
 
 export const getSearchTag = (keyword: string) => {
