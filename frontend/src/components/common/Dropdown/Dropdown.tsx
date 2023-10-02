@@ -40,5 +40,7 @@ const S = {
     border-radius: 0 0 10px 10px;
     border: 1px solid var(--gray-400);
     box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.05);
+
+    z-index: 101;
   `,
 };
