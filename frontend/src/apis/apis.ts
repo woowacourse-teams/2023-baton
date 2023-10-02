@@ -113,3 +113,25 @@ export const patchProposedSupporterSelection = async (runnerPostId: number, supp
 export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
 };
+
+export const postMissionBranchCreation = async (repoName: string) => {
+  const body = JSON.stringify({ repoName });
+  return request.post<void>(`/branch`, body);
+};
+
+export const getOtherRunnerProfile = async (userId: number) => {
+  return request.get<GetRunnerProfileResponse>(`/profile/runner/${userId}`, false);
+};
+
+export const getOtherSupporterProfile = async (userId: number) => {
+  return request.get<GetRunnerProfileResponse>(`/profile/supporter/${userId}`, false);
+};
+
+export const getOtherSupporterPost = async (supporterId: number) => {
+  const params = new URLSearchParams([
+    ['supporterId', supporterId.toString()],
+    ['reviewStatus', 'DONE'],
+  ]);
+
+  return request.get<GetRunnerPostResponse>(`/posts/runner/search?${params.toString()}`, false);
+};
