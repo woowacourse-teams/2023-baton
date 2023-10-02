@@ -5,14 +5,17 @@ interface Props extends React.HTMLProps<HTMLDivElement> {
   trigger: React.ReactNode;
   children: React.ReactNode;
   isDropdownOpen: boolean;
+  gapFromTrigger: string;
 }
 
-const Dropdown = ({ trigger, children, isDropdownOpen }: Props) => {
+const Dropdown = ({ trigger, children, isDropdownOpen, gapFromTrigger }: Props) => {
   return (
     <>
       <S.DropdownContainer>
         {trigger}
-        {isDropdownOpen ? <S.DropdownMenuContainer>{children}</S.DropdownMenuContainer> : null}
+        {isDropdownOpen ? (
+          <S.DropdownMenuContainer $gapFromTrigger={gapFromTrigger}>{children}</S.DropdownMenuContainer>
+        ) : null}
       </S.DropdownContainer>
     </>
   );
@@ -31,9 +34,9 @@ const S = {
     }
   `,
 
-  DropdownMenuContainer: styled.div`
+  DropdownMenuContainer: styled.div<{ $gapFromTrigger: string }>`
     position: absolute;
-    top: 52px;
+    top: ${({ $gapFromTrigger }) => $gapFromTrigger};
 
     background-color: var(--white-color);
 
