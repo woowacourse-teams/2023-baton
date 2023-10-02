@@ -16,7 +16,8 @@ export const useReviewComplete = () => {
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_COMPLETE);
-      queryClient.invalidateQueries({ queryKey: ['mySupporterPost', 'IN_PROGRESS'] });
+      queryClient.refetchQueries({ queryKey: ['mySupporterPost', 'IN_PROGRESS'] });
+      queryClient.refetchQueries({ queryKey: ['mySupporterPost', 'DONE'] });
     },
 
     onError: () => {

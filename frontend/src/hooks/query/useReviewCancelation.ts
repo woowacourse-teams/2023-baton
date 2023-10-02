@@ -16,7 +16,7 @@ export const useReviewCancelation = () => {
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REVIEW_CANCEL);
-      queryClient.invalidateQueries({ queryKey: ['mySupporterPost', 'NOT_STARTED'] });
+      queryClient.refetchQueries({ queryKey: ['mySupporterPost', 'NOT_STARTED'] });
     },
 
     onError: () => {
