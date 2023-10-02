@@ -36,6 +36,10 @@ export const getMySupporterProfile = () => {
   return request.get<GetSupporterProfileResponse>('/profile/supporter/me', true);
 };
 
+export const getProposedSupporterList = async (runnerPostId: number) => {
+  return request.get<GetSupporterCandidateResponse>(`/posts/runner/${runnerPostId}/supporters`, true);
+};
+
 export const postRunnerPostCreation = async (formData: CreateRunnerPostRequest) => {
   const body = JSON.stringify(formData);
   return request.post<void>(`/posts/runner`, body);
@@ -58,3 +62,9 @@ export const patchMySupporterProfile = async (formData: PatchSupporterProfileReq
   const body = JSON.stringify(formData);
   return request.patch<void>(`/profile/runner/me`, body);
 };
+
+export const patchProposedSupporterSelection = async (runnerPostId: number, supporterId: number) => {
+  const body = JSON.stringify({ supporterId });
+  return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
+};
+
