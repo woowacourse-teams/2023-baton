@@ -17,7 +17,7 @@ import { GetMyPagePostResponse } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
 
-export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: any, tagName?: string) => {
+export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
   const params = new URLSearchParams({
     limit: limit.toString(),
     ...(cursor && { cursor: cursor.toString() }),

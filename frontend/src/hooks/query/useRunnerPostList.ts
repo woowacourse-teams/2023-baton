@@ -11,7 +11,13 @@ const PAGE_LIMIT = 10;
 export const useRunnerPostList = (reviewStatus?: ReviewStatus, tagName?: string) => {
   const { showErrorToast } = useContext(ToastContext);
 
-  const queryResult = useInfiniteQuery<GetRunnerPostResponse, APIError, RunnerPost[]>({
+  const queryResult = useInfiniteQuery<
+    GetRunnerPostResponse,
+    APIError,
+    RunnerPost[],
+    [string, typeof reviewStatus, typeof tagName],
+    number
+  >({
     queryKey: ['runnerPost', reviewStatus, tagName],
     queryFn: ({ pageParam }) => getRunnerPost(PAGE_LIMIT, reviewStatus, pageParam, tagName).then((res) => res),
     initialPageParam: 0,
