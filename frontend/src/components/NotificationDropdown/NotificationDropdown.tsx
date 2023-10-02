@@ -38,6 +38,10 @@ const S = {
       border-bottom: none;
       border-radius: 0 0 10px 10px;
     }
+
+    @media (max-width: 768px) {
+      width: 290px;
+    }
   `,
 
   DropdownList: styled.li`
