@@ -36,6 +36,7 @@ const S = {
 
     & > li:last-child {
       border-bottom: none;
+      border-radius: 0 0 10px 10px;
     }
   `,
 
