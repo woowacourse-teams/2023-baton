@@ -73,7 +73,7 @@ const S = {
     }
   `,
 
-  ConfirmMessage: styled.p`
+  ConfirmMessage: styled.div`
     margin-bottom: 40px;
 
     white-space: pre-wrap;
