@@ -36,8 +36,6 @@ const RunnerPostPage = () => {
   const { openModal, closeModal } = useContext(ModalContext);
 
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
-  const [isMessageModalOpen, setIsMessageModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
@@ -94,7 +92,7 @@ const RunnerPostPage = () => {
   };
 
   const handleClickDeleteButton = () => {
-    setIsConfirmModalOpen(false);
+    closeModal();
 
     deleteRunnerPost();
   };
