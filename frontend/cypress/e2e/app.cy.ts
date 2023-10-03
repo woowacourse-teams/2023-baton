@@ -69,7 +69,8 @@ describe('러너 E2E 테스트', () => {
 
     cy.get('div[aria-label="에러 메시지"]').should('be.visible');
 
-    cy.get('input[value="주소주소"]').clear().type('https://github.com/woowacourse-teams/2023-baton/pull/1');
+    cy.get('input[value="주소주소"]').clear();
+    cy.get('input[value=""]').type('https://github.com/woowacourse-teams/2023-baton/pull/1');
 
     cy.get('button[aria-label="리뷰 요청 글 생성"]').click();
 
