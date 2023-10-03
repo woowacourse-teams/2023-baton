@@ -76,10 +76,16 @@ describe('러너 E2E 테스트', () => {
     cy.get('div[aria-label="알림 메시지"]').should('be.visible');
   });
 
-  it('마이페이지 게시글을 불러온다', () => {
+  it('러너 마이페이지 대기중인 리뷰 게시글을 불러온다', () => {
     cy.get('img[alt="프로필"]').click();
 
     cy.wait(100);
+
+    cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
+    cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
+    cy.get('li[aria-label="로그아웃"]').should('be.visible');
+
+    cy.get('li[aria-label="러너 마이페이지"]').click();
 
     cy.contains('더보기').click();
 
@@ -100,12 +106,17 @@ describe('러너 E2E 테스트', () => {
     });
   });
 
-  it('마이페이지 추가 게시글을 불러온다.', () => {
+  it('서포터 마이페이지 진행중인 리뷰 게시글을 불러온다.', () => {
     cy.get('img[alt="프로필"]').click();
 
     cy.wait(100);
 
-    cy.contains('button', '서포터').click();
+    cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
+    cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
+    cy.get('li[aria-label="로그아웃"]').should('be.visible');
+
+    cy.get('li[aria-label="서포터 마이페이지"]').click();
+
     cy.contains('button', '진행중인 리뷰').click();
 
     cy.wait(500);
