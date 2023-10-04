@@ -1,54 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-
-const mockData = [
-  {
-    id: 1,
-    title: '서포터의 제안이 왔습니다.',
-    contents: '관련 게시글 - 보스 잡기 미션 에이든 미션 제출합니다.',
-    time: '2023-09-25 17:45',
-  },
-  {
-    id: 2,
-    title: '코드 리뷰 매칭이 완료되었습니다.',
-    contents: '관련 게시글 - 보스 잡기 미션 에이든 미션 제출합니다.',
-    time: '2023-09-25 17:45',
-  },
-  {
-    id: 3,
-    title: '서포터의 제안이 왔습니다.',
-    contents: '관련 게시글 - 보스 잡기 미션 에이든 미션 제출합니다.',
-    time: '2023-09-25 17:45',
-  },
-  {
-    id: 4,
-    title: '서포터의 제안이 왔습니다.',
-    contents: '관련 게시글 - 보스 잡기 미션 에이든 미션 제출합니다.',
-    time: '2023-09-25 17:45',
-  },
-  {
-    id: 6,
-    title: '서포터의 제안이 왔습니다.',
-    contents: '관련 게시글 - 보스 잡기 미션 에이든 미션 제출합니다.',
-    time: '2023-09-25 17:45',
-  },
-];
+import mockData from '../../mocks/data/alarm.json';
+import { Alarm, GetAlarmResponse } from '@/types/alarm';
+import { usePageRouter } from '@/hooks/usePageRouter';
 
 const NotificationDropdown = () => {
+  const [notificationList, setNotificationList] = useState<GetAlarmResponse | null>(null);
+
+  const { goToRunnerPostPage } = usePageRouter();
+
+  useEffect(() => {
+    setNotificationList(mockData);
+  }, []);
+
+  const handleDeletePost = (e: React.MouseEvent, notificationId: number) => {
+    e.stopPropagation();
+    const deletedPostList = notificationList?.data.filter((noti: Alarm) => noti.alarmId !== notificationId);
+
+    if (deletedPostList) {
+      setNotificationList({ data: deletedPostList });
+    }
+  };
+
+  const handlePostClick = (url: string) => {
+    const runnerPostId = url.slice(-1);
+
+    goToRunnerPostPage(parseInt(runnerPostId, 10));
+  };
+
   return (
     <S.DropdownContainer>
-      {mockData.map((noti) => {
-        return (
-          <S.DropdownList key={noti.id}>
-            <S.NotificationTitleContainer>
-              <S.NotificationTitle>{noti.title}</S.NotificationTitle>
-              <S.CloseButton>삭제</S.CloseButton>
-            </S.NotificationTitleContainer>
-            <S.NotificationContents>{noti.contents}</S.NotificationContents>
-            <S.NotificationTime>{noti.time}</S.NotificationTime>
-          </S.DropdownList>
-        );
-      })}
+      {notificationList?.data && notificationList?.data.length > 0 ? (
+        notificationList?.data.map((noti: Alarm) => {
+          return (
+            <S.DropdownList key={noti.alarmId} onClick={() => handlePostClick(noti.url)}>
+              <S.NotificationTitleContainer>
+                <S.NotificationTitle>{noti.title}</S.NotificationTitle>
+                <S.CloseButton onClick={(e) => handleDeletePost(e, noti.alarmId)}>삭제</S.CloseButton>
+              </S.NotificationTitleContainer>
+              <S.NotificationContents>{noti.message}</S.NotificationContents>
+              <S.NotificationTime>{noti.createdAt}</S.NotificationTime>
+            </S.DropdownList>
+          );
+        })
+      ) : (
+        <S.EmptyMessage>새로운 알림이 없습니다.</S.EmptyMessage>
+      )}
     </S.DropdownContainer>
   );
 };
@@ -147,5 +144,13 @@ const S = {
     @media (max-width: 768px) {
       font-size: 10px;
     }
+  `,
+
+  EmptyMessage: styled.p`
+    height: 427px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `,
 };

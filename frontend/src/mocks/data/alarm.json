@@ -1,0 +1,20 @@
+{
+  "data": [
+    {
+      "alarmId": 1,
+      "title": "서포터의 제안이 왔습니다.",
+      "message": "관련 게시글 - [보스 잡기 미션] ㅇㅇㅇ 미션 제출합니다.",
+      "url": "/posts/runner/1",
+      "isRead": false,
+      "createdAt": "생성일자"
+    },
+    {
+      "alarmId": 2,
+      "title": "서포터의 제안이 왔습니다.",
+      "message": "관련 게시글 - [보스 잡기 미션] ㅇㅇㅇ 미션 제출합니다.",
+      "url": "/posts/runner/2",
+      "isRead": false,
+      "createdAt": "생성일자"
+    }
+  ]
+}
