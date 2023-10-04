@@ -21,6 +21,7 @@ import useViewport from '@/hooks/useViewport';
 import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import GuideContents from '@/components/GuideContents/GuideContents';
+import { ModalContext } from '@/contexts/ModalContext';
 
 const RunnerPostPage = () => {
   const { goToMainPage, goBack, goToRunnerProfilePage, goToMyPage, goToLoginPage } = usePageRouter();
@@ -32,10 +33,9 @@ const RunnerPostPage = () => {
   const { isMobile } = useViewport();
 
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { openModal, closeModal } = useContext(ModalContext);
 
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
-  const [isMessageModalOpen, setIsMessageModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
@@ -92,17 +92,19 @@ const RunnerPostPage = () => {
   };
 
   const handleClickDeleteButton = () => {
-    setIsConfirmModalOpen(false);
+    closeModal();
 
     deleteRunnerPost();
   };
 
   const openConfirmModal = () => {
-    setIsConfirmModalOpen(true);
-  };
-
-  const closeConfirmModal = () => {
-    setIsConfirmModalOpen(false);
+    openModal(
+      <ConfirmModal
+        contents="정말 삭제하시겠습니까?"
+        closeModal={closeModal}
+        handleClickConfirmButton={handleClickDeleteButton}
+      />,
+    );
   };
 
   const openMessageModal = () => {
@@ -113,11 +115,15 @@ const RunnerPostPage = () => {
       return;
     }
 
-    setIsMessageModalOpen(true);
-  };
-
-  const closeMessageModal = () => {
-    setIsMessageModalOpen(false);
+    openModal(
+      <SendMessageModal
+        messageState={message}
+        handleChangeMessage={handleChangeMessage}
+        placeholder="러너에게 보낼 메세지를 입력해주세요."
+        closeModal={closeModal}
+        handleClickSendButton={sendMessage}
+      />,
+    );
   };
 
   const viewProfile = () => {
@@ -233,24 +239,6 @@ const RunnerPostPage = () => {
           </S.PostContainer>
         )}
       </S.RunnerPostContainer>
-
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          contents="정말 삭제하시겠습니까?"
-          closeModal={closeConfirmModal}
-          handleClickConfirmButton={handleClickDeleteButton}
-        />
-      )}
-
-      {isMessageModalOpen && (
-        <SendMessageModal
-          messageState={message}
-          handleChangeMessage={handleChangeMessage}
-          placeholder="러너에게 보낼 메세지를 입력해주세요."
-          closeModal={closeMessageModal}
-          handleClickSendButton={sendMessage}
-        />
-      )}
     </Layout>
   );
 };

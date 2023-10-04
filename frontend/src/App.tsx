@@ -6,6 +6,7 @@ import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import { useLogin } from './hooks/useLogin';
 import LoadingPage from './pages/LoadingPage';
+import ModalProvider from './contexts/ModalContext';
 
 const App = () => {
   const { checkLoginToken } = useLogin();
@@ -27,11 +28,13 @@ const App = () => {
     <LoadingPage />
   ) : (
     <ToastProvider>
-      <S.AppContainer>
-        <Suspense fallback={<div></div>}>
-          <Outlet />
-        </Suspense>
-      </S.AppContainer>
+      <ModalProvider>
+        <S.AppContainer>
+          <Suspense fallback={<></>}>
+            <Outlet />
+          </Suspense>
+        </S.AppContainer>
+      </ModalProvider>
     </ToastProvider>
   );
 };
