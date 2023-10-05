@@ -6,8 +6,8 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;

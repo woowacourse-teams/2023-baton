@@ -74,16 +74,14 @@ class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
         given(spyRunnerPost.getId()).willReturn(1L);
 
         // when
-        final PageResponse<RunnerPostResponse.Simple> responses = PageResponse.of(
-                List.of(spyRunnerPost),
-                eachRunnerPost -> RunnerPostResponse.Simple.of(
-                        eachRunnerPost,
-                        0L,
-                        List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag))),
-                10
-                );
+        final List<RunnerPostResponse.Simple> responses = List.of(RunnerPostResponse.Simple.of(
+                spyRunnerPost,
+                0L,
+                List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag))
+        ));
+        final PageResponse<RunnerPostResponse.Simple> pageResponse = PageResponse.of(responses, new PageParams(2L, 10));
         when(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(any(PageParams.class), anyLong(), any(ReviewStatus.class)))
-                .thenReturn(responses);
+                .thenReturn(pageResponse);
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/search")

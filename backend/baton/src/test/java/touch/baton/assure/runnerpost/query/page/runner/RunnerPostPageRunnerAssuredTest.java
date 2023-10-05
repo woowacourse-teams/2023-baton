@@ -39,7 +39,7 @@ class RunnerPostPageRunnerAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.Last();
         final PageResponse<RunnerPostResponse.SimpleByRunner> 기대된_러너_게시글_페이징_응답 = 러너와_연관된_러너_게시글_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보
@@ -76,7 +76,7 @@ class RunnerPostPageRunnerAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.from(페이지_크기, 1);
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.Last();
         final PageResponse<RunnerPostResponse.SimpleByRunner> 기대된_러너_게시글_페이징_응답 = 러너와_연관된_러너_게시글_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보

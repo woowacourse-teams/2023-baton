@@ -108,10 +108,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(null, limit),
+                pageParams,
                 NOT_STARTED
         );
 
@@ -121,9 +121,9 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -176,10 +176,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(previousRunnerPost.getId(), 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(previousRunnerPost.getId(), limit),
+                pageParams,
                 NOT_STARTED
         );
 
@@ -189,9 +189,9 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -237,10 +237,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(null, limit),
+                pageParams,
                 NOT_STARTED
         );
 
@@ -251,9 +251,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -306,10 +307,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(previousRunnerPost.getId(), 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(previousRunnerPost.getId(), limit),
+                pageParams,
                 NOT_STARTED
         );
 
@@ -320,9 +321,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
         // then
         assertThat(actual).isEqualTo(expected);
@@ -360,10 +362,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(null, limit),
+                pageParams,
                 null
         );
 
@@ -373,9 +375,9 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -421,10 +423,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(previousRunnerPost.getId(), 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 javaTag.getTagName().getValue(),
-                new PageParams(previousRunnerPost.getId(), limit),
+                pageParams,
                 null
         );
 
@@ -434,9 +436,9 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -475,10 +477,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(null, limit),
+                pageParams,
                 null
         );
 
@@ -489,9 +491,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -537,10 +540,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         ));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(previousRunnerPost.getId(), 10);
         final PageResponse<RunnerPostResponse.Simple> actual = runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(
                 null,
-                new PageParams(previousRunnerPost.getId(), limit),
+                pageParams,
                 null
         );
 
@@ -551,9 +554,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
         );
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(expectedRunnerPostThree, expectedRunnerPostTwo, expectedRunnerPostOne),
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, 0L, runnerPostTags),
-                limit
+                List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
+                        RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
+                pageParams
         );
 
         // then
@@ -665,13 +669,12 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, savedSupporterHyena));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.Simple> actual
-                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, limit), savedSupporterHyena.getId(), IN_PROGRESS);
+                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, savedSupporterHyena.getId(), IN_PROGRESS);
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(savedRunnerPost),
-                eachRunnerPost -> RunnerPostResponse.Simple.of(eachRunnerPost, 1L, Collections.emptyList()),
-                limit
+                List.of(RunnerPostResponse.Simple.of(savedRunnerPost, 1L, Collections.emptyList())),
+                pageParams
         );
 
         // then
@@ -694,13 +697,12 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.Simple> actual
-                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(new PageParams(null, limit), supporter.getId(), NOT_STARTED);
+                = runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporter.getId(), NOT_STARTED);
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
-                List.of(savedRunnerPost),
-                eachRunnerPost -> RunnerPostResponse.Simple.of(eachRunnerPost, 1L, Collections.emptyList()),
-                limit
+                List.of(RunnerPostResponse.Simple.of(savedRunnerPost, 1L, Collections.emptyList())),
+                pageParams
         );
 
         // then
@@ -718,13 +720,12 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(runnerPost);
 
         // when
-        final int limit = 10;
+        final PageParams pageParams = new PageParams(null, 10);
         final PageResponse<RunnerPostResponse.SimpleByRunner> actual
-                = runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(new PageParams(null, limit), runner.getId(), NOT_STARTED);
+                = runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(pageParams, runner.getId(), NOT_STARTED);
         final PageResponse<RunnerPostResponse.SimpleByRunner> expected = PageResponse.of(
-            List.of(savedRunnerPost),
-            eachRunnerPost -> RunnerPostResponse.SimpleByRunner.of(eachRunnerPost, 0L, Collections.emptyList()),
-            limit
+            List.of(RunnerPostResponse.SimpleByRunner.of(savedRunnerPost, 0L, Collections.emptyList())),
+            pageParams
         );
 
         // then

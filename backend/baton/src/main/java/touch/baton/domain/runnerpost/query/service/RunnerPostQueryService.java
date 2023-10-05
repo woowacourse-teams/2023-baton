@@ -48,11 +48,10 @@ public class RunnerPostQueryService {
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), queryCount, TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return PageResponse.of(
-                runnerPosts,
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags),
-                pageParams.limit()
-        );
+        final List<RunnerPostResponse.Simple> responses = runnerPosts.stream()
+                .map(runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags))
+                .toList();
+        return PageResponse.of(responses, pageParams);
     }
 
     public PageResponse<RunnerPostResponse.Simple> pageRunnerPostBySupporterIdAndReviewStatus(final PageParams pageParams,
@@ -62,11 +61,10 @@ public class RunnerPostQueryService {
         final List<RunnerPost> runnerPosts = pageRunnerPostFromSupporterByReviewStatus(pageParams, supporterId, reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return PageResponse.of(
-                runnerPosts,
-                runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags),
-                pageParams.limit()
-        );
+        final List<RunnerPostResponse.Simple> responses = runnerPosts.stream()
+                .map(runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags))
+                .toList();
+        return PageResponse.of(responses, pageParams);
     }
 
     private List<RunnerPost> pageRunnerPostFromSupporterByReviewStatus(final PageParams pageParams,
@@ -96,11 +94,10 @@ public class RunnerPostQueryService {
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(pageParams.cursor(), queryCount, runnerId, reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        return PageResponse.of(
-                runnerPosts,
-                runnerPost -> RunnerPostResponse.SimpleByRunner.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags),
-                pageParams.limit()
-        );
+        final List<RunnerPostResponse.SimpleByRunner> responses = runnerPosts.stream()
+                .map(runnerPost -> RunnerPostResponse.SimpleByRunner.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags))
+                .toList();
+        return PageResponse.of(responses, pageParams);
     }
 
     public List<SupporterRunnerPost> readSupporterRunnerPostsByRunnerPostId(final Runner runner, final Long runnerPostId) {

@@ -69,16 +69,12 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         given(spyRunnerPost.getId()).willReturn(1L);
 
         // when
-        final int limit = 10;
-        final PageResponse<RunnerPostResponse.Simple> pageResponse = PageResponse.of(
-                List.of(spyRunnerPost),
-                eachRunnerPost -> RunnerPostResponse.Simple.of(
-                        spyRunnerPost,
-                        0L,
-                        List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag), RunnerPostTagFixture.create(spyRunnerPost, springTag))
-                ),
-                limit
-        );
+        final List<RunnerPostResponse.Simple> responses = List.of(RunnerPostResponse.Simple.of(
+                spyRunnerPost,
+                0L,
+                List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag), RunnerPostTagFixture.create(spyRunnerPost, springTag))
+        ));
+        final PageResponse<RunnerPostResponse.Simple> pageResponse = PageResponse.of(responses, new PageParams(2L, 10));
         when(runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(anyString(), any(PageParams.class), any(ReviewStatus.class)))
                 .thenReturn(pageResponse);
 
@@ -107,7 +103,6 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
                                 fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
                                 fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
-                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부"),
                                 fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부")
                         ))
                 );

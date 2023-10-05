@@ -8,9 +8,9 @@ import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.vo.SocialId;
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 
 import java.util.List;
 
