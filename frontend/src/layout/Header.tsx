@@ -1,45 +1,25 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
 import NotificationOffIcon from '@/assets/notification_off.svg';
 import NotificationOnIcon from '@/assets/notification_on.svg';
-import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { useLogin } from '@/hooks/useLogin';
-import useViewport from '@/hooks/useViewport';
 import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import Dropdown from '@/components/common/Dropdown/Dropdown';
 import NotificationDropdown from '@/components/NotificationDropdown/NotificationDropdown';
 import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown';
 
 const Header = () => {
-  const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
-  const { isLogin, logout } = useLogin();
-  const { isMobile } = useViewport();
-
-  const { data: profile } = useHeaderProfile(isLogin);
-  const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
   const [isNotiDropdownOpen, setIsNotiDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
   const { isLogin } = useLogin();
-  const { getRequestWithAuth } = useFetch();
-
-  useEffect(() => {
-    if (isLogin) getProfile();
-  }, []);
-
-  const getProfile = () => {
-    getRequestWithAuth(`/profile/me`, async (response) => {
-      const data: GetHeaderProfileResponse = await response.json();
-
-      setProfile(data);
-    });
-  };
+  const { data: profile } = useHeaderProfile(isLogin);
 
   const handleNotiDropdown = () => {
     setIsNotiDropdownOpen(!isNotiDropdownOpen);
