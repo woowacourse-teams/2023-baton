@@ -53,7 +53,6 @@ const MainPage = () => {
               reviewStatus={reviewStatus ?? 'NOT_STARTED'}
               setReviewStatus={setReviewStatus}
               setEnteredTag={setEnteredTag}
-              fetchNextPage={fetchNextPage}
             />
           </S.LeftSideContainer>
           <S.RightSideContainer>

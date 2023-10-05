@@ -33,7 +33,7 @@ const App = () => {
       <ModalProvider>
         <S.AppContainer>
           <QueryClientProvider client={queryClient}>
-            <Suspense fallback={<div></div>}>
+            <Suspense fallback={<LoadingPage />}>
               <Outlet />
             </Suspense>
           </QueryClientProvider>
