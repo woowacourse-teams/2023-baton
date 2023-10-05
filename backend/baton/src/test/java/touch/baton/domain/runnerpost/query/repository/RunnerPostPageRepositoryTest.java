@@ -45,6 +45,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, null);
         runnerPostIds.sort(Comparator.reverseOrder());
@@ -70,6 +73,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
             runnerPostIds.add(persistRunnerPost(runner, allReviewStatus[i % allReviewStatus.length]).getId());
         }
         final int limit = 10;
+
+        em.flush();
+        em.close();
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, null, null);
@@ -99,6 +105,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
@@ -124,6 +133,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
             runnerPostIds.add(persistRunnerPost(runner, reviewStatus).getId());
         }
         final int limit = 10;
+
+        em.flush();
+        em.close();
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, null, reviewStatus);
@@ -159,6 +171,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final TagReducedName tagReducedName = TagReducedName.from(tagName);
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, tagReducedName, reviewStatus);
@@ -190,6 +205,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
             runnerPostIds.add(runnerPost.getId());
         }
         final int limit = 10;
+
+        em.flush();
+        em.close();
 
         // when
         final TagReducedName tagReducedName = TagReducedName.from(tagName);
@@ -228,6 +246,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(previousLastId, limit, supporter.getId());
         runnerPostIds.sort(Comparator.reverseOrder());
@@ -264,6 +285,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
             runnerPostIds.add(runnerPost.getId());
         }
         final int limit = 10;
+
+        em.flush();
+        em.close();
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(null, limit, supporter.getId());
@@ -305,6 +329,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageBySupporterIdAndReviewStatus(previousLastId, limit, supporter.getId(), IN_PROGRESS);
         runnerPostIds.sort(Comparator.reverseOrder());
@@ -344,6 +371,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         }
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageBySupporterIdAndReviewStatus(null, limit, supporter.getId(), DONE);
         runnerPostIds.sort(Comparator.reverseOrder());
@@ -380,6 +410,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Long previousLastId = runnerPostIds.get(lastIndex);
         final int limit = 10;
 
+        em.flush();
+        em.close();
+
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(previousLastId, limit, runner.getId(), NOT_STARTED);
         runnerPostIds.sort(Comparator.reverseOrder());
@@ -412,6 +445,9 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
             runnerPostIds.add(runnerPost.getId());
         }
         final int limit = 10;
+
+        em.flush();
+        em.close();
 
         // when
         final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(null, limit, runner.getId(), OVERDUE);
