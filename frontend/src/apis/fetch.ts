@@ -16,8 +16,8 @@ const parseJson = async (response: Response): Promise<any> => {
 
 const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
   return fetch(`${BATON_BASE_URL}${url}`, options)
-    .then(async (response) => parseJson(response))
-    .catch(() => throwErrorBadRequest());
+    .catch(() => throwErrorBadRequest())
+    .then(async (response) => parseJson(response));
 };
 
 const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
