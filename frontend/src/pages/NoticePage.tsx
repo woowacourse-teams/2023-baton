@@ -12,35 +12,24 @@ import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import EventImage from '@/assets/banner/event_banner_post.png';
 import { JavaIconWhite, JavascriptIcon } from '@/assets/technicalLabelIcon';
-import { GetHeaderProfileResponse } from '@/types/profile';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
-import { useFetch } from '@/hooks/useFetch';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
+import { useMissionBranchCreation } from '@/hooks/query/useMissionBranchCreation';
 import { ModalContext } from '@/contexts/ModalContext';
 
 const NoticePage = () => {
   const { goBack } = usePageRouter();
   const { isLogin } = useLogin();
-  const { getRequestWithAuth, postRequestWithAuth } = useFetch();
   const { isMobile } = useViewport();
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showErrorToast } = useContext(ToastContext);
+
   const { openModal, closeModal } = useContext(ModalContext);
 
-  const [profileName, setProfileName] = useState<string>();
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
 
-  useEffect(() => {
-    if (isLogin) {
-      getProfile();
-    }
-  }, []);
-
-  const getProfile = () => {
-    getRequestWithAuth(`/profile/me`, async (response) => {
-      const data: GetHeaderProfileResponse = await response.json();
-
-      setProfileName(data.name);
-    });
-  };
+  const { mutate: postMissionBranchCreation } = useMissionBranchCreation();
+  const { data: profile } = useHeaderProfile(isLogin);
+  const profileName = profile?.name;
 
   const openConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isLogin) {
@@ -80,13 +69,7 @@ const NoticePage = () => {
   const postRepository = async (selectedLanguage: string) => {
     const repositoryName = selectedLanguage === 'java' ? 'java-boss-monster' : 'javascript-boss-monster';
 
-    await postRequestWithAuth(
-      '/branch',
-      () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.REPO_COMPLETE);
-      },
-      JSON.stringify({ repoName: repositoryName }),
-    );
+    postMissionBranchCreation(repositoryName);
   };
 
   const handleClickStartButton = () => {

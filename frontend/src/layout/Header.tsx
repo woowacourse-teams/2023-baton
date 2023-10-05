@@ -1,34 +1,20 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import useViewport from '@/hooks/useViewport';
+import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 
 const Header = () => {
-  const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
-
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
   const { isLogin, logout } = useLogin();
   const { isMobile } = useViewport();
-  const { getRequestWithAuth } = useFetch();
 
-  useEffect(() => {
-    if (isLogin) getProfile();
-  }, []);
-
-  const getProfile = () => {
-    getRequestWithAuth(`/profile/me`, async (response) => {
-      const data: GetHeaderProfileResponse = await response.json();
-
-      setProfile(data);
-    });
-  };
+  const { data: profile } = useHeaderProfile(isLogin);
 
   const handleClickLogoutButton = () => {
     logout();
@@ -48,7 +34,7 @@ const Header = () => {
           {isLogin ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
-                {isMobile ? null : <S.ProfileName>{profile?.name}</S.ProfileName>}
+                {!isMobile && <S.ProfileName>{profile?.name}</S.ProfileName>}
                 <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
               </S.AvatarContainer>
               <Button

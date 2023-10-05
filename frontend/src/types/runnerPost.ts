@@ -60,4 +60,5 @@ export interface PageInfo {
   totalElements: number;
   currentPage: number;
   currentSize: number;
+  nextCursor: number;
 }
