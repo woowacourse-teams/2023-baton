@@ -9,10 +9,9 @@ interface Props {
   reviewStatus: ReviewStatus;
   setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus>>;
   setEnteredTag: React.Dispatch<React.SetStateAction<string>>;
-  fetchNextPage: () => void;
 }
 
-const RunnerPostSearchBox = ({ reviewStatus, setReviewStatus, setEnteredTag, fetchNextPage }: Props) => {
+const RunnerPostSearchBox = ({ reviewStatus, setReviewStatus, setEnteredTag }: Props) => {
   const [keyword, setKeyword] = useState('');
   const [keywordForResponse, setKeywordForResponse] = useState('');
 
