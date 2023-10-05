@@ -51,7 +51,7 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
         final int 페이지_크기 = 10;
         final PageResponse<RunnerPostResponse.Simple> 서포터가_리뷰를_지원한_대기중인_러너_게시글_페이징_응답 = 서포터와_연관된_러너_게시글_페이징_응답(
                 List.of(서포터가_리뷰를_지원한_대기중인_러너_게시글_응답),
-                PageResponse.PageInfo.Last()
+                PageResponse.PageInfo.last()
         );
 
         // then
@@ -96,7 +96,7 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
         final int 페이지_크기 = 10;
         final PageResponse<RunnerPostResponse.Simple> 서포터가_리뷰를_지원한_진행중인_러너_게시글_페이징_응답 = 서포터와_연관된_러너_게시글_페이징_응답(
                 List.of(서포터가_리뷰를_지원한_진행중인_러너_게시글_응답),
-                PageResponse.PageInfo.Last()
+                PageResponse.PageInfo.last()
         );
 
         // then
@@ -139,7 +139,7 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
         final int 페이지_크기 = 10;
         final PageResponse<RunnerPostResponse.Simple> 서포터가_리뷰를_완료한_러너_게시글_페이징_응답 = 서포터와_연관된_러너_게시글_페이징_응답(
                 List.of(서포터가_리뷰를_완료한_러너_게시글_응답),
-                PageResponse.PageInfo.Last()
+                PageResponse.PageInfo.last()
         );
 
         // then
@@ -186,7 +186,7 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
         final int 페이지_크기 = 10;
         final PageResponse<RunnerPostResponse.Simple> 서포터가_리뷰를_완료한_러너_게시글_페이징_응답 = 서포터와_연관된_러너_게시글_페이징_응답(
                 List.of(서포터가_리뷰를_완료한_러너_게시글_응답),
-                PageResponse.PageInfo.Last()
+                PageResponse.PageInfo.last()
         );
 
         // then

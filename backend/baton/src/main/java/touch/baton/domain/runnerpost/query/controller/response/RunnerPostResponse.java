@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost.query.controller.response;
 
+import touch.baton.domain.common.response.IdExtractable;
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
@@ -59,7 +60,7 @@ public record RunnerPostResponse() {
                          String reviewStatus,
                          RunnerResponse.Simple runnerProfile,
                          List<String> tags
-    ) {
+    ) implements IdExtractable {
 
         public static Simple of(final RunnerPost runnerPost,
                                 final long applicantCount,
@@ -75,6 +76,11 @@ public record RunnerPostResponse() {
                     RunnerResponse.Simple.from(runnerPost.getRunner()),
                     convertToTags(runnerPost, runnerPostTags)
             );
+        }
+
+        @Override
+        public Long extractId() {
+            return runnerPostId;
         }
     }
 
@@ -106,7 +112,7 @@ public record RunnerPostResponse() {
                                  Long supporterId,
                                  List<String> tags
 
-    ) {
+    ) implements IdExtractable {
 
         public static SimpleByRunner of(final RunnerPost runnerPost,
                                         final long applicantCount,
@@ -130,6 +136,11 @@ public record RunnerPostResponse() {
                 return null;
             }
             return runnerPost.getSupporter().getId();
+        }
+
+        @Override
+        public Long extractId() {
+            return runnerPostId;
         }
     }
 

@@ -4,30 +4,34 @@ import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 
 import java.util.List;
 
-public record PageResponse<T>(List<T> data, PageInfo pageInfo) {
+public record PageResponse<T extends IdExtractable>(List<T> data, PageInfo pageInfo) {
 
-    private static final int NEXT_INDEX = 1;
-
-    public static <T> PageResponse<T> of(final List<T> responses, final PageParams pageParams) {
+    public static <T extends IdExtractable> PageResponse<T> of(final List<T> responses, final PageParams pageParams) {
         final int limit = pageParams.limit();
         if (isLastPage(responses, limit)) {
-            return new PageResponse<>(responses, PageInfo.Last());
+            return new PageResponse<>(responses, PageInfo.last());
         }
-        return new PageResponse<>(responses.subList(0, limit + NEXT_INDEX), PageInfo.Normal());
+        final List<T> limitResponses = responses.subList(0, pageParams.getLimitForQuery());
+        return new PageResponse<>(limitResponses, PageInfo.normal(getLastElementId(limitResponses)));
     }
 
-    public record PageInfo(boolean isLast) {
+    public record PageInfo(boolean isLast, Long nextCursor) {
 
-        public static PageInfo Last() {
-            return new PageInfo(true);
+        public static PageInfo last() {
+            return new PageInfo(true, null);
         }
 
-        public static PageInfo Normal() {
-            return new PageInfo(false);
+        public static PageInfo normal(final Long nextCursor) {
+            return new PageInfo(false, nextCursor);
         }
     }
 
     private static <T> boolean isLastPage(final List<T> responses, final int limit) {
         return responses.size() <= limit;
+    }
+
+    private static <T extends IdExtractable> Long getLastElementId(final List<T> responses) {
+        final int lastIndex = responses.size() - 1;
+        return responses.get(lastIndex).extractId();
     }
 }
