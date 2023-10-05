@@ -11,7 +11,7 @@ export const useOtherRunnerProfile = (userId: number) => {
 
   const queryResult = useQuery<GetRunnerProfileResponse, APIError>({
     queryKey: ['otherSupporterProfile', userId],
-    queryFn: async () => getOtherSupporterProfile(userId).then((res) => res),
+    queryFn: () => getOtherSupporterProfile(userId).then((res) => res),
   });
 
   useEffect(() => {

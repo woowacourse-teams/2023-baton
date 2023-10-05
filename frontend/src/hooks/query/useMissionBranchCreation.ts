@@ -10,7 +10,7 @@ export const useMissionBranchCreation = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, string>({
-    mutationFn: async (repoName: string) => postMissionBranchCreation(repoName),
+    mutationFn: (repoName: string) => postMissionBranchCreation(repoName),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.REPO_COMPLETE);

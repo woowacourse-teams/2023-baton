@@ -11,7 +11,7 @@ export const useOtherSupporterPost = (userId: number) => {
 
   const queryResult = useQuery<GetRunnerPostResponse, APIError>({
     queryKey: ['otherSupporterPost', userId],
-    queryFn: async () => getOtherSupporterPost(userId).then((res) => res),
+    queryFn: () => getOtherSupporterPost(userId).then((res) => res),
   });
 
   useEffect(() => {

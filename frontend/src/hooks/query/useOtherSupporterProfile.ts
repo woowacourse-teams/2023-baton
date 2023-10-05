@@ -11,7 +11,7 @@ export const useOtherSupporterProfile = (userId: number) => {
 
   const queryResult = useQuery<GetSupporterProfileResponse, APIError>({
     queryKey: ['otherSupporterProfile', userId],
-    queryFn: async () => getOtherSupporterProfile(userId).then((res) => res),
+    queryFn: () => getOtherSupporterProfile(userId).then((res) => res),
   });
 
   useEffect(() => {

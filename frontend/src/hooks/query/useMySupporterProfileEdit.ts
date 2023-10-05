@@ -11,7 +11,7 @@ export const useRunnerProfileEdit = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, PatchSupporterProfileRequest>({
-    mutationFn: async (formData: PatchSupporterProfileRequest) => patchMyRunnerProfile(formData),
+    mutationFn: (formData: PatchSupporterProfileRequest) => patchMyRunnerProfile(formData),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE);

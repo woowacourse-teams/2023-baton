@@ -11,7 +11,7 @@ export const useProposedSupporterList = (runnerPostId: number) => {
 
   const queryResult = useQuery<Candidate[], APIError, Candidate[]>({
     queryKey: ['proposedSupporterList', runnerPostId],
-    queryFn: async () => getProposedSupporterList(runnerPostId).then((res) => res.data),
+    queryFn: () => getProposedSupporterList(runnerPostId).then((res) => res.data),
   });
 
   useEffect(() => {

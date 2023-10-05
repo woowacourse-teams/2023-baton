@@ -13,7 +13,7 @@ export const useFeedbackToSupporter = () => {
   const { goToMyPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, PostFeedbackRequest>({
-    mutationFn: async (formData: PostFeedbackRequest) => postFeedbackToSupporter(formData),
+    mutationFn: (formData: PostFeedbackRequest) => postFeedbackToSupporter(formData),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMIT_FEEDBACK);
