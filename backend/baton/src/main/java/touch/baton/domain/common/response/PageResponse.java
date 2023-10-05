@@ -1,6 +1,6 @@
 package touch.baton.domain.common.response;
 
-import touch.baton.domain.runnerpost.query.service.dto.PageParams;
+import touch.baton.domain.common.request.PageParams;
 
 import java.util.List;
 

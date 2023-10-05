@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import touch.baton.domain.common.request.PageParams;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
@@ -22,7 +23,6 @@ import touch.baton.domain.runnerpost.query.controller.response.RunnerPostRespons
 import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponse;
 import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponses;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
-import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 
 import java.util.List;
 

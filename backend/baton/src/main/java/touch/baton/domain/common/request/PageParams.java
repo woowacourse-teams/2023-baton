@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.query.service.dto;
+package touch.baton.domain.common.request;
 
 import touch.baton.domain.common.exception.validator.ValidNotNull;
 
