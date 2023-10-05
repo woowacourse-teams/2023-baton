@@ -9,6 +9,7 @@ import touch.baton.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.member.query.repository.SupporterQueryRepository;
 import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
 import touch.baton.domain.runnerpost.command.repository.RunnerPostCommandRepository;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.domain.tag.command.repository.TagCommandRepository;
 import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
@@ -30,6 +31,9 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
     protected RunnerPostQueryRepository runnerPostQueryRepository;
+
+    @Autowired
+    protected RunnerPostPageRepository runnerPostPageRepository;
 
     @Autowired
     protected SupporterRunnerPostQueryRepository supporterRunnerPostQueryRepository;

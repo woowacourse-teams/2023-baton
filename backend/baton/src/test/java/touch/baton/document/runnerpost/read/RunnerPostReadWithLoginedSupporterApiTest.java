@@ -5,9 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.common.request.PageParams;
+import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
@@ -15,20 +15,24 @@ import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
 import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -43,13 +47,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.paramete
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static touch.baton.fixture.vo.CompanyFixture.company;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.GithubUrlFixture.githubUrl;
-import static touch.baton.fixture.vo.ImageUrlFixture.imageUrl;
-import static touch.baton.fixture.vo.MemberNameFixture.memberName;
-import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
-import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
 @WebMvcTest(RunnerPostQueryController.class)
@@ -66,44 +64,41 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
 
     @DisplayName("로그인한 서포터가 참여한 러너 게시글 페이징 조회 API")
     @Test
-    void readRunnerPostsByLoginedSupporterAndReviewStatus() throws Exception {
+    void readRunnerPostByLoginedSupporterAndReviewStatus() throws Exception {
         // given
-        final Runner runnerJudy = RunnerFixture.createRunner(MemberFixture.createJudy());
         final String socialId = "ditooSocialId";
-        final Member loginedMember = MemberFixture.create(
-                memberName("디투"),
-                socialId(socialId),
-                oauthId("abcd"),
-                githubUrl("naver.com"),
-                company("우아한테크코스"),
-                imageUrl("profile.jpg")
-        );
+        final Member loginedMember = MemberFixture.createWithSocialId(socialId);
         final Supporter loginedSupporter = SupporterFixture.create(loginedMember);
         final String token = getAccessTokenBySocialId(socialId);
 
+        final Runner runner = RunnerFixture.createRunner(MemberFixture.createEthan());
+
         final Tag javaTag = TagFixture.create(tagName("자바"));
         final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
-        final RunnerPost runnerPost = RunnerPostFixture.create(runnerJudy, deadline, List.of(javaTag));
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline, List.of(javaTag));
         runnerPost.assignSupporter(loginedSupporter);
 
-        // when
-        final RunnerPost spyRunnerPost = spy(runnerPost);
         final Supporter spyLoginedSupporter = spy(loginedSupporter);
-        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(spyLoginedSupporter));
-        when(spyRunnerPost.getId()).thenReturn(1L);
+        given(oauthSupporterCommandRepository.joinByMemberSocialId(any())).willReturn(Optional.ofNullable(spyLoginedSupporter));
+        given(Objects.requireNonNull(spyLoginedSupporter).getId()).willReturn(1L);
+        final RunnerPost spyRunnerPost = spy(runnerPost);
+        given(spyRunnerPost.getId()).willReturn(1L);
 
-        final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
-        final PageRequest pageOne = PageRequest.of(1, 10);
-        final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
-        when(runnerPostQueryService.readRunnerPostsBySupporterIdAndReviewStatus(any(), any(), any()))
-                .thenReturn(pageRunnerPosts);
-        when(runnerPostQueryService.readCountsByRunnerPostIds(anyList())).thenReturn(List.of(1L));
+        // when
+        final List<RunnerPostResponse.Simple> responses = List.of(RunnerPostResponse.Simple.of(
+                spyRunnerPost,
+                0L,
+                List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag))
+        ));
+        final PageResponse<RunnerPostResponse.Simple> pageResponse = PageResponse.of(responses, new PageParams(2L, 10));
+        when(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(any(PageParams.class), eq(1L), eq(ReviewStatus.IN_PROGRESS)))
+                .thenReturn(pageResponse);
 
         // then
         mockMvc.perform(get("/api/v1/posts/runner/me/supporter")
                         .header(AUTHORIZATION, "Bearer " + token)
-                        .queryParam("size", String.valueOf(pageOne.getPageSize()))
-                        .queryParam("page", String.valueOf(pageOne.getPageNumber()))
+                        .queryParam("cursor", String.valueOf(1000L))
+                        .queryParam("limit", String.valueOf(10))
                         .queryParam("reviewStatus", ReviewStatus.IN_PROGRESS.name()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
@@ -112,25 +107,22 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
                                 headerWithName(AUTHORIZATION).description("Bearer JWT")
                         ),
                         queryParameters(
-                                parameterWithName("size").description("페이지 사이즈"),
-                                parameterWithName("page").description("페이지 번호"),
-                                parameterWithName("reviewStatus").description("리뷰 상태")
+                                parameterWithName("cursor").description("(Optional) 이전 페이지 마지막 게시글 식별자값(id)"),
+                                parameterWithName("limit").description("페이지 사이즈"),
+                                parameterWithName("reviewStatus").description("(Optional) 리뷰 상태")
                         ),
                         responseFields(
-                                fieldWithPath("pageInfo.isFirst").type(BOOLEAN).description("첫 번째 페이지인지"),
-                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 인지"),
-                                fieldWithPath("pageInfo.hasNext").type(BOOLEAN).description("다음 페이지가 있는지"),
-                                fieldWithPath("pageInfo.totalPages").type(NUMBER).description("총 페이지 수"),
-                                fieldWithPath("pageInfo.totalElements").type(NUMBER).description("총 데이터 수"),
-                                fieldWithPath("pageInfo.currentPage").type(NUMBER).description("현재 페이지 번호"),
-                                fieldWithPath("pageInfo.currentSize").type(NUMBER).description("현재 페이지 데이터 수"),
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
-                                fieldWithPath("data.[].title").type(STRING).description("러너 게시글 제목"),
+                                fieldWithPath("data.[].title").type(STRING).description("러너 게시글의 제목"),
                                 fieldWithPath("data.[].deadline").type(STRING).description("러너 게시글의 마감 기한"),
-                                fieldWithPath("data.[].tags").type(ARRAY).description("러너 게시글 태그 목록"),
                                 fieldWithPath("data.[].watchedCount").type(NUMBER).description("러너 게시글의 조회수"),
                                 fieldWithPath("data.[].applicantCount").type(NUMBER).description("러너 게시글에 신청한 서포터 수"),
-                                fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글 리뷰 상태")
+                                fieldWithPath("data.[].reviewStatus").type(STRING).description("러너 게시글의 리뷰 상태"),
+                                fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
+                                fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
+                                fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
+                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부"),
+                                fieldWithPath("pageInfo.nextCursor").type(NUMBER).optional().description("다음 커서")
                         ))
                 );
     }

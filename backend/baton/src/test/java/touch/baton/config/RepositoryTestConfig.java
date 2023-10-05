@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@Import({JpaConfig.class, QuerydslConfig.class})
+@Import({JpaConfig.class, QueryDslRepositoryTestConfig.class})
 @DataJpaTest
 public abstract class RepositoryTestConfig {
 

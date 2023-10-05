@@ -7,8 +7,8 @@ import org.springframework.http.HttpStatus;
 import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.domain.member.command.Supporter;
-import touch.baton.domain.runnerpost.command.controller.response.SupporterRunnerPostResponse;
-import touch.baton.domain.runnerpost.command.controller.response.SupporterRunnerPostResponses;
+import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponse;
+import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponses;
 
 import java.util.List;
 import java.util.Map;

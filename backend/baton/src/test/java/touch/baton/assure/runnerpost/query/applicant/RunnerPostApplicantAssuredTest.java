@@ -8,7 +8,7 @@ import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.member.command.vo.SocialId;
-import touch.baton.domain.runnerpost.command.controller.response.SupporterRunnerPostResponse;
+import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponse;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
