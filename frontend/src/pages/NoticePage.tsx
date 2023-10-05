@@ -12,34 +12,24 @@ import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import EventImage from '@/assets/banner/event_banner_post.png';
 import { JavaIconWhite, JavascriptIcon } from '@/assets/technicalLabelIcon';
-import { GetHeaderProfileResponse } from '@/types/profile';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
-import { useFetch } from '@/hooks/useFetch';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
+import { useMissionBranchCreation } from '@/hooks/query/useMissionBranchCreation';
+import { ModalContext } from '@/contexts/ModalContext';
 
 const NoticePage = () => {
   const { goBack } = usePageRouter();
   const { isLogin } = useLogin();
-  const { getRequestWithAuth, postRequestWithAuth } = useFetch();
   const { isMobile } = useViewport();
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showErrorToast } = useContext(ToastContext);
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
-  const [profileName, setProfileName] = useState<string>();
+  const { openModal, closeModal } = useContext(ModalContext);
+
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
 
-  useEffect(() => {
-    if (isLogin) {
-      getProfile();
-    }
-  }, []);
-
-  const getProfile = () => {
-    getRequestWithAuth(`/profile/me`, async (response) => {
-      const data: GetHeaderProfileResponse = await response.json();
-
-      setProfileName(data.name);
-    });
-  };
+  const { mutate: postMissionBranchCreation } = useMissionBranchCreation();
+  const { data: profile } = useHeaderProfile(isLogin);
+  const profileName = profile?.name;
 
   const openConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!isLogin) {
@@ -57,28 +47,34 @@ const NoticePage = () => {
       setSelectedLanguage(targetText);
     }
 
-    setIsConfirmModalOpen(true);
-  };
-
-  const closeConfirmModal = () => {
-    setIsConfirmModalOpen(false);
+    openModal(
+      <ConfirmModal
+        contents={
+          <>
+            <p>
+              <S.highlightSpan>{targetText} 미션을 선택</S.highlightSpan>하셨습니다.
+            </p>
+            <p>
+              확인을 누르시면 <S.highlightSpan>{profileName}님의 깃허브 아이디로 브랜치가 생성</S.highlightSpan>
+              됩니다.
+            </p>
+          </>
+        }
+        closeModal={closeModal}
+        handleClickConfirmButton={handleClickStartButton}
+      />,
+    );
   };
 
   const postRepository = async (selectedLanguage: string) => {
     const repositoryName = selectedLanguage === 'java' ? 'java-boss-monster' : 'javascript-boss-monster';
 
-    await postRequestWithAuth(
-      '/branch',
-      () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.REPO_COMPLETE);
-      },
-      JSON.stringify({ repoName: repositoryName }),
-    );
+    postMissionBranchCreation(repositoryName);
   };
 
   const handleClickStartButton = () => {
     postRepository(selectedLanguage);
-    closeConfirmModal();
+    closeModal();
   };
 
   return (
@@ -179,24 +175,6 @@ const NoticePage = () => {
           </S.PostFooterContainer>
         </S.PostContainer>
       </S.RunnerPostContainer>
-
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          contents={
-            <>
-              <p>
-                <S.highlightSpan>{selectedLanguage} 미션을 선택</S.highlightSpan>하셨습니다.
-              </p>
-              <p>
-                확인을 누르시면 <S.highlightSpan>{profileName}님의 깃허브 아이디로 브랜치가 생성</S.highlightSpan>
-                됩니다.
-              </p>
-            </>
-          }
-          closeModal={closeConfirmModal}
-          handleClickConfirmButton={handleClickStartButton}
-        />
-      )}
     </Layout>
   );
 };

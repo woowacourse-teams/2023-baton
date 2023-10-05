@@ -8,13 +8,19 @@ import NotificationOnIcon from '@/assets/notification_on.svg';
 import { GetHeaderProfileResponse } from '@/types/profile';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
+import useViewport from '@/hooks/useViewport';
+import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import Dropdown from '@/components/common/Dropdown/Dropdown';
 import NotificationDropdown from '@/components/NotificationDropdown/NotificationDropdown';
 import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown';
 
 const Header = () => {
+  const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
+  const { isLogin, logout } = useLogin();
+  const { isMobile } = useViewport();
+
+  const { data: profile } = useHeaderProfile(isLogin);
   const [profile, setProfile] = useState<GetHeaderProfileResponse | null>(null);
   const [isNotiDropdownOpen, setIsNotiDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);

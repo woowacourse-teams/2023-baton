@@ -2,13 +2,12 @@ import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { TOAST_COMPLETION_MESSAGE } from '@/constants/message';
-import { ToastContext } from '@/contexts/ToastContext';
-import { useFetch } from '@/hooks/useFetch';
+import { ModalContext } from '@/contexts/ModalContext';
+import { useSelectionSupporter } from '@/hooks/query/useSelectionSupporter';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
 import { Candidate } from '@/types/supporterCandidate';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -17,40 +16,35 @@ interface Props {
 }
 
 const SupporterCardItem = ({ supporter }: Props) => {
-  const { runnerPostId } = useParams();
+  const supporterId = supporter.supporterId;
+  const { runnerPostId: paramRunnerPostId } = useParams();
 
-  const { goToMyPage, goToSupporterProfilePage } = usePageRouter();
-  const { patchRequestWithAuth } = useFetch();
-
-  const { showCompletionToast } = useContext(ToastContext);
-
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { goToSupporterProfilePage } = usePageRouter();
 
   const { isMobile } = useViewport();
+  const { openModal, closeModal } = useContext(ModalContext);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  const { mutate: selectSupporter } = useSelectionSupporter();
 
   const viewProfile = () => {
     goToSupporterProfilePage(supporter.supporterId);
   };
 
-  const selectSupporter = () => {
-    const body = JSON.stringify({ supporterId: supporter.supporterId });
+  const handleClickSelectButton = () => {
+    const runnerPostId = Number(paramRunnerPostId);
 
-    patchRequestWithAuth(
-      `/posts/runner/${runnerPostId}/supporters`,
-      async (response) => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);
+    selectSupporter({ runnerPostId, supporterId });
 
-        goToMyPage();
-      },
-      body,
+    closeModal();
+  };
+
+  const openSelectModal = () => {
+    openModal(
+      <ConfirmModal
+        contents={`정말 ${supporter.name}님을 서포터로 선택하시겠습니까?`}
+        closeModal={closeModal}
+        handleClickConfirmButton={handleClickSelectButton}
+      />,
     );
   };
 
@@ -86,17 +80,17 @@ const SupporterCardItem = ({ supporter }: Props) => {
         <Button colorTheme="BLACK" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={viewProfile}>
           프로필 보기
         </Button>
-        <Button colorTheme="WHITE" width="94px" height="35px" fontSize="14px" fontWeight={700} onClick={openModal}>
+        <Button
+          colorTheme="WHITE"
+          width="94px"
+          height="35px"
+          fontSize="14px"
+          fontWeight={700}
+          onClick={openSelectModal}
+        >
           선택하기
         </Button>
       </S.ButtonContainer>
-      {isModalOpen && (
-        <ConfirmModal
-          contents={`정말 ${supporter.name}님을 서포터로 선택하시겠습니까?`}
-          closeModal={closeModal}
-          handleClickConfirmButton={selectSupporter}
-        />
-      )}
     </S.SupporterCardItemContainer>
   );
 };

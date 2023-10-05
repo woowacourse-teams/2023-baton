@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^5.0.0-rc.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "core-js": "^3.31.1",

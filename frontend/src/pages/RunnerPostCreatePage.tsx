@@ -4,7 +4,7 @@ import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
 import githubIcon from '@/assets/github-icon.svg';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { CreateRunnerPostRequest } from '@/types/runnerPost';
 import { addDays, addHours, getDatetime, getDayLastTime } from '@/utils/date';
@@ -17,21 +17,20 @@ import {
   validateTags,
   validateTitle,
 } from '@/utils/validate';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
-import { GetMyPageProfileResponse } from '@/types/myPage';
-import { useLogin } from '@/hooks/useLogin';
-import { useFetch } from '@/hooks/useFetch';
+
+import { useMyGithubUrl } from '@/hooks/query/useMyGithubUrl';
+import { useRunnerPostCreation } from '@/hooks/query/useRunnerPostCreation';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
 
-  const { goBack, goToResultPage } = usePageRouter();
-  const { postRequestWithAuth } = useFetch();
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { goBack } = usePageRouter();
+  const { showErrorToast } = useContext(ToastContext);
 
   const { isMobile } = useViewport();
 
@@ -43,29 +42,8 @@ const RunnerPostCreatePage = () => {
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');
 
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const [githubUrl, setGithubUrl] = useState<string>('');
-
-  const { isLogin } = useLogin();
-  const { getRequestWithAuth } = useFetch();
-
-  useEffect(() => {
-    getGithubUrl();
-  }, []);
-
-  const getGithubUrl = () => {
-    if (!isLogin) return;
-
-    getRequestWithAuth(`/profile/runner/me`, async (response) => {
-      const data: GetMyPageProfileResponse = await response.json();
-
-      const url = data.githubUrl;
-      setGithubUrl(url);
-
-      const githubId = data.githubUrl.split('/').splice(-1)[0];
-    });
-  };
+  const { data: githubUrl } = useMyGithubUrl();
+  const { mutate, isPending } = useRunnerPostCreation();
 
   const pushTag = (newTag: string) => {
     const newTags = [...tags, newTag];
@@ -134,16 +112,11 @@ const RunnerPostCreatePage = () => {
   const handleSubmitButton = () => {
     try {
       validateInputs();
+      postRunnerPostCreation();
     } catch (error) {
       const description = error instanceof Error ? error.message : ERROR_DESCRIPTION.UNEXPECTED;
       return showErrorToast({ title: ERROR_TITLE.VALIDATION, description });
     }
-
-    setIsLoading(true);
-
-    postRunnerForm().finally(() => {
-      setIsLoading(false);
-    });
   };
 
   const validateInputs = () => {
@@ -155,7 +128,7 @@ const RunnerPostCreatePage = () => {
     validateCuriousContents(curiousContents);
   };
 
-  const postRunnerForm = async () => {
+  const postRunnerPostCreation = async () => {
     const postData: CreateRunnerPostRequest = {
       tags,
       title,
@@ -166,17 +139,7 @@ const RunnerPostCreatePage = () => {
       postscriptContents,
     };
 
-    const body = JSON.stringify(postData);
-
-    await postRequestWithAuth(
-      `/posts/runner`,
-      async () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
-
-        goToResultPage();
-      },
-      body,
-    );
+    mutate(postData);
   };
 
   return (
@@ -265,10 +228,10 @@ const RunnerPostCreatePage = () => {
             </Button>
             <Button
               type="button"
-              colorTheme={isLoading ? 'GRAY' : 'WHITE'}
+              colorTheme={isPending ? 'GRAY' : 'WHITE'}
               fontWeight={700}
               onClick={handleSubmitButton}
-              disabled={isLoading}
+              disabled={isPending}
               ariaLabel="리뷰 요청 글 생성"
             >
               리뷰요청 글 생성

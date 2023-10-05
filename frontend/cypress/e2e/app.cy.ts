@@ -50,7 +50,7 @@ describe('러너 E2E 테스트', () => {
   it('리뷰 요청글을 작성한다.', () => {
     cy.get('button[aria-label="리뷰 요청 글 작성"]').click();
 
-    cy.wait(100);
+    cy.wait(500);
 
     typeAll('form input', [
       '제제제제제목목목목목',
@@ -65,7 +65,7 @@ describe('러너 E2E 테스트', () => {
 
     cy.get('button[aria-label="리뷰 요청 글 생성"]').click();
 
-    cy.wait(100);
+    cy.wait(500);
 
     cy.get('div[aria-label="에러 메시지"]').should('be.visible');
 
@@ -74,13 +74,15 @@ describe('러너 E2E 테스트', () => {
 
     cy.get('button[aria-label="리뷰 요청 글 생성"]').click();
 
+    cy.wait(500);
+
     cy.get('div[aria-label="알림 메시지"]').should('be.visible');
   });
 
   it('러너 마이페이지 대기중인 리뷰 게시글을 불러온다', () => {
     cy.get('img[alt="프로필"]').click();
 
-    cy.wait(100);
+    cy.wait(500);
 
     cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
     cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
@@ -90,7 +92,7 @@ describe('러너 E2E 테스트', () => {
 
     cy.contains('더보기').click();
 
-    cy.wait(100);
+    cy.wait(500);
 
     const list = cy.get('ul[aria-label="게시글 목록"]').children();
 
@@ -110,7 +112,7 @@ describe('러너 E2E 테스트', () => {
   it('서포터 마이페이지 진행중인 리뷰 게시글을 불러온다.', () => {
     cy.get('img[alt="프로필"]').click();
 
-    cy.wait(100);
+    cy.wait(500);
 
     cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
     cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');

@@ -13,6 +13,43 @@ import tagList from './data/tagList.json';
 import { BATON_BASE_URL } from '@/constants';
 
 export const handlers = [
+  rest.get(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
+    const name = req.url.searchParams.get('tagName');
+    const reviewStatus = req.url.searchParams.get('reviewStatus');
+    const limit = req.url.searchParams.get('limit');
+    const cursor = req.url.searchParams.get('cursor');
+
+    if (!limit)
+      return res(
+        ctx.status(400),
+        ctx.set('Content-Type', 'application/json'),
+        ctx.json({ errorCode: 'FE001', message: '잘못된 요청' }),
+      );
+
+    const postList = structuredClone(runnerPostList);
+    postList.pageInfo.nextCursor = Number(cursor) + 1;
+    if (Number(cursor) === 4) postList.pageInfo.isLast = true;
+
+    if (!name || name.trim() === '') {
+      postList.data.forEach((post, idx) => {
+        post.runnerPostId = Date.now() + idx;
+        post.title = `${post.title} (${cursor})`;
+        if (reviewStatus) post.reviewStatus = reviewStatus;
+      });
+
+      return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(postList));
+    }
+
+    postList.data.forEach((post, idx) => {
+      post.runnerPostId = Date.now() + idx;
+      post.title = `검색된 목록입니다 (${cursor})`;
+      post.tags = [name];
+      post.reviewStatus = reviewStatus!;
+    });
+
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(postList));
+  }),
+
   rest.post(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
   }),
@@ -30,7 +67,12 @@ export const handlers = [
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/runner/me`, async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(myPageRunnerProfile));
+    return res(
+      ctx.delay(1000),
+      ctx.status(200),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(myPageRunnerProfile),
+    );
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/supporter/me`, async (req, res, ctx) => {
@@ -117,42 +159,6 @@ export const handlers = [
     const { repoName } = await req.json();
 
     return res(ctx.status(201));
-  }),
-
-  rest.get(`${BATON_BASE_URL}/posts/runner/tags/search`, async (req, res, ctx) => {
-    const name = req.url.searchParams.get('tagName');
-    const reviewStatus = req.url.searchParams.get('reviewStatus');
-    const page = req.url.searchParams.get('page');
-
-    if (!reviewStatus || !page)
-      return res(
-        ctx.status(400),
-        ctx.set('Content-Type', 'application/json'),
-        ctx.json({ errorCode: 'FE001', message: '잘못된 요청' }),
-      );
-
-    const postList = structuredClone(runnerPostList);
-
-    if (!name || name.trim() === '') {
-      postList.data.forEach((post, idx) => {
-        post.runnerPostId = Date.now() + idx;
-        post.title = `${post.title} (${page})`;
-        post.reviewStatus = reviewStatus;
-      });
-
-      postList.pageInfo.currentPage = Number(page);
-
-      return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(postList));
-    }
-
-    postList.data.forEach((post, idx) => {
-      post.runnerPostId = Date.now() + idx;
-      post.title = `검색된 목록입니다 (${page})`;
-      post.tags = [name];
-      post.reviewStatus = reviewStatus!;
-    });
-
-    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(postList));
   }),
 
   rest.get(`${BATON_BASE_URL}/posts/runner/:runnerPostId`, async (req, res, ctx) => {
