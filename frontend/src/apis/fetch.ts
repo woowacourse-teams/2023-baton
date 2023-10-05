@@ -20,8 +20,8 @@ const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
     .then(async (response) => parseJson(response));
 };
 
-const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
-  return await fetchJson<T>(url, {
+const fetchApi = <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
+  return fetchJson<T>(url, {
     method,
     ...(isAuth && {
       headers: {
@@ -35,13 +35,13 @@ const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: 
 };
 
 export const request = {
-  get: async <T>(url: string, isAuth: boolean) => fetchApi<T>(url, 'GET', isAuth),
+  get: <T>(url: string, isAuth: boolean) => fetchApi<T>(url, 'GET', isAuth),
 
-  post: async <T>(url: string, body?: BodyInit) => fetchApi<T>(url, 'POST', true, body),
+  post: <T>(url: string, body?: BodyInit) => fetchApi<T>(url, 'POST', true, body),
 
-  put: async <T>(url: string, body?: BodyInit) => fetchApi<T>(url, 'PUT', true, body),
+  put: <T>(url: string, body?: BodyInit) => fetchApi<T>(url, 'PUT', true, body),
 
-  patch: async <T>(url: string, body?: BodyInit) => fetchApi<T>(url, 'PATCH', true, body),
+  patch: <T>(url: string, body?: BodyInit) => fetchApi<T>(url, 'PATCH', true, body),
 
-  delete: async <T>(url: string) => fetchApi<T>(url, 'DELETE', true),
+  delete: <T>(url: string) => fetchApi<T>(url, 'DELETE', true),
 };
