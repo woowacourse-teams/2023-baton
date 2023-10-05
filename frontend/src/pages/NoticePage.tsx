@@ -15,6 +15,7 @@ import { JavaIconWhite, JavascriptIcon } from '@/assets/technicalLabelIcon';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import { useMissionBranchCreation } from '@/hooks/query/useMissionBranchCreation';
+import { ModalContext } from '@/contexts/ModalContext';
 
 const NoticePage = () => {
   const { goBack } = usePageRouter();
@@ -22,7 +23,8 @@ const NoticePage = () => {
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
 
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState<boolean>(false);
+  const { openModal, closeModal } = useContext(ModalContext);
+
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
 
   const { mutate: postMissionBranchCreation } = useMissionBranchCreation();
@@ -45,11 +47,23 @@ const NoticePage = () => {
       setSelectedLanguage(targetText);
     }
 
-    setIsConfirmModalOpen(true);
-  };
-
-  const closeConfirmModal = () => {
-    setIsConfirmModalOpen(false);
+    openModal(
+      <ConfirmModal
+        contents={
+          <>
+            <p>
+              <S.highlightSpan>{targetText} 미션을 선택</S.highlightSpan>하셨습니다.
+            </p>
+            <p>
+              확인을 누르시면 <S.highlightSpan>{profileName}님의 깃허브 아이디로 브랜치가 생성</S.highlightSpan>
+              됩니다.
+            </p>
+          </>
+        }
+        closeModal={closeModal}
+        handleClickConfirmButton={handleClickStartButton}
+      />,
+    );
   };
 
   const postRepository = async (selectedLanguage: string) => {
@@ -60,7 +74,7 @@ const NoticePage = () => {
 
   const handleClickStartButton = () => {
     postRepository(selectedLanguage);
-    closeConfirmModal();
+    closeModal();
   };
 
   return (
@@ -161,24 +175,6 @@ const NoticePage = () => {
           </S.PostFooterContainer>
         </S.PostContainer>
       </S.RunnerPostContainer>
-
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          contents={
-            <>
-              <p>
-                <S.highlightSpan>{selectedLanguage} 미션을 선택</S.highlightSpan>하셨습니다.
-              </p>
-              <p>
-                확인을 누르시면 <S.highlightSpan>{profileName}님의 깃허브 아이디로 브랜치가 생성</S.highlightSpan>
-                됩니다.
-              </p>
-            </>
-          }
-          closeModal={closeConfirmModal}
-          handleClickConfirmButton={handleClickStartButton}
-        />
-      )}
     </Layout>
   );
 };

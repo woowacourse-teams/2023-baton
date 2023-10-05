@@ -5,6 +5,7 @@ import TextArea from '@/components/Textarea/Textarea';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ModalContext } from '@/contexts/ModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
 import { useMySupporterProfile } from '@/hooks/query/useMySupporterProfile';
@@ -25,6 +26,7 @@ const ProfileEditPage = () => {
   const { mutate: editSupporterProfile } = useRunnerProfileEdit();
 
   const { showErrorToast } = useContext(ToastContext);
+  const { openModal, closeModal } = useContext(ModalContext);
   const { goBack } = usePageRouter();
 
   const [isRunner, setIsRunner] = useState(true);
@@ -36,8 +38,6 @@ const ProfileEditPage = () => {
   const [company, setCompany] = useState(runnerProfile.company);
   const [introduction, setIntroduction] = useState(runnerProfile.introduction);
   const [technicalTags, setTechnicalTags] = useState(runnerProfile.technicalTags);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isModified = isRunner
     ? !deepEqual({ ...runnerProfile }, { ...runnerProfile, name, company, introduction, technicalTags })
@@ -171,12 +171,14 @@ const ProfileEditPage = () => {
     updateProfileInputValue(supporterProfile);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const openTechTagSelectModal = () => {
+    openModal(
+      <TechTagSelectModal
+        closeModal={closeModal}
+        confirmTagSelect={confirmTagSelect}
+        defaultTags={technicalTags ?? undefined}
+      />,
+    );
   };
 
   const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
@@ -281,21 +283,13 @@ const ProfileEditPage = () => {
                   <TechLabelButton tag={tag} handleClickTag={popTag} isDeleteButton={true} />
                 </S.TagButtonWrapper>
               ))}
-              <S.AddTagButton type="button" onClick={openModal}>
+              <S.AddTagButton type="button" onClick={openTechTagSelectModal}>
                 +
               </S.AddTagButton>
             </S.TechTagsList>
           </S.InputContainer>
         </S.Form>
       </S.ProfileContainer>
-
-      {isModalOpen && (
-        <TechTagSelectModal
-          closeModal={closeModal}
-          confirmTagSelect={confirmTagSelect}
-          defaultTags={technicalTags ?? undefined}
-        />
-      )}
     </Layout>
   );
 };

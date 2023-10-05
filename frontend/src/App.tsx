@@ -6,6 +6,7 @@ import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import { useLogin } from './hooks/useLogin';
 import LoadingPage from './pages/LoadingPage';
+import ModalProvider from './contexts/ModalContext';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './hooks/query/queryClient';
 
@@ -29,13 +30,15 @@ const App = () => {
     <LoadingPage />
   ) : (
     <ToastProvider>
-      <S.AppContainer>
-        <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<LoadingPage />}>
-            <Outlet />
-          </Suspense>
-        </QueryClientProvider>
-      </S.AppContainer>
+      <ModalProvider>
+        <S.AppContainer>
+          <QueryClientProvider client={queryClient}>
+            <Suspense fallback={<div></div>}>
+              <Outlet />
+            </Suspense>
+          </QueryClientProvider>
+        </S.AppContainer>
+      </ModalProvider>
     </ToastProvider>
   );
 };
