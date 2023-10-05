@@ -31,7 +31,7 @@ const App = () => {
     <ToastProvider>
       <S.AppContainer>
         <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<div></div>}>
+          <Suspense fallback={<LoadingPage />}>
             <Outlet />
           </Suspense>
         </QueryClientProvider>
