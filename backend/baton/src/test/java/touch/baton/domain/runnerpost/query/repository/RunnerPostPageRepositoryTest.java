@@ -1,8 +1,8 @@
 package touch.baton.domain.runnerpost.query.repository;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
@@ -27,12 +27,8 @@ import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
 
+    @Autowired
     private RunnerPostPageRepository runnerPostPageRepository;
-
-    @BeforeEach
-    void setUp() {
-        runnerPostPageRepository = new RunnerPostPageRepository(jpaQueryFactory);
-    }
 
     @DisplayName("러너 게시글을 페이징 조회한다 (중간 페이지 조회)")
     @Test

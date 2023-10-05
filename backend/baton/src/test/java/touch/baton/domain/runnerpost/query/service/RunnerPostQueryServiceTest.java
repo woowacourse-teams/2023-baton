@@ -27,7 +27,6 @@ import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.command.vo.Title;
 import touch.baton.domain.runnerpost.command.vo.WatchedCount;
 import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.service.dto.PageParams;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.RunnerPostTags;
@@ -64,7 +63,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
     void setUp() {
         runnerPostQueryService = new RunnerPostQueryService(
                 runnerPostQueryRepository,
-                new RunnerPostPageRepository(jpaQueryFactory),
+                runnerPostPageRepository,
                 runnerPostTagQueryRepository,
                 supporterRunnerPostQueryRepository);
     }

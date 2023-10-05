@@ -1,6 +1,5 @@
 package touch.baton.config;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,15 +23,12 @@ import java.time.LocalDateTime;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@Import({JpaConfig.class, QuerydslConfig.class})
+@Import({JpaConfig.class, QueryDslRepositoryTestConfig.class})
 @DataJpaTest
 public abstract class RepositoryTestConfig {
 
     @Autowired
     protected EntityManager em;
-
-    @Autowired
-    protected JPAQueryFactory jpaQueryFactory;
 
     protected Runner persistRunner(final Member member) {
         em.persist(member);

@@ -27,6 +27,7 @@ import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -79,8 +80,7 @@ public class RunnerPostReadWithLoginedSupporterApiTest extends RestdocsConfig {
 
         final Supporter spyLoginedSupporter = spy(loginedSupporter);
         given(oauthSupporterCommandRepository.joinByMemberSocialId(any())).willReturn(Optional.ofNullable(spyLoginedSupporter));
-        assert spyLoginedSupporter != null;
-        given(spyLoginedSupporter.getId()).willReturn(1L);
+        given(Objects.requireNonNull(spyLoginedSupporter).getId()).willReturn(1L);
         final RunnerPost spyRunnerPost = spy(runnerPost);
         given(spyRunnerPost.getId()).willReturn(1L);
 
