@@ -36,7 +36,6 @@ const RunnerPostPage = () => {
   const { openModal, closeModal } = useContext(ModalContext);
 
   const [runnerPost, setRunnerPost] = useState<GetDetailedRunnerPostResponse | null>(null);
-  const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
     getRunnerPost();
@@ -66,7 +65,7 @@ const RunnerPostPage = () => {
     });
   };
 
-  const sendMessage = () => {
+  const sendMessage = (message: string) => {
     try {
       validateMessage(message);
     } catch (error) {
@@ -79,16 +78,13 @@ const RunnerPostPage = () => {
     postRequestWithAuth(
       `/posts/runner/${runnerPostId}/application`,
       () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
+        closeModal();
 
+        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
         goToMyPage();
       },
       JSON.stringify({ message: message }),
     );
-  };
-
-  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
   };
 
   const handleClickDeleteButton = () => {
@@ -117,11 +113,9 @@ const RunnerPostPage = () => {
 
     openModal(
       <SendMessageModal
-        messageState={message}
-        handleChangeMessage={handleChangeMessage}
         placeholder="러너에게 보낼 메세지를 입력해주세요."
         closeModal={closeModal}
-        handleClickSendButton={sendMessage}
+        sendMessage={sendMessage}
       />,
     );
   };

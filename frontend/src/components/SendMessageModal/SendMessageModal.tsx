@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import Button from '../common/Button/Button';
 import TextArea from '../Textarea/Textarea';
 import useViewport from '@/hooks/useViewport';
 
 interface Props {
-  messageState: string;
-  handleChangeMessage: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder: string;
   closeModal: () => void;
-  handleClickSendButton: () => void;
+  sendMessage: (message: string) => void;
 }
 
-const SendMessageModal = ({
-  messageState,
-  handleChangeMessage,
-  placeholder,
-  closeModal,
-  handleClickSendButton,
-}: Props) => {
+const SendMessageModal = ({ placeholder, closeModal, sendMessage }: Props) => {
   const { isMobile } = useViewport();
+  const [message, setMessage] = useState('');
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage(e.target.value);
+  };
+
+  const handleClickSendButton = () => {
+    sendMessage(message);
+  };
 
   return (
     <S.SendMessageModalContainer>
@@ -31,8 +32,8 @@ const SendMessageModal = ({
         maxLength={500}
         padding="0"
         placeholder={placeholder}
-        handleInputTextState={handleChangeMessage}
-        inputTextState={messageState}
+        handleInputTextState={handleChangeInput}
+        inputTextState={message}
       />
       <S.ButtonContainer>
         <Button
