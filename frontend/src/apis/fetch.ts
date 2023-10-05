@@ -10,12 +10,12 @@ const parseJson = async (response: Response): Promise<any> => {
   try {
     return await response.json();
   } catch (error) {
-    return new Promise<void>(() => {});
+    return;
   }
 };
 
 const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
-  return fetch(`${BATON_BASE_URL}${url}`, options)
+  return await fetch(`${BATON_BASE_URL}${url}`, options)
     .catch(() => throwErrorBadRequest())
     .then(async (response) => parseJson(response));
 };

@@ -13,9 +13,7 @@ export const useRunnerPostCreation = () => {
   const { goToResultPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, CreateRunnerPostRequest>({
-    mutationFn: async (formData: CreateRunnerPostRequest) => {
-      postRunnerPostCreation(formData);
-    },
+    mutationFn: async (formData: CreateRunnerPostRequest) => postRunnerPostCreation(formData),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);

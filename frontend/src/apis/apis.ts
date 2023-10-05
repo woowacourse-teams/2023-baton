@@ -17,7 +17,7 @@ import { GetMyPagePostResponse } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
 
-export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
+export const getRunnerPost = async (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
   const params = new URLSearchParams({
     limit: limit.toString(),
     ...(cursor && { cursor: cursor.toString() }),
@@ -28,7 +28,7 @@ export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor
   return request.get<GetRunnerPostResponse>(`/posts/runner?${params.toString()}`, false);
 };
 
-export const getMyRunnerPost = (size: number, page: number, reviewStatus?: ReviewStatus) => {
+export const getMyRunnerPost = async (size: number, page: number, reviewStatus?: ReviewStatus) => {
   const params = new URLSearchParams({
     size: size.toString(),
     ...(page && { page: page.toString() }),
@@ -38,7 +38,7 @@ export const getMyRunnerPost = (size: number, page: number, reviewStatus?: Revie
   return request.get<GetMyPagePostResponse>(`/posts/runner/me/runner?${params.toString()}`, true);
 };
 
-export const getMySupporterPost = (size: number, page: number, reviewStatus?: ReviewStatus) => {
+export const getMySupporterPost = async (size: number, page: number, reviewStatus?: ReviewStatus) => {
   const params = new URLSearchParams({
     size: size.toString(),
     ...(page && { page: page.toString() }),
@@ -48,19 +48,19 @@ export const getMySupporterPost = (size: number, page: number, reviewStatus?: Re
   return request.get<GetMyPagePostResponse>(`/posts/runner/me/supporter?${params.toString()}`, true);
 };
 
-export const getSearchTag = (keyword: string) => {
+export const getSearchTag = async (keyword: string) => {
   return request.get<GetSearchTagResponse>(`/tags/search?tagName=${keyword}`, false);
 };
 
-export const getHeaderProfile = () => {
+export const getHeaderProfile = async () => {
   return request.get<GetHeaderProfileResponse>('/profile/me', true);
 };
 
-export const getMyRunnerProfile = () => {
+export const getMyRunnerProfile = async () => {
   return request.get<GetRunnerProfileResponse>('/profile/runner/me', true);
 };
 
-export const getMySupporterProfile = () => {
+export const getMySupporterProfile = async () => {
   return request.get<GetSupporterProfileResponse>('/profile/supporter/me', true);
 };
 
@@ -77,7 +77,7 @@ export const postRunnerPostCreation = async (formData: CreateRunnerPostRequest) 
   return request.post<void>(`/posts/runner`, body);
 };
 
-export const postReviewSuggestionWithMessage = (runnerPostId: number, message: string) => {
+export const postReviewSuggestionWithMessage = async (runnerPostId: number, message: string) => {
   const body = JSON.stringify({ message });
   return request.post<void>(`/posts/runner/${runnerPostId}/application`, body);
 };
@@ -87,11 +87,11 @@ export const postFeedbackToSupporter = async (formData: PostFeedbackRequest) => 
   return request.post<void>(`/feedback/supporter`, body);
 };
 
-export const patchReviewCancelation = (runnerPostId: number) => {
+export const patchReviewCancelation = async (runnerPostId: number) => {
   return request.patch<void>(`/posts/runner/${runnerPostId}/cancelation`);
 };
 
-export const patchReviewComplete = (runnerPostId: number) => {
+export const patchReviewComplete = async (runnerPostId: number) => {
   return request.patch<void>(`/posts/runner/${runnerPostId}/done`);
 };
 

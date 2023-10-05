@@ -12,9 +12,7 @@ export const useRunnerPostDelete = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, number>({
-    mutationFn: async (runnerPostId: number) => {
-      deleteRunnerPost(runnerPostId);
-    },
+    mutationFn: async (runnerPostId: number) => deleteRunnerPost(runnerPostId),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);

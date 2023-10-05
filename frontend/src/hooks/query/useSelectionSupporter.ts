@@ -17,9 +17,7 @@ export const useSelectionSupporter = () => {
   const { goToMyPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, MutationArgs>({
-    mutationFn: async ({ runnerPostId, supporterId }) => {
-      patchProposedSupporterSelection(runnerPostId, supporterId);
-    },
+    mutationFn: async ({ runnerPostId, supporterId }) => patchProposedSupporterSelection(runnerPostId, supporterId),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);

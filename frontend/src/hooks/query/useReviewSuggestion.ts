@@ -17,9 +17,7 @@ export const useReviewSuggestion = () => {
   const { goToMyPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, MutationArgs>({
-    mutationFn: async ({ runnerPostId, message }) => {
-      postReviewSuggestionWithMessage(runnerPostId, message);
-    },
+    mutationFn: async ({ runnerPostId, message }) => postReviewSuggestionWithMessage(runnerPostId, message),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
