@@ -27,8 +27,6 @@ import java.util.List;
 @Service
 public class RunnerPostQueryService {
 
-    private static final int ADDITIONAL_QUERY_DATA_COUNT = 1;
-
     private final RunnerPostQueryRepository runnerPostQueryRepository;
     private final RunnerPostPageRepository runnerPostPageRepository;
     private final RunnerPostTagQueryRepository runnerPostTagQueryRepository;
@@ -44,8 +42,7 @@ public class RunnerPostQueryService {
                                                                                           final PageParams pageParams,
                                                                                           final ReviewStatus reviewStatus
     ) {
-        final int queryCount = pageParams.limit() + ADDITIONAL_QUERY_DATA_COUNT;
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), queryCount, TagReducedName.nullableInstance(tagName), reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.getLimitForQuery(), TagReducedName.nullableInstance(tagName), reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         final List<RunnerPostResponse.Simple> responses = runnerPosts.stream()
@@ -71,11 +68,10 @@ public class RunnerPostQueryService {
                                                                        final Long supporterId,
                                                                        final ReviewStatus reviewStatus
     ) {
-        final int queryCount = pageParams.limit() + ADDITIONAL_QUERY_DATA_COUNT;
         if (reviewStatus == ReviewStatus.NOT_STARTED) {
-            return runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), queryCount, supporterId);
+            return runnerPostPageRepository.pageBySupporterIdAndReviewStatusNotStarted(pageParams.cursor(), pageParams.getLimitForQuery(), supporterId);
         }
-        return runnerPostPageRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), queryCount, supporterId, reviewStatus);
+        return runnerPostPageRepository.pageBySupporterIdAndReviewStatus(pageParams.cursor(), pageParams.getLimitForQuery(), supporterId, reviewStatus);
     }
 
     private RunnerPostsApplicantCount readRunnerPostsApplicantCount(final List<RunnerPost> runnerPosts) {
@@ -90,8 +86,7 @@ public class RunnerPostQueryService {
                                                                                                    final Long runnerId,
                                                                                                    final ReviewStatus reviewStatus
     ) {
-        final int queryCount = pageParams.limit() + ADDITIONAL_QUERY_DATA_COUNT;
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(pageParams.cursor(), queryCount, runnerId, reviewStatus);
+        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByRunnerIdAndReviewStatus(pageParams.cursor(), pageParams.getLimitForQuery(), runnerId, reviewStatus);
         final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
         final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
         final List<RunnerPostResponse.SimpleByRunner> responses = runnerPosts.stream()
