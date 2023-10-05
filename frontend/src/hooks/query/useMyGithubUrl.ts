@@ -13,9 +13,7 @@ export const useMyGithubUrl = () => {
   const queryResult = useQuery<GetRunnerProfileResponse, APIError, string>({
     queryKey: ['myGithubUrl'],
     queryFn: getMyRunnerProfile,
-    select: (data) => {
-      return data.githubUrl;
-    },
+    select: (data) => data.githubUrl,
     staleTime: Infinity,
   });
 
