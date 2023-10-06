@@ -3,7 +3,8 @@ import { ReviewStatus } from '@/types/runnerPost';
 export const BATON_BASE_URL =
   process.env.NODE_ENV === 'development' ? 'https://baton-dev.n-e.kr' : process.env.REACT_APP_BASE_URL;
 
-export const REVIEW_STATUS_LABEL_TEXT: { [key in ReviewStatus]: string } = {
+export const REVIEW_STATUS_LABEL_TEXT: { [key in ReviewStatus | 'ALL']: string } = {
+  ALL: '전체',
   NOT_STARTED: '리뷰 대기중',
   IN_PROGRESS: '리뷰 진행중',
   DONE: '리뷰 완료',

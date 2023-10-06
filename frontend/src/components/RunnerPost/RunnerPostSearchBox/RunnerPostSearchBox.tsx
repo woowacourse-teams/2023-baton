@@ -2,12 +2,12 @@ import React, { useRef, useState } from 'react';
 import TagIcon from '@/assets/tag-icon.svg';
 import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
-import { ReviewStatus } from '@/types/runnerPost';
+import { ReviewStatus, ReviewStatusFilter } from '@/types/runnerPost';
 import { useSearchTag } from '@/hooks/query/useSearchTag';
 
 interface Props {
-  reviewStatus: ReviewStatus;
-  setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus>>;
+  reviewStatus: ReviewStatus | undefined;
+  setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus | undefined>>;
   setEnteredTag: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -39,11 +39,11 @@ const RunnerPostSearchBox = ({ reviewStatus, setReviewStatus, setEnteredTag }: P
   };
 
   const handleClickRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const clickedStatus = e.target.value as ReviewStatus;
+    const clickedStatus = e.target.value as ReviewStatusFilter;
 
     if (clickedStatus === reviewStatus) return;
 
-    setReviewStatus(clickedStatus);
+    clickedStatus === 'ALL' ? setReviewStatus(undefined) : setReviewStatus(clickedStatus);
   };
 
   const handleInputFocus = () => {
@@ -118,7 +118,7 @@ const RunnerPostSearchBox = ({ reviewStatus, setReviewStatus, setEnteredTag }: P
 
   return (
     <S.SearchBoxContainer onSubmit={handleSubmit}>
-      <RunnerPostFilter reviewStatus={reviewStatus} handleClickRadioButton={handleClickRadioButton} />
+      <RunnerPostFilter reviewStatus={reviewStatus ?? 'ALL'} handleClickRadioButton={handleClickRadioButton} />
       <S.InputContainer onFocus={handleInputFocus} onBlur={handleInputBlur} onKeyDown={handleKeyDown}>
         <S.TagInput
           placeholder="태그명 검색"

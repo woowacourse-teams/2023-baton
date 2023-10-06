@@ -9,7 +9,7 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { useRunnerPostList } from '@/hooks/query/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
 import Layout from '@/layout/Layout';
-import { ReviewStatus } from '@/types/runnerPost';
+import { ReviewStatus, ReviewStatusFilter } from '@/types/runnerPost';
 import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 
@@ -21,7 +21,7 @@ const MainPage = () => {
   const { isMobile } = useViewport();
 
   const [enteredTag, setEnteredTag] = useState<string>('');
-  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
+  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>();
 
   const { data: runnerPostList, hasNextPage, fetchNextPage } = useRunnerPostList(reviewStatus, enteredTag);
 
@@ -50,7 +50,7 @@ const MainPage = () => {
         <S.ControlPanelContainer>
           <S.LeftSideContainer>
             <RunnerPostSearchBox
-              reviewStatus={reviewStatus ?? 'NOT_STARTED'}
+              reviewStatus={reviewStatus}
               setReviewStatus={setReviewStatus}
               setEnteredTag={setEnteredTag}
             />

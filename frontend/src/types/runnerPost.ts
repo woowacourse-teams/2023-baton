@@ -1,4 +1,5 @@
 export type ReviewStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'DONE' | 'OVERDUE';
+export type ReviewStatusFilter = ReviewStatus | 'ALL';
 
 export interface GetRunnerPostResponse {
   data: RunnerPost[];

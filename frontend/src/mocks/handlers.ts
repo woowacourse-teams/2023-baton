@@ -19,6 +19,15 @@ export const handlers = [
     const limit = req.url.searchParams.get('limit');
     const cursor = req.url.searchParams.get('cursor');
 
+    if (!reviewStatus) {
+      return res(
+        ctx.delay(300),
+        ctx.status(200),
+        ctx.set('Content-Type', 'application/json'),
+        ctx.json(runnerPostList),
+      );
+    }
+
     if (!limit)
       return res(
         ctx.status(400),
