@@ -35,7 +35,7 @@ export const useMyPostList = (isRunner: boolean, reviewStatus?: ReviewStatus) =>
     initialPageParam: 1,
 
     getNextPageParam: (nextPage) => {
-      if (nextPage.pageInfo.isLast) undefined;
+      if (nextPage.pageInfo.isLast) return undefined;
 
       return nextPage.pageInfo.currentPage + 1;
     },
