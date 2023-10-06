@@ -2,14 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import { Alarm } from '@/types/alarm';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useAlarm } from '@/hooks/query/useAlarm';
-import { useLogin } from '@/hooks/useLogin';
 import { useAlarmDelete } from '@/hooks/query/useAlarmDelete';
 import { useAlarmCheck } from '@/hooks/query/useAlarmCheck';
 
-const AlarmDropdown = () => {
-  const { isLogin } = useLogin();
-  const { data: alarmList } = useAlarm(isLogin);
+interface Props {
+  alarmList: Alarm[];
+}
+
+const AlarmDropdown = ({ alarmList }: Props) => {
   const { mutate: deleteAlarm } = useAlarmDelete();
   const { mutate: patchAlarmCheck } = useAlarmCheck();
   const { goToRunnerPostPage } = usePageRouter();
@@ -27,8 +27,8 @@ const AlarmDropdown = () => {
 
   return (
     <S.DropdownContainer>
-      {alarmList?.data.length > 0 ? (
-        alarmList?.data?.map((alarm) => {
+      {alarmList?.length > 0 ? (
+        alarmList?.map((alarm) => {
           return (
             <S.DropdownList key={alarm.alarmId} onClick={() => handlePostClick(alarm.alarmId, alarm.referencedId)}>
               <S.AlarmTitleContainer>

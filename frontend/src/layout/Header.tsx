@@ -12,6 +12,7 @@ import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import Dropdown from '@/components/common/Dropdown/Dropdown';
 import AlarmDropdown from '@/components/AlarmDropdown/AlarmDropdown';
 import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown';
+import { useAlarm } from '@/hooks/query/useAlarm';
 
 const Header = () => {
   const [isAlarmDropdownOpen, setIsAlarmDropdownOpen] = useState(false);
@@ -20,6 +21,7 @@ const Header = () => {
   const { goToMainPage, goToLoginPage } = usePageRouter();
   const { isLogin } = useLogin();
   const { data: profile } = useHeaderProfile(isLogin);
+  const { data: alarmList } = useAlarm(isLogin);
 
   const handleAlarmDropdown = () => {
     setIsAlarmDropdownOpen(!isAlarmDropdownOpen);
@@ -49,13 +51,18 @@ const Header = () => {
                     onClose={handleCloseDropdown}
                     gapFromTrigger="52px"
                     isDropdownOpen={isAlarmDropdownOpen}
-                    trigger={<S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOnIcon} />}
+                    trigger={
+                      alarmList?.data.length === 0 ? (
+                        <S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOffIcon} />
+                      ) : (
+                        <S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOnIcon} />
+                      )
+                    }
                   >
                     <Suspense>
-                      <AlarmDropdown />
+                      <AlarmDropdown alarmList={alarmList.data} />
                     </Suspense>
                   </Dropdown>
-                  {/* <S.AlarmIcon src={AlarmOffIcon} /> */}
                 </S.AlarmContainer>
                 <Dropdown
                   onClose={handleCloseDropdown}
