@@ -2,31 +2,19 @@ import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
-import { GetRunnerProfileResponse } from '@/types/profile';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import { useFetch } from '@/hooks/useFetch';
+import { useOtherRunnerProfile } from '@/hooks/query/useOtherRunnerProfile';
 
+/*
+ * api에 페이지네이션 도입 후 수정 필요
+ */
 const RunnerProfilePage = () => {
-  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
-
-  const { getRequest } = useFetch();
-
   const { runnerId } = useParams();
 
-  useEffect(() => {
-    getProfile();
-  }, [runnerId]);
-
-  const getProfile = async () => {
-    getRequest(`/profile/runner/${runnerId}`, async (response) => {
-      const data: GetRunnerProfileResponse = await response.json();
-
-      setRunnerProfile(data);
-    });
-  };
+  const { data: runnerProfile } = useOtherRunnerProfile(Number(runnerId));
 
   return (
     <Layout>

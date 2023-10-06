@@ -3,79 +3,44 @@ import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
-import { GetMyPagePostResponse, GetMyPageProfileResponse, MyPagePost } from '@/types/myPage';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
-import { useFetch } from '@/hooks/useFetch';
 import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
+import { ReviewStatus } from '@/types/runnerPost';
+import { useMyPostList } from '@/hooks/query/useMyPostList';
+import { useMySupporterProfile } from '@/hooks/query/useMySupporterProfile';
+import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
 
 const MyPage = () => {
-  const [myPageProfile, setMyPageProfile] = useState<GetMyPageProfileResponse | null>(null);
-  const [myPagePostList, setMyPagePostList] = useState<MyPagePost[]>([]);
-
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
 
   const [isRunner, setIsRunner] = useState<boolean>(true);
 
-  const [page, setPage] = useState<number>(1);
-  const [isLast, setIsLast] = useState<boolean>(true);
-
   const { isLogin } = useLogin();
-  const { getRequestWithAuth } = useFetch();
   const { goToProfileEditPage, goToLoginPage } = usePageRouter();
 
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
 
+  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
+
+  const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(isRunner, reviewStatus);
+  const { data: mySupporterProfile } = useMySupporterProfile();
+  const { data: myRunnerProfile } = useMyRunnerProfile();
+  const myProfile = isRunner ? myRunnerProfile : mySupporterProfile;
+
   useEffect(() => {
     if (!isLogin) {
       showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
       goToLoginPage();
-
-      return;
     }
-
-    const fetchMyPageData = async (role: 'runner' | 'supporter') => {
-      setIsLast(() => true);
-      setPage(1);
-
-      getProfile(role);
-      getPostList(role, 1);
-    };
-
-    fetchMyPageData(isRunner ? 'runner' : 'supporter');
-  }, [isRunner, postOptions]);
-
-  const getProfile = (role: 'runner' | 'supporter') => {
-    getRequestWithAuth(`/profile/${role}/me`, async (response) => {
-      const data: GetMyPageProfileResponse = await response.json();
-
-      setMyPageProfile(data);
-    });
-  };
-
-  const getPostList = (role: 'runner' | 'supporter', currentPage: number) => {
-    const selectedPostOption = postOptions.filter((option) => option.selected)[0].value;
-
-    const rolePath =
-      role === 'runner'
-        ? `runner/me/runner?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`
-        : `runner/me/supporter?size=10&page=${currentPage}&reviewStatus=${selectedPostOption}`;
-
-    getRequestWithAuth(`/posts/${rolePath}`, async (response) => {
-      const data: GetMyPagePostResponse = await response.json();
-
-      setMyPagePostList(data.pageInfo.currentPage === 1 ? data.data : (current) => [...current, ...data.data]);
-      setPage(() => data.pageInfo.currentPage);
-      setIsLast(data.pageInfo.isLast);
-    });
-  };
+  }, []);
 
   const selectOptions = (value: string | number) => {
     const selectedOptionIndex = postOptions.findIndex((option) => option.value === value);
@@ -86,25 +51,19 @@ const MyPage = () => {
       return { ...option, selected: false };
     });
 
+    setReviewStatus(value as ReviewStatus);
     setPostOptions(newOptions);
   };
 
   const handleClickSupporterButton = () => {
     setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
     setIsRunner(!isRunner);
+
+    setReviewStatus('NOT_STARTED');
   };
 
   const handleClickMoreButton = () => {
-    const role = isRunner ? 'runner' : 'supporter';
-
-    setPage(() => page + 1);
-    getPostList(role, page + 1);
-  };
-
-  const handleDeletePost = (runnerPostId: number) => {
-    const deletedPostList = myPagePostList.filter((post) => post.runnerPostId !== runnerPostId);
-
-    setMyPagePostList(deletedPostList);
+    fetchNextPage();
   };
 
   return (
@@ -124,20 +83,20 @@ const MyPage = () => {
           <S.ProfileContainer>
             <S.InfoContainer>
               <Avatar
-                imageUrl={myPageProfile?.imageUrl || 'https://via.placeholder.com/150'}
+                imageUrl={myProfile?.imageUrl || 'https://via.placeholder.com/150'}
                 width={isMobile ? '70px' : '100px'}
                 height={isMobile ? '70px' : '100px'}
               />
               <S.InfoDetailContainer>
-                {myPageProfile?.name &&
+                {myProfile?.name &&
                   (isRunner ? (
-                    <S.Name>{'러너 - ' + myPageProfile?.name}</S.Name>
+                    <S.Name>{'러너 - ' + myProfile?.name}</S.Name>
                   ) : (
-                    <S.Name>{'서포터 - ' + myPageProfile?.name}</S.Name>
+                    <S.Name>{'서포터 - ' + myProfile?.name}</S.Name>
                   ))}
-                <S.Company>{myPageProfile?.company}</S.Company>
+                <S.Company>{myProfile?.company}</S.Company>
                 <S.TechLabel>
-                  {myPageProfile?.technicalTags.map((tag) => (
+                  {myProfile?.technicalTags.map((tag) => (
                     <TechLabel key={tag} tag={tag} />
                   ))}
                 </S.TechLabel>
@@ -155,7 +114,7 @@ const MyPage = () => {
             )}
           </S.ProfileContainer>
           <S.IntroductionContainer>
-            <S.Introduction>{myPageProfile?.introduction}</S.Introduction>
+            <S.Introduction>{myProfile?.introduction}</S.Introduction>
             {!isMobile && (
               <Button
                 width="95px"
@@ -192,9 +151,9 @@ const MyPage = () => {
                 fontSize={isMobile ? '16px' : '26px'}
               />
             </S.FilterWrapper>
-            <MyPagePostList handleDeletePost={handleDeletePost} filteredPostList={myPagePostList} isRunner={isRunner} />
+            <MyPagePostList filteredPostList={myPostList} isRunner={isRunner} />
             <S.MoreButtonWrapper>
-              {!isLast && (
+              {hasNextPage && (
                 <Button
                   colorTheme="RED"
                   width={isMobile ? '100%' : '1200px'}

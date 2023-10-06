@@ -4,74 +4,44 @@ import TechTagSelectModal from '@/components/TechTagSelectModal/TechTagSelectMod
 import TextArea from '@/components/Textarea/Textarea';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
 import { ModalContext } from '@/contexts/ModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
-import { useFetch } from '@/hooks/useFetch';
+import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
+import { useMySupporterProfile } from '@/hooks/query/useMySupporterProfile';
+import { useRunnerProfileEdit } from '@/hooks/query/useMySupporterProfileEdit';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import Layout from '@/layout/Layout';
-import {
-  Profile,
-  PatchRunnerProfileRequest,
-  GetRunnerProfileResponse,
-  PatchSupporterProfileRequest,
-  GetSupporterProfileResponse,
-} from '@/types/profile';
+import { Profile, PatchRunnerProfileRequest, PatchSupporterProfileRequest } from '@/types/profile';
 import { Technic } from '@/types/tags';
 import { deepEqual } from '@/utils/object';
 import { validateCompany, validateIntroduction, validateName } from '@/utils/validate';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 const ProfileEditPage = () => {
-  const { getRequestWithAuth, patchRequestWithAuth } = useFetch();
+  const { data: runnerProfileBefore } = useMyRunnerProfile();
+  const { data: supporterProfileBefore } = useMySupporterProfile();
+  const { mutate: editRunnerProfile } = useRunnerProfileEdit();
+  const { mutate: editSupporterProfile } = useRunnerProfileEdit();
 
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showErrorToast } = useContext(ToastContext);
   const { openModal, closeModal } = useContext(ModalContext);
   const { goBack } = usePageRouter();
 
   const [isRunner, setIsRunner] = useState(true);
 
-  const [runnerProfile, setRunnerProfile] = useState<GetRunnerProfileResponse | null>(null);
-  const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
+  const [runnerProfile, setRunnerProfile] = useState(runnerProfileBefore);
+  const [supporterProfile, setSupporterProfile] = useState(supporterProfileBefore);
 
-  const [name, setName] = useState<string | null>(null);
-  const [company, setCompany] = useState<string | null>(null);
-  const [introduction, setIntroduction] = useState<string | null>(null);
-  const [technicalTags, setTechnicalTags] = useState<Technic[] | null>(null);
-
-  useEffect(() => {
-    getRunnerProfile();
-    getSupporterProfile();
-  }, []);
-
-  const getRunnerProfile = () => {
-    getRequestWithAuth(`/profile/runner/me`, async (response) => {
-      const data: GetRunnerProfileResponse = await response.json();
-      setRunnerProfile(data);
-
-      if (isRunner) {
-        updateProfileInputValue(data);
-      }
-    });
-  };
-
-  const getSupporterProfile = () => {
-    getRequestWithAuth(`/profile/supporter/me`, async (response) => {
-      const data: GetSupporterProfileResponse = await response.json();
-      setSupporterProfile(data);
-
-      if (!isRunner) {
-        updateProfileInputValue(data);
-      }
-    });
-  };
+  const [name, setName] = useState(runnerProfile.name);
+  const [company, setCompany] = useState(runnerProfile.company);
+  const [introduction, setIntroduction] = useState(runnerProfile.introduction);
+  const [technicalTags, setTechnicalTags] = useState(runnerProfile.technicalTags);
 
   const isModified = isRunner
     ? !deepEqual({ ...runnerProfile }, { ...runnerProfile, name, company, introduction, technicalTags })
     : !deepEqual({ ...supporterProfile }, { ...supporterProfile, name, company, introduction, technicalTags });
-
-  const isLoading = isRunner ? !!runnerProfile : !!supporterProfile;
 
   const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === ' ') {
@@ -212,27 +182,11 @@ const ProfileEditPage = () => {
   };
 
   const patchRunnerProfile = async (runnerProfile: PatchRunnerProfileRequest) => {
-    const body = JSON.stringify(runnerProfile);
-
-    patchRequestWithAuth(
-      `/profile/runner/me`,
-      async () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE);
-      },
-      body,
-    );
+    editRunnerProfile(runnerProfile);
   };
 
   const patchSupporterProfile = async (supporterProfile: PatchSupporterProfileRequest) => {
-    const body = JSON.stringify(supporterProfile);
-
-    patchRequestWithAuth(
-      `/profile/supporter/me`,
-      async () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.SAVE);
-      },
-      body,
-    );
+    editSupporterProfile(supporterProfile);
   };
 
   const handleGoBack = () => {
@@ -246,97 +200,95 @@ const ProfileEditPage = () => {
         <S.Title>프로필 수정</S.Title>
       </S.TitleWrapper>
       <S.ProfileContainer>
-        {isLoading ? (
-          <S.Form>
-            <S.AvatarWrapper>
-              <Avatar
-                width="150px"
-                height="150px"
-                imageUrl={runnerProfile?.imageUrl ?? 'https://via.placeholder.com/150'}
+        <S.Form>
+          <S.AvatarWrapper>
+            <Avatar
+              width="150px"
+              height="150px"
+              imageUrl={runnerProfile?.imageUrl ?? 'https://via.placeholder.com/150'}
+            />
+          </S.AvatarWrapper>
+          <S.ButtonContainer>
+            <S.RunnerSupporterButton $isSelected={isRunner} onClick={isRunner ? undefined : handleClickRunnerButton}>
+              러너
+            </S.RunnerSupporterButton>
+            <S.RunnerSupporterButton
+              $isSelected={!isRunner}
+              onClick={isRunner ? handleClickSupporterButton : undefined}
+            >
+              서포터
+            </S.RunnerSupporterButton>
+          </S.ButtonContainer>
+          <S.SaveButtonWrapper>
+            <Button
+              width="80px"
+              height="37px"
+              colorTheme={isModified ? 'WHITE' : 'GRAY'}
+              onClick={handleClickSaveButton}
+              fontSize="16px"
+              fontWeight={400}
+            >
+              저장
+            </Button>
+          </S.SaveButtonWrapper>
+          <S.InputContainer>
+            <S.InputName>이름</S.InputName>
+            <S.InputWrapper>
+              <InputBox
+                value={name ?? undefined}
+                inputTextState={name ?? ''}
+                maxLength={10}
+                maxLengthFontSize="12px"
+                handleInputTextState={handleChangeName}
+                placeholder="이름을 입력하세요"
               />
-            </S.AvatarWrapper>
-            <S.ButtonContainer>
-              <S.RunnerSupporterButton $isSelected={isRunner} onClick={isRunner ? undefined : handleClickRunnerButton}>
-                러너
-              </S.RunnerSupporterButton>
-              <S.RunnerSupporterButton
-                $isSelected={!isRunner}
-                onClick={isRunner ? handleClickSupporterButton : undefined}
-              >
-                서포터
-              </S.RunnerSupporterButton>
-            </S.ButtonContainer>
-            <S.SaveButtonWrapper>
-              <Button
-                width="80px"
-                height="37px"
-                colorTheme={isModified ? 'WHITE' : 'GRAY'}
-                onClick={handleClickSaveButton}
-                fontSize="16px"
-                fontWeight={400}
-              >
-                저장
-              </Button>
-            </S.SaveButtonWrapper>
-            <S.InputContainer>
-              <S.InputName>이름</S.InputName>
-              <S.InputWrapper>
-                <InputBox
-                  value={name ?? undefined}
-                  inputTextState={name ?? ''}
-                  maxLength={10}
-                  maxLengthFontSize="12px"
-                  handleInputTextState={handleChangeName}
-                  placeholder="이름을 입력하세요"
-                />
-              </S.InputWrapper>
-            </S.InputContainer>
-            <S.InputContainer>
-              <S.InputName>소속</S.InputName>
-              <S.InputWrapper>
-                <InputBox
-                  value={company ?? undefined}
-                  inputTextState={company ?? ''}
-                  maxLength={20}
-                  maxLengthFontSize="12px"
-                  handleInputTextState={handleChangeCompany}
-                  placeholder="소속을 입력하세요"
-                />
-              </S.InputWrapper>
-            </S.InputContainer>
-            <S.InputContainer>
-              <S.InputName>자기소개</S.InputName>
-              <S.InputWrapper>
-                <TextArea
-                  value={introduction ?? undefined}
-                  inputTextState={introduction ?? ''}
-                  fontSize="18px"
-                  width="400px"
-                  height="200px"
-                  padding="0"
-                  maxLength={200}
-                  handleInputTextState={handleChangeIntroduction}
-                  placeholder="자기소개를 입력하세요"
-                />
-              </S.InputWrapper>
-            </S.InputContainer>
-            <S.InputContainer>
-              <S.InputName>
-                {isRunner ? <pre>{`학습하고 싶은 \n기술스택`}</pre> : <pre>{`자신있는 \n기술스택`}</pre>}
-              </S.InputName>
-              <S.TechTagsList>
-                {technicalTags?.map((tag) => (
-                  <S.TagButtonWrapper key={tag}>
-                    <TechLabelButton tag={tag} handleClickTag={popTag} isDeleteButton={true} />
-                  </S.TagButtonWrapper>
-                ))}
-                <S.AddTagButton type="button" onClick={openTechTagSelectModal}>
-                  +
-                </S.AddTagButton>
-              </S.TechTagsList>
-            </S.InputContainer>
-          </S.Form>
-        ) : null}
+            </S.InputWrapper>
+          </S.InputContainer>
+          <S.InputContainer>
+            <S.InputName>소속</S.InputName>
+            <S.InputWrapper>
+              <InputBox
+                value={company ?? undefined}
+                inputTextState={company ?? ''}
+                maxLength={20}
+                maxLengthFontSize="12px"
+                handleInputTextState={handleChangeCompany}
+                placeholder="소속을 입력하세요"
+              />
+            </S.InputWrapper>
+          </S.InputContainer>
+          <S.InputContainer>
+            <S.InputName>자기소개</S.InputName>
+            <S.InputWrapper>
+              <TextArea
+                value={introduction ?? undefined}
+                inputTextState={introduction ?? ''}
+                fontSize="18px"
+                width="400px"
+                height="200px"
+                padding="0"
+                maxLength={200}
+                handleInputTextState={handleChangeIntroduction}
+                placeholder="자기소개를 입력하세요"
+              />
+            </S.InputWrapper>
+          </S.InputContainer>
+          <S.InputContainer>
+            <S.InputName>
+              {isRunner ? <pre>{`학습하고 싶은 \n기술스택`}</pre> : <pre>{`자신있는 \n기술스택`}</pre>}
+            </S.InputName>
+            <S.TechTagsList>
+              {technicalTags?.map((tag) => (
+                <S.TagButtonWrapper key={tag}>
+                  <TechLabelButton tag={tag} handleClickTag={popTag} isDeleteButton={true} />
+                </S.TagButtonWrapper>
+              ))}
+              <S.AddTagButton type="button" onClick={openTechTagSelectModal}>
+                +
+              </S.AddTagButton>
+            </S.TechTagsList>
+          </S.InputContainer>
+        </S.Form>
       </S.ProfileContainer>
     </Layout>
   );
