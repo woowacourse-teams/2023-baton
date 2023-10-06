@@ -25,7 +25,7 @@ public record RunnerPostResponse() {
                          boolean isOwner,
                          boolean isApplied,
                          List<String> tags,
-                         RunnerResponse.Detail runnerProfile
+                         RunnerResponse.InRunnerPostDetail runnerProfile
     ) {
 
         public static Detail of(final RunnerPost runnerPost,
@@ -47,7 +47,7 @@ public record RunnerPostResponse() {
                     isOwner,
                     isApplied,
                     convertToTags(runnerPost),
-                    RunnerResponse.Detail.from(runnerPost.getRunner())
+                    RunnerResponse.InRunnerPostDetail.from(runnerPost.getRunner())
             );
         }
     }

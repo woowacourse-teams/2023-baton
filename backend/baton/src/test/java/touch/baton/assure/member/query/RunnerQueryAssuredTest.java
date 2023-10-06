@@ -2,6 +2,7 @@ package touch.baton.assure.member.query;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.member.support.command.RunnerUpdateAssuredSupport;
+import touch.baton.assure.member.support.query.RunnerQueryAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
 import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
 import touch.baton.domain.member.command.Runner;
@@ -21,7 +22,7 @@ class RunnerQueryAssuredTest extends AssuredTestConfig {
         final Runner 러너_헤나 = runnerRepository.getBySocialId(헤나_소셜_아이디);
 
         // when, then
-        RunnerUpdateAssuredSupport
+        RunnerQueryAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰으로_로그인한다(헤나_액세스_토큰)
                 .러너_본인_프로필을_가지고_있는_액세스_토큰으로_조회한다()

@@ -54,7 +54,7 @@ public class RunnerPostDetailSupport {
                 주인_여부,
                 서포터_지원_여부,
                 태그_목록,
-                RunnerResponse.Detail.from(러너)
+                RunnerResponse.InRunnerPostDetail.from(러너)
         );
     }
 

@@ -6,10 +6,8 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.service.dto.RunnerUpdateRequest;
-import touch.baton.domain.member.query.controller.response.RunnerProfileResponse;
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
 
-import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -22,17 +20,6 @@ public class RunnerQueryAssuredSupport {
 
     public static RunnerQueryBuilder 클라이언트_요청() {
         return new RunnerQueryBuilder();
-    }
-
-    public static RunnerResponse.MyProfile 러너_본인_프로필_응답(final Runner 러너, final List<String> 러너_태그_목록) {
-        return new RunnerResponse.MyProfile(
-                러너.getMember().getMemberName().getValue(),
-                러너.getMember().getCompany().getValue(),
-                러너.getMember().getImageUrl().getValue(),
-                러너.getMember().getGithubUrl().getValue(),
-                러너.getIntroduction().getValue(),
-                러너_태그_목록
-        );
     }
 
     public static class RunnerQueryBuilder {
@@ -73,8 +60,8 @@ public class RunnerQueryAssuredSupport {
             return new RunnerQueryBuilder();
         }
 
-        public static RunnerProfileResponse.Detail 러너_프로필_상세_응답(final Runner 러너, final RunnerUpdateRequest 러너_본인_프로필_수정_요청) {
-            return new RunnerProfileResponse.Detail(
+        public static RunnerResponse.Detail 러너_프로필_상세_응답(final Runner 러너, final RunnerUpdateRequest 러너_본인_프로필_수정_요청) {
+            return new RunnerResponse.Detail(
                     러너.getId(),
                     러너_본인_프로필_수정_요청.name(),
                     러너.getMember().getImageUrl().getValue(),
@@ -85,8 +72,8 @@ public class RunnerQueryAssuredSupport {
             );
         }
 
-        public void 러너_본인_프로필_조회_성공을_검증한다(final RunnerResponse.MyProfile 러너_본인_프로필_응답) {
-            final RunnerResponse.MyProfile actual = this.response.as(RunnerResponse.MyProfile.class);
+        public void 러너_본인_프로필_조회_성공을_검증한다(final RunnerResponse.Mine 러너_본인_프로필_응답) {
+            final RunnerResponse.Mine actual = this.response.as(RunnerResponse.Mine.class);
 
             assertSoftly(softly -> {
                 softly.assertThat(actual.name()).isEqualTo(러너_본인_프로필_응답.name());
@@ -98,8 +85,8 @@ public class RunnerQueryAssuredSupport {
             });
         }
 
-        public void 러너_프로필_상세_조회를_검증한다(final RunnerProfileResponse.Detail 러너_프로필_상세_응답) {
-            final RunnerProfileResponse.Detail actual = this.response.as(RunnerProfileResponse.Detail.class);
+        public void 러너_프로필_상세_조회를_검증한다(final RunnerResponse.Detail 러너_프로필_상세_응답) {
+            final RunnerResponse.Detail actual = this.response.as(RunnerResponse.Detail.class);
 
             assertSoftly(softly -> {
                         softly.assertThat(actual.runnerId()).isNotNull();
