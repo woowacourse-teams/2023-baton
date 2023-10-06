@@ -12,6 +12,7 @@ export const validateResponse = async (response: Response) => {
 
     if (apiError.errorCode.includes('JW') || apiError.errorCode.includes('OA')) {
       removeAccessToken();
+      window.location.reload();
 
       const authErrorCode = ['JW007', 'JW008', 'JW009', 'JW010'];
       throw new CustomApiError(
