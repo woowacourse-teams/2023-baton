@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTestConfig {
+class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTestConfig {
 
     private RunnerPostCommandService runnerPostCommandService;
 
@@ -37,7 +37,8 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
                 runnerPostCommandRepository,
                 tagCommandRepository,
                 supporterCommandRepository,
-                supporterRunnerPostCommandRepository
+                supporterRunnerPostCommandRepository,
+                publisher
         );
 
         final Member applicantMember = memberCommandRepository.save(MemberFixture.createDitoo());

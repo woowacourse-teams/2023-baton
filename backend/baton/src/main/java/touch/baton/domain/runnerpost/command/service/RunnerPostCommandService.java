@@ -1,6 +1,7 @@
 package touch.baton.domain.runnerpost.command.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.vo.TagName;
@@ -11,6 +12,9 @@ import touch.baton.domain.member.command.repository.SupporterCommandRepository;
 import touch.baton.domain.member.command.repository.SupporterRunnerPostCommandRepository;
 import touch.baton.domain.member.command.vo.Message;
 import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.event.RunnerPostApplySupporterEvent;
+import touch.baton.domain.runnerpost.command.event.RunnerPostAssignSupporterEvent;
+import touch.baton.domain.runnerpost.command.event.RunnerPostReviewStatusDoneEvent;
 import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.command.repository.RunnerPostCommandRepository;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
@@ -33,6 +37,7 @@ public class RunnerPostCommandService {
     private final TagCommandRepository tagCommandRepository;
     private final SupporterCommandRepository supporterCommandRepository;
     private final SupporterRunnerPostCommandRepository supporterRunnerPostCommandRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Long createRunnerPost(final Runner runner, final RunnerPostCreateRequest request) {
         final RunnerPost runnerPost = toDomain(runner, request);
@@ -113,7 +118,11 @@ public class RunnerPostCommandService {
                 .message(new Message(request.message()))
                 .build();
 
-        return supporterRunnerPostCommandRepository.save(runnerPostApplicant).getId();
+        final Long savedApplicantId = supporterRunnerPostCommandRepository.save(runnerPostApplicant).getId();
+
+        eventPublisher.publishEvent(new RunnerPostApplySupporterEvent(foundRunnerPost.getId()));
+
+        return savedApplicantId;
     }
 
     public void updateRunnerPostReviewStatusDone(final Long runnerPostId, final Supporter supporter) {
@@ -129,6 +138,8 @@ public class RunnerPostCommandService {
         }
 
         foundRunnerPost.finishReview();
+
+        eventPublisher.publishEvent(new RunnerPostReviewStatusDoneEvent(foundRunnerPost.getId()));
     }
 
     public void deleteSupporterRunnerPost(final Supporter supporter, final Long runnerPostId) {
@@ -157,6 +168,8 @@ public class RunnerPostCommandService {
         }
 
         foundRunnerPost.assignSupporter(foundApplySupporter);
+
+        eventPublisher.publishEvent(new RunnerPostAssignSupporterEvent(foundRunnerPost.getId()));
     }
 
     private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
