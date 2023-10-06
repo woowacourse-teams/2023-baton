@@ -6,7 +6,8 @@ export interface Alarm {
   alarmId: number;
   title: string;
   message: string;
-  url: string;
+  alarmType: string;
+  referencedId: number;
   isRead: boolean;
   createdAt: string;
 }

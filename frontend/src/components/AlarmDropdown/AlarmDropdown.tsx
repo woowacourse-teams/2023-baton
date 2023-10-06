@@ -4,42 +4,40 @@ import mockData from '../../mocks/data/alarm.json';
 import { Alarm, GetAlarmResponse } from '@/types/alarm';
 import { usePageRouter } from '@/hooks/usePageRouter';
 
-const NotificationDropdown = () => {
-  const [notificationList, setNotificationList] = useState<GetAlarmResponse | null>(null);
+const AlarmDropdown = () => {
+  const [AlarmList, setAlarmList] = useState<GetAlarmResponse | null>(null);
 
   const { goToRunnerPostPage } = usePageRouter();
 
   useEffect(() => {
-    setNotificationList(mockData);
+    setAlarmList(mockData);
   }, []);
 
-  const handleDeletePost = (e: React.MouseEvent, notificationId: number) => {
+  const handleDeletePost = (e: React.MouseEvent, AlarmId: number) => {
     e.stopPropagation();
-    const deletedPostList = notificationList?.data.filter((noti: Alarm) => noti.alarmId !== notificationId);
 
+    const deletedPostList = AlarmList?.data.filter((alarm: Alarm) => alarm.alarmId !== AlarmId);
     if (deletedPostList) {
-      setNotificationList({ data: deletedPostList });
+      setAlarmList({ data: deletedPostList });
     }
   };
 
-  const handlePostClick = (url: string) => {
-    const runnerPostId = url.slice(-1);
-
-    goToRunnerPostPage(parseInt(runnerPostId, 10));
+  const handlePostClick = (runnerPostId: number) => {
+    goToRunnerPostPage(runnerPostId);
   };
 
   return (
     <S.DropdownContainer>
-      {notificationList?.data && notificationList?.data.length > 0 ? (
-        notificationList?.data.map((noti: Alarm) => {
+      {AlarmList?.data && AlarmList?.data.length > 0 ? (
+        AlarmList?.data.map((alarm: Alarm) => {
           return (
-            <S.DropdownList key={noti.alarmId} onClick={() => handlePostClick(noti.url)}>
-              <S.NotificationTitleContainer>
-                <S.NotificationTitle>{noti.title}</S.NotificationTitle>
-                <S.CloseButton onClick={(e) => handleDeletePost(e, noti.alarmId)}>삭제</S.CloseButton>
-              </S.NotificationTitleContainer>
-              <S.NotificationContents>{noti.message}</S.NotificationContents>
-              <S.NotificationTime>{noti.createdAt}</S.NotificationTime>
+            <S.DropdownList key={alarm.alarmId} onClick={() => handlePostClick(alarm.referencedId)}>
+              <S.AlarmTitleContainer>
+                <S.AlarmTitle>{alarm.title}</S.AlarmTitle>
+                <S.CloseButton onClick={(e) => handleDeletePost(e, alarm.alarmId)}>삭제</S.CloseButton>
+              </S.AlarmTitleContainer>
+              <S.AlarmContents>{alarm.message}</S.AlarmContents>
+              <S.AlarmTime>{alarm.createdAt}</S.AlarmTime>
             </S.DropdownList>
           );
         })
@@ -50,12 +48,12 @@ const NotificationDropdown = () => {
   );
 };
 
-export default NotificationDropdown;
+export default AlarmDropdown;
 
 const S = {
   DropdownContainer: styled.ul`
     width: 414px;
-    height: 427px;
+    max-height: 427px;
 
     overflow-y: scroll;
 
@@ -86,7 +84,7 @@ const S = {
     }
   `,
 
-  NotificationTitleContainer: styled.div`
+  AlarmTitleContainer: styled.div`
     display: flex;
     justify-content: space-between;
   `,
@@ -103,7 +101,7 @@ const S = {
     }
   `,
 
-  NotificationTitle: styled.p`
+  AlarmTitle: styled.p`
     font-size: 16px;
     font-weight: 700;
     position: relative;
@@ -126,7 +124,7 @@ const S = {
     }
   `,
 
-  NotificationContents: styled.p`
+  AlarmContents: styled.p`
     font-size: 14px;
     color: var(--gray-700);
 
@@ -135,7 +133,7 @@ const S = {
     }
   `,
 
-  NotificationTime: styled.p`
+  AlarmTime: styled.p`
     font-size: 12px;
     color: var(--gray-700);
 

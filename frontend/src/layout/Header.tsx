@@ -3,37 +3,37 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import NotificationOffIcon from '@/assets/notification_off.svg';
-import NotificationOnIcon from '@/assets/notification_on.svg';
+import AlarmOffIcon from '@/assets/Alarm_off.svg';
+import AlarmOnIcon from '@/assets/Alarm_on.svg';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { useLogin } from '@/hooks/useLogin';
 import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import Dropdown from '@/components/common/Dropdown/Dropdown';
-import NotificationDropdown from '@/components/NotificationDropdown/NotificationDropdown';
+import AlarmDropdown from '@/components/AlarmDropdown/AlarmDropdown';
 import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown';
 
 const Header = () => {
-  const [isNotiDropdownOpen, setIsNotiDropdownOpen] = useState(false);
+  const [isAlarmDropdownOpen, setIsAlarmDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
   const { isLogin } = useLogin();
   const { data: profile } = useHeaderProfile(isLogin);
 
-  const handleNotiDropdown = () => {
-    setIsNotiDropdownOpen(!isNotiDropdownOpen);
+  const handleAlarmDropdown = () => {
+    setIsAlarmDropdownOpen(!isAlarmDropdownOpen);
     setIsProfileDropdownOpen(false);
   };
 
   const handleProfileDropdown = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
-    setIsNotiDropdownOpen(false);
+    setIsAlarmDropdownOpen(false);
   };
 
   const handleCloseDropdown = () => {
     setIsProfileDropdownOpen(false);
-    setIsNotiDropdownOpen(false);
+    setIsAlarmDropdownOpen(false);
   };
 
   return (
@@ -44,17 +44,17 @@ const Header = () => {
           <S.MenuContainer>
             {isLogin ? (
               <>
-                <S.NotificationContainer>
+                <S.AlarmContainer>
                   <Dropdown
                     onClose={handleCloseDropdown}
                     gapFromTrigger="52px"
-                    isDropdownOpen={isNotiDropdownOpen}
-                    trigger={<S.NotificationIcon onClick={handleNotiDropdown} src={NotificationOnIcon} />}
+                    isDropdownOpen={isAlarmDropdownOpen}
+                    trigger={<S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOnIcon} />}
                   >
-                    <NotificationDropdown />
+                    <AlarmDropdown />
                   </Dropdown>
-                  {/* <S.NotificationIcon src={NotificationOffIcon} /> */}
-                </S.NotificationContainer>
+                  {/* <S.AlarmIcon src={AlarmOffIcon} /> */}
+                </S.AlarmContainer>
                 <Dropdown
                   onClose={handleCloseDropdown}
                   gapFromTrigger="57px"
@@ -107,9 +107,9 @@ const S = {
     height: 80px;
   `,
 
-  NotificationContainer: styled.div``,
+  AlarmContainer: styled.div``,
 
-  NotificationIcon: styled.img`
+  AlarmIcon: styled.img`
     width: 25px;
     height: 25px;
 
