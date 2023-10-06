@@ -59,6 +59,11 @@ public abstract class RepositoryTestConfig {
         return applicant;
     }
 
+    protected void persistAssignSupporter(final Supporter supporter, final RunnerPost runnerPost) {
+        runnerPost.assignSupporter(supporter);
+        em.persist(runnerPost);
+    }
+
     protected Tag persistTag(final String tagName) {
         final Tag tag = TagFixture.create(tagName(tagName));
         em.persist(tag);
