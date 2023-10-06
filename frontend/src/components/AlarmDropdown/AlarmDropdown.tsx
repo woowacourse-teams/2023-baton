@@ -5,14 +5,17 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { useAlarm } from '@/hooks/query/useAlarm';
 import { useLogin } from '@/hooks/useLogin';
 import { useAlarmDelete } from '@/hooks/query/useAlarmDelete';
+import { useAlarmCheck } from '@/hooks/query/useAlarmCheck';
 
 const AlarmDropdown = () => {
   const { isLogin } = useLogin();
   const { data: alarmList } = useAlarm(isLogin);
   const { mutate: deleteAlarm } = useAlarmDelete();
+  const { mutate: patchAlarmCheck } = useAlarmCheck();
   const { goToRunnerPostPage } = usePageRouter();
 
-  const handlePostClick = (runnerPostId: number) => {
+  const handlePostClick = (alarmId: number, runnerPostId: number) => {
+    patchAlarmCheck(alarmId);
     goToRunnerPostPage(runnerPostId);
   };
 
@@ -27,7 +30,7 @@ const AlarmDropdown = () => {
       {alarmList?.data.length > 0 ? (
         alarmList?.data?.map((alarm) => {
           return (
-            <S.DropdownList key={alarm.alarmId} onClick={() => handlePostClick(alarm.referencedId)}>
+            <S.DropdownList key={alarm.alarmId} onClick={() => handlePostClick(alarm.alarmId, alarm.referencedId)}>
               <S.AlarmTitleContainer>
                 <S.AlarmTitle>{alarm.title}</S.AlarmTitle>
                 <S.CloseButton onClick={(e) => handleDeleteAlarm(e, alarm.alarmId)}>삭제</S.CloseButton>

@@ -115,6 +115,10 @@ export const patchProposedSupporterSelection = (runnerPostId: number, supporterI
   return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
 };
 
+export const patchAlarmCheck = (alarmId: number) => {
+  return request.patch<void>(`/alarms/${alarmId}`, undefined);
+};
+
 export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
 };

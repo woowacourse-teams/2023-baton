@@ -187,6 +187,10 @@ export const handlers = [
 
     return res(ctx.delay(200), ctx.status(204));
   }),
+
+  rest.patch(`${BATON_BASE_URL}/alarms/:alarmId`, async (req, res, ctx) => {
+    return res(ctx.status(201));
+  }),
 ];
 
 const handleRequest = (
