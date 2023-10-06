@@ -1,3 +1,5 @@
+import { pageParamsRequest } from './api';
+
 export type ReviewStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'DONE' | 'OVERDUE';
 export type ReviewStatusFilter = ReviewStatus | 'ALL';
 
@@ -54,12 +56,13 @@ export interface CreateRunnerPostRequest {
 }
 
 export interface PageInfo {
-  isFirst: boolean;
   isLast: boolean;
-  hasNext: boolean;
-  totalPages: number;
-  totalElements: number;
-  currentPage: number;
-  currentSize: number;
   nextCursor: number;
 }
+
+interface requestParams {
+  tagName?: string;
+  reviewStatus?: ReviewStatus;
+}
+
+export interface getRunnerPostRequestParams extends pageParamsRequest, requestParams {}

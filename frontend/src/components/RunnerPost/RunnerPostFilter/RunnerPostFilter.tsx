@@ -1,6 +1,6 @@
 import React from 'react';
 import { css, keyframes, styled } from 'styled-components';
-import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
+import { REVIEW_STATUS_FILTER_TEXT, REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 
 interface Props {
   reviewStatus: string;
@@ -11,7 +11,7 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
   return (
     <S.FilterContainer>
       <S.LabelList>
-        {Object.entries(REVIEW_STATUS_LABEL_TEXT).map(([value, text]) => (
+        {Object.entries(REVIEW_STATUS_FILTER_TEXT).map(([value, text]) => (
           <S.StatusLabel key={value}>
             <S.RadioButton
               type="radio"
