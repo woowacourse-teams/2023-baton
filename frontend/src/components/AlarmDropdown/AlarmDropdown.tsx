@@ -1,40 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import mockData from '../../mocks/data/alarm.json';
-import { Alarm, GetAlarmResponse } from '@/types/alarm';
+import { Alarm } from '@/types/alarm';
 import { usePageRouter } from '@/hooks/usePageRouter';
+import { useAlarm } from '@/hooks/query/useAlarm';
+import { useLogin } from '@/hooks/useLogin';
+import { useAlarmDelete } from '@/hooks/query/useAlarmDelete';
 
 const AlarmDropdown = () => {
-  const [AlarmList, setAlarmList] = useState<GetAlarmResponse | null>(null);
-
+  const { isLogin } = useLogin();
+  const { data: alarmList } = useAlarm(isLogin);
+  const { mutate: deleteAlarm } = useAlarmDelete();
   const { goToRunnerPostPage } = usePageRouter();
-
-  useEffect(() => {
-    setAlarmList(mockData);
-  }, []);
-
-  const handleDeletePost = (e: React.MouseEvent, AlarmId: number) => {
-    e.stopPropagation();
-
-    const deletedPostList = AlarmList?.data.filter((alarm: Alarm) => alarm.alarmId !== AlarmId);
-    if (deletedPostList) {
-      setAlarmList({ data: deletedPostList });
-    }
-  };
 
   const handlePostClick = (runnerPostId: number) => {
     goToRunnerPostPage(runnerPostId);
   };
 
+  const handleDeleteAlarm = (e: React.MouseEvent, alarmId: number) => {
+    e.stopPropagation();
+
+    deleteAlarm(alarmId);
+  };
+
   return (
     <S.DropdownContainer>
-      {AlarmList?.data && AlarmList?.data.length > 0 ? (
-        AlarmList?.data.map((alarm: Alarm) => {
+      {alarmList?.data.length > 0 ? (
+        alarmList?.data?.map((alarm) => {
           return (
             <S.DropdownList key={alarm.alarmId} onClick={() => handlePostClick(alarm.referencedId)}>
               <S.AlarmTitleContainer>
                 <S.AlarmTitle>{alarm.title}</S.AlarmTitle>
-                <S.CloseButton onClick={(e) => handleDeletePost(e, alarm.alarmId)}>삭제</S.CloseButton>
+                <S.CloseButton onClick={(e) => handleDeleteAlarm(e, alarm.alarmId)}>삭제</S.CloseButton>
               </S.AlarmTitleContainer>
               <S.AlarmContents>{alarm.message}</S.AlarmContents>
               <S.AlarmTime>{alarm.createdAt}</S.AlarmTime>

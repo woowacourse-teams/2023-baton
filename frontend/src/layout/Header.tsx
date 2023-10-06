@@ -1,5 +1,5 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
@@ -51,7 +51,9 @@ const Header = () => {
                     isDropdownOpen={isAlarmDropdownOpen}
                     trigger={<S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOnIcon} />}
                   >
-                    <AlarmDropdown />
+                    <Suspense>
+                      <AlarmDropdown />
+                    </Suspense>
                   </Dropdown>
                   {/* <S.AlarmIcon src={AlarmOffIcon} /> */}
                 </S.AlarmContainer>

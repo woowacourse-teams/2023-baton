@@ -16,6 +16,7 @@ import {
 import { GetMyPagePostResponse } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
+import { GetAlarmResponse } from '@/types/alarm';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
   const params = new URLSearchParams({
@@ -72,6 +73,10 @@ export const getRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   return request.get<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}`, isLogin);
 };
 
+export const getAlram = (isLogin: boolean) => {
+  return request.get<GetAlarmResponse>(`/alarms`, isLogin);
+};
+
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {
   const body = JSON.stringify(formData);
   return request.post<void>(`/posts/runner`, body);
@@ -112,6 +117,10 @@ export const patchProposedSupporterSelection = (runnerPostId: number, supporterI
 
 export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
+};
+
+export const deleteAlarm = (alarmsId: number) => {
+  return request.delete<void>(`/alarms/${alarmsId}`);
 };
 
 export const postMissionBranchCreation = (repoName: string) => {

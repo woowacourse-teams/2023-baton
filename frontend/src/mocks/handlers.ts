@@ -10,6 +10,7 @@ import headerProfile from './data/headerProfile.json';
 import supporterProfilePost from './data/supporterProfilePost.json';
 import myPagePostList from './data/myPagePost/myPagePostList.json';
 import tagList from './data/tagList.json';
+import alarmList from './data/alarm.json';
 import { BATON_BASE_URL } from '@/constants';
 
 export const handlers = [
@@ -172,6 +173,19 @@ export const handlers = [
 
   rest.patch(`${BATON_BASE_URL}/posts/runner/:runnerPostId/done`, async (req, res, ctx) => {
     return res(ctx.status(201));
+  }),
+
+  rest.get(`${BATON_BASE_URL}/alarms`, async (req, res, ctx) => {
+    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(alarmList));
+  }),
+
+  rest.delete(`${BATON_BASE_URL}/alarms/:alarmId`, async (req, res, ctx) => {
+    const { alarmId } = req.params;
+    const { data: mockData } = alarmList;
+
+    const deletedAlarmList = mockData.filter((alarm) => alarm.alarmId !== Number(alarmId));
+
+    return res(ctx.delay(200), ctx.status(204));
   }),
 ];
 
