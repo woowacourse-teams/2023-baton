@@ -180,7 +180,7 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
   `,
 
   ReviewTypeList: styled.ul`
