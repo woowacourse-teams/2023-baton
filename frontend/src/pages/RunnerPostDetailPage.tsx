@@ -51,6 +51,7 @@ const RunnerPostPage = () => {
       return;
     }
 
+    closeModal();
     suggestReview({ runnerPostId, message });
   };
 
