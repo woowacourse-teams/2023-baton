@@ -1,6 +1,9 @@
 package touch.baton.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import touch.baton.domain.alarm.command.repository.AlarmCommandRepository;
+import touch.baton.domain.alarm.query.repository.AlarmQueryRepository;
 import touch.baton.domain.feedback.command.repository.SupporterFeedbackCommandRepository;
 import touch.baton.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.member.command.repository.SupporterCommandRepository;
@@ -67,4 +70,13 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
     protected SupporterRunnerPostCommandRepository supporterRunnerPostCommandRepository;
+
+    @Autowired
+    protected AlarmCommandRepository alarmCommandRepository;
+
+    @Autowired
+    protected AlarmQueryRepository alarmQueryRepository;
+
+    @Autowired
+    protected ApplicationEventPublisher publisher;
 }

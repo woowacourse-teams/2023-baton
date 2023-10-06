@@ -4,6 +4,8 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import touch.baton.domain.alarm.command.Alarm;
+import touch.baton.domain.alarm.command.vo.AlarmReferencedId;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
@@ -11,6 +13,7 @@ import touch.baton.domain.member.command.SupporterRunnerPost;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.Tag;
+import touch.baton.fixture.domain.AlarmFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
 import touch.baton.fixture.domain.RunnerPostTagFixture;
@@ -66,5 +69,11 @@ public abstract class RepositoryTestConfig {
         final RunnerPostTag runnerPostTag = RunnerPostTagFixture.create(runnerPost, tag);
         em.persist(runnerPostTag);
         return runnerPostTag;
+    }
+
+    protected Alarm persistAlarm(final Member targetMember, final AlarmReferencedId alarmReferencedId) {
+        final Alarm alarm = AlarmFixture.create(targetMember, alarmReferencedId);
+        em.persist(alarm);
+        return alarm;
     }
 }
