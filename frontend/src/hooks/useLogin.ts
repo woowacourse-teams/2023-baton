@@ -1,45 +1,31 @@
+import { getLoginToken } from '@/apis/apis';
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY } from '@/constants';
-import { useRef, useState } from 'react';
-import { useFetch } from './useFetch';
-import { getExpiration, getExpirationAsSecond } from '@/utils/jwt';
+import { useState } from 'react';
 
 const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
 export const useLogin = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(!!getAccessToken());
+  const [isLogin, setIsLogin] = useState(Boolean(getAccessToken()));
 
-  const timer = useRef<number | null>(null);
+  const saveAccessToken = (response: Response) => {
+    const jwt = response.headers.get('Authorization');
 
-  const { getRequestWithAuth, postRequestWithCookie } = useFetch();
+    if (jwt) {
+      localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
+      setIsLogin(true);
 
-  const login = async (code: string) => {
-    try {
-      await getRequestWithAuth(`/oauth/login/github?code=${code}`, (response) => {
-        const jwt = response.headers.get('Authorization');
-
-        if (!jwt) return;
-
-        localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
-        setIsLogin(true);
-      });
-    } catch (error) {
-      setIsLogin(false);
+      return;
     }
+
+    setIsLogin(false);
   };
 
-  const silentLogin = async () => {
-    try {
-      await postRequestWithCookie('/oauth/refresh', (response) => {
-        const jwt = response.headers.get('Authorization');
+  const login = async (authCode: string) => {
+    await getLoginToken(authCode).then((response) => {
+      saveAccessToken(response);
 
-        if (!jwt) return;
-
-        localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
-        setIsLogin(true);
-      });
-    } catch (error) {
-      setIsLogin(false);
-    }
+      setIsLogin(true);
+    });
   };
 
   const logout = () => {
@@ -48,25 +34,5 @@ export const useLogin = () => {
     setIsLogin(false);
   };
 
-  const checkLoginToken = async () => {
-    const token = getAccessToken();
-
-    if (timer.current) clearTimeout(timer.current);
-
-    if (!token || !isLogin) return;
-
-    const exp = getExpiration(token);
-    const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
-
-    if (restMinute <= 2) await silentLogin();
-
-    timer.current = window.setTimeout(
-      () => {
-        checkLoginToken();
-      },
-      restMinute <= 2 ? (getExpirationAsSecond(token) - 2 * 60) * 1000 : (restMinute - 2) * 60 * 1000,
-    );
-  };
-
-  return { isLogin, login, logout, silentLogin, checkLoginToken };
+  return { isLogin, login, logout };
 };
