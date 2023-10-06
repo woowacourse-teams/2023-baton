@@ -44,7 +44,7 @@ public class RunnerReadSimpleByRunnerIdApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerPostQueryService, runnerQueryService);
+        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerQueryService);
         restdocsSetUp(runnerQueryController);
     }
 

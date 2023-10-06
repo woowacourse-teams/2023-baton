@@ -84,24 +84,6 @@ public record RunnerPostResponse() {
         }
     }
 
-    public record Mine(Long runnerPostId,
-                       String title,
-                       LocalDateTime deadline,
-                       List<String> tags,
-                       String reviewStatus
-    ) {
-
-        public static Mine from(final RunnerPost runnerPost) {
-            return new Mine(
-                    runnerPost.getId(),
-                    runnerPost.getTitle().getValue(),
-                    runnerPost.getDeadline().getValue(),
-                    convertToTags(runnerPost),
-                    runnerPost.getReviewStatus().name()
-            );
-        }
-    }
-
     public record SimpleByRunner(Long runnerPostId,
                                  String title,
                                  LocalDateTime deadline,
