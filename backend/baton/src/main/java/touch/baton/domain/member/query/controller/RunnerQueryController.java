@@ -10,13 +10,6 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.query.controller.response.RunnerResponse;
 import touch.baton.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipal;
-<<<<<<< HEAD
-=======
-import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
-
-import java.util.List;
->>>>>>> BE
 
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/profile/runner")
