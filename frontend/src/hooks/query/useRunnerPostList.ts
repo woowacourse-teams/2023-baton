@@ -19,14 +19,18 @@ export const useRunnerPostList = (reviewStatus?: ReviewStatus, tagName?: string)
     number
   >({
     queryKey: ['runnerPost', reviewStatus, tagName],
-    queryFn: ({ pageParam }) => getRunnerPost(PAGE_LIMIT, reviewStatus, pageParam, tagName).then((res) => res),
+
+    queryFn: ({ pageParam }) =>
+      getRunnerPost({ limit: PAGE_LIMIT, reviewStatus, cursor: pageParam, tagName }).then((res) => res),
+
     initialPageParam: 0,
+
     getNextPageParam: (nextPage) => {
-      if (!nextPage.pageInfo.isLast) {
-        return nextPage.pageInfo.nextCursor;
-      }
-      return undefined;
+      if (nextPage.pageInfo.isLast) return undefined;
+
+      return nextPage.pageInfo.nextCursor;
     },
+
     select: ({ pages }) => pages.reduce<RunnerPost[]>((acc, { data }) => acc.concat(data), []),
   });
 

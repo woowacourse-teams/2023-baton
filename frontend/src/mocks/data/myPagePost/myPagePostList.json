@@ -93,12 +93,7 @@
     }
   ],
   "pageInfo": {
-    "isFirst": true,
     "isLast": false,
-    "hasNext": true,
-    "totalPages": 4,
-    "totalElements": 40,
-    "currentPage": 1,
-    "currentSize": 12
+    "nextCursor": 1
   }
 }

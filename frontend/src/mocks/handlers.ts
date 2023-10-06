@@ -190,9 +190,10 @@ const handleRequest = (
   ctx: RestContext,
 ) => {
   const reviewStatus = req.url.searchParams.get('reviewStatus');
-  const page = req.url.searchParams.get('page');
+  const limit = req.url.searchParams.get('limit');
+  const cursor = req.url.searchParams.get('cursor');
 
-  if (!reviewStatus || !page)
+  if (!reviewStatus || !limit)
     return res(
       ctx.status(400),
       ctx.set('Content-Type', 'application/json'),
@@ -204,11 +205,12 @@ const handleRequest = (
   if (reviewStatus) {
     CopiedMyPagePostList.data.forEach((post, idx) => {
       post.runnerPostId = Date.now() + idx;
-      post.title = `${post.title} (${page})`;
+      post.title = `${post.title} (${cursor})`;
       post.reviewStatus = reviewStatus;
     });
 
-    CopiedMyPagePostList.pageInfo.currentPage = Number(page);
+    CopiedMyPagePostList.pageInfo.nextCursor = Number(cursor) + 1;
+    if (Number(cursor) === 3) CopiedMyPagePostList.pageInfo.isLast = true;
 
     return res(
       ctx.delay(300),
