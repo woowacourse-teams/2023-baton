@@ -14,13 +14,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import touch.baton.domain.alarm.exception.AlarmDomainException;
 import touch.baton.domain.alarm.command.vo.AlarmMessage;
 import touch.baton.domain.alarm.command.vo.AlarmReferencedId;
 import touch.baton.domain.alarm.command.vo.AlarmTitle;
 import touch.baton.domain.alarm.command.vo.AlarmType;
 import touch.baton.domain.alarm.command.vo.IsRead;
-import touch.baton.domain.common.BaseEntity;
+import touch.baton.domain.alarm.exception.AlarmDomainException;
+import touch.baton.domain.common.TruncatedBaseEntity;
 import touch.baton.domain.member.command.Member;
 
 import java.util.Objects;
@@ -35,7 +35,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Where(clause = "deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE alarm SET deleted_at = now() WHERE id = ?")
 @Entity
-public class Alarm extends BaseEntity {
+public class Alarm extends TruncatedBaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
