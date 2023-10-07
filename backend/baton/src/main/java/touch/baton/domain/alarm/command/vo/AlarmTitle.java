@@ -24,10 +24,6 @@ public class AlarmTitle {
         this.value = value;
     }
 
-    public static AlarmTitle fromAppliedSupporter() {
-        return new AlarmTitle("서포터의 제안이 왔습니다.");
-    }
-
     private void validateNotNull(final String value) {
         if (Objects.isNull(value)) {
             throw new IllegalArgumentException("AlarmTitle 객체 내부에 title 은 null 일 수 없습니다.");
