@@ -3,10 +3,7 @@ package touch.baton.domain.runnerpost.command.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import touch.baton.config.ServiceTestConfig;
-import touch.baton.domain.alarm.command.Alarm;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
@@ -39,8 +36,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostCommandServiceCreateTest extends ServiceTestConfig {
-
-    private static final Logger log = LoggerFactory.getLogger(RunnerPostCommandServiceCreateTest.class);
 
     private static final String TITLE = "코드 리뷰 해주세요.";
     private static final String TAG = "Java";
@@ -127,41 +122,6 @@ class RunnerPostCommandServiceCreateTest extends ServiceTestConfig {
             softly.assertThat(maybeRunnerPostApplicant.get().getMessage().getValue()).isEqualTo(request.message());
         });
     }
-
-    @DisplayName("Supporter 가 RunnerPost 에 리뷰를 지원하면 RunnerPost 작성자에게 서포터 지원 알림이 저장된다.")
-    @Test
-    void event() throws InterruptedException {
-        // given
-        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner savedRunnerDitto = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
-
-        final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
-        final Supporter savedSupporterHyena = supporterQueryRepository.save(SupporterFixture.create(savedMemberHyena));
-
-        final RunnerPost savedRunnerPost = runnerPostQueryRepository.save(RunnerPostFixture.create(savedRunnerDitto, deadline(now().plusHours(100))));
-
-        // when
-        final RunnerPostApplicantCreateRequest request = new RunnerPostApplicantCreateRequest("안녕하세요. 서포터 헤나입니다.");
-        final Long savedRunnerPostApplicantId = runnerPostCommandService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId());
-
-        final Optional<SupporterRunnerPost> maybeRunnerPostApplicant = supporterRunnerPostQueryRepository.findById(savedRunnerPostApplicantId);
-
-        Thread.sleep(2000L);
-
-        final Optional<Alarm> maybeAlarm = alarmCommandRepository.findById(1L);
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(maybeRunnerPostApplicant).isPresent();
-            softly.assertThat(maybeRunnerPostApplicant.get().getId())
-                    .isNotNull()
-                    .isEqualTo(maybeRunnerPostApplicant.get().getId());
-            softly.assertThat(maybeRunnerPostApplicant.get().getSupporter()).isEqualTo(savedSupporterHyena);
-            softly.assertThat(maybeRunnerPostApplicant.get().getRunnerPost()).isEqualTo(savedRunnerPost);
-            softly.assertThat(maybeRunnerPostApplicant.get().getMessage().getValue()).isEqualTo(request.message());
-        });
-    }
-
 
     @DisplayName("Supporter 가 RunnerPost 에 리뷰를 지원할 때 RunnerPost 가 존재하지 않을 경우 예외가 발생한다.")
     @Test
