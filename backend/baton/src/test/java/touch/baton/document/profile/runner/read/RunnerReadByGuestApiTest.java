@@ -49,7 +49,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
 
     @BeforeEach
     void setUp() {
-        restdocsSetUp(new RunnerQueryController(runnerPostQueryService, runnerQueryService));
+        restdocsSetUp(new RunnerQueryController(runnerQueryService));
     }
 
     @DisplayName("러너 본인 프로필 조회 API")

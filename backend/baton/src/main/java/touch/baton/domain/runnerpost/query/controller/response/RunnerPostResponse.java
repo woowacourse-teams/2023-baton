@@ -25,7 +25,7 @@ public record RunnerPostResponse() {
                          boolean isOwner,
                          boolean isApplied,
                          List<String> tags,
-                         RunnerResponse.Detail runnerProfile
+                         RunnerResponse.InRunnerPostDetail runnerProfile
     ) {
 
         public static Detail of(final RunnerPost runnerPost,
@@ -47,7 +47,7 @@ public record RunnerPostResponse() {
                     isOwner,
                     isApplied,
                     convertToTags(runnerPost),
-                    RunnerResponse.Detail.from(runnerPost.getRunner())
+                    RunnerResponse.InRunnerPostDetail.from(runnerPost.getRunner())
             );
         }
     }
@@ -81,24 +81,6 @@ public record RunnerPostResponse() {
         @Override
         public Long extractId() {
             return runnerPostId;
-        }
-    }
-
-    public record Mine(Long runnerPostId,
-                       String title,
-                       LocalDateTime deadline,
-                       List<String> tags,
-                       String reviewStatus
-    ) {
-
-        public static Mine from(final RunnerPost runnerPost) {
-            return new Mine(
-                    runnerPost.getId(),
-                    runnerPost.getTitle().getValue(),
-                    runnerPost.getDeadline().getValue(),
-                    convertToTags(runnerPost),
-                    runnerPost.getReviewStatus().name()
-            );
         }
     }
 
