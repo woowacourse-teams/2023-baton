@@ -20,7 +20,7 @@ public class AlarmCommandController {
 
     @PatchMapping("/{alarmId}")
     public ResponseEntity<Void> updateAlarmIsReadTrueByAlarmId(@AuthMemberPrincipal final Member member,
-                                                              @PathVariable final Long alarmId
+                                                               @PathVariable final Long alarmId
     ) {
         alarmCommandService.updateAlarmIsReadTrueByMember(member, alarmId);
 

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
-import static touch.baton.domain.alarm.command.vo.AlarmText.MESSAGE_REFERENCED_BY_RUNNER_POST;
 
 @EqualsAndHashCode
 @Getter
@@ -23,10 +22,6 @@ public class AlarmMessage {
     public AlarmMessage(final String value) {
         validateNotNull(value);
         this.value = value;
-    }
-
-    public static AlarmMessage fromRunnerPost(final String value) {
-        return new AlarmMessage(String.format(MESSAGE_REFERENCED_BY_RUNNER_POST.getText(), value));
     }
 
     private void validateNotNull(final String value) {
