@@ -15,17 +15,17 @@ import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
 
-import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.AlarmReferencedIdFixture.alarmReferencedId;
 
@@ -57,13 +57,14 @@ class AlarmDeleteApiTest extends RestdocsConfig {
 
         // then
         mockMvc.perform(delete("/api/v1/alarms/{alarmId}", spyAlarm.getId())
-                        .header(AUTHORIZATION, "Bearer " + token)
-                        .contentType(APPLICATION_JSON_VALUE))
+                        .header(AUTHORIZATION, "Bearer " + token))
                 .andExpect(status().isNoContent())
                 .andDo(restDocs.document(
+                        pathParameters(
+                                parameterWithName("alarmId").description("알람 식별자값")
+                        ),
                         requestHeaders(
-                                headerWithName(AUTHORIZATION).description("Bearer JWT"),
-                                headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)
+                                headerWithName(AUTHORIZATION).description("Bearer JWT")
                         )
                 ));
     }
