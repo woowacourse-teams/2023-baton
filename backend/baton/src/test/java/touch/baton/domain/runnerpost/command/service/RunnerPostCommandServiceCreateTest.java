@@ -150,8 +150,6 @@ class RunnerPostCommandServiceCreateTest extends ServiceTestConfig {
 
         final Optional<Alarm> maybeAlarm = alarmCommandRepository.findById(1L);
 
-        log.info("===================================> maybeAlarm = {}", maybeAlarm);
-
         // then
         assertSoftly(softly -> {
             softly.assertThat(maybeRunnerPostApplicant).isPresent();
