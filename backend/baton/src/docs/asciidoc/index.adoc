@@ -63,3 +63,17 @@ include::RunnerPostUpdateApplicantCancelationApi.adoc[]
 === *러너 게시글 삭제*
 
 include::RunnerPostDeleteApi.adoc[]
+
+== *[ 알람 ]*
+
+=== *알람 조회*
+
+include::AlarmLoginReadApi.adoc[]
+
+=== *알람 수정*
+
+include::AlarmUpdateApi.adoc[]
+
+=== *알람 삭제*
+
+include::AlarmDeleteApi.adoc[]
