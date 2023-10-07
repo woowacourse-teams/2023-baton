@@ -14,6 +14,7 @@ import touch.baton.fixture.domain.AlarmFixture;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -34,6 +36,7 @@ import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.AlarmReferencedIdFixture.alarmReferencedId;
@@ -61,7 +64,10 @@ class AlarmReadWithLoginedMemberApiTest extends RestdocsConfig {
         when(spyMember.getId()).thenReturn(1L);
         final Alarm spyAlarm = spy(alarm);
         when(spyAlarm.getId()).thenReturn(1L);
-        when(spyAlarm.getCreatedAt()).thenReturn(LocalDateTime.now());
+
+        doReturn(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
+                .when(spyAlarm)
+                .getCreatedAt();
 
         // when
         when(alarmQueryService.readAlarmsByMemberId(anyLong(), anyInt())).thenReturn(List.of(spyAlarm));
@@ -87,6 +93,6 @@ class AlarmReadWithLoginedMemberApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].isRead").type(BOOLEAN).description("알람 읽음 여부"),
                                 fieldWithPath("data.[].createdAt").type(STRING).description("알람 생성 시간")
                         ))
-                );
+                ).andDo(print());
     }
 }
