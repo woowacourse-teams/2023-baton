@@ -11,7 +11,9 @@ import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.event.RunnerPostApplySupporterEvent;
 import touch.baton.domain.runnerpost.command.event.RunnerPostAssignSupporterEvent;
+import touch.baton.domain.runnerpost.command.event.RunnerPostReviewStatusDoneEvent;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
@@ -59,7 +61,7 @@ class RunnerPostCommandServiceEventTest extends ServiceTestConfig {
         runnerPostCommandService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId());
 
         // then
-        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostAssignSupporterEvent.class).count();
+        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostApplySupporterEvent.class).count();
 
         assertThat(eventPublishedCount).isOne();
     }
@@ -89,7 +91,6 @@ class RunnerPostCommandServiceEventTest extends ServiceTestConfig {
         assertThat(eventPublishedCount).isOne();
     }
 
-
     @DisplayName("서포터가 러너 게시글의 상태를 리뷰 완료로 변경할 경우 이벤트가 발행된다.")
     @Test
     void success_supporter_update_runnerPost_reviewStatus_done() {
@@ -111,7 +112,7 @@ class RunnerPostCommandServiceEventTest extends ServiceTestConfig {
         runnerPostCommandService.updateRunnerPostReviewStatusDone(savedRunnerPost.getId(), savedSupporterHyena);
 
         // then
-        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostAssignSupporterEvent.class).count();
+        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostReviewStatusDoneEvent.class).count();
 
         assertThat(eventPublishedCount).isOne();
     }
