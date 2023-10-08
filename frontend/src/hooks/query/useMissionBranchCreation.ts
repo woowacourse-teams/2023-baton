@@ -19,8 +19,6 @@ export const useMissionBranchCreation = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '브랜치 생성에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

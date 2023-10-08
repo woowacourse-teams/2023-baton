@@ -28,8 +28,6 @@ export const useSelectionSupporter = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '서포터 선택에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

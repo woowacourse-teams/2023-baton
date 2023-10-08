@@ -23,8 +23,6 @@ export const useRunnerPostDelete = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '게시물 삭제 요청이 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;
