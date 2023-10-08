@@ -3,8 +3,8 @@ import React, { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ToastContext } from '@/contexts/ToastContext';
 import { TOAST_ERROR_MESSAGE } from '@/constants/message';
-import { useLogin } from '@/hooks/useLogin';
 import LoadingPage from './LoadingPage';
+import { issueLoginToken } from '@/apis/auth';
 
 function GithubCallbackPage() {
   const location = useLocation();
@@ -12,7 +12,6 @@ function GithubCallbackPage() {
   const { showErrorToast } = useContext(ToastContext);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
-  const { login } = useLogin();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -26,9 +25,15 @@ function GithubCallbackPage() {
     }
 
     if (code) {
-      login(code).then(() => {
-        goToMainPage();
-      });
+      issueLoginToken(code)
+        .then(() => {
+          goToMainPage();
+        })
+        .catch(() => {
+          showErrorToast(TOAST_ERROR_MESSAGE.LOGIN);
+
+          goToLoginPage();
+        });
     }
   }, [location]);
 
