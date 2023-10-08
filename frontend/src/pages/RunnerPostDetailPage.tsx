@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -34,8 +34,6 @@ const RunnerPostPage = () => {
 
   const { showErrorToast } = useContext(ToastContext);
   const { openModal, closeModal } = useContext(ModalContext);
-
-  const [message, setMessage] = useState<string>('');
 
   const { data: runnerPostDetail } = useRunnerPostDetail(runnerPostId, isLogin());
   const { mutate: deleteRunnerPost } = useRunnerPostDelete();
