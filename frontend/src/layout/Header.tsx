@@ -5,16 +5,15 @@ import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useLogin } from '@/hooks/useLogin';
 import useViewport from '@/hooks/useViewport';
 import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
+import { isLogin, logout } from '@/apis/auth';
 
 const Header = () => {
   const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
-  const { isLogin, logout } = useLogin();
   const { isMobile } = useViewport();
 
-  const { data: profile } = useHeaderProfile(isLogin);
+  const { data: profile } = useHeaderProfile();
 
   const handleClickLogoutButton = () => {
     logout();
@@ -31,7 +30,7 @@ const Header = () => {
       <S.HeaderContainer>
         <S.Logo onClick={goToMainPage} />
         <S.MenuContainer>
-          {isLogin ? (
+          {isLogin() ? (
             <>
               <S.AvatarContainer onClick={handleClickProfile}>
                 {!isMobile && <S.ProfileName>{profile?.name}</S.ProfileName>}

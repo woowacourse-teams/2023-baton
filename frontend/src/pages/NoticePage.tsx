@@ -7,7 +7,6 @@ import Button from '@/components/common/Button/Button';
 import Label from '@/components/common/Label/Label';
 import ConfirmModal from '@/components/ConfirmModal/ConfirmModal';
 import githubIcon from '@/assets/github-icon.svg';
-import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import useViewport from '@/hooks/useViewport';
 import EventImage from '@/assets/banner/event_banner_post.png';
@@ -16,10 +15,10 @@ import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import { useMissionBranchCreation } from '@/hooks/query/useMissionBranchCreation';
 import { ModalContext } from '@/contexts/ModalContext';
+import { isLogin } from '@/apis/auth';
 
 const NoticePage = () => {
   const { goBack } = usePageRouter();
-  const { isLogin } = useLogin();
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
 
@@ -28,11 +27,11 @@ const NoticePage = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<string>('');
 
   const { mutate: postMissionBranchCreation } = useMissionBranchCreation();
-  const { data: profile } = useHeaderProfile(isLogin);
+  const { data: profile } = useHeaderProfile();
   const profileName = profile?.name;
 
   const openConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!isLogin) {
+    if (!isLogin()) {
       showErrorToast({
         title: ERROR_TITLE.NO_PERMISSION,
         description: ERROR_DESCRIPTION.NO_TOKEN,

@@ -4,7 +4,6 @@ import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/Run
 import Button from '@/components/common/Button/Button';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
-import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useRunnerPostList } from '@/hooks/query/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
@@ -12,11 +11,11 @@ import Layout from '@/layout/Layout';
 import { ReviewStatus } from '@/types/runnerPost';
 import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
+import { isLogin } from '@/apis/auth';
 
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
 
-  const { isLogin } = useLogin();
   const { showErrorToast } = useContext(ToastContext);
   const { isMobile } = useViewport();
 
@@ -30,7 +29,7 @@ const MainPage = () => {
   };
 
   const handleClickPostButton = () => {
-    if (!isLogin) {
+    if (!isLogin()) {
       showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
       goToLoginPage();
 
