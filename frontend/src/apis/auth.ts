@@ -1,18 +1,31 @@
 import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
+import { queryClient } from '@/hooks/query/queryClient';
 import { getRestMinute } from '@/utils/jwt';
 
 export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
-export const saveAccessToken = (response: Response) => {
-  const jwt = response.headers.get('Authorization');
+export const isLogin = () => Boolean(getAccessToken());
 
-  if (jwt) {
-    localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
+export const logout = () => {
+  localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+
+  queryClient.removeQueries({ queryKey: ['headerProfile'] });
+};
+
+const saveAccessToken = (response: Response) => {
+  if (!response.ok) {
+    localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    queryClient.resetQueries({ queryKey: ['headerProfile'] });
 
     return;
   }
 
-  localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+  const jwt = response.headers.get('Authorization');
+
+  if (jwt) {
+    localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
+    queryClient.resetQueries({ queryKey: ['headerProfile'] });
+  }
 };
 
 export const issueLoginToken = async (authCode: string) => {
@@ -24,6 +37,8 @@ export const issueLoginToken = async (authCode: string) => {
   });
 
   saveAccessToken(response);
+
+  return response;
 };
 
 export const postRefreshToken = async () => {
@@ -36,6 +51,8 @@ export const postRefreshToken = async () => {
   });
 
   saveAccessToken(response);
+
+  return response;
 };
 
 export const checkLoginToken = async () => {

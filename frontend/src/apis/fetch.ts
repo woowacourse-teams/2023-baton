@@ -1,7 +1,7 @@
 import { BATON_BASE_URL } from '@/constants';
 import { Method } from '@/types/api';
 import { throwErrorBadRequest, validateResponse } from './error';
-import { checkLoginToken, getAccessToken, postRefreshToken, saveAccessToken } from './auth';
+import { checkLoginToken, getAccessToken } from './auth';
 
 const parseJson = async (response: Response): Promise<any> => {
   await validateResponse(response);
