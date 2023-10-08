@@ -16,7 +16,6 @@ import {
 import { GetMyPagePostResponse } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
   const params = new URLSearchParams({
@@ -90,15 +89,6 @@ export const getOtherSupporterPost = (supporterId: number) => {
   return request.get<GetRunnerPostResponse>(`/posts/runner/search?${params.toString()}`, false);
 };
 
-export const getLoginToken = (authCode: string) => {
-  return fetch(`${BATON_BASE_URL}/oauth/login/github?code=${authCode}`, {
-    method: 'GET',
-    headers: {
-      credentials: 'include',
-    },
-  });
-};
-
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {
   const body = JSON.stringify(formData);
   return request.post<void>(`/posts/runner`, body);
@@ -117,16 +107,6 @@ export const postFeedbackToSupporter = (formData: PostFeedbackRequest) => {
 export const postMissionBranchCreation = (repoName: string) => {
   const body = JSON.stringify({ repoName });
   return request.post<void>(`/branch`, body);
-};
-
-export const postRefreshToken = () => {
-  return fetch(`${BATON_BASE_URL}/oauth/refresh`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY)}`,
-      credentials: 'include',
-    },
-  });
 };
 
 export const patchReviewCancelation = (runnerPostId: number) => {

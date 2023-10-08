@@ -1,22 +1,7 @@
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
+import { BATON_BASE_URL } from '@/constants';
 import { Method } from '@/types/api';
 import { throwErrorBadRequest, validateResponse } from './error';
-import { getExpiration } from '@/utils/jwt';
-import { postRefreshToken } from './apis';
-
-const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-
-const saveAccessToken = (response: Response) => {
-  const jwt = response.headers.get('Authorization');
-
-  if (jwt) {
-    localStorage.setItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY, jwt);
-
-    return;
-  }
-
-  localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
-};
+import { checkLoginToken, getAccessToken, postRefreshToken, saveAccessToken } from './auth';
 
 const parseJson = async (response: Response): Promise<any> => {
   await validateResponse(response);
@@ -34,36 +19,20 @@ const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
     .then(async (response) => parseJson(response));
 };
 
-const fetchApi = <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
-  const fetchFunction = () =>
-    fetchJson<T>(url, {
-      method,
-      ...(isAuth && {
-        headers: {
-          ...(body && { 'Content-Type': 'application/json' }),
-          Authorization: `Bearer ${getAccessToken()}`,
-          credentials: 'include',
-        },
-      }),
-      body,
-    });
+const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
+  if (isAuth) await checkLoginToken();
 
-  const jwt = getAccessToken();
-
-  if (isAuth && jwt) {
-    const exp = getExpiration(jwt);
-    const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
-
-    if (restMinute <= 2) {
-      postRefreshToken().then((response) => {
-        saveAccessToken(response);
-
-        return fetchFunction();
-      });
-    }
-  }
-
-  return fetchFunction();
+  return fetchJson<T>(url, {
+    method,
+    ...(isAuth && {
+      headers: {
+        ...(body && { 'Content-Type': 'application/json' }),
+        Authorization: `Bearer ${getAccessToken()}`,
+        credentials: 'include',
+      },
+    }),
+    body,
+  });
 };
 
 export const request = {
