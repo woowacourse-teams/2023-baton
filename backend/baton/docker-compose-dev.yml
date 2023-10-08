@@ -20,3 +20,7 @@ services:
       - TZ=Asia/Seoul
     networks:
       - baton
+
+networks:
+  baton:
+    external: true
