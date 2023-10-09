@@ -16,11 +16,8 @@ public class NotificationCommandService {
     private final NotificationCommandRepository notificationCommandRepository;
 
     public void updateNotificationIsReadTrueByMember(final Member member, final Long notificationId) {
-        if (getNotificationByNotificationId(notificationId).isNotOwner(member)) {
-            throw new NotificationBusinessException("Notification 의 주인(사용자)가 아니므로 알림의 읽은 여부를 수정할 수 없습니다.");
-        }
-
-        notificationCommandRepository.updateIsReadTrueByMemberId(notificationId);
+        final Notification foundNotification = getNotificationByNotificationId(notificationId);
+        foundNotification.markAsRead(member);
     }
 
     private Notification getNotificationByNotificationId(final Long notificationId) {

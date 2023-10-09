@@ -8,6 +8,7 @@ import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.command.vo.NotificationReferencedId;
 import touch.baton.domain.notification.exception.NotificationBusinessException;
 import touch.baton.domain.member.command.Member;
+import touch.baton.domain.notification.exception.NotificationDomainException;
 import touch.baton.fixture.domain.NotificationFixture;
 import touch.baton.fixture.domain.MemberFixture;
 
@@ -49,7 +50,7 @@ class NotificationCommandServiceTest extends ServiceTestConfig {
         });
     }
 
-    @DisplayName("알림 읽은 여부를 true 로 업데이트 할 때 알림의 주인(사용자)가 아닐 경우 예외가 발생한다.")
+    @DisplayName("알림 읽은 여부를 읽음 상태로 업데이트 할 때 알림의 주인(사용자)가 아닐 경우 예외가 발생한다.")
     @Test
     void fail_updateNotificationIsReadByMember_when_member_isNotOwner() {
         // given
@@ -61,7 +62,7 @@ class NotificationCommandServiceTest extends ServiceTestConfig {
 
         // when & then
         assertThatThrownBy(() -> notificationCommandService.updateNotificationIsReadTrueByMember(notOwner, savedNotification.getId()))
-                .isInstanceOf(NotificationBusinessException.class);
+                .isInstanceOf(NotificationDomainException.class);
     }
 
     @DisplayName("알림 삭제를 성공한다.")
