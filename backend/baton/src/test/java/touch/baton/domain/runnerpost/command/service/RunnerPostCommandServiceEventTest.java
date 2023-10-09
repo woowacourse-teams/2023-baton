@@ -61,7 +61,7 @@ class RunnerPostCommandServiceEventTest extends ServiceTestConfig {
         runnerPostCommandService.createRunnerPostApplicant(savedSupporterHyena, request, savedRunnerPost.getId());
 
         // then
-        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostApplySupporterEvent.class).count();
+        final long eventPublishedCount = applicationEvents.stream(RunnerPostApplySupporterEvent.class).count();
 
         assertThat(eventPublishedCount).isOne();
     }
@@ -86,7 +86,7 @@ class RunnerPostCommandServiceEventTest extends ServiceTestConfig {
         runnerPostCommandService.updateRunnerPostAppliedSupporter(savedRunnerDitto, savedRunnerPost.getId(), runnerPostAssignSupporterRequest);
 
         // then
-        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostAssignSupporterEvent.class).count();
+        final long eventPublishedCount = applicationEvents.stream(RunnerPostAssignSupporterEvent.class).count();
 
         assertThat(eventPublishedCount).isOne();
     }
@@ -112,7 +112,7 @@ class RunnerPostCommandServiceEventTest extends ServiceTestConfig {
         runnerPostCommandService.updateRunnerPostReviewStatusDone(savedRunnerPost.getId(), savedSupporterHyena);
 
         // then
-        final int eventPublishedCount = (int) applicationEvents.stream(RunnerPostReviewStatusDoneEvent.class).count();
+        final long eventPublishedCount = applicationEvents.stream(RunnerPostReviewStatusDoneEvent.class).count();
 
         assertThat(eventPublishedCount).isOne();
     }
