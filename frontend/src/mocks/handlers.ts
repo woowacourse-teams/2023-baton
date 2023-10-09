@@ -194,6 +194,10 @@ export const handlers = [
       }),
     );
   }),
+
+  rest.delete(`${BATON_BASE_URL}/oauth/logout`, async (req, res, ctx) => {
+    return res(ctx.status(204));
+  }),
 ];
 
 const handleRequest = (

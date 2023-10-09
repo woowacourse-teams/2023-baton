@@ -4,17 +4,23 @@ import { getRestMinute } from '@/utils/jwt';
 
 export const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
 
+const removeAccessToken = () => {
+  localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+};
+
 export const isLogin = () => Boolean(getAccessToken());
 
 export const logout = () => {
-  localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+  deleteRefreshToken();
+
+  removeAccessToken();
 
   queryClient.removeQueries({ queryKey: ['headerProfile'] });
 };
 
 const saveAccessToken = (response: Response) => {
   if (!response.ok) {
-    localStorage.removeItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+    removeAccessToken();
     queryClient.resetQueries({ queryKey: ['headerProfile'] });
 
     return;
@@ -51,6 +57,17 @@ export const postRefreshToken = async () => {
   });
 
   saveAccessToken(response);
+
+  return response;
+};
+
+export const deleteRefreshToken = async () => {
+  const response = await fetch(`${BATON_BASE_URL}/oauth/logout`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${getAccessToken()}`,
+    },
+  });
 
   return response;
 };
