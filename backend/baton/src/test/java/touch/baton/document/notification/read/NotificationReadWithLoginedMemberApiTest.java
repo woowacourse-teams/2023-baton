@@ -62,9 +62,9 @@ class NotificationReadWithLoginedMemberApiTest extends RestdocsConfig {
 
         final Member spyMember = spy(memberHyena);
         when(spyMember.getId()).thenReturn(1L);
+
         final Notification spyNotification = spy(notification);
         when(spyNotification.getId()).thenReturn(1L);
-
         doReturn(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES))
                 .when(spyNotification)
                 .getCreatedAt();

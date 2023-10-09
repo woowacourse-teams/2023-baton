@@ -6,18 +6,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
+import touch.baton.domain.member.command.Member;
 import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.command.controller.NotificationCommandController;
 import touch.baton.domain.notification.command.service.NotificationCommandService;
-import touch.baton.domain.member.command.Member;
-import touch.baton.fixture.domain.NotificationFixture;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.NotificationFixture;
 
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -49,7 +49,7 @@ class NotificationUpdateApiTest extends RestdocsConfig {
         final Notification notification = NotificationFixture.create(memberHyena, notificationReferencedId(1L));
 
         // when
-        willDoNothing().given(notificationCommandService).updateNotificationIsReadTrueByMember(any(Member.class), anyLong());
+        doNothing().when(notificationCommandService).updateNotificationIsReadTrueByMember(any(Member.class), anyLong());
         when(oauthMemberCommandRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(memberHyena));
 
         final Notification spyNotification = spy(notification);
