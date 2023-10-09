@@ -17,8 +17,16 @@ public class IsRead {
     @Column(name = "is_read", nullable = false)
     private boolean value = false;
 
-    public IsRead(final boolean value) {
+    private IsRead(final boolean value) {
         this.value = value;
+    }
+
+    public static IsRead asRead() {
+        return new IsRead(true);
+    }
+
+    public static IsRead asUnRead() {
+        return new IsRead(false);
     }
 
     public boolean getValue() {

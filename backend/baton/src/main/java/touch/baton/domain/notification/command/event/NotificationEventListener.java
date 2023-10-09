@@ -55,7 +55,7 @@ public class NotificationEventListener {
                 .notificationMessage(new NotificationMessage(String.format(MESSAGE_REFERENCED_BY_RUNNER_POST.getText(), runnerPost.getTitle().getValue())))
                 .notificationType(NotificationType.RUNNER_POST)
                 .notificationReferencedId(new NotificationReferencedId(runnerPost.getId()))
-                .isRead(new IsRead(false))
+                .isRead(IsRead.asUnRead())
                 .member(targetMember)
                 .build();
     }

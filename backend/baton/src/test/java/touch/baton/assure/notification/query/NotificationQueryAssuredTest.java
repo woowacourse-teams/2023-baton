@@ -78,7 +78,7 @@ class NotificationQueryAssuredTest extends AssuredTestConfig {
                 .notificationMessage(new NotificationMessage("알림 테스트용 내용"))
                 .notificationType(NotificationType.RUNNER_POST)
                 .notificationReferencedId(new NotificationReferencedId(1L))
-                .isRead(new IsRead(false))
+                .isRead(IsRead.asUnRead())
                 .member(헤나_사용자)
                 .build();
 

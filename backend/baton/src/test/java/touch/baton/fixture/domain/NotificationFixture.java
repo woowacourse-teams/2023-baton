@@ -1,13 +1,13 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.notification.command.Notification;
-import touch.baton.domain.notification.command.vo.NotificationReferencedId;
 import touch.baton.domain.member.command.Member;
+import touch.baton.domain.notification.command.Notification;
+import touch.baton.domain.notification.command.vo.IsRead;
+import touch.baton.domain.notification.command.vo.NotificationReferencedId;
 
 import static touch.baton.domain.notification.command.vo.NotificationType.RUNNER_POST;
 import static touch.baton.fixture.vo.NotificationMessageFixture.notificationMessage;
 import static touch.baton.fixture.vo.NotificationTitleFixture.notificationTitle;
-import static touch.baton.fixture.vo.IsReadFixture.isRead;
 
 public abstract class NotificationFixture {
 
@@ -20,7 +20,7 @@ public abstract class NotificationFixture {
                 .notificationMessage(notificationMessage("테스트용 알림 내용"))
                 .notificationType(RUNNER_POST)
                 .notificationReferencedId(notificationReferencedId)
-                .isRead(isRead(false))
+                .isRead(IsRead.asUnRead())
                 .member(targetMember)
                 .build();
     }
