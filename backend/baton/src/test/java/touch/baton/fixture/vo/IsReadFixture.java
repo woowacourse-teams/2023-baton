@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.alarm.command.vo.IsRead;
+import touch.baton.domain.notification.command.vo.IsRead;
 
 public abstract class IsReadFixture {
 

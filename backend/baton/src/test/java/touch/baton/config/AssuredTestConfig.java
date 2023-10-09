@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
-import touch.baton.assure.repository.TestAlarmQueryRepository;
+import touch.baton.assure.repository.TestNotificationQueryRepository;
 import touch.baton.assure.repository.TestMemberQueryRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
 import touch.baton.assure.repository.TestRunnerPostQueryRepository;
@@ -50,7 +50,7 @@ public abstract class AssuredTestConfig {
     protected TestTagQueryRepository tagRepository;
 
     @Autowired
-    protected TestAlarmQueryRepository alarmRepository;
+    protected TestNotificationQueryRepository notificationRepository;
 
     @Autowired
     protected TestRefreshTokenRepository refreshTokenRepository;

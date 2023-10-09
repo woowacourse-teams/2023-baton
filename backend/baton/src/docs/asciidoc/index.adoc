@@ -64,16 +64,16 @@ include::RunnerPostUpdateApplicantCancelationApi.adoc[]
 
 include::RunnerPostDeleteApi.adoc[]
 
-== *[ 알람 ]*
+== *[ 알림 ]*
 
-=== *알람 조회*
+=== *알림 조회*
 
-include::AlarmLoginReadApi.adoc[]
+include::NotificationLoginReadApi.adoc[]
 
-=== *알람 수정*
+=== *알림 수정*
 
-include::AlarmUpdateApi.adoc[]
+include::NotificationUpdateApi.adoc[]
 
-=== *알람 삭제*
+=== *알림 삭제*
 
-include::AlarmDeleteApi.adoc[]
+include::NotificationDeleteApi.adoc[]
