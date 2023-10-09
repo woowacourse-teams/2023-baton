@@ -144,4 +144,64 @@ class NotificationTest {
             ).isInstanceOf(NotificationDomainException.class);
         }
     }
+
+    @DisplayName("알림 여부를 수정할 때 주인(Member) 일 경우 읽음 상태로 수정할 수 있다.")
+    @Test
+    void success_markAsRead() {
+        // given
+        final Notification notification = Notification.builder()
+                .notificationTitle(new NotificationTitle("알림 테스트용 제목"))
+                .notificationMessage(new NotificationMessage("알림 테스트용 내용"))
+                .notificationType(NotificationType.RUNNER_POST)
+                .notificationReferencedId(new NotificationReferencedId(1L))
+                .isRead(IsRead.asUnRead())
+                .member(owner)
+                .build();
+
+        // when
+        notification.markAsRead(owner);
+
+        // then
+        final boolean actual = notification.getIsRead().getValue();
+
+        assertThat(actual).isTrue();
+    }
+
+    @DisplayName("알림 여부를 수정할 때 주인(Member) 이 아닐 경우 예외가 발생한다.")
+    @Test
+    void fail_markAsRead_when_member_isNotOwner() {
+        // given
+        final Notification notification = Notification.builder()
+                .notificationTitle(new NotificationTitle("알림 테스트용 제목"))
+                .notificationMessage(new NotificationMessage("알림 테스트용 내용"))
+                .notificationType(NotificationType.RUNNER_POST)
+                .notificationReferencedId(new NotificationReferencedId(1L))
+                .isRead(IsRead.asUnRead())
+                .member(owner)
+                .build();
+
+        // when & then
+        assertThatThrownBy(() -> notification.markAsRead(notOwner))
+                .isInstanceOf(NotificationDomainException.class);
+    }
+
+    @DisplayName("알림의 주인(Member) 이 아닌지 확인한다.")
+    @Test
+    void isNotOwner() {
+        // given
+        final Notification notification = Notification.builder()
+                .notificationTitle(new NotificationTitle("알림 테스트용 제목"))
+                .notificationMessage(new NotificationMessage("알림 테스트용 내용"))
+                .notificationType(NotificationType.RUNNER_POST)
+                .notificationReferencedId(new NotificationReferencedId(1L))
+                .isRead(IsRead.asUnRead())
+                .member(owner)
+                .build();
+
+        // when & then
+        assertSoftly(softly -> {
+            softly.assertThat(notification.isNotOwner(owner)).isFalse();
+            softly.assertThat(notification.isNotOwner(notOwner)).isTrue();
+        });
+    }
 }

@@ -14,14 +14,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import touch.baton.domain.common.TruncatedBaseEntity;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.notification.command.vo.IsRead;
 import touch.baton.domain.notification.command.vo.NotificationMessage;
 import touch.baton.domain.notification.command.vo.NotificationReferencedId;
 import touch.baton.domain.notification.command.vo.NotificationTitle;
 import touch.baton.domain.notification.command.vo.NotificationType;
-import touch.baton.domain.notification.command.vo.IsRead;
 import touch.baton.domain.notification.exception.NotificationDomainException;
-import touch.baton.domain.common.TruncatedBaseEntity;
-import touch.baton.domain.member.command.Member;
 
 import java.util.Objects;
 
@@ -119,8 +119,16 @@ public class Notification extends TruncatedBaseEntity {
         }
     }
 
-    public boolean isNotOwner(final Member member) {
-        return !this.member.equals(member);
+    public void markAsRead(final Member currentMember) {
+        if (!this.member.equals(currentMember)) {
+            throw new NotificationDomainException("Notification 의 주인(사용자)가 아니므로 알림의 읽은 여부를 수정할 수 없습니다.");
+        }
+
+        this.isRead = IsRead.asRead();
+    }
+
+    public boolean isNotOwner(final Member currentMember) {
+        return !this.member.equals(currentMember);
     }
 
     @Override
