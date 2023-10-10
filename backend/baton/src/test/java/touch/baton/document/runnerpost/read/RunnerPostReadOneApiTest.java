@@ -74,7 +74,7 @@ class RunnerPostReadOneApiTest extends RestdocsConfig {
 
         when(runnerPostQueryService.readByRunnerPostId(any()))
                 .thenReturn(spyRunnerPost);
-        when(runnerPostQueryService.readCountByRunnerPostId(any()))
+        when(runnerPostQueryService.countApplicantsByRunnerPostId(any()))
                 .thenReturn(3L);
 
         final String token = getAccessTokenBySocialId(memberHyena.getSocialId().getValue());

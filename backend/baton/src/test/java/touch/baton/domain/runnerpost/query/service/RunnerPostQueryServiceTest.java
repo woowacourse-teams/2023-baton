@@ -794,4 +794,23 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         // then
         assertThat(isApplicantHistoryExist).isFalse();
     }
+
+    @DisplayName("RunnerId 와 ReviewStatus 로 러너 게시글 개수 조회한다.")
+    @Test
+    void countRunnerPostByRunnerIdAndReviewStatus() {
+        // given
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
+
+        final long expected = 3L;
+        for (long i = 0; i < expected; i++) {
+            runnerPostCommandRepository.save(RunnerPostFixture.create(runner, new Deadline(now().plusHours(100))));
+        }
+
+        // when
+        final long actual = runnerPostQueryService.countRunnerPostByRunnerIdAndReviewStatus(runner.getId(), NOT_STARTED);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
 }

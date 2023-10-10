@@ -114,8 +114,12 @@ public class RunnerPostQueryService {
         return supporterRunnerPostQueryRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
     }
 
-    public long readCountByRunnerPostId(final Long runnerPostId) {
+    public long countApplicantsByRunnerPostId(final Long runnerPostId) {
         return supporterRunnerPostQueryRepository.countByRunnerPostId(runnerPostId).orElse(0L);
+    }
+
+    public long countRunnerPostByRunnerIdAndReviewStatus(final Long runnerId, final ReviewStatus reviewStatus) {
+        return runnerPostQueryRepository.countByRunnerIdAndReviewStatus(runnerId, reviewStatus);
     }
 
     @Transactional

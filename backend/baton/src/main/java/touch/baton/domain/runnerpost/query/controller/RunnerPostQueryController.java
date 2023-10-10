@@ -48,7 +48,7 @@ public class RunnerPostQueryController {
             @PathVariable final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = runnerPostQueryService.readByRunnerPostId(runnerPostId);
-        final long applicantCount = runnerPostQueryService.readCountByRunnerPostId(foundRunnerPost.getId());
+        final long applicantCount = runnerPostQueryService.countApplicantsByRunnerPostId(foundRunnerPost.getId());
         final boolean isApplicantHistoryExist = runnerPostQueryService.existsRunnerPostApplicantByRunnerPostIdAndMemberId(runnerPostId, member.getId());
 
         runnerPostQueryService.increaseWatchedCount(foundRunnerPost);
