@@ -60,7 +60,7 @@ const SupporterProfilePage = () => {
 
       <S.ReviewCountWrapper>
         <S.ReviewCountTitle>완료된 리뷰</S.ReviewCountTitle>
-        <S.ReviewCount>{supporterProfilePost?.length}</S.ReviewCount>
+        {/* <S.ReviewCount>{supporterProfilePost?.length}</S.ReviewCount> */}
       </S.ReviewCountWrapper>
       <S.PostsContainer>
         {supporterProfilePost?.map((runnerPostData) => (
