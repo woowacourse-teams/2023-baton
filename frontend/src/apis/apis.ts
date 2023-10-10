@@ -16,6 +16,7 @@ import {
 import { GetMyPagePostResponse } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
+import { GetNotificationResponse } from '@/types/notification';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
   const params = new URLSearchParams({
@@ -70,6 +71,10 @@ export const getProposedSupporterList = (runnerPostId: number) => {
 
 export const getRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   return request.get<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}`, isLogin);
+};
+
+export const getNotification = () => {
+  return request.get<GetNotificationResponse>(`/notifications`, true);
 };
 
 export const getOtherRunnerProfile = (userId: number) => {
@@ -132,6 +137,14 @@ export const patchProposedSupporterSelection = (runnerPostId: number, supporterI
   return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
 };
 
+export const patchNotificationCheck = (notificationId: number) => {
+  return request.patch<void>(`/notifications/${notificationId}`, undefined);
+};
+
 export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
+};
+
+export const deleteNotification = (notificationsId: number) => {
+  return request.delete<void>(`/notifications/${notificationsId}`);
 };

@@ -14,15 +14,15 @@ interface MutationArgs {
 
 export const useReviewSuggestion = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
-  const { goToMyPage } = usePageRouter();
+  const { goToSupporterMyPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, MutationArgs>({
-    mutationFn: async ({ runnerPostId, message }) => postReviewSuggestionWithMessage(runnerPostId, message),
+    mutationFn: ({ runnerPostId, message }) => postReviewSuggestionWithMessage(runnerPostId, message),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMISSION);
       queryClient.invalidateQueries({ queryKey: ['mySupporterPost', 'NOT_STARTED'] });
-      goToMyPage();
+      goToSupporterMyPage();
     },
 
     onError: () => {

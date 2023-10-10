@@ -5,7 +5,6 @@ import { useReviewCancelation } from '@/hooks/query/useReviewCancelation';
 import { useReviewComplete } from '@/hooks/query/useReviewComplete';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
-
 import { ReviewStatus } from '@/types/runnerPost';
 import React, { useContext } from 'react';
 import styled from 'styled-components';
@@ -42,11 +41,13 @@ const MyPagePostButton = ({ runnerPostId, reviewStatus, isRunner, supporterId, a
 
   const handleClickSupportSelectButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
     goToSupportSelectPage(runnerPostId);
   };
 
   const handleClickSupportFeedbackButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+
     if (!supporterId) {
       showErrorToast({ title: ERROR_TITLE.ERROR, description: ERROR_DESCRIPTION.NO_SUPPORTER });
       return;
