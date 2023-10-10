@@ -61,8 +61,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
                                 fieldWithPath("introduction").type(STRING).description("러너 자기소개"),
                                 fieldWithPath("technicalTags").type(ARRAY).description("러너 기술 태그 목록")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     @DisplayName("러너 프로필 상세 조회 API")

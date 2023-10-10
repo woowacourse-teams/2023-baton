@@ -55,7 +55,6 @@ class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
                                 fieldWithPath("name").type(STRING).description("사용자 이름"),
                                 fieldWithPath("imageUrl").type(STRING).description("사용자 프로필 이미지 url")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 }

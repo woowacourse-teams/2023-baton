@@ -63,8 +63,7 @@ class SupporterReadByGuestApiTest extends RestdocsConfig {
                                 fieldWithPath("introduction").type(STRING).description("서포터 자기소개"),
                                 fieldWithPath("technicalTags").type(ARRAY).description("서포터 기술 태그 목록")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     @DisplayName("서포터 마이페이지 프로필 조회 API")

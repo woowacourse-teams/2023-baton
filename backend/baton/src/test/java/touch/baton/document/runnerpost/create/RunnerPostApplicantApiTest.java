@@ -35,7 +35,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWit
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
@@ -86,7 +85,6 @@ class RunnerPostApplicantApiTest extends RestdocsConfig {
                         responseHeaders(
                                 headerWithName(LOCATION).description("redirect uri")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 }

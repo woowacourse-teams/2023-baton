@@ -24,7 +24,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
-public class RunnerPostDeleteApiTest extends RestdocsConfig {
+class RunnerPostDeleteApiTest extends RestdocsConfig {
 
     @DisplayName("러너 게시글 삭제 API")
     @Test

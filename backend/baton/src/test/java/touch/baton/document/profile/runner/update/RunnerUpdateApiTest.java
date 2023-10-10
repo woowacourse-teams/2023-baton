@@ -26,11 +26,10 @@ import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class RunnerUpdateApiTest extends RestdocsConfig {
+class RunnerUpdateApiTest extends RestdocsConfig {
 
     @DisplayName("러너 프로필 수정 API")
     @Test
@@ -65,7 +64,6 @@ public class RunnerUpdateApiTest extends RestdocsConfig {
                                 fieldWithPath("technicalTags.[]").type(ARRAY).description("변경할 기술 태그 목록")
                         ),
                         responseHeaders(headerWithName(LOCATION).description("redirect uri"))
-                ))
-                .andDo(print());
+                ));
     }
 }

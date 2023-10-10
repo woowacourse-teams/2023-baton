@@ -27,7 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class RunnerReadSimpleByRunnerIdApiTest extends RestdocsConfig {
+class RunnerReadSimpleByRunnerIdApiTest extends RestdocsConfig {
 
     @DisplayName("러너 프로필 상세 조회 API")
     @Test

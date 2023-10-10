@@ -1,12 +1,10 @@
 package touch.baton.document.oauth.token;
 
 import jakarta.servlet.http.Cookie;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.oauth.command.AuthorizationHeader;
-import touch.baton.domain.oauth.command.controller.OauthCommandController;
 import touch.baton.domain.oauth.command.token.AccessToken;
 import touch.baton.domain.oauth.command.token.ExpireDate;
 import touch.baton.domain.oauth.command.token.RefreshToken;
@@ -27,7 +25,6 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class RefreshTokenApiTest extends RestdocsConfig {
@@ -64,8 +61,7 @@ class RefreshTokenApiTest extends RestdocsConfig {
                         responseCookies(
                                 cookieWithName("refreshToken").description("새로 발급된 리프레시 토큰")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     private Cookie createCookie() {

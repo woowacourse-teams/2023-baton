@@ -27,7 +27,6 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.responseH
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -60,7 +59,7 @@ class RunnerPostUpdateApiTest extends RestdocsConfig {
                         requestHeaders(headerWithName(AUTHORIZATION).description("Bearer JWT"),
                                 headerWithName(CONTENT_TYPE).description(APPLICATION_JSON_VALUE)),
                         responseHeaders(headerWithName(LOCATION).description("Redirect URI"))
-                )).andDo(print());
+                ));
     }
 
     @DisplayName("서포터 리뷰 완료 API")
