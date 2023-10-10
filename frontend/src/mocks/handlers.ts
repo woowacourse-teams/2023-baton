@@ -197,7 +197,7 @@ export const handlers = [
   rest.get(`${BATON_BASE_URL}/notifications`, async (req, res, ctx) => {
     return res(
       ctx.delay(300),
-      ctx.status(200),
+      ctx.status(404),
       ctx.set('Content-Type', 'application/json'),
       ctx.json(notificationList),
     );
