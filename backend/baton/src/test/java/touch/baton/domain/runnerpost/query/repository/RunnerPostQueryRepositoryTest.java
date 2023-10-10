@@ -146,8 +146,8 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(maybeActual).isPresent();
             final RunnerPost actual = maybeActual.get();
 
-            assertThat(actual.getSupporter()).isEqualTo(ditooSupporter);
-            assertThat(actual).isEqualTo(runnerPost);
+            softly.assertThat(actual.getSupporter()).isEqualTo(ditooSupporter);
+            softly.assertThat(actual).isEqualTo(runnerPost);
         });
     }
 }
