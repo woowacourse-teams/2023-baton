@@ -22,7 +22,7 @@ class NotificationQueryServiceTest extends ServiceTestConfig {
 
     @BeforeEach
     void setUp() {
-        notificationQueryService = new NotificationQueryService(notificationQueryRepository);
+        notificationQueryService = new NotificationQueryService(notificationQuerydslRepository);
     }
 
     @DisplayName("사용자 식별자값으로 알림 목록을 조회에 성공한다.")

@@ -68,6 +68,6 @@ class NotificationUpdateAssuredTest extends AssuredTestConfig {
                 .member(헤나_사용자)
                 .build();
 
-        return notificationRepository.save(저장되지_않은_알림);
+        return notificationCommandRepository.save(저장되지_않은_알림);
     }
 }

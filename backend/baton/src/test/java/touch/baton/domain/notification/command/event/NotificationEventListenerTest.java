@@ -5,13 +5,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.notification.command.Notification;
-import touch.baton.domain.notification.command.repository.NotificationCommandRepository;
-import touch.baton.domain.notification.command.vo.NotificationType;
-import touch.baton.domain.notification.query.repository.NotificationQueryRepository;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.notification.command.Notification;
+import touch.baton.domain.notification.command.repository.NotificationCommandRepository;
+import touch.baton.domain.notification.command.vo.NotificationType;
+import touch.baton.domain.notification.query.repository.NotificationQuerydslRepository;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.event.RunnerPostApplySupporterEvent;
 import touch.baton.domain.runnerpost.command.event.RunnerPostAssignSupporterEvent;
@@ -21,19 +21,14 @@ import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static touch.baton.domain.notification.command.vo.NotificationText.MESSAGE_REFERENCED_BY_RUNNER_POST;
-import static touch.baton.domain.notification.command.vo.NotificationText.TITLE_RUNNER_POST_APPLICANT;
-import static touch.baton.domain.notification.command.vo.NotificationText.TITLE_RUNNER_POST_ASSIGN_SUPPORTER;
-import static touch.baton.domain.notification.command.vo.NotificationText.TITLE_RUNNER_POST_REVIEW_STATUS_DONE;
 
 class NotificationEventListenerTest extends RepositoryTestConfig {
 
     private NotificationEventListener notificationEventListener;
 
     @Autowired
-    private NotificationQueryRepository notificationQueryRepository;
+    private NotificationQuerydslRepository notificationQuerydslRepository;
 
     @BeforeEach
     void setUp(@Autowired NotificationCommandRepository notificationCommandRepository,
@@ -54,7 +49,7 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
         notificationEventListener.subscribeRunnerPostApplySupporterEvent(event);
 
         // then
-        final List<Notification> actualNotifications = notificationQueryRepository.findByMemberIdLimit(targetRunner.getMember().getId(), 10);
+        final List<Notification> actualNotifications = notificationQuerydslRepository.findByMemberId(targetRunner.getMember().getId(), 10);
 
         final String expectedNotificationTitle = "서포터의 제안이 왔습니다.";
         final String expectedNotificationMessage = String.format("관련 게시글 - %s", runnerPost.getTitle().getValue());
@@ -89,7 +84,7 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
         notificationEventListener.subscribeRunnerPostReviewStatusDoneEvent(event);
 
         // then
-        final List<Notification> actualNotifications = notificationQueryRepository.findByMemberIdLimit(targetRunner.getMember().getId(), 10);
+        final List<Notification> actualNotifications = notificationQuerydslRepository.findByMemberId(targetRunner.getMember().getId(), 10);
 
         final String expectedNotificationTitle = "코드 리뷰 상태가 완료로 변경되었습니다.";
         final String expectedNotificationMessage = String.format("관련 게시글 - %s", runnerPost.getTitle().getValue());
@@ -128,7 +123,7 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
         notificationEventListener.subscribeRunnerPostAssignSupporterEvent(event);
 
         // then
-        final List<Notification> actualNotifications = notificationQueryRepository.findByMemberIdLimit(targetSupporter.getMember().getId(), 10);
+        final List<Notification> actualNotifications = notificationQuerydslRepository.findByMemberId(targetSupporter.getMember().getId(), 10);
 
         final String expectedNotificationTitle = "코드 리뷰 매칭이 완료되었습니다.";
         final String expectedNotificationMessage = String.format("관련 게시글 - %s", runnerPost.getTitle().getValue());

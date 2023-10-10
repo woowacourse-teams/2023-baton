@@ -5,10 +5,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import touch.baton.domain.member.command.Member;
 import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.query.controller.response.NotificationResponses;
 import touch.baton.domain.notification.query.service.NotificationQueryService;
-import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 
 import java.util.List;

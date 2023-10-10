@@ -8,8 +8,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.query.controller.NotificationQueryController;
-import touch.baton.domain.notification.query.service.NotificationQueryService;
 import touch.baton.domain.member.command.Member;
+import touch.baton.domain.notification.query.service.NotificationQueryService;
 import touch.baton.fixture.domain.NotificationFixture;
 import touch.baton.fixture.domain.MemberFixture;
 

@@ -82,7 +82,7 @@ class NotificationQueryAssuredTest extends AssuredTestConfig {
                 .member(헤나_사용자)
                 .build();
 
-        return notificationRepository.save(저장되지_않은_알림);
+        return notificationCommandRepository.save(저장되지_않은_알림);
     }
 
     private Comparator<Notification> 알림_식별자값을_기준_내림차순으로_정렬한다() {

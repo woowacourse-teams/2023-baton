@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.notification.command.Notification;
-import touch.baton.domain.notification.query.repository.NotificationQueryRepository;
+import touch.baton.domain.notification.query.repository.NotificationQuerydslRepository;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ import java.util.List;
 @Service
 public class NotificationQueryService {
 
-    private final NotificationQueryRepository notificationQueryRepository;
+    private final NotificationQuerydslRepository notificationQuerydslRepository;
 
     public List<Notification> readNotificationsByMemberId(final Long memberId, final int limit) {
-        return notificationQueryRepository.findByMemberIdLimit(memberId, limit);
+        return notificationQuerydslRepository.findByMemberId(memberId, limit);
     }
 }
