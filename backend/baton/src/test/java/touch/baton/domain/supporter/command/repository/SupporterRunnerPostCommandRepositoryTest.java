@@ -54,9 +54,9 @@ class SupporterRunnerPostCommandRepositoryTest extends RepositoryTestConfig {
 
         // when, then
         assertSoftly(softly -> {
-                    softly.assertThat(supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), supporter.getId())).isTrue();
+                    softly.assertThat(supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runnerPost.getId(), supporter.getId())).isTrue();
                     softly.assertThat(supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(notSavedRunnerPostId, supporter.getId())).isFalse();
-                    softly.assertThat(supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runner.getId(), notSavedSupporter)).isFalse();
+                    softly.assertThat(supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runnerPost.getId(), notSavedSupporter)).isFalse();
                 }
         );
     }
