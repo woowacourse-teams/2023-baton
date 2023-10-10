@@ -1,14 +1,9 @@
-package touch.baton.document.oauth.token;
+package touch.baton.document.oauth;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
-import touch.baton.domain.oauth.command.controller.OauthCommandController;
-import touch.baton.domain.oauth.command.service.OauthCommandService;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
@@ -22,17 +17,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(OauthCommandController.class)
-class RefreshTokenDeleteApiTest extends RestdocsConfig {
-
-    @MockBean
-    private OauthCommandService oauthCommandService;
-
-    @BeforeEach
-    void setUp() {
-        final OauthCommandController oauthCommandController = new OauthCommandController(oauthCommandService);
-        restdocsSetUp(oauthCommandController);
-    }
+class OauthLogoutApiTest extends RestdocsConfig {
 
     @DisplayName("로그아웃을 하면 리프레시 토큰이 삭제된다.")
     @Test

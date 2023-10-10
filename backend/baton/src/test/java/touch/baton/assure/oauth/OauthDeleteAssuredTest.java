@@ -2,7 +2,7 @@ package touch.baton.assure.oauth;
 
 import org.junit.jupiter.api.Test;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.oauth.command.OauthType;
 import touch.baton.domain.oauth.command.token.Tokens;
@@ -22,7 +22,7 @@ class OauthDeleteAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -49,7 +49,7 @@ class OauthDeleteAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()

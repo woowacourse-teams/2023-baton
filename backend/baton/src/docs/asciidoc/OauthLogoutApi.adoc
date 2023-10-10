@@ -14,12 +14,12 @@ endif::[]
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/refresh-token-delete-api-test/logout/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/oauth-logout-api-test/logout/http-request.adoc[]
 
 ===== *Http Request Headers*
 
-include::{snippets}/../../build/generated-snippets/refresh-token-delete-api-test/logout/request-headers.adoc[]
+include::{snippets}/../../build/generated-snippets/oauth-logout-api-test/logout/request-headers.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/refresh-token-delete-api-test/logout/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/oauth-logout-api-test/logout/http-response.adoc[]
