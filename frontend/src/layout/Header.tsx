@@ -21,7 +21,7 @@ const Header = () => {
   const { goToMainPage, goToLoginPage } = usePageRouter();
   const { isLogin } = useLogin();
   const { data: profile } = useHeaderProfile(isLogin);
-  const { data: notificationList } = useNotification();
+  const { data: notificationList } = useNotification(isLogin);
 
   const handleNotificationDropdown = () => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);

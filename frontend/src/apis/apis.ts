@@ -73,8 +73,8 @@ export const getRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   return request.get<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}`, isLogin);
 };
 
-export const getNotification = () => {
-  return request.get<GetNotificationResponse>(`/notifications`, true);
+export const getNotification = (isLogin: boolean) => {
+  return request.get<GetNotificationResponse>(`/notifications`, isLogin);
 };
 
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {
