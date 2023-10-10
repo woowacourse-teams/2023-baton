@@ -4,8 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
-import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.member.command.Member;
+import touch.baton.domain.notification.command.Notification;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.ArrayList;
@@ -16,30 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.NotificationReferencedIdFixture.notificationReferencedId;
 
-class NotificationQueryRepositoryTest extends RepositoryTestConfig {
+class NotificationQuerydslRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private NotificationQueryRepository notificationQueryRepository;
-
-    @DisplayName("deleted_at 이 null 이 아닌 모든 알림을 조회한다.")
-    @Test
-    void success_findAll_without_deletedAt_isNotNull() {
-        // given
-        final Member targetMember = persistRunner(MemberFixture.createHyena()).getMember();
-
-        final Notification notExpected = persistNotification(targetMember, notificationReferencedId(1L));
-        final Notification expected = persistNotification(targetMember, notificationReferencedId(2L));
-
-        // when
-        em.remove(notExpected);
-        final List<Notification> actual = notificationQueryRepository.findAll();
-
-        // then
-        assertSoftly(softly -> {
-            softly.assertThat(actual).containsExactly(expected);
-            softly.assertThat(actual).doesNotContain(notExpected);
-        });
-    }
+    private NotificationQuerydslRepository notificationQuerydslRepository;
 
     @DisplayName("deleted_at 이 null 인 경우의 알림을 조회하기 위해서는 nativeQuery 를 사용한다.")
     @Test
@@ -74,7 +54,7 @@ class NotificationQueryRepositoryTest extends RepositoryTestConfig {
 
         // when
         final int limit = 10;
-        final List<Notification> actual = notificationQueryRepository.findByMemberIdLimit(targetMember.getId(), limit);
+        final List<Notification> actual = notificationQuerydslRepository.findByMemberId(targetMember.getId(), limit);
 
         // then
         final List<Notification> expected = savedNotifications.subList(0, limit);
