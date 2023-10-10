@@ -91,11 +91,21 @@ public class RunnerPostQueryController {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporter.getId(), reviewStatus));
     }
 
-    @GetMapping("/me/runner") public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerPostByLoginedRunnerAndReviewStatus(
+    @GetMapping("/me/runner")
+    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerPostByLoginedRunnerAndReviewStatus(
             @AuthRunnerPrincipal final Runner runner,
             @Valid @ModelAttribute final PageParams pageParams,
             @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(pageParams, runner.getId(), reviewStatus));
+    }
+
+    @GetMapping("/me/runner/count")
+    public ResponseEntity<RunnerPostResponse.Count> countRunnerPostByLoginedRunnerAndReviewStatus(
+            @AuthRunnerPrincipal final Runner runner,
+            @RequestParam final ReviewStatus reviewStatus
+    ) {
+        final long runnerPostCount = runnerPostQueryService.countRunnerPostByRunnerIdAndReviewStatus(runner.getId(), reviewStatus);
+        return ResponseEntity.ok(RunnerPostResponse.Count.from(runnerPostCount));
     }
 }
