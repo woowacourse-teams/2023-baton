@@ -7,7 +7,7 @@ import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostUpdateSupport;
 import touch.baton.assure.runnerpost.support.query.page.supporter.RunnerPostPageSupporterSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.member.command.vo.SocialId;
@@ -30,9 +30,9 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
     @Test
     void 로그인된_서포터는_서포터와_연관된_대기중인_러너_게시글_첫_페이지_조회에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 
         // when
@@ -69,11 +69,11 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
     @Test
     void 로그인된_서포터는_서포터와_연관된_진행중인_러너_게시글_중간_페이지_조회에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Supporter 서포터_헤나 = supporterRepository.getBySocialId(헤나_소셜_아이디);
 
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
         final Long 이전_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 
@@ -114,11 +114,11 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터가_리뷰_완료한_러너_게시글_첫_페이지_조회에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Supporter 서포터_헤나 = supporterRepository.getBySocialId(헤나_소셜_아이디);
 
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 
         // when
@@ -157,11 +157,11 @@ class RunnerPostPageSupporterAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터가_리뷰_완료한_러너_게시글_중간_페이지_조회에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Supporter 서포터_헤나 = supporterRepository.getBySocialId(헤나_소셜_아이디);
 
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
         final Long 이전_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 

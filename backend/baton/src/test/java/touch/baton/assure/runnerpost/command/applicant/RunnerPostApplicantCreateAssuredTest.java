@@ -5,7 +5,7 @@ import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport;
 import touch.baton.assure.runnerpost.support.query.detail.RunnerPostDetailSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
@@ -24,8 +24,8 @@ class RunnerPostApplicantCreateAssuredTest extends AssuredTestConfig {
 
     @Test
     void 러너가_러너_게시글을_생성하고_서포터가_러너_게시글에_리뷰를_신청한다() {
-        final String 에단_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ethanAuthCode());
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 에단_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ethanAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 러너_게시글_생성_요청 = 러너_게시글_생성_요청을_생성한다();
         final Long 에단의_러너_게시글_식별자값 = RunnerPostCreateSupport

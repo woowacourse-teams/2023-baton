@@ -3,7 +3,7 @@ package touch.baton.assure.member.command;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.member.support.command.SupporterUpdateAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보를_수정한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         SupporterUpdateAssuredSupport
@@ -34,7 +34,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보_수정_시에_이름이_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         SupporterUpdateAssuredSupport
@@ -51,7 +51,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보_수정_시에_소속이_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         SupporterUpdateAssuredSupport
@@ -68,7 +68,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보_수정_시에_소개글이_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         SupporterUpdateAssuredSupport
@@ -85,7 +85,7 @@ class SupporterUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보_수정_시에_기술_태그가_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         SupporterUpdateAssuredSupport

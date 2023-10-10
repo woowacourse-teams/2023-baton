@@ -21,11 +21,11 @@ import touch.baton.assure.repository.TestSupporterQueryRepository;
 import touch.baton.assure.repository.TestSupporterRunnerPostQueryRepository;
 import touch.baton.assure.repository.TestTagQueryRepository;
 import touch.baton.config.converter.ConverterConfig;
-import touch.baton.config.infra.auth.MockAuthTestConfig;
+import touch.baton.config.infra.auth.MockBeanAuthTestConfig;
 import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 
 @ActiveProfiles("test")
-@Import({JpaConfig.class, QuerydslConfig.class, ConverterConfig.class, PageableTestConfig.class, MockAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
+@Import({JpaConfig.class, QuerydslConfig.class, ConverterConfig.class, PageableTestConfig.class, MockBeanAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)

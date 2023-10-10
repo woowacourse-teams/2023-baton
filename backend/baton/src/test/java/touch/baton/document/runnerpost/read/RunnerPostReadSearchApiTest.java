@@ -1,10 +1,7 @@
 package touch.baton.document.runnerpost.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.common.request.PageParams;
 import touch.baton.domain.common.response.PageResponse;
@@ -12,9 +9,7 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
-import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
 import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
-import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -32,7 +27,10 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -42,17 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostQueryController.class)
 class RunnerPostReadSearchApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostQueryService runnerPostQueryService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerPostQueryController runnerPostQueryController = new RunnerPostQueryController(runnerPostQueryService);
-        restdocsSetUp(runnerPostQueryController);
-    }
 
     @DisplayName("태그 이름과 리뷰 상태를 조건으로 러너 게시글 페이징 조회 API")
     @Test

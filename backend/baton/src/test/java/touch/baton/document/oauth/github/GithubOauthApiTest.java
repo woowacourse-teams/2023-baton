@@ -1,24 +1,15 @@
 package touch.baton.document.oauth.github;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
-import touch.baton.domain.oauth.command.controller.OauthCommandController;
-import touch.baton.domain.oauth.command.service.OauthCommandService;
 import touch.baton.domain.oauth.command.token.AccessToken;
 import touch.baton.domain.oauth.command.token.ExpireDate;
 import touch.baton.domain.oauth.command.token.RefreshToken;
 import touch.baton.domain.oauth.command.token.Token;
 import touch.baton.domain.oauth.command.token.Tokens;
-import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 
 import java.time.LocalDateTime;
 
@@ -32,40 +23,26 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.responseC
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.domain.oauth.command.OauthType.GITHUB;
 
-@EnableConfigurationProperties(GithubOauthConfig.class)
-@TestPropertySource("classpath:application.yml")
-@WebMvcTest(OauthCommandController.class)
 class GithubOauthApiTest extends RestdocsConfig {
-
-    @MockBean
-    private OauthCommandService oauthCommandService;
-
-    @Autowired
-    private GithubOauthConfig githubOauthConfig;
-
-    @BeforeEach
-    void setUp() {
-        final OauthCommandController oauthCommandController = new OauthCommandController(oauthCommandService);
-        restdocsSetUp(oauthCommandController);
-    }
 
     @DisplayName("Github 소셜 로그인을 위한 AuthCode 를 받을 수 있도록 사용자를 redirect 한다.")
     @Test
     void github_redirect_auth_code() throws Exception {
         // given & when
         when(oauthCommandService.readAuthCodeRedirect(GITHUB))
-                .thenReturn(githubOauthConfig.redirectUri());
+                .thenReturn("https://test-redirect-url.com");
 
         // then
         mockMvc.perform(get("/api/v1/oauth/{oauthType}", "github"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(githubOauthConfig.redirectUri()))
+                .andExpect(redirectedUrl("https://test-redirect-url.com"))
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("oauthType").description("소셜 로그인 타입")
@@ -73,8 +50,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                         responseHeaders(
                                 headerWithName(LOCATION).description("Oauth 서버 리다이렉트 URL")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     // FIXME: 2023/09/15 RFC2616 버전오류 해결해주세요.
@@ -114,7 +90,6 @@ class GithubOauthApiTest extends RestdocsConfig {
                                         cookieWithName("refreshToken").description("발급된 리프레시 토큰")
                                 )
                         )
-                )
-                .andDo(print());
+                );
     }
 }
