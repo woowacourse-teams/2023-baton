@@ -58,5 +58,5 @@ jobs:
 
       - name: Docker Compose
         run: |
-          ./zero-downtime-deploy.sh
+          /home/ubuntu/zero-downtime-deploy.sh
           sudo docker image prune -af
