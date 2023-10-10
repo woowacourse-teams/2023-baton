@@ -1,16 +1,10 @@
 package touch.baton.document.profile.runner.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
-import touch.baton.domain.member.query.controller.RunnerQueryController;
-import touch.baton.domain.member.query.service.RunnerQueryService;
-import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.technicaltag.command.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -38,19 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerQueryController.class)
 class RunnerReadByGuestApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostQueryService runnerPostQueryService;
-
-    @MockBean
-    private RunnerQueryService runnerQueryService;
-
-    @BeforeEach
-    void setUp() {
-        restdocsSetUp(new RunnerQueryController(runnerQueryService));
-    }
 
     @DisplayName("러너 본인 프로필 조회 API")
     @Test
@@ -79,8 +61,7 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
                                 fieldWithPath("introduction").type(STRING).description("러너 자기소개"),
                                 fieldWithPath("technicalTags").type(ARRAY).description("러너 기술 태그 목록")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     @DisplayName("러너 프로필 상세 조회 API")

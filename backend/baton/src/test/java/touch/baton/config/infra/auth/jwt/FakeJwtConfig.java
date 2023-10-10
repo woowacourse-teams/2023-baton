@@ -7,19 +7,19 @@ import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 
 @TestConfiguration
-public abstract class MockJwtConfig {
+public abstract class FakeJwtConfig {
 
     @Bean
     JwtEncoder jwtEncoder() {
-        return new JwtEncoder(mockJwtConfig());
+        return new JwtEncoder(fakeJwtConfig());
     }
 
     @Bean
     JwtDecoder jwtDecoder() {
-        return new JwtDecoder(mockJwtConfig());
+        return new JwtDecoder(fakeJwtConfig());
     }
 
-    private JwtConfig mockJwtConfig() {
+    private JwtConfig fakeJwtConfig() {
         return new JwtConfig("test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key_test_secret_key", "test_issuer", 30);
     }
 
