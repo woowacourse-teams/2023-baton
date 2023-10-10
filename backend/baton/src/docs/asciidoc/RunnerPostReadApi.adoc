@@ -138,7 +138,7 @@ include::{snippets}/../../build/generated-snippets/runner-post-count-with-logine
 
 include::{snippets}/../../build/generated-snippets/runner-post-count-with-logined-supporter-api-test/count-runner-post-by-logined-supporter-and-review-status/response-fields.adoc[]
 
-==== *서포터 리뷰 완료한 게시글 조회 API*
+==== *서포터의 리뷰 완료한 게시글 조회 API*
 
 ===== *Http Request*
 
@@ -155,6 +155,24 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter
 ===== *Http Response Fields*
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-of-supporter-by-guest-api-test/read-runner-post-by-supporter-id-and-review-status/response-fields.adoc[]
+
+==== *서포터의 리뷰 완료한 게시글 개수 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-of-supporter-by-guest-api-test/count-runner-post-by-supporter-id-and-review-status/http-request.adoc[]
+
+===== *Http Request Query Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-of-supporter-by-guest-api-test/count-runner-post-by-supporter-id-and-review-status/query-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-of-supporter-by-guest-api-test/count-runner-post-by-supporter-id-and-review-status/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-of-supporter-by-guest-api-test/count-runner-post-by-supporter-id-and-review-status/response-fields.adoc[]
 
 ==== *태그 이름과 리뷰 상태를 조건으로 러너 게시글 페이징 조회 API*
 

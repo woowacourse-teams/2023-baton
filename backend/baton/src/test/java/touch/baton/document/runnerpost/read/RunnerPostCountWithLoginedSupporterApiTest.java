@@ -74,7 +74,7 @@ class RunnerPostCountWithLoginedSupporterApiTest extends RestdocsConfig {
                                 headerWithName(AUTHORIZATION).description("Bearer JWT")
                         ),
                         queryParameters(
-                                parameterWithName("reviewStatus").description("(Optional) 리뷰 상태")
+                                parameterWithName("reviewStatus").description("리뷰 상태")
                         ),
                         responseFields(
                                 fieldWithPath("count").type(NUMBER).optional().description("게시글 개수")
