@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.tag.command.vo.TagReducedName;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.util.List;
@@ -35,7 +36,7 @@ class TagReadApiTest extends RestdocsConfig {
         final Tag javascriptTagSpy = spy(javascriptTag);
 
         // when
-        when(tagQueryService.readTagsByReducedName("java"))
+        when(tagQueryService.readTagsByReducedName(TagReducedName.nullableInstance("java"), 10))
                 .thenReturn(List.of(javaTagSpy, javascriptTagSpy));
         when(javaTagSpy.getId())
                 .thenReturn(1L);
