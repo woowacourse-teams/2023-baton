@@ -72,7 +72,7 @@ class RunnerPostCommandServiceDeleteTest extends ServiceTestConfig {
         final Member memberRunnerPostNotOwner = memberCommandRepository.save(MemberFixture.createJudy());
         final Runner runnerPostNotOwner = runnerQueryRepository.save(RunnerFixture.createRunner(memberRunnerPostNotOwner));
 
-        // when & then
+        // when, then
         assertThatThrownBy(() -> runnerPostCommandService.deleteByRunnerPostId(runnerPost.getId(), runnerPostNotOwner))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }
@@ -92,7 +92,7 @@ class RunnerPostCommandServiceDeleteTest extends ServiceTestConfig {
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
         runnerPost.assignSupporter(supporter);
 
-        // when & then
+        // when, then
         assertThatThrownBy(() -> runnerPostCommandService.deleteByRunnerPostId(runnerPost.getId(), runner))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }
@@ -111,7 +111,7 @@ class RunnerPostCommandServiceDeleteTest extends ServiceTestConfig {
         final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(memberSupporter));
         supporterRunnerPostQueryRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
 
-        // when & then
+        // when, then
         assertThatThrownBy(() -> runnerPostCommandService.deleteByRunnerPostId(runnerPost.getId(), runner))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }

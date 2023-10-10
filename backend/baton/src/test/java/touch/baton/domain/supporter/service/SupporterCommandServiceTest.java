@@ -33,7 +33,7 @@ class SupporterCommandServiceTest extends ServiceTestConfig {
         final Supporter savedSupporter = supporterQueryRepository.save(SupporterFixture.create(savedMember));
         final SupporterUpdateRequest request = new SupporterUpdateRequest("디투랜드", "두나무", "소개글입니다.", List.of("golang", "rust"));
 
-        // when & then
+        // when, then
         assertThatCode(() -> supporterCommandService.updateSupporter(savedSupporter, request))
                 .doesNotThrowAnyException();
     }

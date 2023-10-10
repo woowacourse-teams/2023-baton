@@ -21,7 +21,7 @@ class OauthLogoutApiTest extends RestdocsConfig {
     @DisplayName("로그아웃을 하면 리프레시 토큰이 삭제된다.")
     @Test
     void logout() throws Exception {
-        // given & when
+        // given, when
         final Member ethan = MemberFixture.createEthan();
         final String accessToken = getAccessTokenBySocialId(ethan.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(any())).willReturn(Optional.ofNullable(ethan));

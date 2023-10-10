@@ -32,7 +32,7 @@ class RefreshTokenApiTest extends RestdocsConfig {
     @DisplayName("만료된 jwt 토큰과 refresh token 으로 refresh 요청을 하면 새로운 토큰들이 반환된다.")
     @Test
     void refresh() throws Exception {
-        // given & when
+        // given, when
         final RefreshToken refreshToken = RefreshToken.builder()
                 .token(new Token("refresh-token"))
                 .member(MemberFixture.createEthan())

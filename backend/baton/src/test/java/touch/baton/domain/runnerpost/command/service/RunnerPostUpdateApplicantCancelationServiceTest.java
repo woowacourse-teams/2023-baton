@@ -81,7 +81,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
         supporterRunnerPostQueryRepository.save(supporterRunnerPost);
         runnerPostQueryRepository.delete(runnerPost);
 
-        // when & then
+        // when, then
         assertThatThrownBy(() -> runnerPostCommandService.deleteSupporterRunnerPost(applicantSupporter, runnerPost.getId()))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }
@@ -103,7 +103,7 @@ public class RunnerPostUpdateApplicantCancelationServiceTest extends ServiceTest
         supporterRunnerPostQueryRepository.save(supporterRunnerPost);
 
 
-        // when & then
+        // when, then
         assertThatThrownBy(() -> runnerPostCommandService.deleteSupporterRunnerPost(applicantSupporter, runnerPost.getId()))
                 .isInstanceOf(RunnerPostBusinessException.class);
     }
