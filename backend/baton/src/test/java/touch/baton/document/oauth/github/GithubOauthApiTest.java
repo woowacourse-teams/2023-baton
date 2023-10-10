@@ -26,7 +26,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.domain.oauth.command.OauthType.GITHUB;
@@ -38,12 +37,12 @@ class GithubOauthApiTest extends RestdocsConfig {
     void github_redirect_auth_code() throws Exception {
         // given & when
         when(oauthCommandService.readAuthCodeRedirect(GITHUB))
-                .thenReturn(githubOauthConfig.redirectUri());
+                .thenReturn("https://test-redirect-url.com");
 
         // then
         mockMvc.perform(get("/api/v1/oauth/{oauthType}", "github"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(githubOauthConfig.redirectUri()))
+                .andExpect(redirectedUrl("https://test-redirect-url.com"))
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("oauthType").description("소셜 로그인 타입")
@@ -51,8 +50,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                         responseHeaders(
                                 headerWithName(LOCATION).description("Oauth 서버 리다이렉트 URL")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     // FIXME: 2023/09/15 RFC2616 버전오류 해결해주세요.
@@ -92,7 +90,6 @@ class GithubOauthApiTest extends RestdocsConfig {
                                         cookieWithName("refreshToken").description("발급된 리프레시 토큰")
                                 )
                         )
-                )
-                .andDo(print());
+                );
     }
 }
