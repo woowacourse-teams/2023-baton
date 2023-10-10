@@ -9,5 +9,5 @@ CREATE TABLE notification
     member_id         BIGINT            NOT NULL,
     created_at        DATETIME(6)       NOT NULL,
     updated_at        DATETIME(6)       NOT NULL,
-    deleted_at        DATETIME(6),
+    deleted_at        DATETIME(6)
 );
