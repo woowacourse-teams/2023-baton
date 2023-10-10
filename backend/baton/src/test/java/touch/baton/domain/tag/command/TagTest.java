@@ -1,4 +1,4 @@
-package touch.baton.domain.tag;
+package touch.baton.domain.tag.command;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

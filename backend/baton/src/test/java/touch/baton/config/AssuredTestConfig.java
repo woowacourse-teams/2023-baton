@@ -47,7 +47,7 @@ public abstract class AssuredTestConfig {
     protected TestSupporterRunnerPostQueryRepository supporterRunnerPostRepository;
 
     @Autowired
-    protected TestTagQueryRepository tagRepository;
+    protected TestTagQueryRepository tagQueryRepository;
 
     @Autowired
     protected TestNotificationCommandRepository notificationCommandRepository;
