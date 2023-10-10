@@ -62,7 +62,7 @@ export interface PageInfo {
 
 interface requestParams {
   tagName?: string;
-  reviewStatus?: ReviewStatus;
+  reviewStatus: ReviewStatus | null;
 }
 
 export interface getRunnerPostRequestParams extends pageParamsRequest, requestParams {}

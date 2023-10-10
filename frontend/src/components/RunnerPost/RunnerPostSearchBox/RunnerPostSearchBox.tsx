@@ -6,8 +6,8 @@ import { ReviewStatus, ReviewStatusFilter } from '@/types/runnerPost';
 import { useSearchTag } from '@/hooks/query/useSearchTag';
 
 interface Props {
-  reviewStatus: ReviewStatus | undefined;
-  setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus | undefined>>;
+  reviewStatus: ReviewStatus | null;
+  setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus | null>>;
   setEnteredTag: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -43,7 +43,7 @@ const RunnerPostSearchBox = ({ reviewStatus, setReviewStatus, setEnteredTag }: P
 
     if (clickedStatus === reviewStatus) return;
 
-    clickedStatus === 'ALL' ? setReviewStatus(undefined) : setReviewStatus(clickedStatus);
+    clickedStatus === 'ALL' ? setReviewStatus(null) : setReviewStatus(clickedStatus);
   };
 
   const handleInputFocus = () => {

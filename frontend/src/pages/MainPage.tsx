@@ -21,7 +21,7 @@ const MainPage = () => {
   const { isMobile } = useViewport();
 
   const [enteredTag, setEnteredTag] = useState<string>('');
-  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>();
+  const [reviewStatus, setReviewStatus] = useState<ReviewStatus | null>(null);
 
   const { data: runnerPostList, hasNextPage, fetchNextPage } = useRunnerPostList(reviewStatus, enteredTag);
 
