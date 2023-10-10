@@ -122,6 +122,13 @@ public class RunnerPostQueryService {
         return runnerPostQueryRepository.countByRunnerIdAndReviewStatus(runnerId, reviewStatus);
     }
 
+    public long countRunnerPostBySupporterIdAndReviewStatus(final Long supporterId, final ReviewStatus reviewStatus) {
+        if (reviewStatus.isNotStarted()) {
+            return supporterRunnerPostQueryRepository.countRunnerPostBySupporterIdByReviewStatusNotStarted(supporterId);
+        }
+        return runnerPostQueryRepository.countBySupporterIdAndReviewStatus(supporterId, reviewStatus);
+    }
+
     @Transactional
     public void increaseWatchedCount(final RunnerPost runnerPost) {
         runnerPost.increaseWatchedCount();
