@@ -1,16 +1,11 @@
 package touch.baton.document.runnerpost.update;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
-import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
-import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -26,7 +21,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -34,16 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(RunnerPostCommandController.class)
-public class RunnerPostUpdateApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostCommandService runnerPostCommandService;
-
-    @BeforeEach
-    void setUp() {
-        restdocsSetUp(new RunnerPostCommandController(runnerPostCommandService));
-    }
+class RunnerPostUpdateApiTest extends RestdocsConfig {
 
     @DisplayName("제안한 서포터 목록 중에서 서포터로 선택하는 API")
     @Test

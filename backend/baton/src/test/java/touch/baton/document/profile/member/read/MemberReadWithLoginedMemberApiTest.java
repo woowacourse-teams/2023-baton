@@ -1,12 +1,9 @@
 package touch.baton.document.profile.member.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
-import touch.baton.domain.member.query.controller.MemberQueryController;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
@@ -29,13 +26,7 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(MemberQueryController.class)
-public class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
-
-    @BeforeEach
-    void setUp() {
-        restdocsSetUp(new MemberQueryController());
-    }
+class MemberReadWithLoginedMemberApiTest extends RestdocsConfig {
 
     @DisplayName("로그인 한 맴버 정보 조회 API")
     @Test

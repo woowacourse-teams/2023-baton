@@ -1,18 +1,12 @@
 package touch.baton.document.oauth.github;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
-import touch.baton.domain.oauth.command.controller.OauthCommandController;
-import touch.baton.domain.oauth.command.service.OauthCommandService;
 import touch.baton.domain.oauth.command.token.AccessToken;
 import touch.baton.domain.oauth.command.token.ExpireDate;
 import touch.baton.domain.oauth.command.token.RefreshToken;
@@ -32,28 +26,19 @@ import static org.springframework.restdocs.cookies.CookieDocumentation.responseC
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.domain.oauth.command.OauthType.GITHUB;
 
 @EnableConfigurationProperties(GithubOauthConfig.class)
-@TestPropertySource("classpath:application.yml")
-@WebMvcTest(OauthCommandController.class)
 class GithubOauthApiTest extends RestdocsConfig {
-
-    @MockBean
-    private OauthCommandService oauthCommandService;
 
     @Autowired
     private GithubOauthConfig githubOauthConfig;
-
-    @BeforeEach
-    void setUp() {
-        final OauthCommandController oauthCommandController = new OauthCommandController(oauthCommandService);
-        restdocsSetUp(oauthCommandController);
-    }
 
     @DisplayName("Github 소셜 로그인을 위한 AuthCode 를 받을 수 있도록 사용자를 redirect 한다.")
     @Test

@@ -1,15 +1,9 @@
 package touch.baton.document.profile.runner.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Runner;
-import touch.baton.domain.member.query.controller.RunnerQueryController;
-import touch.baton.domain.member.query.service.RunnerQueryService;
-import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.technicaltag.command.TechnicalTag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -31,20 +25,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerQueryController.class)
 class RunnerReadWithLoginedRunnerApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostQueryService runnerPostQueryService;
-
-    @MockBean
-    private RunnerQueryService runnerQueryService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerQueryController runnerQueryController = new RunnerQueryController(runnerQueryService);
-        restdocsSetUp(runnerQueryController);
-    }
 
     @DisplayName("러너 본인 프로필 조회 API")
     @Test

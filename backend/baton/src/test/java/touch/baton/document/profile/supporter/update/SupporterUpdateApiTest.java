@@ -1,16 +1,11 @@
 package touch.baton.document.profile.supporter.update;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Supporter;
-import touch.baton.domain.member.command.controller.SupporterCommandController;
-import touch.baton.domain.member.command.service.SupporterCommandService;
 import touch.baton.domain.member.command.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
@@ -20,8 +15,12 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpHeaders.LOCATION;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -37,17 +36,7 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(SupporterCommandController.class)
-public class SupporterUpdateApiTest extends RestdocsConfig {
-
-    @MockBean
-    private SupporterCommandService supporterCommandService ;
-
-    @BeforeEach
-    void setUp() {
-        final SupporterCommandController supporterCommandController = new SupporterCommandController(supporterCommandService );
-        restdocsSetUp(supporterCommandController);
-    }
+class SupporterUpdateApiTest extends RestdocsConfig {
 
     @DisplayName("서포터 프로필 수정 API")
     @Test
