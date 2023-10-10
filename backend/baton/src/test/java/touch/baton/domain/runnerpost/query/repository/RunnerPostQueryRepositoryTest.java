@@ -129,7 +129,7 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
     void countByRunnerIdAndReviewStatus() {
         // given
         final Runner runner = persistRunner(MemberFixture.createDitoo());
-        final int expected = 20;
+        final int expected = 5;
         for (int i = 0; i < expected; i++) {
             persistRunnerPost(runner);
         }
@@ -139,6 +139,29 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
 
         // when
         final Long actual = runnerPostQueryRepository.countByRunnerIdAndReviewStatus(runner.getId(), ReviewStatus.NOT_STARTED);
+
+        // then
+        assertThat(actual.intValue()).isEqualTo(expected);
+    }
+
+    @DisplayName("서포터 관련 게시글 개수를 조회하는데 성공한다.")
+    @Test
+    void countBySupporterIdAndReviewStatus() {
+        // given
+        final Runner runner = persistRunner(MemberFixture.createEthan());
+        final Supporter supporter = persistSupporter(MemberFixture.createDitoo());
+        final int expected = 3;
+        for (int i = 0; i < expected; i++) {
+            final RunnerPost runnerPost = persistRunnerPost(runner);
+            runnerPost.assignSupporter(supporter);
+            runnerPost.finishReview();
+        }
+
+        em.flush();
+        em.close();
+
+        // when
+        final Long actual = runnerPostQueryRepository.countBySupporterIdAndReviewStatus(supporter.getId(), ReviewStatus.DONE);
 
         // then
         assertThat(actual.intValue()).isEqualTo(expected);
