@@ -27,20 +27,28 @@ class OauthCommandServiceDeleteTest {
 
     @Mock
     private AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
+
     @Mock
     private OauthInformationClientComposite oauthInformationClientComposite;
+
     @Mock
     private OauthMemberCommandRepository oauthMemberCommandRepository;
+
     @Mock
     private OauthRunnerCommandRepository oauthRunnerCommandRepository;
+
     @Mock
     private OauthSupporterCommandRepository oauthSupporterCommandRepository;
+
     @Mock
     private RefreshTokenCommandRepository refreshTokenCommandRepository;
+
     @Mock
     private JwtEncoder jwtEncoder;
+
     @Mock
     private JwtEncoder expiredJwtEncoder;
+
     @Mock
     private JwtDecoder jwtDecoder;
 
