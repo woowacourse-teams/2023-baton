@@ -20,8 +20,11 @@ const SupporterProfilePage = () => {
   const { isMobile } = useViewport();
 
   const { data: supporterProfile } = useOtherSupporterProfile(Number(supporterId));
-  const { data: supporterProfilePost } = useOtherSupporterPost(Number(supporterId));
+  const { data: supporterProfilePost, hasNextPage, fetchNextPage } = useOtherSupporterPost(Number(supporterId));
 
+  const handleClickMoreButton = () => {
+    fetchNextPage();
+  };
   return (
     <Layout>
       <S.ProfileContainer>
@@ -57,13 +60,26 @@ const SupporterProfilePage = () => {
 
       <S.ReviewCountWrapper>
         <S.ReviewCountTitle>완료된 리뷰</S.ReviewCountTitle>
-        <S.ReviewCount>{supporterProfilePost?.data?.length}</S.ReviewCount>
+        {/* <S.ReviewCount>{supporterProfilePost?.length}</S.ReviewCount> */}
       </S.ReviewCountWrapper>
       <S.PostsContainer>
-        {supporterProfilePost?.data?.map((runnerPostData) => (
+        {supporterProfilePost?.map((runnerPostData) => (
           <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
         ))}
       </S.PostsContainer>
+      <S.MoreButtonWrapper>
+        {hasNextPage && (
+          <Button
+            colorTheme="RED"
+            width={isMobile ? '100%' : '1200px'}
+            fontSize={isMobile ? '14px' : '18px'}
+            height="55px"
+            onClick={handleClickMoreButton}
+          >
+            더보기
+          </Button>
+        )}
+      </S.MoreButtonWrapper>
     </Layout>
   );
 };
@@ -241,5 +257,13 @@ const S = {
     @media (max-width: 768px) {
       font-size: 28px;
     }
+  `,
+
+  MoreButtonWrapper: styled.div`
+    max-width: 1200px;
+    min-width: 340px;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
   `,
 };

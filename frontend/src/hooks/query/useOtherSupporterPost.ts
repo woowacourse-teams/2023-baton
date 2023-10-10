@@ -2,16 +2,29 @@ import { getOtherSupporterPost } from '@/apis/apis';
 import { ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
 import { APIError } from '@/types/error';
-import { GetRunnerPostResponse } from '@/types/runnerPost';
-import { useQuery } from '@tanstack/react-query';
+import { GetRunnerPostResponse, RunnerPost } from '@/types/runnerPost';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
+
+const PAGE_LIMIT = 10;
 
 export const useOtherSupporterPost = (userId: number) => {
   const { showErrorToast } = useContext(ToastContext);
 
-  const queryResult = useQuery<GetRunnerPostResponse, APIError>({
+  const queryResult = useInfiniteQuery<GetRunnerPostResponse, APIError, RunnerPost[], [string, typeof userId], number>({
     queryKey: ['otherSupporterPost', userId],
-    queryFn: () => getOtherSupporterPost(userId).then((res) => res),
+
+    queryFn: ({ pageParam }) => getOtherSupporterPost({ limit: PAGE_LIMIT, supporterId: userId, cursor: pageParam }),
+
+    initialPageParam: 0,
+
+    getNextPageParam: (nextPage) => {
+      if (nextPage.pageInfo.isLast) return undefined;
+
+      return nextPage.pageInfo.nextCursor;
+    },
+
+    select: ({ pages }) => pages.reduce<RunnerPost[]>((acc, { data }) => acc.concat(data), []),
   });
 
   useEffect(() => {
@@ -21,6 +34,7 @@ export const useOtherSupporterPost = (userId: number) => {
   }, [queryResult.error]);
 
   return {
+    ...queryResult,
     data: queryResult.data as NonNullable<typeof queryResult.data>,
   };
 };

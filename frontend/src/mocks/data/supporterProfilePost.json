@@ -27,5 +27,9 @@
       "applicantCount": 4,
       "reviewStatus": "DONE"
     }
-  ]
+  ],
+  "pageInfo": {
+    "isLast": false,
+    "nextCursor": 1
+  }
 }

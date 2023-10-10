@@ -7,26 +7,31 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
 
 const PAGE_LIMIT = 10;
+const DEFAULT_REVIEW_STATUS = 'ALL';
 
-export const useRunnerPostList = (reviewStatus?: ReviewStatus, tagName?: string) => {
+export const useRunnerPostList = (reviewStatus: ReviewStatus | null, tagName?: string) => {
   const { showErrorToast } = useContext(ToastContext);
 
   const queryResult = useInfiniteQuery<
     GetRunnerPostResponse,
     APIError,
     RunnerPost[],
-    [string, typeof reviewStatus, typeof tagName],
+    [string, string, typeof tagName],
     number
   >({
-    queryKey: ['runnerPost', reviewStatus, tagName],
-    queryFn: ({ pageParam }) => getRunnerPost(PAGE_LIMIT, reviewStatus, pageParam, tagName).then((res) => res),
+    queryKey: ['runnerPost', reviewStatus ?? DEFAULT_REVIEW_STATUS, tagName],
+
+    queryFn: ({ pageParam }) =>
+      getRunnerPost({ limit: PAGE_LIMIT, reviewStatus, cursor: pageParam, tagName }).then((res) => res),
+
     initialPageParam: 0,
+
     getNextPageParam: (nextPage) => {
-      if (!nextPage.pageInfo.isLast) {
-        return nextPage.pageInfo.nextCursor;
-      }
-      return undefined;
+      if (nextPage.pageInfo.isLast) return undefined;
+
+      return nextPage.pageInfo.nextCursor;
     },
+
     select: ({ pages }) => pages.reduce<RunnerPost[]>((acc, { data }) => acc.concat(data), []),
   });
 

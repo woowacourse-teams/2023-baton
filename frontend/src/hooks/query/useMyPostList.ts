@@ -28,16 +28,16 @@ export const useMyPostList = (isRunner: boolean, reviewStatus?: ReviewStatus) =>
 
     queryFn: ({ pageParam }) => {
       return isRunner
-        ? getMyRunnerPost(PAGE_SIZE, pageParam, reviewStatus)
-        : getMySupporterPost(PAGE_SIZE, pageParam, reviewStatus);
+        ? getMyRunnerPost({ limit: PAGE_SIZE, cursor: pageParam, reviewStatus })
+        : getMySupporterPost({ limit: PAGE_SIZE, cursor: pageParam, reviewStatus });
     },
 
-    initialPageParam: 1,
+    initialPageParam: 0,
 
     getNextPageParam: (nextPage) => {
       if (nextPage.pageInfo.isLast) return undefined;
 
-      return nextPage.pageInfo.currentPage + 1;
+      return nextPage.pageInfo.nextCursor;
     },
 
     select: ({ pages }) => pages.reduce<MyPagePost[]>((acc, { data }) => acc.concat(data), []),
