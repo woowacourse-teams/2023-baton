@@ -116,6 +116,28 @@ include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined
 
 include::{snippets}/../../build/generated-snippets/runner-post-read-with-logined-supporter-api-test/read-runner-post-by-logined-supporter-and-review-status/response-fields.adoc[]
 
+==== *서포터 마이페이지 게시글 개수 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-with-logined-supporter-api-test/count-runner-post-by-logined-supporter-and-review-status/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-with-logined-supporter-api-test/count-runner-post-by-logined-supporter-and-review-status/request-headers.adoc[]
+
+===== *Http Request Query Parameters*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-with-logined-supporter-api-test/count-runner-post-by-logined-supporter-and-review-status/query-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-with-logined-supporter-api-test/count-runner-post-by-logined-supporter-and-review-status/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/runner-post-count-with-logined-supporter-api-test/count-runner-post-by-logined-supporter-and-review-status/response-fields.adoc[]
+
 ==== *서포터 리뷰 완료한 게시글 조회 API*
 
 ===== *Http Request*

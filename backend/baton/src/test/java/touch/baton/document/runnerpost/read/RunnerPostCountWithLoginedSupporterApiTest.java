@@ -5,16 +5,17 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
-import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
-import touch.baton.fixture.domain.TagFixture;
+import touch.baton.fixture.domain.SupporterFixture;
+import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -35,32 +36,35 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
-import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-class RunnerPostCountWithLoginedRunnerApiTest extends RestdocsConfig {
+class RunnerPostCountWithLoginedSupporterApiTest extends RestdocsConfig {
 
-    @DisplayName("로그인한 러너와 관련된 러너 게시글 개수 조회 API")
+    @DisplayName("로그인한 서포터와 관련된 러너 게시글 개수 조회 API")
     @Test
-    void countRunnerPostByLoginedRunnerAndReviewStatus() throws Exception {
+    void countRunnerPostByLoginedSupporterAndReviewStatus() throws Exception {
         // given
         final String socialId = "ditooSocialId";
         final Member loginedMember = MemberFixture.createWithSocialId(socialId);
-        final Runner loginedRunner = RunnerFixture.createRunner(loginedMember);
+        final Supporter loginedSupporter = SupporterFixture.create(loginedMember);
         final String token = getAccessTokenBySocialId(socialId);
 
-        final Tag javaTag = TagFixture.create(tagName("자바"));
+        final Runner runner = RunnerFixture.createRunner(MemberFixture.createHyena());
+
         final Deadline deadline = deadline(LocalDateTime.now().plusHours(100));
-        RunnerPostFixture.create(loginedRunner, deadline, List.of(javaTag));
-        final Runner spyLoginedRunner = spy(loginedRunner);
-        given(oauthRunnerCommandRepository.joinByMemberSocialId(any())).willReturn(Optional.ofNullable(spyLoginedRunner));
+        final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline);
+        SupporterRunnerPostFixture.create(runnerPost, loginedSupporter);
+        runnerPost.assignSupporter(loginedSupporter);
+
+        final Supporter spyLoginedSupporter = spy(loginedSupporter);
+        given(oauthSupporterCommandRepository.joinByMemberSocialId(any())).willReturn(Optional.ofNullable(spyLoginedSupporter));
 
         // when
         final long expectedCount = 1L;
-        when(runnerPostQueryService.countRunnerPostByRunnerIdAndReviewStatus(eq(1L), eq(ReviewStatus.NOT_STARTED)))
+        when(runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(eq(1L), eq(ReviewStatus.NOT_STARTED)))
                 .thenReturn(expectedCount);
 
         // then
-        mockMvc.perform(get("/api/v1/posts/runner/me/runner/count")
+        mockMvc.perform(get("/api/v1/posts/runner/me/supporter/count")
                         .header(AUTHORIZATION, "Bearer " + token)
                         .queryParam("reviewStatus", ReviewStatus.NOT_STARTED.name()))
                 .andExpect(status().isOk())
