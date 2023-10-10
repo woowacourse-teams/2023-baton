@@ -17,6 +17,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import touch.baton.config.infra.auth.oauth.github.FakeGithubOauthConfig;
 import touch.baton.domain.member.command.controller.MemberBranchController;
 import touch.baton.domain.member.command.controller.RunnerCommandController;
 import touch.baton.domain.member.command.controller.SupporterCommandController;
@@ -40,6 +41,7 @@ import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
 import touch.baton.domain.tag.query.controller.TagQueryController;
 import touch.baton.domain.tag.query.service.TagQueryService;
 import touch.baton.infra.auth.jwt.JwtDecoder;
+import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 
 import java.util.UUID;
 
@@ -62,7 +64,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
         MemberBranchController.class,
         OauthCommandController.class
 })
-@Import(RestDocsResultConfig.class)
+@Import({RestDocsResultConfig.class, FakeGithubOauthConfig.class})
 public abstract class RestdocsConfig {
 
     protected MockMvc mockMvc;
@@ -75,6 +77,9 @@ public abstract class RestdocsConfig {
 
     @Autowired
     protected ObjectMapper objectMapper;
+
+    @Autowired
+    protected GithubOauthConfig githubOauthConfig;
 
     @MockBean
     protected JwtDecoder jwtDecoder;
