@@ -15,10 +15,10 @@ export const useRunnerPostList = (reviewStatus?: ReviewStatus, tagName?: string)
     GetRunnerPostResponse,
     APIError,
     RunnerPost[],
-    [string, typeof reviewStatus, typeof tagName],
+    [string, string, typeof tagName],
     number
   >({
-    queryKey: ['runnerPost', reviewStatus, tagName],
+    queryKey: ['runnerPost', reviewStatus ?? 'None', tagName],
 
     queryFn: ({ pageParam }) =>
       getRunnerPost({ limit: PAGE_LIMIT, reviewStatus, cursor: pageParam, tagName }).then((res) => res),
