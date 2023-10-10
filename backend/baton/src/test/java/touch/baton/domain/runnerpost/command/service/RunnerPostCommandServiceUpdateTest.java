@@ -45,7 +45,8 @@ class RunnerPostCommandServiceUpdateTest extends ServiceTestConfig {
                 runnerPostCommandRepository,
                 tagCommandRepository,
                 supporterCommandRepository,
-                supporterRunnerPostCommandRepository
+                supporterRunnerPostCommandRepository,
+                publisher
         );
 
         final Member ehtanMember = memberCommandRepository.save(MemberFixture.createEthan());

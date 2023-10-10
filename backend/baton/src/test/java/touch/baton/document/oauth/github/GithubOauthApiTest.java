@@ -35,7 +35,7 @@ class GithubOauthApiTest extends RestdocsConfig {
     @DisplayName("Github 소셜 로그인을 위한 AuthCode 를 받을 수 있도록 사용자를 redirect 한다.")
     @Test
     void github_redirect_auth_code() throws Exception {
-        // given & when
+        // given, when
         when(oauthCommandService.readAuthCodeRedirect(GITHUB))
                 .thenReturn("https://test-redirect-url.com");
 
@@ -58,7 +58,7 @@ class GithubOauthApiTest extends RestdocsConfig {
     @DisplayName("Github 소셜 로그인을 위해 AuthCode 를 받아 SocialToken 으로 교환하여 Github 프로필 정보를 찾아오고 미가입 사용자일 경우 자동으로 회원가입을 진행하고 JWT 로 변환하여 클라이언트에게 넘겨준다.")
     @Test
     void github_login() throws Exception {
-        // given & when
+        // given, when
         final RefreshToken refreshToken = RefreshToken.builder()
                 .member(mock(Member.class))
                 .token(new Token("mock refresh token"))

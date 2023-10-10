@@ -54,7 +54,8 @@ class RunnerPostCommandServiceCreateTest extends ServiceTestConfig {
                 runnerPostCommandRepository,
                 tagCommandRepository,
                 supporterCommandRepository,
-                supporterRunnerPostCommandRepository
+                supporterRunnerPostCommandRepository,
+                publisher
         );
     }
 

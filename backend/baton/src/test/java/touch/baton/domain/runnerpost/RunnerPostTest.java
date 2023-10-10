@@ -40,7 +40,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -99,7 +101,7 @@ class RunnerPostTest {
 
         // when
         runnerPost.addAllRunnerPostTags(List.of(java, spring));
-        List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
+        final List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
         final List<String> actualTagNames = runnerPostTags.stream()
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .collect(Collectors.toList());
@@ -480,7 +482,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.IN_PROGRESS))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -504,7 +506,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.DONE))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -528,7 +530,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.NOT_STARTED))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -552,7 +554,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.IN_PROGRESS))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -577,7 +579,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(reviewStatus))
                     .isInstanceOf(RunnerPostDomainException.class);
         }

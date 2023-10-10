@@ -91,6 +91,18 @@ public class OauthAssuredSupport {
             return this;
         }
 
+        public OauthClientRequestBuilder 로그아웃을_요청한다(final AccessToken 액세스_토큰) {
+            response = AssuredSupport.patch("/api/v1/oauth/logout", 액세스_토큰.getValue());
+
+            return this;
+        }
+
+        public OauthClientRequestBuilder 액세스_토큰_없이_로그아웃을_요청한다() {
+            response = AssuredSupport.patch("/api/v1/oauth/logout");
+
+            return this;
+        }
+
         public OauthServerResponseBuilder 서버_응답() {
             return new OauthServerResponseBuilder(response);
         }
@@ -151,6 +163,12 @@ public class OauthAssuredSupport {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getHttpStatus().value());
                 softly.assertThat(response.jsonPath().getString("errorCode")).isEqualTo(clientErrorCode.getErrorCode());
+            });
+        }
+
+        public void 로그아웃이_성공한다() {
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
             });
         }
     }

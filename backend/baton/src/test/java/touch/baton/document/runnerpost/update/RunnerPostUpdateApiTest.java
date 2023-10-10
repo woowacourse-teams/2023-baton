@@ -16,7 +16,7 @@ import java.util.Optional;
 import static org.apache.http.HttpHeaders.CONTENT_TYPE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -44,7 +44,7 @@ class RunnerPostUpdateApiTest extends RestdocsConfig {
         final RunnerPostUpdateRequest.SelectSupporter request = new RunnerPostUpdateRequest.SelectSupporter(1L);
 
         // when
-        willDoNothing().given(runnerPostCommandService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
+        doNothing().when(runnerPostCommandService).updateRunnerPostAppliedSupporter(any(Runner.class), anyLong(), any(RunnerPostUpdateRequest.SelectSupporter.class));
         when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(ditooRunner));
 
         // then
@@ -72,7 +72,7 @@ class RunnerPostUpdateApiTest extends RestdocsConfig {
         final String accessToken = getAccessTokenBySocialId(ditooSocialId);
 
         // when
-        willDoNothing().given(runnerPostCommandService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
+        doNothing().when(runnerPostCommandService).updateRunnerPostReviewStatusDone(anyLong(), any(Supporter.class));
         when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
 
         // then

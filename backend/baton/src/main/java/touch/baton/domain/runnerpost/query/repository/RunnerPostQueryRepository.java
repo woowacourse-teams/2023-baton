@@ -21,6 +21,15 @@ public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Lon
             """)
     Optional<RunnerPost> joinMemberByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
 
+    @Query("""
+        select rp
+        from RunnerPost rp
+        join fetch Supporter s on s.id = rp.supporter.id
+        join fetch Member m on m.id = s.member.id
+        where rp.id = :runnerPostId
+        """)
+    Optional<RunnerPost> joinSupporterByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
+
     List<RunnerPost> findByRunnerId(final Long runnerId);
 
     @Query("""
