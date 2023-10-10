@@ -6,7 +6,7 @@
       "message": "관련 게시글 - [보스 잡기 미션] ㅇㅇㅇ 미션 제출합니다.",
       "notificationType": "RUNNER_POST",
       "referencedId": 1,
-      "isRead": false,
+      "isRead": true,
       "createdAt": "2023-07-28T13:30"
     },
     {
