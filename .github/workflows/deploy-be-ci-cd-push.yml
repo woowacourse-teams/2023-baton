@@ -52,7 +52,7 @@ jobs:
     steps:
       - name: Pull Latest Docker Image
         run: |
-          sudo docker login --username ${{ secrets.DOCKERHUB_DEV_USERNAME }} --password ${{ secrets.DOCKERHUB_DEV_TOKEN }}
+          sudo docker login --username ${{ secrets.DOCKERHUB_DEPLOY_USERNAME }} --password ${{ secrets.DOCKERHUB_DEPLOY_TOKEN }}
           sudo docker pull 2023batondeploy/2023-baton-deploy:latest
 
       - name: Docker Compose
