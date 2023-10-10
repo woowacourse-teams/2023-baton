@@ -39,20 +39,29 @@ import static touch.baton.fixture.vo.AuthorizationHeaderFixture.bearerAuthorizat
 class OauthCommandServiceUpdateTest {
 
     private OauthCommandService oauthCommandService;
+
     @Mock
     private AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite;
+
     @Mock
     private OauthInformationClientComposite oauthInformationClientComposite;
+
     @Mock
     private OauthMemberCommandRepository oauthMemberCommandRepository;
+
     @Mock
     private OauthRunnerCommandRepository oauthRunnerCommandRepository;
+
     @Mock
     private OauthSupporterCommandRepository oauthSupporterCommandRepository;
+
     @Mock
     private RefreshTokenCommandRepository refreshTokenCommandRepository;
+
     private JwtEncoder jwtEncoder;
+
     private JwtEncoder expiredJwtEncoder;
+
     private JwtDecoder jwtDecoder;
 
     @BeforeEach
