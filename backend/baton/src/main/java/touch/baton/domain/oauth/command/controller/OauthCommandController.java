@@ -8,6 +8,7 @@ import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
+import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.command.AuthorizationHeader;
 import touch.baton.domain.oauth.command.OauthType;
 import touch.baton.domain.oauth.command.service.OauthCommandService;
 import touch.baton.domain.oauth.command.token.RefreshToken;
 import touch.baton.domain.oauth.command.token.Tokens;
+import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -92,5 +95,12 @@ public class OauthCommandController {
                 .path("/")
                 .build();
         response.addHeader("Set-Cookie", responseCookie.toString());
+    }
+
+    @DeleteMapping("/logout")
+    public ResponseEntity<Void> logout(@AuthMemberPrincipal final Member member) {
+        oauthCommandService.logout(member);
+
+        return ResponseEntity.noContent().build();
     }
 }

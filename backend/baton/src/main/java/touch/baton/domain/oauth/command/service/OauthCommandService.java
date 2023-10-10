@@ -57,7 +57,7 @@ public class OauthCommandService {
     public String readAuthCodeRedirect(final OauthType oauthType) {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);
     }
-    
+
     public Tokens login(final OauthType oauthType, final String code) {
         final OauthInformation oauthInformation = oauthInformationClientComposite.fetchInformation(oauthType, code);
 
@@ -125,7 +125,7 @@ public class OauthCommandService {
         refreshTokenCommandRepository.save(refreshToken);
         return new Tokens(accessToken, refreshToken);
     }
-    
+
     public Tokens reissueAccessToken(final AuthorizationHeader authHeader, final String refreshToken) {
         final Claims claims = jwtDecoder.parseExpiredAuthorizationHeader(authHeader);
         final SocialId socialId = new SocialId(claims.get("socialId", String.class));
@@ -158,5 +158,9 @@ public class OauthCommandService {
                 "socialId", socialId.getValue())
         );
         return new AccessToken(jwtToken);
+    }
+
+    public void logout(final Member member) {
+        refreshTokenCommandRepository.deleteByMember(member);
     }
 }

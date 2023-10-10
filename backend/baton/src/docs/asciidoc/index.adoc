@@ -19,6 +19,7 @@ include::GithubBranchCreateApi.adoc[]
 == *[ 로그인 ]*
 
 include::GithubOauthApi.adoc[]
+include::OauthLogoutApi.adoc[]
 include::RefreshTokenApi.adoc[]
 
 == *[ 프로필 ]*

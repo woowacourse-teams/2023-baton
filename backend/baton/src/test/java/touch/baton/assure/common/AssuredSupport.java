@@ -184,6 +184,25 @@ public class AssuredSupport {
                 .extract();
     }
 
+    public static ExtractableResponse<Response> delete(final String uri) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .when().log().ifValidationFails()
+                .delete(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> delete(final String uri, final String accessToken) {
+        return RestAssured
+                .given().log().ifValidationFails()
+                .auth().preemptive().oauth2(accessToken)
+                .when().log().ifValidationFails()
+                .delete(uri)
+                .then().log().ifError()
+                .extract();
+    }
+
     public static ExtractableResponse<Response> delete(final String uri, final String accessToken, final PathParams pathParams) {
         return RestAssured
                 .given().log().ifValidationFails()

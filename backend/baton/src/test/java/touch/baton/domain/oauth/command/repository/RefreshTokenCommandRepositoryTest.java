@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static touch.baton.fixture.vo.ExpireDateFixture.expireDate;
 import static touch.baton.fixture.vo.TokenFixture.token;
@@ -57,7 +58,7 @@ class RefreshTokenCommandRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(actual).isPresent();
             softly.assertThat(actual.get().getToken()).isEqualTo(expected.getToken());
             softly.assertThat(actual.get().getExpireDate()).isEqualTo(expected.getExpireDate());
-        } );
+        });
     }
 
     @DisplayName("리프레시 토큰을 사용자로 찾을 수 있다.")
@@ -87,6 +88,28 @@ class RefreshTokenCommandRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(actual).isPresent();
             softly.assertThat(actual.get().getToken()).isEqualTo(expected.getToken());
             softly.assertThat(actual.get().getExpireDate()).isEqualTo(expected.getExpireDate());
-        } );
+        });
+    }
+
+    @DisplayName("사용자를 이용해 리프레시 토큰을 삭제할 수 있다.")
+    @Test
+    void logout() {
+        // given
+        final Member owner = MemberFixture.createEthan();
+        em.persist(owner);
+
+        final LocalDateTime expireDate = createExpireDate(now().plusDays(30));
+
+        final RefreshToken expected = RefreshTokenFixture.create(owner, token("ethan RefreshToken"), expireDate(expireDate));
+        em.persist(expected);
+
+        em.flush();
+        em.clear();
+
+        // when
+        refreshTokenCommandRepository.deleteByMember(owner);
+
+        // then
+        assertThat(refreshTokenCommandRepository.findByMember(owner)).isNotPresent();
     }
 }
