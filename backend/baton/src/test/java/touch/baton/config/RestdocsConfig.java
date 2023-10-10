@@ -28,6 +28,10 @@ import touch.baton.domain.member.query.controller.RunnerQueryController;
 import touch.baton.domain.member.query.controller.SupporterQueryController;
 import touch.baton.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.member.query.service.SupporterQueryService;
+import touch.baton.domain.notification.command.controller.NotificationCommandController;
+import touch.baton.domain.notification.command.service.NotificationCommandService;
+import touch.baton.domain.notification.query.controller.NotificationQueryController;
+import touch.baton.domain.notification.query.service.NotificationQueryService;
 import touch.baton.domain.oauth.command.controller.OauthCommandController;
 import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
@@ -60,7 +64,9 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
         RunnerPostQueryController.class,
         TagQueryController.class,
         MemberBranchController.class,
-        OauthCommandController.class
+        OauthCommandController.class,
+        NotificationCommandController.class,
+        NotificationQueryController.class
 })
 @Import({RestDocsResultConfig.class})
 public abstract class RestdocsConfig {
@@ -114,6 +120,12 @@ public abstract class RestdocsConfig {
 
     @MockBean
     protected TagQueryService tagQueryService;
+
+    @MockBean
+    protected NotificationQueryService notificationQueryService;
+
+    @MockBean
+    protected NotificationCommandService notificationCommandService;
 
     @BeforeEach
     void restdocsSetUp(final WebApplicationContext webApplicationContext) {

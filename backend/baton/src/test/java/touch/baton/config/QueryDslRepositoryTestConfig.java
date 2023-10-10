@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import touch.baton.domain.notification.query.repository.NotificationQuerydslRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 
 @TestConfiguration
@@ -21,5 +22,10 @@ public class QueryDslRepositoryTestConfig {
     @Bean
     public RunnerPostPageRepository runnerPostPageRepository() {
         return new RunnerPostPageRepository(jpaQueryFactory());
+    }
+
+    @Bean
+    public NotificationQuerydslRepository notificationQuerydslRepository() {
+        return new NotificationQuerydslRepository(jpaQueryFactory());
     }
 }

@@ -60,15 +60,6 @@ public class RunnerPostApplicantCreateSupport {
             this.response = response;
         }
 
-        public RunnerPostApplicantCreateResponseBuilder 러너_게시글_생성_성공을_검증한다() {
-            assertSoftly(softly -> {
-                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.CREATED.value());
-                softly.assertThat(response.header(LOCATION)).startsWith("/api/v1/posts/runner/");
-            });
-
-            return this;
-        }
-
         public Long 생성한_러너_게시글의_식별자값을_반환한다() {
             final String savedRunnerPostId = this.response.header(LOCATION).replaceFirst("/api/v1/posts/runner/", "");
 

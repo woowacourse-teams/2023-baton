@@ -12,8 +12,10 @@ import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
 
@@ -121,5 +123,31 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
         ));
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("러너 게시글 식별자값으로 러너 게시글과 서포터, 사용자를 조인하여 조회한다.")
+    @Test
+    void joinSupporterByRunnerPostId() {
+        // given
+        final Runner hyenaRunner = persistRunner(MemberFixture.createHyena());
+        final Supporter ditooSupporter = persistSupporter(MemberFixture.createDitoo());
+        final RunnerPost runnerPost = persistRunnerPost(hyenaRunner);
+        persistApplicant(ditooSupporter, runnerPost);
+        runnerPost.assignSupporter(ditooSupporter);
+
+        em.flush();
+        em.close();
+
+        // when
+        final Optional<RunnerPost> maybeActual = runnerPostQueryRepository.joinSupporterByRunnerPostId(runnerPost.getId());
+
+        // then
+        assertSoftly(softly -> {
+            softly.assertThat(maybeActual).isPresent();
+            final RunnerPost actual = maybeActual.get();
+
+            softly.assertThat(actual.getSupporter()).isEqualTo(ditooSupporter);
+            softly.assertThat(actual).isEqualTo(runnerPost);
+        });
     }
 }

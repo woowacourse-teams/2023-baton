@@ -31,7 +31,8 @@ class RunnerPostCommandServiceDeleteTest extends ServiceTestConfig {
                 runnerPostCommandRepository,
                 tagCommandRepository,
                 supporterCommandRepository,
-                supporterRunnerPostCommandRepository
+                supporterRunnerPostCommandRepository,
+                publisher
         );
     }
 

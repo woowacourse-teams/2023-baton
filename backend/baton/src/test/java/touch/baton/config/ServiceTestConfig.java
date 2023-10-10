@@ -1,6 +1,7 @@
 package touch.baton.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import touch.baton.domain.feedback.command.repository.SupporterFeedbackCommandRepository;
 import touch.baton.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.member.command.repository.SupporterCommandRepository;
@@ -8,6 +9,8 @@ import touch.baton.domain.member.command.repository.SupporterRunnerPostCommandRe
 import touch.baton.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.member.query.repository.SupporterQueryRepository;
 import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
+import touch.baton.domain.notification.command.repository.NotificationCommandRepository;
+import touch.baton.domain.notification.query.repository.NotificationQuerydslRepository;
 import touch.baton.domain.runnerpost.command.repository.RunnerPostCommandRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
@@ -67,4 +70,13 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
     protected SupporterRunnerPostCommandRepository supporterRunnerPostCommandRepository;
+
+    @Autowired
+    protected NotificationCommandRepository notificationCommandRepository;
+
+    @Autowired
+    protected NotificationQuerydslRepository notificationQuerydslRepository;
+
+    @Autowired
+    protected ApplicationEventPublisher publisher;
 }
