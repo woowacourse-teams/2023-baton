@@ -120,11 +120,8 @@ public abstract class RestdocsConfig {
     @MockBean
     protected TagQueryService tagQueryService;
 
-    @Autowired
-    protected WebApplicationContext webApplicationContext;
-
     @BeforeEach
-    void restdocsSetUp() {
+    void restdocsSetUp(final WebApplicationContext webApplicationContext) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(documentationConfiguration(restDocumentation))
                 .alwaysDo(restDocs)
