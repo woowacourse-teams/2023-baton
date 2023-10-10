@@ -8,8 +8,8 @@ import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,7 +97,7 @@ public class OauthCommandController {
         response.addHeader("Set-Cookie", responseCookie.toString());
     }
 
-    @DeleteMapping("/logout")
+    @PatchMapping("/logout")
     public ResponseEntity<Void> logout(@AuthMemberPrincipal final Member member) {
         oauthCommandService.logout(member);
 

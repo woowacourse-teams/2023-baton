@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,7 +28,7 @@ class OauthLogoutApiTest extends RestdocsConfig {
         given(oauthMemberCommandRepository.findBySocialId(any())).willReturn(Optional.ofNullable(ethan));
 
         // then
-        mockMvc.perform(delete("/api/v1/oauth/logout")
+        mockMvc.perform(patch("/api/v1/oauth/logout")
                         .header(AUTHORIZATION, "Bearer " + accessToken))
                 .andExpect(status().isNoContent())
                 .andDo(restDocs.document(

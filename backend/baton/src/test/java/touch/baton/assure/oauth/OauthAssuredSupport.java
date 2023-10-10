@@ -92,13 +92,13 @@ public class OauthAssuredSupport {
         }
 
         public OauthClientRequestBuilder 로그아웃을_요청한다(final AccessToken 액세스_토큰) {
-            response = AssuredSupport.delete("/api/v1/oauth/logout", 액세스_토큰.getValue());
+            response = AssuredSupport.patch("/api/v1/oauth/logout", 액세스_토큰.getValue());
 
             return this;
         }
 
         public OauthClientRequestBuilder 액세스_토큰_없이_로그아웃을_요청한다() {
-            response = AssuredSupport.delete("/api/v1/oauth/logout");
+            response = AssuredSupport.patch("/api/v1/oauth/logout");
 
             return this;
         }
