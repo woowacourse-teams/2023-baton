@@ -1,15 +1,10 @@
 package touch.baton.document.notification.update;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.notification.command.Notification;
-import touch.baton.domain.notification.command.controller.NotificationCommandController;
-import touch.baton.domain.notification.command.service.NotificationCommandService;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.NotificationFixture;
 
@@ -29,16 +24,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.NotificationReferencedIdFixture.notificationReferencedId;
 
-@WebMvcTest(NotificationCommandController.class)
 class NotificationUpdateApiTest extends RestdocsConfig {
-
-    @MockBean
-    private NotificationCommandService notificationCommandService;
-
-    @BeforeEach
-    void setUp() {
-        restdocsSetUp(new NotificationCommandController(notificationCommandService));
-    }
 
     @DisplayName("알림 읽기 여부 기록 API")
     @Test

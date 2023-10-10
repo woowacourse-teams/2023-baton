@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.notification.support.command.NotificationDeleteSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.command.vo.NotificationMessage;
 import touch.baton.domain.notification.command.vo.NotificationReferencedId;
@@ -23,7 +23,7 @@ class NotificationDeleteAssuredTest extends AssuredTestConfig {
     @Test
     void 로그인한_사용자가_자신의_알림을_하나_삭제한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest(
                 "테스트용 게시글 제목",

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.notification.support.query.NotificationQuerySupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.command.vo.NotificationMessage;
 import touch.baton.domain.notification.command.vo.NotificationReferencedId;
@@ -26,7 +26,7 @@ class NotificationQueryAssuredTest extends AssuredTestConfig {
     @Test
     void 로그인한_사용자의_알림_목록을_조회한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest(
                 "테스트용 게시글 제목",

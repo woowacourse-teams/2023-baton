@@ -1,17 +1,12 @@
 package touch.baton.document.notification.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.notification.command.Notification;
-import touch.baton.domain.notification.query.controller.NotificationQueryController;
 import touch.baton.domain.member.command.Member;
-import touch.baton.domain.notification.query.service.NotificationQueryService;
-import touch.baton.fixture.domain.NotificationFixture;
+import touch.baton.domain.notification.command.Notification;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.NotificationFixture;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -36,21 +31,11 @@ import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.NotificationReferencedIdFixture.notificationReferencedId;
 
-@WebMvcTest(NotificationQueryController.class)
 class NotificationReadWithLoginedMemberApiTest extends RestdocsConfig {
-
-    @MockBean
-    private NotificationQueryService notificationQueryService;
-
-    @BeforeEach
-    void setUp() {
-        restdocsSetUp(new NotificationQueryController(notificationQueryService));
-    }
 
     @DisplayName("로그인한 사용자 알림 목록 조회 API")
     @Test
@@ -93,6 +78,6 @@ class NotificationReadWithLoginedMemberApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].isRead").type(BOOLEAN).description("알림 읽음 여부"),
                                 fieldWithPath("data.[].createdAt").type(STRING).description("알림 생성 시간")
                         ))
-                ).andDo(print());
+                );
     }
 }
