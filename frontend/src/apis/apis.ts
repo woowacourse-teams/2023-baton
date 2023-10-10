@@ -73,7 +73,7 @@ export const getRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   return request.get<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}`, isLogin);
 };
 
-export const getAlram = () => {
+export const getNotification = () => {
   return request.get<GetNotificationResponse>(`/notifications`, true);
 };
 
