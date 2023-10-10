@@ -3,32 +3,42 @@ package touch.baton.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
-import org.springframework.format.support.FormattingConversionService;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.restdocs.ManualRestDocumentation;
 import org.springframework.restdocs.RestDocumentationContextProvider;
-import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import touch.baton.config.converter.ConverterConfig;
-import touch.baton.config.converter.OauthTypeConverter;
-import touch.baton.config.converter.ReviewStatusConverter;
+import org.springframework.web.context.WebApplicationContext;
+import touch.baton.domain.member.command.controller.MemberBranchController;
+import touch.baton.domain.member.command.controller.RunnerCommandController;
+import touch.baton.domain.member.command.controller.SupporterCommandController;
+import touch.baton.domain.member.command.service.GithubBranchManageable;
+import touch.baton.domain.member.command.service.RunnerCommandService;
+import touch.baton.domain.member.command.service.SupporterCommandService;
+import touch.baton.domain.member.query.controller.MemberQueryController;
+import touch.baton.domain.member.query.controller.RunnerQueryController;
+import touch.baton.domain.member.query.controller.SupporterQueryController;
+import touch.baton.domain.member.query.service.RunnerQueryService;
+import touch.baton.domain.member.query.service.SupporterQueryService;
+import touch.baton.domain.oauth.command.controller.OauthCommandController;
 import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthSupporterCommandRepository;
-import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipalArgumentResolver;
-import touch.baton.domain.oauth.query.controller.resolver.AuthRunnerPrincipalArgumentResolver;
-import touch.baton.domain.oauth.query.controller.resolver.AuthSupporterPrincipalArgumentResolver;
+import touch.baton.domain.oauth.command.service.OauthCommandService;
+import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
+import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
+import touch.baton.domain.runnerpost.query.controller.RunnerPostQueryController;
+import touch.baton.domain.runnerpost.query.service.RunnerPostQueryService;
+import touch.baton.domain.tag.query.controller.TagQueryController;
+import touch.baton.domain.tag.query.service.TagQueryService;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 
 import java.util.UUID;
@@ -36,16 +46,26 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 
-@ExtendWith(RestDocumentationExtension.class)
-@Import({RestDocsResultConfig.class, ConverterConfig.class})
+@WebMvcTest({
+        RunnerQueryController.class,
+        RunnerCommandController.class,
+        SupporterQueryController.class,
+        SupporterCommandController.class,
+        MemberQueryController.class,
+        RunnerPostCommandController.class,
+        RunnerPostQueryController.class,
+        TagQueryController.class,
+        MemberBranchController.class,
+        OauthCommandController.class
+})
+@Import({RestDocsResultConfig.class})
 public abstract class RestdocsConfig {
 
     protected MockMvc mockMvc;
-    protected AuthMemberPrincipalArgumentResolver authMemberPrincipalArgumentResolver;
-    protected AuthRunnerPrincipalArgumentResolver authRunnerPrincipalArgumentResolver;
-    protected AuthSupporterPrincipalArgumentResolver authSupporterPrincipalArgumentResolver;
 
     @Autowired
     protected RestDocumentationResultHandler restDocs;
@@ -68,30 +88,37 @@ public abstract class RestdocsConfig {
     @MockBean
     protected OauthSupporterCommandRepository oauthSupporterCommandRepository;
 
-    @Autowired
-    protected MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
+    @MockBean
+    protected GithubBranchManageable githubBranchManageable;
 
-    @Autowired
-    protected Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder;
+    @MockBean
+    protected OauthCommandService oauthCommandService;
 
-    protected void restdocsSetUp(final Object controller) {
-        authMemberPrincipalArgumentResolver = new AuthMemberPrincipalArgumentResolver(jwtDecoder, oauthMemberCommandRepository);
-        authRunnerPrincipalArgumentResolver = new AuthRunnerPrincipalArgumentResolver(jwtDecoder, oauthRunnerCommandRepository);
-        authSupporterPrincipalArgumentResolver = new AuthSupporterPrincipalArgumentResolver(jwtDecoder, oauthSupporterCommandRepository);
+    @MockBean
+    protected RunnerPostQueryService runnerPostQueryService;
 
-        final FormattingConversionService formattingConversionService = new FormattingConversionService();
-        formattingConversionService.addConverter(new OauthTypeConverter());
-        formattingConversionService.addConverter(new ReviewStatusConverter());
+    @MockBean
+    protected RunnerPostCommandService runnerPostCommandService;
 
-        this.mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                .setCustomArgumentResolvers(
-                        authMemberPrincipalArgumentResolver,
-                        authRunnerPrincipalArgumentResolver,
-                        authSupporterPrincipalArgumentResolver,
-                        new PageableHandlerMethodArgumentResolver())
+    @MockBean
+    protected RunnerQueryService runnerQueryService;
+
+    @MockBean
+    protected RunnerCommandService runnerCommandService;
+
+    @MockBean
+    protected SupporterQueryService supporterQueryService;
+
+    @MockBean
+    protected SupporterCommandService supporterCommandService;
+
+    @MockBean
+    protected TagQueryService tagQueryService;
+
+    @BeforeEach
+    void restdocsSetUp(final WebApplicationContext webApplicationContext) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(documentationConfiguration(restDocumentation))
-                .setConversionService(formattingConversionService)
-                .setMessageConverters(jackson2HttpMessageConverter)
                 .alwaysDo(restDocs)
                 .build();
     }

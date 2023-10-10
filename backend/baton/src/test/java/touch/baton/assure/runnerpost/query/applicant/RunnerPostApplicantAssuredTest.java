@@ -5,7 +5,7 @@ import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport;
 import touch.baton.assure.runnerpost.support.query.applicant.RunnerPostApplicantQuerySupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.query.controller.response.SupporterRunnerPostResponse;
@@ -24,8 +24,8 @@ class RunnerPostApplicantAssuredTest extends AssuredTestConfig {
     @Test
     void 러너의_게시글_식별자값으로_지원한_서포터_목록_조회에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 
         // when

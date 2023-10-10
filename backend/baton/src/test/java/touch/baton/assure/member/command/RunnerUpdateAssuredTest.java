@@ -5,7 +5,7 @@ import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.assure.member.support.command.RunnerUpdateAssuredSupport;
 import touch.baton.assure.member.support.query.RunnerQueryAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.service.dto.RunnerUpdateRequest;
 import touch.baton.domain.member.command.vo.SocialId;
@@ -23,7 +23,7 @@ class RunnerUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_정보를_수정한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = RunnerUpdateAssuredSupport.러너_본인_프로필_수정_요청("수정된_헤나", "수정된_회사", "수정된_러너_소개글", List.of("자바", "스프링"));
 
@@ -40,7 +40,7 @@ class RunnerUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_정보_수정_시에_이름이_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = RunnerUpdateAssuredSupport.러너_본인_프로필_수정_요청(null, "수정된_회사", "수정된_러너_소개글", List.of("자바", "스프링"));
 
@@ -57,7 +57,7 @@ class RunnerUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_정보_수정_시에_소속이_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = RunnerUpdateAssuredSupport.러너_본인_프로필_수정_요청("수정된_헤나", null, "수정된_러너_소개글", List.of("자바", "스프링"));
@@ -73,7 +73,7 @@ class RunnerUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_정보_수정_시에_소개글이_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = RunnerUpdateAssuredSupport.러너_본인_프로필_수정_요청("수정된_헤나", "수정된_회사", null, List.of("자바", "스프링"));
@@ -89,7 +89,7 @@ class RunnerUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_정보_수정_시에_기술_태그가_없으면_예외가_발생한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         // when, then
         final RunnerUpdateRequest 러너_본인_프로필_수정_요청 = RunnerUpdateAssuredSupport.러너_본인_프로필_수정_요청("수정된_헤나", "수정된_회사", "수정된_러너_소개글", null);
@@ -105,7 +105,7 @@ class RunnerUpdateAssuredTest extends AssuredTestConfig {
     @Test
     void 수정된_러너_프로필_조회에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Runner 러너_헤나 = runnerRepository.getBySocialId(헤나_소셜_아이디);

@@ -1,15 +1,10 @@
 package touch.baton.document.oauth.token;
 
 import jakarta.servlet.http.Cookie;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.oauth.command.AuthorizationHeader;
-import touch.baton.domain.oauth.command.controller.OauthCommandController;
-import touch.baton.domain.oauth.command.service.OauthCommandService;
 import touch.baton.domain.oauth.command.token.AccessToken;
 import touch.baton.domain.oauth.command.token.ExpireDate;
 import touch.baton.domain.oauth.command.token.RefreshToken;
@@ -23,23 +18,16 @@ import java.time.LocalDateTime;
 import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.restdocs.cookies.CookieDocumentation.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
+import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
+import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(OauthCommandController.class)
 class RefreshTokenApiTest extends RestdocsConfig {
-
-    @MockBean
-    private OauthCommandService oauthCommandService;
-
-    @BeforeEach
-    void setUp() {
-        final OauthCommandController oauthCommandController = new OauthCommandController(oauthCommandService);
-        restdocsSetUp(oauthCommandController);
-    }
 
     @DisplayName("만료된 jwt 토큰과 refresh token 으로 refresh 요청을 하면 새로운 토큰들이 반환된다.")
     @Test
@@ -73,8 +61,7 @@ class RefreshTokenApiTest extends RestdocsConfig {
                         responseCookies(
                                 cookieWithName("refreshToken").description("새로 발급된 리프레시 토큰")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     private Cookie createCookie() {

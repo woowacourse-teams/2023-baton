@@ -1,14 +1,9 @@
 package touch.baton.document.runnerpost.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.tag.command.Tag;
-import touch.baton.domain.tag.query.controller.TagQueryController;
-import touch.baton.domain.tag.query.service.TagQueryService;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.util.List;
@@ -28,17 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(TagQueryController.class)
 class TagReadApiTest extends RestdocsConfig {
-
-    @MockBean
-    private TagQueryService tagQueryService;
-
-    @BeforeEach
-    void setUp() {
-        final TagQueryController tagQueryController = new TagQueryController(tagQueryService);
-        restdocsSetUp(tagQueryController);
-    }
 
     @DisplayName("태그 검색 API")
     @Test
