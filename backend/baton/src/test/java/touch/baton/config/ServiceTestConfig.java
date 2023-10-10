@@ -16,7 +16,7 @@ import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.domain.tag.command.repository.TagCommandRepository;
 import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
-import touch.baton.domain.tag.query.repository.TagQueryRepository;
+import touch.baton.domain.tag.query.repository.TagQuerydslRepository;
 import touch.baton.domain.technicaltag.command.repository.RunnerTechnicalTagCommandRepository;
 import touch.baton.domain.technicaltag.command.repository.SupporterTechnicalTagCommandRepository;
 import touch.baton.domain.technicaltag.query.repository.TechnicalTagQueryRepository;
@@ -45,7 +45,7 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
     protected RunnerPostTagQueryRepository runnerPostTagQueryRepository;
 
     @Autowired
-    protected TagQueryRepository tagQueryRepository;
+    protected TagQuerydslRepository tagQuerydslRepository;
 
     @Autowired
     protected SupporterFeedbackCommandRepository supporterFeedbackCommandRepository;
