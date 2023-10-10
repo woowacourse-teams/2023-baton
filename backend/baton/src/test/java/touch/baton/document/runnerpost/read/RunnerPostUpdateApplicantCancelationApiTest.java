@@ -1,17 +1,12 @@
 package touch.baton.document.runnerpost.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.runnerpost.command.controller.RunnerPostCommandController;
-import touch.baton.domain.runnerpost.command.service.RunnerPostCommandService;
 import touch.baton.domain.runnerpost.command.vo.Deadline;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
@@ -27,7 +22,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.LOCATION;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -40,17 +37,7 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(RunnerPostCommandController.class)
-public class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostCommandService runnerPostCommandService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerPostCommandController runnerPostCommandController = new RunnerPostCommandController(runnerPostCommandService);
-        restdocsSetUp(runnerPostCommandController);
-    }
+class RunnerPostUpdateApplicantCancelationApiTest extends RestdocsConfig {
 
     @DisplayName("러너 게시글에 리뷰 제안한 서포터가 리뷰 제안 철회 API")
     @Test

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.assure.member.support.command.MemberBranchCreateAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -14,7 +14,7 @@ class MemberBranchAssuredTest extends AssuredTestConfig {
 
     @Test
     void 로그인_한_사용자가_요청한_레포의_브랜치를_생성한다() {
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final GithubRepoNameRequest 브랜치_생성_요청 = new GithubRepoNameRequest("ditoo");
 
         MemberBranchCreateAssuredSupport
