@@ -33,10 +33,8 @@ class RefreshTokenCommandRepositoryTest extends RepositoryTestConfig {
     @Test
     void findByToken() {
         // given
-        final Member ethan = MemberFixture.createEthan();
-        final Member ditoo = MemberFixture.createDitoo();
-        em.persist(ethan);
-        em.persist(ditoo);
+        final Member ethan = persistMember(MemberFixture.createEthan());
+        final Member ditoo = persistMember(MemberFixture.createDitoo());
 
         final LocalDateTime expireDate = createExpireDate(now().plusDays(30));
 
@@ -65,10 +63,8 @@ class RefreshTokenCommandRepositoryTest extends RepositoryTestConfig {
     @Test
     void findByMember() {
         // given
-        final Member owner = MemberFixture.createEthan();
-        final Member notOwner = MemberFixture.createDitoo();
-        em.persist(owner);
-        em.persist(notOwner);
+        final Member owner = persistMember(MemberFixture.createEthan());
+        final Member notOwner = persistMember(MemberFixture.createDitoo());
 
         final LocalDateTime expireDate = createExpireDate(now().plusDays(30));
 
@@ -95,8 +91,7 @@ class RefreshTokenCommandRepositoryTest extends RepositoryTestConfig {
     @Test
     void logout() {
         // given
-        final Member owner = MemberFixture.createEthan();
-        em.persist(owner);
+        final Member owner = persistMember(MemberFixture.createEthan());
 
         final LocalDateTime expireDate = createExpireDate(now().plusDays(30));
 

@@ -13,6 +13,7 @@ class OauthDeleteAssuredTest extends AssuredTestConfig {
 
     @Test
     void 로그아웃을_성공한다() {
+        // given
         OauthAssuredSupport
                 .클라이언트_요청()
                 .소셜_로그인을_위한_리다이렉트_URL을_요청한다(OauthType.GITHUB)
@@ -28,8 +29,7 @@ class OauthDeleteAssuredTest extends AssuredTestConfig {
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
                 .액세스_토큰과_리프레시_토큰을_반환한다(MemberFixture.createEthan());
 
-        // when
-        // then
+        // when, then
         OauthAssuredSupport
                 .클라이언트_요청()
                 .로그아웃을_요청한다(액세스_토큰과_리프레시_토큰.accessToken())
@@ -40,6 +40,7 @@ class OauthDeleteAssuredTest extends AssuredTestConfig {
 
     @Test
     void 액세스_토큰이_없이_로그아웃을_요청하면_실패한다() {
+        // given
         OauthAssuredSupport
                 .클라이언트_요청()
                 .소셜_로그인을_위한_리다이렉트_URL을_요청한다(OauthType.GITHUB)
@@ -55,6 +56,7 @@ class OauthDeleteAssuredTest extends AssuredTestConfig {
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
                 .액세스_토큰과_리프레시_토큰을_반환한다(MemberFixture.createEthan());
 
+        // when, then
         OauthAssuredSupport
                 .클라이언트_요청()
                 .액세스_토큰_없이_로그아웃을_요청한다()

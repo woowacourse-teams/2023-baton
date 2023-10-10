@@ -30,6 +30,11 @@ public abstract class RepositoryTestConfig {
     @Autowired
     protected EntityManager em;
 
+    protected Member persistMember(final Member member) {
+        em.persist(member);
+        return member;
+    }
+
     protected Runner persistRunner(final Member member) {
         em.persist(member);
         final Runner runner = RunnerFixture.createRunner(member);
