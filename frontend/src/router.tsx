@@ -2,6 +2,7 @@ import React from 'react';
 import App from './App';
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage';
+import NotFoundPage from './pages/NotFoundPage';
 const RunnerPostPage = React.lazy(() => import('./pages/RunnerPostDetailPage'));
 const RunnerPostCreatePage = React.lazy(() => import('./pages/RunnerPostCreatePage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
@@ -89,6 +90,7 @@ export const router = createBrowserRouter(
           element: <NoticePage />,
         },
         { path: ROUTER_PATH.RESULT, element: <ResultPage /> },
+        { path: ROUTER_PATH.NOT_FOUND, element: <NotFoundPage /> },
       ],
     },
   ],
