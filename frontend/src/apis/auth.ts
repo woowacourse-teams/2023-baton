@@ -11,7 +11,7 @@ const removeAccessToken = () => {
 export const isLogin = () => Boolean(getAccessToken());
 
 export const logout = () => {
-  deleteRefreshToken();
+  patchRefreshToken();
 
   removeAccessToken();
 
@@ -61,9 +61,9 @@ export const postRefreshToken = async () => {
   return response;
 };
 
-export const deleteRefreshToken = async () => {
+export const patchRefreshToken = async () => {
   const response = await fetch(`${BATON_BASE_URL}/oauth/logout`, {
-    method: 'DELETE',
+    method: 'PATCH',
     headers: {
       Authorization: `Bearer ${getAccessToken()}`,
     },
