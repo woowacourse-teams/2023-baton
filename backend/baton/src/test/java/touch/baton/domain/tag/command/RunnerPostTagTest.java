@@ -1,4 +1,4 @@
-package touch.baton.domain.tag;
+package touch.baton.domain.tag.command;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -23,9 +23,6 @@ import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.runnerpost.command.vo.Title;
 import touch.baton.domain.runnerpost.command.vo.WatchedCount;
-import touch.baton.domain.tag.command.RunnerPostTag;
-import touch.baton.domain.tag.command.RunnerPostTags;
-import touch.baton.domain.tag.command.Tag;
 import touch.baton.domain.tag.exception.RunnerPostTagDomainException;
 import touch.baton.domain.technicaltag.command.SupporterTechnicalTags;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
