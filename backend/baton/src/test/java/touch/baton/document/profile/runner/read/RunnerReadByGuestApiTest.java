@@ -27,7 +27,6 @@ import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
@@ -48,7 +47,6 @@ class RunnerReadByGuestApiTest extends RestdocsConfig {
         // then
         mockMvc.perform(get("/api/v1/profile/runner/me")
                         .header(AUTHORIZATION, "Bearer " + token))
-                .andDo(print())
                 .andDo(restDocs.document(
                         requestHeaders(
                                 headerWithName(AUTHORIZATION).description("Bearer JWT")

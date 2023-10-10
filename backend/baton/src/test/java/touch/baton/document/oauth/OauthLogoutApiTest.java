@@ -14,7 +14,6 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class OauthLogoutApiTest extends RestdocsConfig {
@@ -35,7 +34,6 @@ class OauthLogoutApiTest extends RestdocsConfig {
                         requestHeaders(
                                 headerWithName("Authorization").description("Access Token")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 }
