@@ -14,31 +14,9 @@ public interface SupporterRunnerPostQueryRepository extends JpaRepository<Suppor
             select count(1)
             from SupporterRunnerPost srp
             group by srp.runnerPost.id
-            having srp.runnerPost.id in (:runnerPostIds)
-            """)
-    List<Long> countByRunnerPostIdIn(@Param("runnerPostIds") final List<Long> runnerPostIds);
-
-    @Query("""
-            select count(1)
-            from SupporterRunnerPost srp
-            group by srp.runnerPost.id
             having srp.runnerPost.id = :runnerPostId
             """)
     Optional<Long> countByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);
-
-    @Query("""
-            select case when exists (
-                select 1 from SupporterRunnerPost srp
-                where srp.runnerPost.id = rp.id)
-            then (
-                select count(srp.id) from SupporterRunnerPost srp
-                where srp.runnerPost.id = rp.id
-            ) else 0 end
-            from RunnerPost rp
-            where rp.id in :runnerPostIds
-            order by rp.id desc
-            """)
-    List<Long> countByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
 
     @Query("""
             select (count(1) >= 1)
@@ -49,11 +27,13 @@ public interface SupporterRunnerPostQueryRepository extends JpaRepository<Suppor
             """)
     boolean existsByRunnerPostIdAndMemberId(@Param("runnerPostId") final Long runnerPostId, @Param("memberId") final Long memberId);
 
-    boolean existsByRunnerPostId(final Long runnerPostId);
-
-    void deleteBySupporterIdAndRunnerPostId(final Long supporterId, final Long runnerPostId);
-
-    boolean existsByRunnerPostIdAndSupporterId(final Long runnerPostId, final Long supporterId);
-
     List<SupporterRunnerPost> readByRunnerPostId(final Long runnerPostId);
+
+    @Query("""
+            select count(1)
+            from SupporterRunnerPost srp
+            join fetch RunnerPost rp on rp.id = srp.runnerPost.id
+            where rp.reviewStatus = 'NOT_STARTED' and srp.supporter.id = :supporterId
+            """)
+    long countRunnerPostBySupporterIdByReviewStatusNotStarted(@Param("supporterId") final Long supporterId);
 }

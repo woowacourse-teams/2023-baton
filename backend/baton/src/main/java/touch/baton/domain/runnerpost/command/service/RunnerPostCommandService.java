@@ -102,8 +102,7 @@ public class RunnerPostCommandService {
                                           final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = getRunnerPostOrThrowException(runnerPostId);
-        final boolean isApplicantHistoryExist = supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, supporter.getId());
-        if (isApplicantHistoryExist) {
+        if (isApplySupporter(foundRunnerPost, supporter)) {
             throw new RunnerPostBusinessException("Supporter 는 이미 해당 RunnerPost 에 리뷰 신청을 한 이력이 있습니다.");
         }
 
@@ -149,7 +148,7 @@ public class RunnerPostCommandService {
         final RunnerPost foundRunnerPost = runnerPostCommandRepository.findById(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException("RunnerPost 의 식별자값으로 러너 게시글을 조회할 수 없습니다."));
 
-        if (isApplySupporter(runnerPostId, foundApplySupporter)) {
+        if (!isApplySupporter(foundRunnerPost, foundApplySupporter)) {
             throw new RunnerPostBusinessException("게시글에 리뷰를 제안한 서포터가 아닙니다.");
         }
         if (foundRunnerPost.isNotOwner(runner)) {
@@ -159,7 +158,7 @@ public class RunnerPostCommandService {
         foundRunnerPost.assignSupporter(foundApplySupporter);
     }
 
-    private boolean isApplySupporter(final Long runnerPostId, final Supporter foundSupporter) {
-        return !supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runnerPostId, foundSupporter.getId());
+    private boolean isApplySupporter(final RunnerPost runnerPost, final Supporter supporter) {
+        return supporterRunnerPostCommandRepository.existsByRunnerPostIdAndSupporterId(runnerPost.getId(), supporter.getId());
     }
 }
