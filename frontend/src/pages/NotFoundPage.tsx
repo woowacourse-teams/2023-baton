@@ -1,11 +1,36 @@
 import Button from '@/components/common/Button/Button';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import notFound from '@/assets/not-found.jpg';
+import { logout } from '@/apis/auth';
+import { CustomApiError } from '@/types/error';
+import ToastProvider, { ToastContext } from '@/contexts/ToastContext';
 
-const NotFoundPage = () => {
+interface Props {
+  reset?: () => void;
+  error?: Error | CustomApiError;
+}
+
+const NotFoundPage = ({ reset, error }: Props) => {
   const { goToMainPage } = usePageRouter();
+  const { showErrorToast } = useContext(ToastContext);
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+      showErrorToast({ title: '요청 오류', description: error.message });
+    }
+  }, []);
+
+  const handleClickHomeButton = () => {
+    if (reset) {
+      logout();
+      reset();
+    }
+
+    window.location.href = '/';
+  };
 
   return (
     <S.NotFoundPageContainer>
@@ -13,7 +38,7 @@ const NotFoundPage = () => {
       <S.Message>
         <S.Bold>페이지를 찾을 수 없습니다 😢</S.Bold>
       </S.Message>
-      <Button colorTheme="WHITE" onClick={goToMainPage}>
+      <Button colorTheme="WHITE" onClick={handleClickHomeButton}>
         홈으로 가기
       </Button>
     </S.NotFoundPageContainer>

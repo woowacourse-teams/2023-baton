@@ -6,10 +6,11 @@ import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
 import LoadingPage from './pages/LoadingPage';
 import ModalProvider from './contexts/ModalContext';
-import { QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider, QueryErrorResetBoundary } from '@tanstack/react-query';
 import { queryClient } from './hooks/query/queryClient';
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
 const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID;
 if (gaTrackingId) {
@@ -37,9 +38,15 @@ const App = () => {
       <ModalProvider>
         <S.AppContainer>
           <QueryClientProvider client={queryClient}>
-            <Suspense fallback={<LoadingPage />}>
-              <Outlet />
-            </Suspense>
+            <QueryErrorResetBoundary>
+              {({ reset }) => (
+                <ErrorBoundary onReset={reset}>
+                  <Suspense fallback={<LoadingPage />}>
+                    <Outlet />
+                  </Suspense>
+                </ErrorBoundary>
+              )}
+            </QueryErrorResetBoundary>
           </QueryClientProvider>
         </S.AppContainer>
       </ModalProvider>
