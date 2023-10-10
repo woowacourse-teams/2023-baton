@@ -8,6 +8,7 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.ArrayList;
@@ -121,5 +122,25 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
         ));
 
         assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("러너 관련 게시글 개수를 조회하는데 성공한다.")
+    @Test
+    void countByRunnerIdAndReviewStatus() {
+        // given
+        final Runner runner = persistRunner(MemberFixture.createDitoo());
+        final int expected = 20;
+        for (int i = 0; i < expected; i++) {
+            persistRunnerPost(runner);
+        }
+
+        em.flush();
+        em.close();
+
+        // when
+        final Long actual = runnerPostQueryRepository.countByRunnerIdAndReviewStatus(runner.getId(), ReviewStatus.NOT_STARTED);
+
+        // then
+        assertThat(actual.intValue()).isEqualTo(expected);
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +31,11 @@ public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Lon
             group by rp.id
             """)
     List<RunnerPostApplicantCountDto> countApplicantsByRunnerPostIds(@Param("runnerPostIds") final List<Long> runnerPostIds);
+
+    @Query("""
+            select count(1)
+            from RunnerPost rp
+            where rp.runner.id = :runnerId and rp.reviewStatus = :reviewStatus
+            """)
+    Long countByRunnerIdAndReviewStatus(final Long runnerId, final ReviewStatus reviewStatus);
 }
