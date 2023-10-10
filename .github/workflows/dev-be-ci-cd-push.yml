@@ -54,12 +54,9 @@ jobs:
       - name: Pull Latest Docker Image
         run: |
           sudo docker login --username ${{ secrets.DOCKERHUB_DEV_USERNAME }} --password ${{ secrets.DOCKERHUB_DEV_TOKEN }}
-          if sudo docker inspect spring-baton &>/dev/null; then
-            sudo docker stop spring-baton
-            sudo docker rm -f spring-baton
-            sudo docker image prune -af
-          fi
           sudo docker pull 2023baton/2023baton:latest
 
       - name: Docker Compose
-        run: ./zero-downtime-deploy.sh
+        run: |
+          ./zero-downtime-deploy.sh
+          sudo docker image prune -af
