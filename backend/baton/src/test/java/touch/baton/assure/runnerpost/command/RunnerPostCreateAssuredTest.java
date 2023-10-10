@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.common.response.ErrorResponse;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 
@@ -19,7 +19,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_게시글_등록이_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -43,7 +43,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_제목이_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest(null,
                 List.of("Java", "Spring"),
@@ -67,7 +67,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_태그가_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 null,
@@ -91,7 +91,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_PR_URL이_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -115,7 +115,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_마감기한이_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -139,7 +139,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_마감기한이_현재보다_과거면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -163,7 +163,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 구현_내용이_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -187,7 +187,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 궁금한_내용이_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -211,7 +211,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 참고_사항이_null이면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),
@@ -235,7 +235,7 @@ class RunnerPostCreateAssuredTest extends AssuredTestConfig {
     @Test
     void 게시글_내용이_1000자_보다_길면_러너_게시글_등록_실패한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final RunnerPostCreateRequest 게시글_생성_요청 = new RunnerPostCreateRequest("코드 리뷰 해주세요.",
                 List.of("Java", "Spring"),

@@ -5,7 +5,7 @@ import touch.baton.assure.common.HttpStatusAndLocationHeader;
 import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantCreateSupport;
 import touch.baton.assure.runnerpost.support.command.applicant.RunnerPostApplicantDeleteAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,8 +20,8 @@ class RunnerPostApplicantDeleteAssuredTest extends AssuredTestConfig {
     @Test
     void 러너_게시글에_보낸_리뷰_제안을_취소한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
-        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
+        final String 디투_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
         final Long 디투_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(디투_액세스_토큰);
 
         // when

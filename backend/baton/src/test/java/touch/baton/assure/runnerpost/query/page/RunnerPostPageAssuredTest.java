@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.runnerpost.support.RunnerPostPageSupport;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.common.response.PageResponse;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
@@ -23,7 +23,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
     @Test
     void 조건_없이_러너_게시글_첫_페이지_조회에_성공한다() {
         // given
-        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final Long 러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
 
@@ -59,7 +59,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
     @Test
     void 조건_없이_러너_게시글_중간_페이지_조회에_성공한다() {
         // given
-        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
 
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
@@ -96,7 +96,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
     @Test
     void 리뷰_상태를_조건으로_러너_게시글_첫_페이지_조회에_성공한다() {
         // given
-        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final Long 러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
 
@@ -132,7 +132,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
     @Test
     void 리뷰_상태를_조건으로_러너_게시글_중간_페이지_조회에_성공한다() {
         // given
-        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
 
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
@@ -169,7 +169,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
     @Test
     void 태그_이름과_리뷰_상태를_조건으로_러너_게시글_첫_페이지_조회에_성공한다() {
         // given
-        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final Long 러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
 
@@ -205,7 +205,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
     @Test
     void 태그_이름과_리뷰_상태를_조건으로_러너_게시글_중간_페이지_조회에_성공한다() {
         // given
-        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.ditooAuthCode());
+        final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.ditooAuthCode());
 
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);

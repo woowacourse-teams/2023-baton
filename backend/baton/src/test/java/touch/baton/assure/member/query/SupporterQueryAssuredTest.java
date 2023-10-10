@@ -3,7 +3,7 @@ package touch.baton.assure.member.query;
 import org.junit.jupiter.api.Test;
 import touch.baton.assure.member.support.query.SupporterQueryAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.member.command.vo.SocialId;
 
@@ -18,7 +18,7 @@ class SupporterQueryAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_프로필을_조회한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Supporter 서포터_헤나 = supporterRepository.getBySocialId(헤나_소셜_아이디);
@@ -35,7 +35,7 @@ class SupporterQueryAssuredTest extends AssuredTestConfig {
     @Test
     void 서포터_마이페이지_프로필을_조회한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final SocialId 헤나_소셜_아이디 = jwtTestManager.parseToSocialId(헤나_액세스_토큰);
         final Supporter 서포터_헤나 = supporterRepository.getBySocialId(헤나_소셜_아이디);

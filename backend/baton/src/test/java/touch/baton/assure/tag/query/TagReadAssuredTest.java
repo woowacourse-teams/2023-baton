@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import touch.baton.assure.runnerpost.support.command.RunnerPostCreateSupport;
 import touch.baton.assure.tag.support.query.TagAssuredSupport;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.domain.tag.command.vo.TagReducedName;
 
@@ -21,7 +21,7 @@ class TagReadAssuredTest extends AssuredTestConfig {
     @Test
     void 태그_검색에_성공한다() {
         // given
-        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(MockAuthCodes.hyenaAuthCode());
+        final String 헤나_액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
         러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(헤나_액세스_토큰, List.of("java", "javascript", "script"));
         final TagReducedName reducedName = TagReducedName.from("ja");
         final List<Tag> 검색된_태그_목록 = tagRepository.readTagsByReducedName(reducedName);
