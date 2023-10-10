@@ -37,7 +37,8 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
 
     @BeforeEach
     void setUp(@Autowired NotificationCommandRepository notificationCommandRepository,
-               @Autowired RunnerPostQueryRepository runnerPostQueryRepository) {
+               @Autowired RunnerPostQueryRepository runnerPostQueryRepository
+    ) {
         notificationEventListener = new NotificationEventListener(notificationCommandRepository, runnerPostQueryRepository);
     }
 
@@ -55,8 +56,8 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
         // then
         final List<Notification> actualNotifications = notificationQueryRepository.findByMemberIdLimit(targetRunner.getMember().getId(), 10);
 
-        final String expectedNotificationTitle = TITLE_RUNNER_POST_APPLICANT.getText();
-        final String expectedNotificationMessage = String.format(MESSAGE_REFERENCED_BY_RUNNER_POST.getText(), runnerPost.getTitle().getValue());
+        final String expectedNotificationTitle = "서포터의 제안이 왔습니다.";
+        final String expectedNotificationMessage = String.format("관련 게시글 - %s", runnerPost.getTitle().getValue());
         final NotificationType expectedNotificationType = NotificationType.RUNNER_POST;
         final Long expectedReferencedId = runnerPost.getId();
         final boolean expectedIsRead = false;
@@ -66,13 +67,13 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
             softly.assertThat(actualNotifications).hasSize(1);
             final Notification actual = actualNotifications.get(0);
 
-            assertThat(actual.getId()).isPositive();
-            assertThat(actual.getNotificationTitle().getValue()).isEqualTo(expectedNotificationTitle);
-            assertThat(actual.getNotificationMessage().getValue()).isEqualTo(expectedNotificationMessage);
-            assertThat(actual.getNotificationType()).isEqualTo(expectedNotificationType);
-            assertThat(actual.getNotificationReferencedId().getValue()).isEqualTo(expectedReferencedId);
-            assertThat(actual.getIsRead().getValue()).isEqualTo(expectedIsRead);
-            assertThat(actual.getMember()).isEqualTo(expectedMember);
+            softly.assertThat(actual.getId()).isPositive();
+            softly.assertThat(actual.getNotificationTitle().getValue()).isEqualTo(expectedNotificationTitle);
+            softly.assertThat(actual.getNotificationMessage().getValue()).isEqualTo(expectedNotificationMessage);
+            softly.assertThat(actual.getNotificationType()).isEqualTo(expectedNotificationType);
+            softly.assertThat(actual.getNotificationReferencedId().getValue()).isEqualTo(expectedReferencedId);
+            softly.assertThat(actual.getIsRead().getValue()).isEqualTo(expectedIsRead);
+            softly.assertThat(actual.getMember()).isEqualTo(expectedMember);
         });
     }
 
@@ -90,8 +91,8 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
         // then
         final List<Notification> actualNotifications = notificationQueryRepository.findByMemberIdLimit(targetRunner.getMember().getId(), 10);
 
-        final String expectedNotificationTitle = TITLE_RUNNER_POST_REVIEW_STATUS_DONE.getText();
-        final String expectedNotificationMessage = String.format(MESSAGE_REFERENCED_BY_RUNNER_POST.getText(), runnerPost.getTitle().getValue());
+        final String expectedNotificationTitle = "코드 리뷰 상태가 완료로 변경되었습니다.";
+        final String expectedNotificationMessage = String.format("관련 게시글 - %s", runnerPost.getTitle().getValue());
         final NotificationType expectedNotificationType = NotificationType.RUNNER_POST;
         final Long expectedReferencedId = runnerPost.getId();
         final boolean expectedIsRead = false;
@@ -101,13 +102,13 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
             softly.assertThat(actualNotifications).hasSize(1);
             final Notification actual = actualNotifications.get(0);
 
-            assertThat(actual.getId()).isPositive();
-            assertThat(actual.getNotificationTitle().getValue()).isEqualTo(expectedNotificationTitle);
-            assertThat(actual.getNotificationMessage().getValue()).isEqualTo(expectedNotificationMessage);
-            assertThat(actual.getNotificationType()).isEqualTo(expectedNotificationType);
-            assertThat(actual.getNotificationReferencedId().getValue()).isEqualTo(expectedReferencedId);
-            assertThat(actual.getIsRead().getValue()).isEqualTo(expectedIsRead);
-            assertThat(actual.getMember()).isEqualTo(expectedMember);
+            softly.assertThat(actual.getId()).isPositive();
+            softly.assertThat(actual.getNotificationTitle().getValue()).isEqualTo(expectedNotificationTitle);
+            softly.assertThat(actual.getNotificationMessage().getValue()).isEqualTo(expectedNotificationMessage);
+            softly.assertThat(actual.getNotificationType()).isEqualTo(expectedNotificationType);
+            softly.assertThat(actual.getNotificationReferencedId().getValue()).isEqualTo(expectedReferencedId);
+            softly.assertThat(actual.getIsRead().getValue()).isEqualTo(expectedIsRead);
+            softly.assertThat(actual.getMember()).isEqualTo(expectedMember);
         });
     }
 
@@ -129,8 +130,8 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
         // then
         final List<Notification> actualNotifications = notificationQueryRepository.findByMemberIdLimit(targetSupporter.getMember().getId(), 10);
 
-        final String expectedNotificationTitle = TITLE_RUNNER_POST_ASSIGN_SUPPORTER.getText();
-        final String expectedNotificationMessage = String.format(MESSAGE_REFERENCED_BY_RUNNER_POST.getText(), runnerPost.getTitle().getValue());
+        final String expectedNotificationTitle = "코드 리뷰 매칭이 완료되었습니다.";
+        final String expectedNotificationMessage = String.format("관련 게시글 - %s", runnerPost.getTitle().getValue());
         final NotificationType expectedNotificationType = NotificationType.RUNNER_POST;
         final Long expectedReferencedId = runnerPost.getId();
         final boolean expectedIsRead = false;
@@ -140,13 +141,13 @@ class NotificationEventListenerTest extends RepositoryTestConfig {
             softly.assertThat(actualNotifications).hasSize(1);
             final Notification actual = actualNotifications.get(0);
 
-            assertThat(actual.getId()).isPositive();
-            assertThat(actual.getNotificationTitle().getValue()).isEqualTo(expectedNotificationTitle);
-            assertThat(actual.getNotificationMessage().getValue()).isEqualTo(expectedNotificationMessage);
-            assertThat(actual.getNotificationType()).isEqualTo(expectedNotificationType);
-            assertThat(actual.getNotificationReferencedId().getValue()).isEqualTo(expectedReferencedId);
-            assertThat(actual.getIsRead().getValue()).isEqualTo(expectedIsRead);
-            assertThat(actual.getMember()).isEqualTo(expectedMember);
+            softly.assertThat(actual.getId()).isPositive();
+            softly.assertThat(actual.getNotificationTitle().getValue()).isEqualTo(expectedNotificationTitle);
+            softly.assertThat(actual.getNotificationMessage().getValue()).isEqualTo(expectedNotificationMessage);
+            softly.assertThat(actual.getNotificationType()).isEqualTo(expectedNotificationType);
+            softly.assertThat(actual.getNotificationReferencedId().getValue()).isEqualTo(expectedReferencedId);
+            softly.assertThat(actual.getIsRead().getValue()).isEqualTo(expectedIsRead);
+            softly.assertThat(actual.getMember()).isEqualTo(expectedMember);
         });
     }
 }

@@ -4,16 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.event.TransactionalEventListener;
+import touch.baton.domain.member.command.Member;
 import touch.baton.domain.notification.command.Notification;
 import touch.baton.domain.notification.command.repository.NotificationCommandRepository;
+import touch.baton.domain.notification.command.vo.IsRead;
 import touch.baton.domain.notification.command.vo.NotificationMessage;
 import touch.baton.domain.notification.command.vo.NotificationReferencedId;
-import touch.baton.domain.notification.command.vo.NotificationText;
 import touch.baton.domain.notification.command.vo.NotificationTitle;
 import touch.baton.domain.notification.command.vo.NotificationType;
-import touch.baton.domain.notification.command.vo.IsRead;
 import touch.baton.domain.notification.exception.NotificationBusinessException;
-import touch.baton.domain.member.command.Member;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.event.RunnerPostApplySupporterEvent;
 import touch.baton.domain.runnerpost.command.event.RunnerPostAssignSupporterEvent;
@@ -22,10 +21,6 @@ import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 
 import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
 import static org.springframework.transaction.event.TransactionPhase.AFTER_COMMIT;
-import static touch.baton.domain.notification.command.vo.NotificationText.MESSAGE_REFERENCED_BY_RUNNER_POST;
-import static touch.baton.domain.notification.command.vo.NotificationText.TITLE_RUNNER_POST_APPLICANT;
-import static touch.baton.domain.notification.command.vo.NotificationText.TITLE_RUNNER_POST_ASSIGN_SUPPORTER;
-import static touch.baton.domain.notification.command.vo.NotificationText.TITLE_RUNNER_POST_REVIEW_STATUS_DONE;
 
 @RequiredArgsConstructor
 @Component
@@ -40,7 +35,7 @@ public class NotificationEventListener {
         final RunnerPost foundRunnerPost = getRunnerPostWithRunnerOrThrowException(event.runnerPostId());
 
         notificationCommandRepository.save(
-                createNotification(TITLE_RUNNER_POST_APPLICANT, foundRunnerPost, foundRunnerPost.getRunner().getMember())
+                createNotification("서포터의 제안이 왔습니다.", foundRunnerPost, foundRunnerPost.getRunner().getMember())
         );
     }
 
@@ -49,10 +44,10 @@ public class NotificationEventListener {
                 .orElseThrow(() -> new NotificationBusinessException("러너 게시글 식별자값으로 러너 게시글과 러너(작성자)를 조회하던 도중에 오류가 발생하였습니다."));
     }
 
-    private Notification createNotification(final NotificationText notificationText, final RunnerPost runnerPost, final Member targetMember) {
+    private Notification createNotification(final String notificationTitle, final RunnerPost runnerPost, final Member targetMember) {
         return Notification.builder()
-                .notificationTitle(new NotificationTitle(notificationText.getText()))
-                .notificationMessage(new NotificationMessage(String.format(MESSAGE_REFERENCED_BY_RUNNER_POST.getText(), runnerPost.getTitle().getValue())))
+                .notificationTitle(new NotificationTitle(notificationTitle))
+                .notificationMessage(new NotificationMessage(String.format("관련 게시글 - %s", runnerPost.getTitle().getValue())))
                 .notificationType(NotificationType.RUNNER_POST)
                 .notificationReferencedId(new NotificationReferencedId(runnerPost.getId()))
                 .isRead(IsRead.asUnRead())
@@ -66,7 +61,7 @@ public class NotificationEventListener {
         final RunnerPost foundRunnerPost = getRunnerPostWithRunnerOrThrowException(event.runnerPostId());
 
         notificationCommandRepository.save(
-                createNotification(TITLE_RUNNER_POST_REVIEW_STATUS_DONE, foundRunnerPost, foundRunnerPost.getRunner().getMember())
+                createNotification("코드 리뷰 상태가 완료로 변경되었습니다.", foundRunnerPost, foundRunnerPost.getRunner().getMember())
         );
     }
 
@@ -76,7 +71,7 @@ public class NotificationEventListener {
         final RunnerPost foundRunnerPost = getRunnerPostWithSupporterOrThrowException(event.runnerPostId());
 
         notificationCommandRepository.save(
-                createNotification(TITLE_RUNNER_POST_ASSIGN_SUPPORTER, foundRunnerPost, foundRunnerPost.getSupporter().getMember())
+                createNotification("코드 리뷰 매칭이 완료되었습니다.", foundRunnerPost, foundRunnerPost.getSupporter().getMember())
         );
     }
 
