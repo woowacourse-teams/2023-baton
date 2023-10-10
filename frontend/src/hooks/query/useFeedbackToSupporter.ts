@@ -24,8 +24,6 @@ export const useFeedbackToSupporter = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '피드백 작성에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

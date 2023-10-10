@@ -21,8 +21,6 @@ export const useRunnerProfileEdit = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '프로필 수정에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

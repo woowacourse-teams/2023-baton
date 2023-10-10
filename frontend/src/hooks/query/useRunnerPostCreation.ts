@@ -25,8 +25,6 @@ export const useRunnerPostCreation = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '게시물 등록에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

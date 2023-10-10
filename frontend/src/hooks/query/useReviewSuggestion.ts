@@ -28,8 +28,6 @@ export const useReviewSuggestion = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '리뷰 제안 요청이 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

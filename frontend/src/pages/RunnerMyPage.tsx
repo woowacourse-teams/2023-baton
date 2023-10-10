@@ -9,18 +9,17 @@ import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
 import { PostOptions, runnerPostOptions } from '@/utils/postOption';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
-import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ReviewStatus } from '@/types/runnerPost';
 import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
 import { useMyPostList } from '@/hooks/query/useMyPostList';
+import { isLogin } from '@/apis/auth';
 
 const RunnerMyPage = () => {
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
   const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
 
-  const { isLogin } = useLogin();
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
   const { goToProfileEditPage, goToLoginPage } = usePageRouter();
@@ -28,7 +27,7 @@ const RunnerMyPage = () => {
   const { data: myRunnerProfile } = useMyRunnerProfile();
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLogin()) {
       showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
       goToLoginPage();
     }

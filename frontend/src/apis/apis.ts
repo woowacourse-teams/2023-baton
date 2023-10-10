@@ -77,6 +77,23 @@ export const getNotification = () => {
   return request.get<GetNotificationResponse>(`/notifications`, true);
 };
 
+export const getOtherRunnerProfile = (userId: number) => {
+  return request.get<GetRunnerProfileResponse>(`/profile/runner/${userId}`, false);
+};
+
+export const getOtherSupporterProfile = (userId: number) => {
+  return request.get<GetRunnerProfileResponse>(`/profile/supporter/${userId}`, false);
+};
+
+export const getOtherSupporterPost = (supporterId: number) => {
+  const params = new URLSearchParams([
+    ['supporterId', supporterId.toString()],
+    ['reviewStatus', 'DONE'],
+  ]);
+
+  return request.get<GetRunnerPostResponse>(`/posts/runner/search?${params.toString()}`, false);
+};
+
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {
   const body = JSON.stringify(formData);
   return request.post<void>(`/posts/runner`, body);
@@ -90,6 +107,11 @@ export const postReviewSuggestionWithMessage = (runnerPostId: number, message: s
 export const postFeedbackToSupporter = (formData: PostFeedbackRequest) => {
   const body = JSON.stringify(formData);
   return request.post<void>(`/feedback/supporter`, body);
+};
+
+export const postMissionBranchCreation = (repoName: string) => {
+  const body = JSON.stringify({ repoName });
+  return request.post<void>(`/branch`, body);
 };
 
 export const patchReviewCancelation = (runnerPostId: number) => {
@@ -125,26 +147,4 @@ export const deleteRunnerPost = (runnerPostId: number) => {
 
 export const deleteNotification = (notificationsId: number) => {
   return request.delete<void>(`/notifications/${notificationsId}`);
-};
-
-export const postMissionBranchCreation = (repoName: string) => {
-  const body = JSON.stringify({ repoName });
-  return request.post<void>(`/branch`, body);
-};
-
-export const getOtherRunnerProfile = (userId: number) => {
-  return request.get<GetRunnerProfileResponse>(`/profile/runner/${userId}`, false);
-};
-
-export const getOtherSupporterProfile = (userId: number) => {
-  return request.get<GetRunnerProfileResponse>(`/profile/supporter/${userId}`, false);
-};
-
-export const getOtherSupporterPost = (supporterId: number) => {
-  const params = new URLSearchParams([
-    ['supporterId', supporterId.toString()],
-    ['reviewStatus', 'DONE'],
-  ]);
-
-  return request.get<GetRunnerPostResponse>(`/posts/runner/search?${params.toString()}`, false);
 };

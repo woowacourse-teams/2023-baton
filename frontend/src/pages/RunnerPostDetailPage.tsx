@@ -17,12 +17,12 @@ import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 import { validateMessage } from '@/utils/validate';
 import useViewport from '@/hooks/useViewport';
-import { useLogin } from '@/hooks/useLogin';
 import GuideContents from '@/components/GuideContents/GuideContents';
 import { useRunnerPostDetail } from '@/hooks/query/useRunnerPostDetail';
 import { useRunnerPostDelete } from '@/hooks/query/useRunnerPostDelete';
 import { useReviewSuggestion } from '@/hooks/query/useReviewSuggestion';
 import { ModalContext } from '@/contexts/ModalContext';
+import { isLogin } from '@/apis/auth';
 
 const RunnerPostPage = () => {
   const { goBack, goToRunnerProfilePage, goToLoginPage } = usePageRouter();
@@ -30,14 +30,12 @@ const RunnerPostPage = () => {
   const { runnerPostId: paramRunnerPostId } = useParams();
   const runnerPostId = Number(paramRunnerPostId);
 
-  const { isLogin } = useLogin();
-
   const { isMobile } = useViewport();
 
   const { showErrorToast } = useContext(ToastContext);
   const { openModal, closeModal } = useContext(ModalContext);
 
-  const { data: runnerPostDetail } = useRunnerPostDetail(runnerPostId, isLogin);
+  const { data: runnerPostDetail } = useRunnerPostDetail(runnerPostId, isLogin());
   const { mutate: deleteRunnerPost } = useRunnerPostDelete();
   const { mutate: suggestReview, isPending: isPendingSuggestion } = useReviewSuggestion();
 

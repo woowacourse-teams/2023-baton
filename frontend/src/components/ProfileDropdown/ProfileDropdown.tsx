@@ -2,11 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import MyPageIcon from '@/assets/my-page-icon.svg';
 import LogoutIcon from '@/assets/logout-icon.svg';
-import { useLogin } from '@/hooks/useLogin';
 import { usePageRouter } from '@/hooks/usePageRouter';
+import { logout } from '@/apis/auth';
 
 const ProfileDropdown = () => {
-  const { logout } = useLogin();
   const { goToMainPage, goToRunnerMyPage, goToSupporterMyPage } = usePageRouter();
 
   const handleClickRunnerMyPage = () => {
@@ -21,7 +20,6 @@ const ProfileDropdown = () => {
     logout();
 
     goToMainPage();
-    window.location.reload();
   };
 
   return (

@@ -12,6 +12,7 @@ import myPagePostList from './data/myPagePost/myPagePostList.json';
 import tagList from './data/tagList.json';
 import notificationList from './data/notification.json';
 import { BATON_BASE_URL } from '@/constants';
+import { getRestMinute } from '@/utils/jwt';
 
 export const handlers = [
   rest.get(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
@@ -56,7 +57,16 @@ export const handlers = [
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/me`, async (req, res, ctx) => {
-    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile));
+    const jwt = req.headers.get('Authorization');
+
+    return jwt && getRestMinute(jwt) > 0
+      ? res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(headerProfile))
+      : res(
+          ctx.delay(300),
+          ctx.status(401),
+          ctx.set('Content-Type', 'application/json'),
+          ctx.json({ errorCode: 'OA003', message: 'Authorization 값을 입력해주세요.' }),
+        );
   }),
 
   rest.put(`${BATON_BASE_URL}/posts/runner/:runnerPostId`, async (req, res, ctx) => {
@@ -197,6 +207,21 @@ export const handlers = [
 
   rest.patch(`${BATON_BASE_URL}/notifications/:notificationId`, async (req, res, ctx) => {
     return res(ctx.status(201));
+  }),
+
+  rest.get(`${BATON_BASE_URL}/oauth/login/github`, async (req, res, ctx) => {
+    return res(
+      ctx.delay(300),
+      ctx.status(200),
+      ctx.set({
+        Authorization:
+          'eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXRvbiIsImlhdCI6MTY5NTI2MDcxNSwiZXhwIjozMDk1MjYyNTE1LCJzb2NpYWxJZCI6Imd1cmlkYWVrIn0.TelcG0n8a7IxDU0-bOttjE9NZ4KtDgwaq5UhRkg1y9s',
+      }),
+    );
+  }),
+
+  rest.patch(`${BATON_BASE_URL}/oauth/logout`, async (req, res, ctx) => {
+    return res(ctx.status(204));
   }),
 ];
 

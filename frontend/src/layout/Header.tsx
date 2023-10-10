@@ -1,92 +1,27 @@
 import { usePageRouter } from '@/hooks/usePageRouter';
-import React, { Suspense, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import NotificationOffIcon from '@/assets/notification_off.svg';
-import NotificationOnIcon from '@/assets/notification_on.svg';
-import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useLogin } from '@/hooks/useLogin';
-import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
-import Dropdown from '@/components/common/Dropdown/Dropdown';
-import NotificationDropdown from '@/components/NotificationDropdown/NotificationDropdown';
-import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown';
-import { useNotification } from '@/hooks/query/useNotification';
+import { isLogin } from '@/apis/auth';
+import MyMenu from './MyMenu';
 
 const Header = () => {
-  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
-  const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-
   const { goToMainPage, goToLoginPage } = usePageRouter();
-  const { isLogin } = useLogin();
-  const { data: profile } = useHeaderProfile(isLogin);
-  const { data: notificationList } = useNotification();
-
-  const handleNotificationDropdown = () => {
-    setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
-    setIsProfileDropdownOpen(false);
-  };
-
-  const handleProfileDropdown = () => {
-    setIsProfileDropdownOpen(!isProfileDropdownOpen);
-    setIsNotificationDropdownOpen(false);
-  };
-
-  const handleCloseDropdown = () => {
-    setIsProfileDropdownOpen(false);
-    setIsNotificationDropdownOpen(false);
-  };
 
   return (
     <>
       <S.HeaderWrapper>
         <S.HeaderContainer>
           <S.Logo onClick={goToMainPage} />
-          <S.MenuContainer>
-            {isLogin ? (
-              <>
-                <S.NotificationContainer>
-                  <Dropdown
-                    onClose={handleCloseDropdown}
-                    gapFromTrigger="52px"
-                    isDropdownOpen={isNotificationDropdownOpen}
-                    trigger={
-                      notificationList?.data.length === 0 ? (
-                        <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOffIcon} />
-                      ) : (
-                        <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOnIcon} />
-                      )
-                    }
-                  >
-                    <Suspense>
-                      <NotificationDropdown notificationList={notificationList.data} />
-                    </Suspense>
-                  </Dropdown>
-                </S.NotificationContainer>
-                <Dropdown
-                  onClose={handleCloseDropdown}
-                  gapFromTrigger="57px"
-                  isDropdownOpen={isProfileDropdownOpen}
-                  trigger={
-                    <S.AvatarContainer onClick={handleProfileDropdown}>
-                      <Avatar
-                        width="35px"
-                        height="35px"
-                        imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'}
-                      />
-                    </S.AvatarContainer>
-                  }
-                >
-                  <ProfileDropdown />
-                </Dropdown>
-              </>
-            ) : (
-              <Button fontSize="14px" width="76px" height="35px" colorTheme="RED" onClick={goToLoginPage}>
-                로그인
-              </Button>
-            )}
-          </S.MenuContainer>
+          {isLogin() ? (
+            <MyMenu />
+          ) : (
+            <Button fontSize="14px" width="76px" height="35px" colorTheme="RED" onClick={goToLoginPage}>
+              로그인
+            </Button>
+          )}
         </S.HeaderContainer>
       </S.HeaderWrapper>
     </>
