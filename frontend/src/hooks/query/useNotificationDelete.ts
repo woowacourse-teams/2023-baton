@@ -2,18 +2,18 @@ import { useContext } from 'react';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useMutation } from '@tanstack/react-query';
 import { APIError } from '@/types/error';
-import { deleteAlarm } from '@/apis/apis';
+import { deleteNotification } from '@/apis/apis';
 import { ERROR_TITLE } from '@/constants/message';
 import { queryClient } from './queryClient';
 
-export const useAlarmDelete = () => {
+export const useNotificationDelete = () => {
   const { showErrorToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, number>({
-    mutationFn: (alarmId: number) => deleteAlarm(alarmId),
+    mutationFn: (notificationId: number) => deleteNotification(notificationId),
 
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['alarm'] });
+      queryClient.invalidateQueries({ queryKey: ['notification'] });
     },
 
     onError: () => {

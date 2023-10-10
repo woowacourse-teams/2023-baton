@@ -67,6 +67,7 @@ const MainPage = () => {
             </Button>
           </S.RightSideContainer>
         </S.ControlPanelContainer>
+
         <S.RunnerPostContainer>
           <RunnerPostList posts={runnerPostList} />
           <S.MoreButtonWrapper>

@@ -16,7 +16,7 @@ import {
 import { GetMyPagePostResponse } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
-import { GetAlarmResponse } from '@/types/alarm';
+import { GetNotificationResponse } from '@/types/notification';
 
 export const getRunnerPost = (limit: number, reviewStatus?: ReviewStatus, cursor?: number, tagName?: string) => {
   const params = new URLSearchParams({
@@ -73,8 +73,8 @@ export const getRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   return request.get<GetDetailedRunnerPostResponse>(`/posts/runner/${runnerPostId}`, isLogin);
 };
 
-export const getAlram = (isLogin: boolean) => {
-  return request.get<GetAlarmResponse>(`/alarms`, isLogin);
+export const getAlram = () => {
+  return request.get<GetNotificationResponse>(`/notifications`, true);
 };
 
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {
@@ -115,16 +115,16 @@ export const patchProposedSupporterSelection = (runnerPostId: number, supporterI
   return request.patch<void>(`/posts/runner/${runnerPostId}/supporters`, body);
 };
 
-export const patchAlarmCheck = (alarmId: number) => {
-  return request.patch<void>(`/alarms/${alarmId}`, undefined);
+export const patchNotificationCheck = (notificationId: number) => {
+  return request.patch<void>(`/notifications/${notificationId}`, undefined);
 };
 
 export const deleteRunnerPost = (runnerPostId: number) => {
   return request.delete<void>(`/posts/runner/${runnerPostId}`);
 };
 
-export const deleteAlarm = (alarmsId: number) => {
-  return request.delete<void>(`/alarms/${alarmsId}`);
+export const deleteNotification = (notificationsId: number) => {
+  return request.delete<void>(`/notifications/${notificationsId}`);
 };
 
 export const postMissionBranchCreation = (repoName: string) => {

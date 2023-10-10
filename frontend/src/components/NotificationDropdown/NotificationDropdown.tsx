@@ -1,42 +1,47 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Alarm } from '@/types/alarm';
+import { Notification } from '@/types/notification';
 import { usePageRouter } from '@/hooks/usePageRouter';
-import { useAlarmDelete } from '@/hooks/query/useAlarmDelete';
-import { useAlarmCheck } from '@/hooks/query/useAlarmCheck';
+import { useNotificationDelete } from '@/hooks/query/useNotificationDelete';
+import { useNotificationCheck } from '@/hooks/query/useNotificationCheck';
 
 interface Props {
-  alarmList: Alarm[];
+  notificationList: Notification[];
 }
 
-const AlarmDropdown = ({ alarmList }: Props) => {
-  const { mutate: deleteAlarm } = useAlarmDelete();
-  const { mutate: patchAlarmCheck } = useAlarmCheck();
+const NotificationDropdown = ({ notificationList }: Props) => {
+  const { mutate: deleteNotification } = useNotificationDelete();
+  const { mutate: patchNotificationCheck } = useNotificationCheck();
   const { goToRunnerPostPage } = usePageRouter();
 
-  const handlePostClick = (alarmId: number, runnerPostId: number) => {
-    patchAlarmCheck(alarmId);
+  const handlePostClick = (notificationId: number, runnerPostId: number) => {
+    patchNotificationCheck(notificationId);
     goToRunnerPostPage(runnerPostId);
   };
 
-  const handleDeleteAlarm = (e: React.MouseEvent, alarmId: number) => {
+  const handleDeleteNotification = (e: React.MouseEvent, notificationId: number) => {
     e.stopPropagation();
 
-    deleteAlarm(alarmId);
+    deleteNotification(notificationId);
   };
 
   return (
     <S.DropdownContainer>
-      {alarmList?.length > 0 ? (
-        alarmList?.map((alarm) => {
+      {notificationList?.length > 0 ? (
+        notificationList?.map((notification) => {
           return (
-            <S.DropdownList key={alarm.alarmId} onClick={() => handlePostClick(alarm.alarmId, alarm.referencedId)}>
-              <S.AlarmTitleContainer>
-                <S.AlarmTitle>{alarm.title}</S.AlarmTitle>
-                <S.CloseButton onClick={(e) => handleDeleteAlarm(e, alarm.alarmId)}>삭제</S.CloseButton>
-              </S.AlarmTitleContainer>
-              <S.AlarmContents>{alarm.message}</S.AlarmContents>
-              <S.AlarmTime>{alarm.createdAt}</S.AlarmTime>
+            <S.DropdownList
+              key={notification.notificationId}
+              onClick={() => handlePostClick(notification.notificationId, notification.referencedId)}
+            >
+              <S.NotificationTitleContainer>
+                <S.NotificationTitle>{notification.title}</S.NotificationTitle>
+                <S.CloseButton onClick={(e) => handleDeleteNotification(e, notification.notificationId)}>
+                  삭제
+                </S.CloseButton>
+              </S.NotificationTitleContainer>
+              <S.NotificationContents>{notification.message}</S.NotificationContents>
+              <S.NotificationTime>{notification.createdAt}</S.NotificationTime>
             </S.DropdownList>
           );
         })
@@ -47,7 +52,7 @@ const AlarmDropdown = ({ alarmList }: Props) => {
   );
 };
 
-export default AlarmDropdown;
+export default NotificationDropdown;
 
 const S = {
   DropdownContainer: styled.ul`
@@ -83,7 +88,7 @@ const S = {
     }
   `,
 
-  AlarmTitleContainer: styled.div`
+  NotificationTitleContainer: styled.div`
     display: flex;
     justify-content: space-between;
   `,
@@ -100,7 +105,7 @@ const S = {
     }
   `,
 
-  AlarmTitle: styled.p`
+  NotificationTitle: styled.p`
     font-size: 16px;
     font-weight: 700;
     position: relative;
@@ -123,7 +128,7 @@ const S = {
     }
   `,
 
-  AlarmContents: styled.p`
+  NotificationContents: styled.p`
     font-size: 14px;
     color: var(--gray-700);
 
@@ -132,7 +137,7 @@ const S = {
     }
   `,
 
-  AlarmTime: styled.p`
+  NotificationTime: styled.p`
     font-size: 12px;
     color: var(--gray-700);
 

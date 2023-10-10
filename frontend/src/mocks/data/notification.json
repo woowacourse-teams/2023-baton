@@ -1,19 +1,19 @@
 {
   "data": [
     {
-      "alarmId": 1,
+      "notificationId": 1,
       "title": "서포터의 제안이 왔습니다.",
       "message": "관련 게시글 - [보스 잡기 미션] ㅇㅇㅇ 미션 제출합니다.",
-      "alarmType": "RUNNER_POST",
+      "notificationType": "RUNNER_POST",
       "referencedId": 1,
       "isRead": false,
       "createdAt": "2023-07-28T13:30"
     },
     {
-      "alarmId": 2,
+      "notificationId": 2,
       "title": "서포터의 제안이 왔습니다.",
       "message": "관련 게시글 - [보스 잡기 미션] ㅇㅇㅇ 미션 제출합니다.",
-      "alarmType": "RUNNER_POST",
+      "notificationType": "RUNNER_POST",
       "referencedId": 3,
       "isRead": false,
       "createdAt": "2023-07-28T13:30"

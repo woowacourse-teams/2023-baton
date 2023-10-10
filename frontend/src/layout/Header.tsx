@@ -3,39 +3,39 @@ import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import AlarmOffIcon from '@/assets/alarm_off.svg';
-import AlarmOnIcon from '@/assets/alarm_on.svg';
+import NotificationOffIcon from '@/assets/notification_off.svg';
+import NotificationOnIcon from '@/assets/notification_on.svg';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import { useLogin } from '@/hooks/useLogin';
 import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
 import Dropdown from '@/components/common/Dropdown/Dropdown';
-import AlarmDropdown from '@/components/AlarmDropdown/AlarmDropdown';
+import NotificationDropdown from '@/components/NotificationDropdown/NotificationDropdown';
 import ProfileDropdown from '@/components/ProfileDropdown/ProfileDropdown';
-import { useAlarm } from '@/hooks/query/useAlarm';
+import { useNotification } from '@/hooks/query/useNotification';
 
 const Header = () => {
-  const [isAlarmDropdownOpen, setIsAlarmDropdownOpen] = useState(false);
+  const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
 
   const { goToMainPage, goToLoginPage } = usePageRouter();
   const { isLogin } = useLogin();
   const { data: profile } = useHeaderProfile(isLogin);
-  const { data: alarmList } = useAlarm(isLogin);
+  const { data: notificationList } = useNotification();
 
-  const handleAlarmDropdown = () => {
-    setIsAlarmDropdownOpen(!isAlarmDropdownOpen);
+  const handleNotificationDropdown = () => {
+    setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
     setIsProfileDropdownOpen(false);
   };
 
   const handleProfileDropdown = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
-    setIsAlarmDropdownOpen(false);
+    setIsNotificationDropdownOpen(false);
   };
 
   const handleCloseDropdown = () => {
     setIsProfileDropdownOpen(false);
-    setIsAlarmDropdownOpen(false);
+    setIsNotificationDropdownOpen(false);
   };
 
   return (
@@ -46,24 +46,24 @@ const Header = () => {
           <S.MenuContainer>
             {isLogin ? (
               <>
-                <S.AlarmContainer>
+                <S.NotificationContainer>
                   <Dropdown
                     onClose={handleCloseDropdown}
                     gapFromTrigger="52px"
-                    isDropdownOpen={isAlarmDropdownOpen}
+                    isDropdownOpen={isNotificationDropdownOpen}
                     trigger={
-                      alarmList?.data.length === 0 ? (
-                        <S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOffIcon} />
+                      notificationList?.data.length === 0 ? (
+                        <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOffIcon} />
                       ) : (
-                        <S.AlarmIcon onClick={handleAlarmDropdown} src={AlarmOnIcon} />
+                        <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOnIcon} />
                       )
                     }
                   >
                     <Suspense>
-                      <AlarmDropdown alarmList={alarmList.data} />
+                      <NotificationDropdown notificationList={notificationList.data} />
                     </Suspense>
                   </Dropdown>
-                </S.AlarmContainer>
+                </S.NotificationContainer>
                 <Dropdown
                   onClose={handleCloseDropdown}
                   gapFromTrigger="57px"
@@ -116,9 +116,9 @@ const S = {
     height: 80px;
   `,
 
-  AlarmContainer: styled.div``,
+  NotificationContainer: styled.div``,
 
-  AlarmIcon: styled.img`
+  NotificationIcon: styled.img`
     width: 25px;
     height: 25px;
 

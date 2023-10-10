@@ -10,7 +10,7 @@ import headerProfile from './data/headerProfile.json';
 import supporterProfilePost from './data/supporterProfilePost.json';
 import myPagePostList from './data/myPagePost/myPagePostList.json';
 import tagList from './data/tagList.json';
-import alarmList from './data/alarm.json';
+import notificationList from './data/notification.json';
 import { BATON_BASE_URL } from '@/constants';
 
 export const handlers = [
@@ -175,20 +175,27 @@ export const handlers = [
     return res(ctx.status(201));
   }),
 
-  rest.get(`${BATON_BASE_URL}/alarms`, async (req, res, ctx) => {
-    return res(ctx.delay(300), ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(alarmList));
+  rest.get(`${BATON_BASE_URL}/notifications`, async (req, res, ctx) => {
+    return res(
+      ctx.delay(300),
+      ctx.status(200),
+      ctx.set('Content-Type', 'application/json'),
+      ctx.json(notificationList),
+    );
   }),
 
-  rest.delete(`${BATON_BASE_URL}/alarms/:alarmId`, async (req, res, ctx) => {
-    const { alarmId } = req.params;
-    const { data: mockData } = alarmList;
+  rest.delete(`${BATON_BASE_URL}/notifications/:notificationId`, async (req, res, ctx) => {
+    const { notificationId } = req.params;
+    const { data: mockData } = notificationList;
 
-    const deletedAlarmList = mockData.filter((alarm) => alarm.alarmId !== Number(alarmId));
+    const deletedNotificationList = mockData.filter(
+      (notification) => notification.notificationId !== Number(notificationId),
+    );
 
     return res(ctx.delay(200), ctx.status(204));
   }),
 
-  rest.patch(`${BATON_BASE_URL}/alarms/:alarmId`, async (req, res, ctx) => {
+  rest.patch(`${BATON_BASE_URL}/notifications/:notificationId`, async (req, res, ctx) => {
     return res(ctx.status(201));
   }),
 ];
