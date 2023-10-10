@@ -5,7 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ResultPage = () => {
-  const { goToMyPage } = usePageRouter();
+  const { goToRunnerMyPage } = usePageRouter();
 
   return (
     <Layout>
@@ -14,7 +14,7 @@ const ResultPage = () => {
           {'리뷰 요청글 생성이 완료되었습니다.\n'}
           <S.Bold>러너 마이페이지</S.Bold>에서 <S.Bold>서포터를 선택</S.Bold>하여 리뷰를 진행해 주세요.
         </S.Message>
-        <Button colorTheme="WHITE" onClick={goToMyPage}>
+        <Button colorTheme="WHITE" onClick={goToRunnerMyPage}>
           확인
         </Button>
       </S.ResultPageContainer>

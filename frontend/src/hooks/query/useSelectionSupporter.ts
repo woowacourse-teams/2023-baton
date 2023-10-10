@@ -14,22 +14,20 @@ interface MutationArgs {
 
 export const useSelectionSupporter = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
-  const { goToMyPage } = usePageRouter();
+  const { goToRunnerMyPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, MutationArgs>({
-    mutationFn: async ({ runnerPostId, supporterId }) => patchProposedSupporterSelection(runnerPostId, supporterId),
+    mutationFn: ({ runnerPostId, supporterId }) => patchProposedSupporterSelection(runnerPostId, supporterId),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);
       queryClient.invalidateQueries({ queryKey: ['myRunnerPost', 'IN_PROGRESS'] });
-      goToMyPage();
+      goToRunnerMyPage();
     },
 
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '서포터 선택에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

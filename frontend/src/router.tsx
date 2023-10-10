@@ -5,7 +5,8 @@ import MainPage from './pages/MainPage';
 const RunnerPostPage = React.lazy(() => import('./pages/RunnerPostDetailPage'));
 const RunnerPostCreatePage = React.lazy(() => import('./pages/RunnerPostCreatePage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
-const MyPage = React.lazy(() => import('./pages/MyPage'));
+const RunnerMyPage = React.lazy(() => import('./pages/RunnerMyPage'));
+const SupporterMyPage = React.lazy(() => import('./pages/SupporterMyPage'));
 const GithubCallbackPage = React.lazy(() => import('./pages/GithubCallbackPage'));
 const ProfileEditPage = React.lazy(() => import('./pages/ProfileEditPage'));
 const SupporterSelectPage = React.lazy(() => import('./pages/SupporterSelectPage'));
@@ -20,7 +21,8 @@ export const ROUTER_PATH = {
   RUNNER_POST: '/runner-post/:runnerPostId',
   RUNNER_POST_CREATE: '/runner-post-create/',
   SUPPORTER_SELECT: '/supporter-select/:runnerPostId',
-  MY_PAGE: '/my-page',
+  RUNNER_MYPAGE: '/my-page-runner',
+  SUPPORTER_MYPAGE: '/my-page-supporter',
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RUNNER_PROFILE: '/runner-profile/:runnerId',
@@ -54,8 +56,12 @@ export const router = createBrowserRouter(
           element: <LoginPage />,
         },
         {
-          path: ROUTER_PATH.MY_PAGE,
-          element: <MyPage />,
+          path: ROUTER_PATH.RUNNER_MYPAGE,
+          element: <RunnerMyPage />,
+        },
+        {
+          path: ROUTER_PATH.SUPPORTER_MYPAGE,
+          element: <SupporterMyPage />,
         },
         {
           path: ROUTER_PATH.PROFILE_EDIT,

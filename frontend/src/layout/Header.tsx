@@ -3,58 +3,28 @@ import React from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
-import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { useLogin } from '@/hooks/useLogin';
-import useViewport from '@/hooks/useViewport';
-import { useHeaderProfile } from '@/hooks/query/useHeaderProfile';
+import { isLogin } from '@/apis/auth';
+import MyMenu from './MyMenu';
 
 const Header = () => {
-  const { goToMainPage, goToLoginPage, goToMyPage } = usePageRouter();
-  const { isLogin, logout } = useLogin();
-  const { isMobile } = useViewport();
-
-  const { data: profile } = useHeaderProfile(isLogin);
-
-  const handleClickLogoutButton = () => {
-    logout();
-
-    goToMainPage();
-  };
-
-  const handleClickProfile = () => {
-    goToMyPage();
-  };
+  const { goToMainPage, goToLoginPage } = usePageRouter();
 
   return (
-    <S.HeaderWrapper>
-      <S.HeaderContainer>
-        <S.Logo onClick={goToMainPage} />
-        <S.MenuContainer>
-          {isLogin ? (
-            <>
-              <S.AvatarContainer onClick={handleClickProfile}>
-                {!isMobile && <S.ProfileName>{profile?.name}</S.ProfileName>}
-                <Avatar width="35px" height="35px" imageUrl={profile?.imageUrl || 'https://via.placeholder.com/150'} />
-              </S.AvatarContainer>
-              <Button
-                fontSize="14px"
-                width={isMobile ? '80px' : '85px'}
-                height="35px"
-                colorTheme="WHITE"
-                onClick={handleClickLogoutButton}
-              >
-                로그아웃
-              </Button>
-            </>
+    <>
+      <S.HeaderWrapper>
+        <S.HeaderContainer>
+          <S.Logo onClick={goToMainPage} />
+          {isLogin() ? (
+            <MyMenu />
           ) : (
             <Button fontSize="14px" width="76px" height="35px" colorTheme="RED" onClick={goToLoginPage}>
               로그인
             </Button>
           )}
-        </S.MenuContainer>
-      </S.HeaderContainer>
-    </S.HeaderWrapper>
+        </S.HeaderContainer>
+      </S.HeaderWrapper>
+    </>
   );
 };
 
@@ -81,23 +51,17 @@ const S = {
     height: 80px;
   `,
 
-  AvatarContainer: styled.div`
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  NotificationContainer: styled.div``,
+
+  NotificationIcon: styled.img`
+    width: 25px;
+    height: 25px;
 
     cursor: pointer;
-
-    @media (max-width: 768px) {
-      gap: 5px;
-    }
   `,
 
-  ProfileName: styled.p`
-    text-align: end;
-
-    @media (max-width: 768px) {
-    }
+  AvatarContainer: styled.div`
+    cursor: pointer;
   `,
 
   Logo: styled.div`

@@ -1,23 +1,15 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense } from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import ToastProvider from './contexts/ToastContext';
 import ChannelService from './ChannelService';
 import { CHANNEL_SERVICE_KEY } from './constants';
-import { useLogin } from './hooks/useLogin';
 import LoadingPage from './pages/LoadingPage';
 import ModalProvider from './contexts/ModalContext';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from './hooks/query/queryClient';
 
 const App = () => {
-  const { checkLoginToken } = useLogin();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  checkLoginToken().finally(() => {
-    setIsLoading(false);
-  });
-
   ChannelService.loadScript();
 
   if (CHANNEL_SERVICE_KEY) {
@@ -26,9 +18,7 @@ const App = () => {
     });
   }
 
-  return isLoading ? (
-    <LoadingPage />
-  ) : (
+  return (
     <ToastProvider>
       <ModalProvider>
         <S.AppContainer>

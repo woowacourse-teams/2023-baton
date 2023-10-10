@@ -61,5 +61,6 @@ export const GlobalStyle = createGlobalStyle`
 
   button{
     cursor: pointer;
+    background-color: transparent;
   }
 `;

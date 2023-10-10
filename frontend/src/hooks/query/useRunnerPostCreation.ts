@@ -13,7 +13,7 @@ export const useRunnerPostCreation = () => {
   const { goToResultPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, CreateRunnerPostRequest>({
-    mutationFn: async (formData: CreateRunnerPostRequest) => postRunnerPostCreation(formData),
+    mutationFn: (formData: CreateRunnerPostRequest) => postRunnerPostCreation(formData),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.CREATE_POST);
@@ -25,8 +25,6 @@ export const useRunnerPostCreation = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '게시물 등록에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

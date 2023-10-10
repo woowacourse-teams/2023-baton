@@ -12,7 +12,7 @@ export const useRunnerPostDelete = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
 
   const queryResult = useMutation<void, APIError, number>({
-    mutationFn: async (runnerPostId: number) => deleteRunnerPost(runnerPostId),
+    mutationFn: (runnerPostId: number) => deleteRunnerPost(runnerPostId),
 
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.DELETE);
@@ -23,8 +23,6 @@ export const useRunnerPostDelete = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '게시물 삭제 요청이 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

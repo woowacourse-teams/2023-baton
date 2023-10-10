@@ -21,8 +21,6 @@ export const useReviewComplete = () => {
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '리뷰 완료 요청이 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

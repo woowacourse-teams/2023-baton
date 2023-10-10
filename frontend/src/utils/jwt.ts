@@ -31,3 +31,10 @@ export const getExpirationAsSecond = (jwt: string) => {
 
   return parseJWT.exp - parseJWT.iat;
 };
+
+export const getRestMinute = (jwt: string) => {
+  const exp = getExpiration(jwt);
+  const restMinute = (exp.getTime() - new Date().getTime()) / 1000 / 60;
+
+  return restMinute;
+};

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { usePageRouter } from '@/hooks/usePageRouter';
@@ -17,12 +17,12 @@ import { ToastContext } from '@/contexts/ToastContext';
 import SendMessageModal from '@/components/SendMessageModal/SendMessageModal';
 import { validateMessage } from '@/utils/validate';
 import useViewport from '@/hooks/useViewport';
-import { useLogin } from '@/hooks/useLogin';
 import GuideContents from '@/components/GuideContents/GuideContents';
 import { useRunnerPostDetail } from '@/hooks/query/useRunnerPostDetail';
 import { useRunnerPostDelete } from '@/hooks/query/useRunnerPostDelete';
 import { useReviewSuggestion } from '@/hooks/query/useReviewSuggestion';
 import { ModalContext } from '@/contexts/ModalContext';
+import { isLogin } from '@/apis/auth';
 
 const RunnerPostPage = () => {
   const { goBack, goToRunnerProfilePage, goToLoginPage } = usePageRouter();
@@ -30,20 +30,16 @@ const RunnerPostPage = () => {
   const { runnerPostId: paramRunnerPostId } = useParams();
   const runnerPostId = Number(paramRunnerPostId);
 
-  const { isLogin } = useLogin();
-
   const { isMobile } = useViewport();
 
   const { showErrorToast } = useContext(ToastContext);
   const { openModal, closeModal } = useContext(ModalContext);
 
-  const [message, setMessage] = useState<string>('');
-
-  const { data: runnerPostDetail } = useRunnerPostDetail(runnerPostId, isLogin);
+  const { data: runnerPostDetail } = useRunnerPostDetail(runnerPostId, isLogin());
   const { mutate: deleteRunnerPost } = useRunnerPostDelete();
   const { mutate: suggestReview, isPending: isPendingSuggestion } = useReviewSuggestion();
 
-  const sendMessage = () => {
+  const sendMessage = (message: string) => {
     try {
       validateMessage(message);
     } catch (error) {
@@ -53,11 +49,8 @@ const RunnerPostPage = () => {
       return;
     }
 
+    closeModal();
     suggestReview({ runnerPostId, message });
-  };
-
-  const handleChangeMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage(e.target.value);
   };
 
   const handleClickDeleteButton = () => {
@@ -86,11 +79,9 @@ const RunnerPostPage = () => {
 
     openModal(
       <SendMessageModal
-        messageState={message}
-        handleChangeMessage={handleChangeMessage}
         placeholder="러너에게 보낼 메세지를 입력해주세요."
         closeModal={closeModal}
-        handleClickSendButton={sendMessage}
+        sendMessage={sendMessage}
       />,
     );
   };

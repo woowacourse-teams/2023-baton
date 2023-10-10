@@ -6,37 +6,28 @@ import Layout from '@/layout/Layout';
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPagePostList from '@/components/MyPage/MyPagePostList/MyPagePostList';
-import { PostOptions, runnerPostOptions, supporterPostOptions } from '@/utils/postOption';
+import { PostOptions, runnerPostOptions } from '@/utils/postOption';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import useViewport from '@/hooks/useViewport';
-import { useLogin } from '@/hooks/useLogin';
 import { ToastContext } from '@/contexts/ToastContext';
 import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
-import { ReviewStatus } from '@/types/runnerPost';
 import { useMyPostList } from '@/hooks/query/useMyPostList';
+import { ReviewStatus } from '@/types/runnerPost';
 import { useMySupporterProfile } from '@/hooks/query/useMySupporterProfile';
-import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
+import { isLogin } from '@/apis/auth';
 
-const MyPage = () => {
+const SupporterMyPage = () => {
   const [postOptions, setPostOptions] = useState<PostOptions>(runnerPostOptions);
-
-  const [isRunner, setIsRunner] = useState<boolean>(true);
-
-  const { isLogin } = useLogin();
-  const { goToProfileEditPage, goToLoginPage } = usePageRouter();
+  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
 
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
-
-  const [reviewStatus, setReviewStatus] = useState<ReviewStatus>('NOT_STARTED');
-
-  const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(isRunner, reviewStatus);
+  const { goToProfileEditPage, goToLoginPage } = usePageRouter();
+  const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(true, reviewStatus);
   const { data: mySupporterProfile } = useMySupporterProfile();
-  const { data: myRunnerProfile } = useMyRunnerProfile();
-  const myProfile = isRunner ? myRunnerProfile : mySupporterProfile;
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLogin()) {
       showErrorToast({ title: ERROR_TITLE.NO_PERMISSION, description: ERROR_DESCRIPTION.NO_TOKEN });
       goToLoginPage();
     }
@@ -55,93 +46,50 @@ const MyPage = () => {
     setPostOptions(newOptions);
   };
 
-  const handleClickSupporterButton = () => {
-    setPostOptions(isRunner ? runnerPostOptions : supporterPostOptions);
-    setIsRunner(!isRunner);
-
-    setReviewStatus('NOT_STARTED');
-  };
-
   const handleClickMoreButton = () => {
     fetchNextPage();
   };
 
   return (
     <Layout>
+      <S.TitleWrapper>
+        <S.Title>서포터 마이페이지</S.Title>
+        <Button
+          width={isMobile ? '60px' : '95px'}
+          height={isMobile ? '30px' : '38px'}
+          colorTheme="WHITE"
+          fontSize={isMobile ? '12px' : '16px'}
+          fontWeight={400}
+          onClick={goToProfileEditPage}
+        >
+          수정하기
+        </Button>
+      </S.TitleWrapper>
       <S.MyPageWrapper>
         <S.MyPageContainer>
-          {isMobile && (
-            <S.ButtonContainer>
-              <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-                러너
-              </S.RunnerSupporterButton>
-              <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-                서포터
-              </S.RunnerSupporterButton>
-            </S.ButtonContainer>
-          )}
           <S.ProfileContainer>
             <S.InfoContainer>
               <Avatar
-                imageUrl={myProfile?.imageUrl || 'https://via.placeholder.com/150'}
+                imageUrl={mySupporterProfile?.imageUrl || 'https://via.placeholder.com/150'}
                 width={isMobile ? '70px' : '100px'}
                 height={isMobile ? '70px' : '100px'}
               />
               <S.InfoDetailContainer>
-                {myProfile?.name &&
-                  (isRunner ? (
-                    <S.Name>{'러너 - ' + myProfile?.name}</S.Name>
-                  ) : (
-                    <S.Name>{'서포터 - ' + myProfile?.name}</S.Name>
-                  ))}
-                <S.Company>{myProfile?.company}</S.Company>
+                <S.Name>{mySupporterProfile?.name}</S.Name>
+                <S.Company>{mySupporterProfile?.company}</S.Company>
                 <S.TechLabel>
-                  {myProfile?.technicalTags.map((tag) => (
+                  {mySupporterProfile?.technicalTags.map((tag) => (
                     <TechLabel key={tag} tag={tag} />
                   ))}
                 </S.TechLabel>
               </S.InfoDetailContainer>
             </S.InfoContainer>
-            {!isMobile && (
-              <S.ButtonContainer>
-                <S.RunnerSupporterButton $isSelected={isRunner} onClick={handleClickSupporterButton}>
-                  러너
-                </S.RunnerSupporterButton>
-                <S.RunnerSupporterButton $isSelected={!isRunner} onClick={handleClickSupporterButton}>
-                  서포터
-                </S.RunnerSupporterButton>
-              </S.ButtonContainer>
-            )}
           </S.ProfileContainer>
+
           <S.IntroductionContainer>
-            <S.Introduction>{myProfile?.introduction}</S.Introduction>
-            {!isMobile && (
-              <Button
-                width="95px"
-                height="38px"
-                colorTheme="WHITE"
-                fontSize="16px"
-                fontWeight={400}
-                onClick={goToProfileEditPage}
-              >
-                수정하기
-              </Button>
-            )}
+            <S.Introduction>{mySupporterProfile?.introduction}</S.Introduction>
           </S.IntroductionContainer>
-          {isMobile && (
-            <S.MobileButtonWrapper>
-              <Button
-                width="75px"
-                height="30px"
-                colorTheme="WHITE"
-                fontSize="14px"
-                fontWeight={400}
-                onClick={goToProfileEditPage}
-              >
-                수정하기
-              </Button>
-            </S.MobileButtonWrapper>
-          )}
+
           <S.PostsContainer>
             <S.FilterWrapper>
               <ListFilter
@@ -151,7 +99,7 @@ const MyPage = () => {
                 fontSize={isMobile ? '16px' : '26px'}
               />
             </S.FilterWrapper>
-            <MyPagePostList filteredPostList={myPostList} isRunner={isRunner} />
+            <MyPagePostList filteredPostList={myPostList} isRunner={false} />
             <S.MoreButtonWrapper>
               {hasNextPage && (
                 <Button
@@ -172,9 +120,21 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default SupporterMyPage;
 
 const S = {
+  TitleWrapper: styled.header`
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 72px;
+
+    @media (max-width: 768px) {
+      margin: 40px 0 40px 0;
+      padding: 0 10px;
+    }
+  `,
+
   MyPageWrapper: styled.div`
     display: flex;
     flex-direction: column;
@@ -189,15 +149,13 @@ const S = {
     }
   `,
 
-  TitleContainer: styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: end;
-  `,
-
   Title: styled.h1`
     font-size: 36px;
     font-weight: 700;
+
+    @media (max-width: 768px) {
+      font-size: 28px;
+    }
   `,
 
   ProfileContainer: styled.div`
@@ -225,8 +183,6 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: 10px;
-
-    margin: 30px 0;
   `,
 
   Name: styled.div`
@@ -249,54 +205,6 @@ const S = {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-  `,
-
-  ButtonContainer: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-
-    margin-top: 30px;
-
-    @media (max-width: 768px) {
-      display: flex;
-      justify-content: end;
-
-      width: calc(85% + 40px);
-      margin-top: 50px;
-      margin-left: 10px;
-    }
-  `,
-
-  MobileButtonWrapper: styled.div`
-    display: flex;
-    justify-content: end;
-
-    width: calc(85% + 40px);
-    margin-bottom: 70px;
-  `,
-
-  RunnerSupporterButton: styled.button<{ $isSelected: boolean }>`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 95px;
-    height: 38px;
-    border-radius: 18px;
-    border: 1px solid ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
-
-    background-color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'white')};
-
-    color: ${({ $isSelected }) => ($isSelected ? 'white' : 'var(--baton-red)')};
-
-    @media (max-width: 768px) {
-      width: 70px;
-      height: 32px;
-
-      font-size: 14px;
-    }
   `,
 
   IntroductionContainer: styled.div`

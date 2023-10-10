@@ -10,7 +10,7 @@ import { queryClient } from './queryClient';
 
 export const useFeedbackToSupporter = () => {
   const { showErrorToast, showCompletionToast } = useContext(ToastContext);
-  const { goToMyPage } = usePageRouter();
+  const { goToRunnerMyPage } = usePageRouter();
 
   const queryResult = useMutation<void, APIError, PostFeedbackRequest>({
     mutationFn: (formData: PostFeedbackRequest) => postFeedbackToSupporter(formData),
@@ -18,14 +18,12 @@ export const useFeedbackToSupporter = () => {
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMIT_FEEDBACK);
       queryClient.invalidateQueries({ queryKey: ['myRunnerProfile', 'DONE'] });
-      goToMyPage();
+      goToRunnerMyPage();
     },
 
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '피드백 작성에 실패했어요' });
     },
-
-    retry: 1,
   });
 
   return queryResult;

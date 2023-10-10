@@ -1,8 +1,7 @@
-import { ACCESS_TOKEN_LOCAL_STORAGE_KEY, BATON_BASE_URL } from '@/constants';
+import { BATON_BASE_URL } from '@/constants';
 import { Method } from '@/types/api';
 import { throwErrorBadRequest, validateResponse } from './error';
-
-const getAccessToken = () => localStorage.getItem(ACCESS_TOKEN_LOCAL_STORAGE_KEY);
+import { checkLoginToken, getAccessToken } from './auth';
 
 const parseJson = async (response: Response): Promise<any> => {
   await validateResponse(response);
@@ -20,7 +19,9 @@ const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
     .then(async (response) => parseJson(response));
 };
 
-const fetchApi = <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
+const fetchApi = async <T>(url: string, method: Method, isAuth: boolean, body?: BodyInit) => {
+  if (isAuth) await checkLoginToken();
+
   return fetchJson<T>(url, {
     method,
     ...(isAuth && {

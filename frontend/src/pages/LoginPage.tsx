@@ -9,7 +9,8 @@ const LoginPage = () => {
   const { goToMainPage } = usePageRouter();
 
   const handleLoginButton = () => {
-    window.location.href = `${BATON_BASE_URL}/oauth/github`;
+    window.location.href =
+      process.env.NODE_ENV === 'development' ? `/oauth/github/callback?code=dev` : `${BATON_BASE_URL}/oauth/github`;
   };
 
   return (

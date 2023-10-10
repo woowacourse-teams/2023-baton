@@ -218,6 +218,9 @@ const ProfileEditPage = () => {
             >
               서포터
             </S.RunnerSupporterButton>
+            <S.WithdrawalButtonWrapper>
+              <S.WithdrawalAnchor>회원탈퇴</S.WithdrawalAnchor>
+            </S.WithdrawalButtonWrapper>
           </S.ButtonContainer>
           <S.SaveButtonWrapper>
             <Button
@@ -378,11 +381,30 @@ const S = {
   `,
 
   ButtonContainer: styled.div`
+    position: relative;
     display: flex;
     justify-content: center;
     gap: 15px;
 
+    width: 600px;
+
     margin-bottom: 10px;
+  `,
+
+  WithdrawalButtonWrapper: styled.div`
+    position: absolute;
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0;
+
+    right: 0;
+  `,
+
+  WithdrawalAnchor: styled.a`
+    font-size: 14px;
+    text-decoration-line: underline;
+
+    color: var(--gray-500);
   `,
 
   InputWrapper: styled.div`
