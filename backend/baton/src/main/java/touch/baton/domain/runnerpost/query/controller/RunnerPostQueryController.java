@@ -70,6 +70,14 @@ public class RunnerPostQueryController {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporterId, ReviewStatus.DONE));
     }
 
+    @GetMapping("/search/count")
+    public ResponseEntity<RunnerPostResponse.Count> countRunnerPostBySupporterIdAndReviewStatusDone(
+            @RequestParam final Long supporterId
+    ) {
+        final long count = runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(supporterId, ReviewStatus.DONE);
+        return ResponseEntity.ok(RunnerPostResponse.Count.from(count));
+    }
+
     @GetMapping("/{runnerPostId}/supporters")
     public ResponseEntity<SupporterRunnerPostResponses.Detail> readSupporterRunnerPostsByRunnerPostId(
             @AuthRunnerPrincipal final Runner runner,
@@ -98,6 +106,15 @@ public class RunnerPostQueryController {
             @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(pageParams, runner.getId(), reviewStatus));
+    }
+
+    @GetMapping("/me/supporter/count")
+    public ResponseEntity<RunnerPostResponse.Count> countRunnerPostByLoginedSupporterAndReviewStatus(
+            @AuthSupporterPrincipal final Supporter supporter,
+            @RequestParam final ReviewStatus reviewStatus
+    ) {
+        final long runnerPostCount = runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(supporter.getId(), reviewStatus);
+        return ResponseEntity.ok(RunnerPostResponse.Count.from(runnerPostCount));
     }
 
     @GetMapping("/me/runner/count")
