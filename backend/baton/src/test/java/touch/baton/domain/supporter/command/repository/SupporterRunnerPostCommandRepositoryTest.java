@@ -1,4 +1,4 @@
-package touch.baton.domain.runnerpost.command.repository;
+package touch.baton.domain.supporter.command.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
