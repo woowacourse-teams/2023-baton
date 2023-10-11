@@ -1,4 +1,4 @@
-package touch.baton.domain.tag;
+package touch.baton.domain.tag.command;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,9 +11,6 @@ import touch.baton.domain.member.command.vo.MemberName;
 import touch.baton.domain.member.command.vo.OauthId;
 import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.runnerpost.command.RunnerPost;
-import touch.baton.domain.tag.command.RunnerPostTag;
-import touch.baton.domain.tag.command.RunnerPostTags;
-import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;

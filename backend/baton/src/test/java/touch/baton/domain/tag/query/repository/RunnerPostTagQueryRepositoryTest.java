@@ -1,4 +1,4 @@
-package touch.baton.domain.tag.repository;
+package touch.baton.domain.tag.query.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,6 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.Tag;
-import touch.baton.domain.tag.query.repository.RunnerPostTagQueryRepository;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.List;

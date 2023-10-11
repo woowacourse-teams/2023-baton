@@ -5,8 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.domain.tag.command.vo.TagReducedName;
-import touch.baton.domain.tag.query.repository.TagQueryRepository;
+import touch.baton.domain.tag.query.repository.TagQuerydslRepository;
 
+import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -14,9 +15,13 @@ import java.util.List;
 @Service
 public class TagQueryService {
 
-    private final TagQueryRepository tagQueryRepository;
+    private final TagQuerydslRepository tagQuerydslRepository;
 
-    public List<Tag> readTagsByReducedName(final String tagName) {
-        return tagQueryRepository.readTagsByReducedName(TagReducedName.from(tagName));
+    public List<Tag> readTagsByReducedName(final TagReducedName tagReducedName, final int limit) {
+        if (tagReducedName == null || tagReducedName.getValue().isBlank()) {
+            return Collections.emptyList();
+        }
+
+        return tagQuerydslRepository.findByTagReducedName(tagReducedName, limit);
     }
 }

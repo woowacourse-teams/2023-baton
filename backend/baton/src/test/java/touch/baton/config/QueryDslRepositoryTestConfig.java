@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import touch.baton.domain.notification.query.repository.NotificationQuerydslRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
+import touch.baton.domain.tag.query.repository.TagQuerydslRepository;
 
 @TestConfiguration
 public class QueryDslRepositoryTestConfig {
@@ -27,5 +28,10 @@ public class QueryDslRepositoryTestConfig {
     @Bean
     public NotificationQuerydslRepository notificationQuerydslRepository() {
         return new NotificationQuerydslRepository(jpaQueryFactory());
+    }
+
+    @Bean
+    public TagQuerydslRepository tagQuerydslRepository() {
+        return new TagQuerydslRepository(jpaQueryFactory());
     }
 }
