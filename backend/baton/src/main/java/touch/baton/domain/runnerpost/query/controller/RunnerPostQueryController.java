@@ -48,7 +48,7 @@ public class RunnerPostQueryController {
             @PathVariable final Long runnerPostId
     ) {
         final RunnerPost foundRunnerPost = runnerPostQueryService.readByRunnerPostId(runnerPostId);
-        final long applicantCount = runnerPostQueryService.readCountByRunnerPostId(foundRunnerPost.getId());
+        final long applicantCount = runnerPostQueryService.countApplicantsByRunnerPostId(foundRunnerPost.getId());
         final boolean isApplicantHistoryExist = runnerPostQueryService.existsRunnerPostApplicantByRunnerPostIdAndMemberId(runnerPostId, member.getId());
 
         runnerPostQueryService.increaseWatchedCount(foundRunnerPost);
@@ -68,6 +68,14 @@ public class RunnerPostQueryController {
             @RequestParam final Long supporterId
     ) {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporterId, ReviewStatus.DONE));
+    }
+
+    @GetMapping("/search/count")
+    public ResponseEntity<RunnerPostResponse.Count> countRunnerPostBySupporterIdAndReviewStatusDone(
+            @RequestParam final Long supporterId
+    ) {
+        final long count = runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(supporterId, ReviewStatus.DONE);
+        return ResponseEntity.ok(RunnerPostResponse.Count.from(count));
     }
 
     @GetMapping("/{runnerPostId}/supporters")
@@ -91,11 +99,30 @@ public class RunnerPostQueryController {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostBySupporterIdAndReviewStatus(pageParams, supporter.getId(), reviewStatus));
     }
 
-    @GetMapping("/me/runner") public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerPostByLoginedRunnerAndReviewStatus(
+    @GetMapping("/me/runner")
+    public ResponseEntity<PageResponse<RunnerPostResponse.SimpleByRunner>> readRunnerPostByLoginedRunnerAndReviewStatus(
             @AuthRunnerPrincipal final Runner runner,
             @Valid @ModelAttribute final PageParams pageParams,
             @RequestParam(required = false) final ReviewStatus reviewStatus
     ) {
         return ResponseEntity.ok(runnerPostQueryService.pageRunnerPostByRunnerIdAndReviewStatus(pageParams, runner.getId(), reviewStatus));
+    }
+
+    @GetMapping("/me/supporter/count")
+    public ResponseEntity<RunnerPostResponse.Count> countRunnerPostByLoginedSupporterAndReviewStatus(
+            @AuthSupporterPrincipal final Supporter supporter,
+            @RequestParam final ReviewStatus reviewStatus
+    ) {
+        final long runnerPostCount = runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(supporter.getId(), reviewStatus);
+        return ResponseEntity.ok(RunnerPostResponse.Count.from(runnerPostCount));
+    }
+
+    @GetMapping("/me/runner/count")
+    public ResponseEntity<RunnerPostResponse.Count> countRunnerPostByLoginedRunnerAndReviewStatus(
+            @AuthRunnerPrincipal final Runner runner,
+            @RequestParam final ReviewStatus reviewStatus
+    ) {
+        final long runnerPostCount = runnerPostQueryService.countRunnerPostByRunnerIdAndReviewStatus(runner.getId(), reviewStatus);
+        return ResponseEntity.ok(RunnerPostResponse.Count.from(runnerPostCount));
     }
 }

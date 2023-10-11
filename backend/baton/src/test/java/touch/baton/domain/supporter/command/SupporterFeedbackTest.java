@@ -1,4 +1,4 @@
-package touch.baton.domain.supporter;
+package touch.baton.domain.supporter.command;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

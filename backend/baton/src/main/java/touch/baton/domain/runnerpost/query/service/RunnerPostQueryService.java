@@ -114,8 +114,19 @@ public class RunnerPostQueryService {
         return supporterRunnerPostQueryRepository.existsByRunnerPostIdAndMemberId(runnerPostId, memberId);
     }
 
-    public long readCountByRunnerPostId(final Long runnerPostId) {
+    public long countApplicantsByRunnerPostId(final Long runnerPostId) {
         return supporterRunnerPostQueryRepository.countByRunnerPostId(runnerPostId).orElse(0L);
+    }
+
+    public long countRunnerPostByRunnerIdAndReviewStatus(final Long runnerId, final ReviewStatus reviewStatus) {
+        return runnerPostQueryRepository.countByRunnerIdAndReviewStatus(runnerId, reviewStatus);
+    }
+
+    public long countRunnerPostBySupporterIdAndReviewStatus(final Long supporterId, final ReviewStatus reviewStatus) {
+        if (reviewStatus.isNotStarted()) {
+            return supporterRunnerPostQueryRepository.countRunnerPostBySupporterIdByReviewStatusNotStarted(supporterId);
+        }
+        return runnerPostQueryRepository.countBySupporterIdAndReviewStatus(supporterId, reviewStatus);
     }
 
     @Transactional
