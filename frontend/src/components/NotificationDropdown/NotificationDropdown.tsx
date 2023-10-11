@@ -12,11 +12,11 @@ interface Props {
 const NotificationDropdown = ({ notificationList }: Props) => {
   const { mutate: deleteNotification } = useNotificationDelete();
   const { mutate: patchNotificationCheck } = useNotificationCheck();
-  const { goToRunnerPostPage } = usePageRouter();
+  const { goToRunnerMyPage } = usePageRouter();
 
-  const handlePostClick = (notificationId: number, runnerPostId: number) => {
+  const handlePostClick = (notificationId: number) => {
     patchNotificationCheck(notificationId);
-    goToRunnerPostPage(runnerPostId);
+    goToRunnerMyPage();
   };
 
   const handleDeleteNotification = (e: React.MouseEvent, notificationId: number) => {
@@ -32,7 +32,7 @@ const NotificationDropdown = ({ notificationList }: Props) => {
           return (
             <S.DropdownList
               key={notification.notificationId}
-              onClick={() => handlePostClick(notification.notificationId, notification.referencedId)}
+              onClick={() => handlePostClick(notification.notificationId)}
             >
               <S.NotificationTitleContainer>
                 <S.NotificationTitle $isRead={notification.isRead}>{notification.title}</S.NotificationTitle>
