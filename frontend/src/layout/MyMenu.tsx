@@ -28,9 +28,7 @@ const MyMenu = () => {
       return !notification.isRead;
     });
 
-    if (isNotRead.length !== 0) {
-      setIsAllRead(false);
-    }
+    setIsAllRead(isNotRead.length === 0);
   };
 
   const handleNotificationDropdown = () => {
@@ -56,11 +54,10 @@ const MyMenu = () => {
           gapFromTrigger="52px"
           isDropdownOpen={isNotificationDropdownOpen}
           trigger={
-            isAllRead ? (
-              <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOffIcon} />
-            ) : (
-              <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOnIcon} />
-            )
+            <S.NotificationIcon
+              onClick={handleNotificationDropdown}
+              src={isAllRead ? NotificationOffIcon : NotificationOnIcon}
+            />
           }
         >
           <Suspense>
