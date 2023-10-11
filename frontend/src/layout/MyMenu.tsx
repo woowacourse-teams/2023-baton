@@ -17,18 +17,21 @@ const MyMenu = () => {
   const [isAllRead, setIsAllRead] = useState<boolean>(true);
 
   const { data: profile } = useHeaderProfile();
-
   const { data: notificationList } = useNotification();
 
   useEffect(() => {
-    const isRead = notificationList.data.filter((notification) => {
+    checkIsAllRead();
+  }, [isAllRead]);
+
+  const checkIsAllRead = () => {
+    const isNotRead = notificationList.data.filter((notification) => {
       return !notification.isRead;
     });
 
-    if (isRead.length !== 0) {
+    if (isNotRead.length !== 0) {
       setIsAllRead(false);
     }
-  }, [isAllRead]);
+  };
 
   const handleNotificationDropdown = () => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
@@ -61,7 +64,7 @@ const MyMenu = () => {
           }
         >
           <Suspense>
-            <NotificationDropdown notificationList={notificationList.data} />
+            <NotificationDropdown checkIsAllRead={checkIsAllRead} notificationList={notificationList.data} />
           </Suspense>
         </Dropdown>
       </S.NotificationContainer>
