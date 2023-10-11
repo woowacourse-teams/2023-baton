@@ -27,7 +27,7 @@ class TagReadAssuredTest extends AssuredTestConfig {
         final TagReducedName 요청할_태그_이름 = TagReducedName.nullableInstance("ja");
 
         // when, then
-        final List<Tag> 검색된_태그_목록 = tagQueryRepository.findTagsByReducedName(요청할_태그_이름);
+        final List<Tag> 검색된_태그_목록 = tagQueryRepository.findByTagReducedName(요청할_태그_이름, 10);
 
         TagQuerySupport
                 .클라이언트_요청()
