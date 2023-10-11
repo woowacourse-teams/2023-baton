@@ -35,7 +35,7 @@ const NotificationDropdown = ({ notificationList }: Props) => {
               onClick={() => handlePostClick(notification.notificationId, notification.referencedId)}
             >
               <S.NotificationTitleContainer>
-                <S.NotificationTitle isRead={notification.isRead}>{notification.title}</S.NotificationTitle>
+                <S.NotificationTitle $isRead={notification.isRead}>{notification.title}</S.NotificationTitle>
                 <S.CloseButton onClick={(e) => handleDeleteNotification(e, notification.notificationId)}>
                   삭제
                 </S.CloseButton>
@@ -105,13 +105,13 @@ const S = {
     }
   `,
 
-  NotificationTitle: styled.p<{ isRead: boolean }>`
+  NotificationTitle: styled.p<{ $isRead: boolean }>`
     font-size: 16px;
     font-weight: 700;
     position: relative;
 
-    ${({ isRead }) =>
-      isRead
+    ${({ $isRead }) =>
+      $isRead
         ? () => ''
         : ` &::before {
       width: 4px;
