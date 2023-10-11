@@ -19,7 +19,6 @@ if (gaTrackingId) {
 
 const history = createBrowserHistory();
 history.listen((response: { location: { pathname: string } }) => {
-  console.log(response.location.pathname);
   ReactGA.set({ page: response.location.pathname });
   ReactGA.pageview(response.location.pathname);
 });

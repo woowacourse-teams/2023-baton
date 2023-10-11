@@ -7,22 +7,26 @@ import { useNotificationCheck } from '@/hooks/query/useNotificationCheck';
 
 interface Props {
   notificationList: Notification[];
+  checkIsAllRead: () => void;
 }
 
-const NotificationDropdown = ({ notificationList }: Props) => {
+const NotificationDropdown = ({ notificationList, checkIsAllRead }: Props) => {
   const { mutate: deleteNotification } = useNotificationDelete();
   const { mutate: patchNotificationCheck } = useNotificationCheck();
   const { goToRunnerMyPage } = usePageRouter();
 
   const handlePostClick = (notificationId: number) => {
     patchNotificationCheck(notificationId);
+
     goToRunnerMyPage();
+    checkIsAllRead();
   };
 
   const handleDeleteNotification = (e: React.MouseEvent, notificationId: number) => {
     e.stopPropagation();
 
     deleteNotification(notificationId);
+    checkIsAllRead();
   };
 
   return (
