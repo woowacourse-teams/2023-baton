@@ -71,8 +71,8 @@ class TagQuerydslRepositoryTest extends RepositoryTestConfig {
         assertThat(actual.isEmpty()).isTrue();
     }
 
-    @Test
     @DisplayName("입력된 TagReducedName 으로 시작하는 이름을 갖는 태그가 없다면 빈 목록을 반환한다.")
+    @Test
     void success_readTagsByReducedName_when_foundTags_isEmpty() {
         // given
         persistTag("aaaaaaaaa");
@@ -82,19 +82,6 @@ class TagQuerydslRepositoryTest extends RepositoryTestConfig {
 
         // when
         final TagReducedName tagReducedName = TagReducedName.nullableInstance("b");
-        final List<Tag> actual = tagQuerydslRepository.findByTagReducedName(tagReducedName, 10);
-
-        // then
-        assertThat(actual.isEmpty()).isTrue();
-    }
-
-    @DisplayName("TagReducedName 이 null 인 경우 빈 목록을 반환한다.")
-    @Test
-    void success_readTagsByReducedName_when_tagReducedNameIsNull() {
-        // given
-        final TagReducedName tagReducedName = TagReducedName.nullableInstance(null);
-
-        // when
         final List<Tag> actual = tagQuerydslRepository.findByTagReducedName(tagReducedName, 10);
 
         // then

@@ -11,6 +11,7 @@ import touch.baton.fixture.vo.TagNameFixture;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 class TagQueryServiceTest extends ServiceTestConfig {
@@ -48,5 +49,29 @@ class TagQueryServiceTest extends ServiceTestConfig {
             softly.assertThat(actual.get(0).getTagName().getValue()).isEqualTo("ja va");
             softly.assertThat(actual.get(9).getTagName().getValue()).isEqualTo("java 9");
         });
+    }
+
+    @DisplayName("TagReducedName 이 null 인 경우 빈 목록을 반환한다.")
+    @Test
+    void success_when_TagReducedName_IsNull() {
+        // given
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("ja va")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("jav a1")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("j ava2")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("ja va3")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("jav a4")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("java 5")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("j ava6")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("ja va7")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("jav a8")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("java 9")));
+        tagCommandRepository.save(TagFixture.create(TagNameFixture.tagName("ju ja")));
+
+        // when
+        final TagReducedName nullTagReducedName = null;
+        final List<Tag> actual = tagQueryService.readTagsByReducedName(nullTagReducedName, 10);
+
+        // then
+        assertThat(actual).isEmpty();
     }
 }
