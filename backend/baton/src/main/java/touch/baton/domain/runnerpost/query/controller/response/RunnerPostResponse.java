@@ -126,6 +126,13 @@ public record RunnerPostResponse() {
         }
     }
 
+    public record Count(Long count) {
+
+        public static Count from(final long count) {
+            return new Count(count);
+        }
+    }
+
     private static List<String> convertToTags(final RunnerPost runnerPost) {
         return runnerPost.getRunnerPostTags()
                 .getRunnerPostTags()

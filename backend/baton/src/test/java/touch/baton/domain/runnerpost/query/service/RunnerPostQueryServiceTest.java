@@ -794,4 +794,66 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         // then
         assertThat(isApplicantHistoryExist).isFalse();
     }
+
+    @DisplayName("RunnerId 와 ReviewStatus 로 러너 게시글 개수를 조회한다.")
+    @Test
+    void countRunnerPostByRunnerIdAndReviewStatus() {
+        // given
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
+
+        final long expected = 3L;
+        for (long i = 0; i < expected; i++) {
+            runnerPostCommandRepository.save(RunnerPostFixture.create(runner, new Deadline(now().plusHours(100))));
+        }
+
+        // when
+        final long actual = runnerPostQueryService.countRunnerPostByRunnerIdAndReviewStatus(runner.getId(), NOT_STARTED);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("SupporterId 로 ReviewStatus 가 NOT_STARTED 인 러너 게시글 개수를 조회한다.")
+    @Test
+    void countRunnerPostBySupporterIdAndReviewStatus_NOT_STARTED() {
+        // given
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
+        final RunnerPost runnerPost = runnerPostCommandRepository.save(RunnerPostFixture.create(runner, new Deadline(now().plusHours(100))));
+
+        final Member supporterMember = memberCommandRepository.save(MemberFixture.createDitoo());
+        final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(supporterMember));
+
+        supporterRunnerPostCommandRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+
+        // when
+        final long expected = 1L;
+        final long actual = runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(supporter.getId(), NOT_STARTED);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
+
+    @DisplayName("SupporterId 로 ReviewStatus 가 NOT_STARTED 이 아닌 러너 게시글 개수를 조회한다.")
+    @Test
+    void countRunnerPostBySupporterIdAndReviewStatus_except_NOT_STARTED() {
+        // given
+        final Member member = memberCommandRepository.save(MemberFixture.createDitoo());
+        final Runner runner = runnerQueryRepository.save(RunnerFixture.createRunner(member));
+        final RunnerPost runnerPost = runnerPostCommandRepository.save(RunnerPostFixture.create(runner, new Deadline(now().plusHours(100))));
+
+        final Member supporterMember = memberCommandRepository.save(MemberFixture.createDitoo());
+        final Supporter supporter = supporterQueryRepository.save(SupporterFixture.create(supporterMember));
+
+        supporterRunnerPostCommandRepository.save(SupporterRunnerPostFixture.create(runnerPost, supporter));
+        runnerPost.assignSupporter(supporter);
+
+        // when
+        final long expected = 1L;
+        final long actual = runnerPostQueryService.countRunnerPostBySupporterIdAndReviewStatus(supporter.getId(), IN_PROGRESS);
+
+        // then
+        assertThat(actual).isEqualTo(expected);
+    }
 }

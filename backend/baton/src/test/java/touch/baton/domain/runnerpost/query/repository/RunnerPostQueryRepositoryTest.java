@@ -8,6 +8,7 @@ import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.ArrayList;
@@ -149,5 +150,48 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
             softly.assertThat(actual.getSupporter()).isEqualTo(ditooSupporter);
             softly.assertThat(actual).isEqualTo(runnerPost);
         });
+    }
+
+    @DisplayName("러너 관련 게시글 개수를 조회하는데 성공한다.")
+    @Test
+    void countByRunnerIdAndReviewStatus() {
+        // given
+        final Runner runner = persistRunner(MemberFixture.createDitoo());
+        final int expected = 5;
+        for (int i = 0; i < expected; i++) {
+            persistRunnerPost(runner);
+        }
+
+        em.flush();
+        em.close();
+
+        // when
+        final Long actual = runnerPostQueryRepository.countByRunnerIdAndReviewStatus(runner.getId(), ReviewStatus.NOT_STARTED);
+
+        // then
+        assertThat(actual.intValue()).isEqualTo(expected);
+    }
+
+    @DisplayName("서포터 관련 게시글 개수를 조회하는데 성공한다.")
+    @Test
+    void countBySupporterIdAndReviewStatus() {
+        // given
+        final Runner runner = persistRunner(MemberFixture.createEthan());
+        final Supporter supporter = persistSupporter(MemberFixture.createDitoo());
+        final int expected = 3;
+        for (int i = 0; i < expected; i++) {
+            final RunnerPost runnerPost = persistRunnerPost(runner);
+            runnerPost.assignSupporter(supporter);
+            runnerPost.finishReview();
+        }
+
+        em.flush();
+        em.close();
+
+        // when
+        final Long actual = runnerPostQueryRepository.countBySupporterIdAndReviewStatus(supporter.getId(), ReviewStatus.DONE);
+
+        // then
+        assertThat(actual.intValue()).isEqualTo(expected);
     }
 }
