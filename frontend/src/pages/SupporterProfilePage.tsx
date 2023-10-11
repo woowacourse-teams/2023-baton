@@ -10,10 +10,8 @@ import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostIte
 import useViewport from '@/hooks/useViewport';
 import { useOtherSupporterProfile } from '@/hooks/query/useOtherSupporterProfile';
 import { useOtherSupporterPost } from '@/hooks/query/useOtherSupporterPost';
+import { useOtherSupporterPostCount } from '@/hooks/query/useOtherSupporterPostCount';
 
-/*
- * api에 페이지네이션 도입 후 수정 필요
- */
 const SupporterProfilePage = () => {
   const { supporterId } = useParams();
 
@@ -21,6 +19,7 @@ const SupporterProfilePage = () => {
 
   const { data: supporterProfile } = useOtherSupporterProfile(Number(supporterId));
   const { data: supporterProfilePost, hasNextPage, fetchNextPage } = useOtherSupporterPost(Number(supporterId));
+  const { data: supporterProfilePostCount } = useOtherSupporterPostCount(Number(supporterId));
 
   const handleClickMoreButton = () => {
     fetchNextPage();
@@ -60,7 +59,7 @@ const SupporterProfilePage = () => {
 
       <S.ReviewCountWrapper>
         <S.ReviewCountTitle>완료된 리뷰</S.ReviewCountTitle>
-        {/* <S.ReviewCount>{supporterProfilePost?.length}</S.ReviewCount> */}
+        <S.ReviewCount>{supporterProfilePostCount?.count}</S.ReviewCount>
       </S.ReviewCountWrapper>
       <S.PostsContainer>
         {supporterProfilePost?.map((runnerPostData) => (

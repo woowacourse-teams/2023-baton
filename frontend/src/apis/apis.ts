@@ -2,6 +2,7 @@ import { request } from './fetch';
 import {
   CreateRunnerPostRequest,
   GetDetailedRunnerPostResponse,
+  GetOtherSupporterPostCountResponse,
   GetRunnerPostResponse,
   ReviewStatus,
   getRunnerPostRequestParams,
@@ -96,6 +97,10 @@ export const getOtherRunnerProfile = (userId: number) => {
 
 export const getOtherSupporterProfile = (userId: number) => {
   return request.get<GetRunnerProfileResponse>(`/profile/supporter/${userId}`, false);
+};
+
+export const getOtherSupporterPostCount = (userId: number) => {
+  return request.get<GetOtherSupporterPostCountResponse>(`/posts/runner/search/count?supporterId=${userId}`, false);
 };
 
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {

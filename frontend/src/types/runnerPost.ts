@@ -66,3 +66,7 @@ interface requestParams {
 }
 
 export interface getRunnerPostRequestParams extends pageParamsRequest, requestParams {}
+
+export interface GetOtherSupporterPostCountResponse {
+  count: number;
+}
