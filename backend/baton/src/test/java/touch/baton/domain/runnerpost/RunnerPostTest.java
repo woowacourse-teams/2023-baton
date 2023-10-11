@@ -6,30 +6,31 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.exception.RunnerPostDomainException;
-import touch.baton.domain.runnerpost.vo.CuriousContents;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ImplementedContents;
-import touch.baton.domain.runnerpost.vo.IsReviewed;
-import touch.baton.domain.runnerpost.vo.PostscriptContents;
-import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.RunnerPostTags;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.vo.Company;
+import touch.baton.domain.member.command.vo.GithubUrl;
+import touch.baton.domain.member.command.vo.ImageUrl;
+import touch.baton.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.OauthId;
+import touch.baton.domain.member.command.vo.ReviewCount;
+import touch.baton.domain.member.command.vo.SocialId;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.exception.RunnerPostDomainException;
+import touch.baton.domain.runnerpost.command.vo.CuriousContents;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.command.vo.IsReviewed;
+import touch.baton.domain.runnerpost.command.vo.PostscriptContents;
+import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.command.vo.Title;
+import touch.baton.domain.runnerpost.command.vo.WatchedCount;
+import touch.baton.domain.tag.command.RunnerPostTag;
+import touch.baton.domain.tag.command.RunnerPostTags;
+import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.technicaltag.command.SupporterTechnicalTags;
 import touch.baton.fixture.domain.RunnerTechnicalTagsFixture;
 
 import java.time.LocalDateTime;
@@ -39,7 +40,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -98,7 +101,7 @@ class RunnerPostTest {
 
         // when
         runnerPost.addAllRunnerPostTags(List.of(java, spring));
-        List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
+        final List<RunnerPostTag> runnerPostTags = runnerPost.getRunnerPostTags().getRunnerPostTags();
         final List<String> actualTagNames = runnerPostTags.stream()
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .collect(Collectors.toList());
@@ -479,7 +482,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.IN_PROGRESS))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -503,7 +506,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.DONE))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -527,7 +530,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.NOT_STARTED))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -551,7 +554,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(ReviewStatus.IN_PROGRESS))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
@@ -576,7 +579,7 @@ class RunnerPostTest {
                     .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
                     .build();
 
-            // when & then
+            // when, then
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(reviewStatus))
                     .isInstanceOf(RunnerPostDomainException.class);
         }

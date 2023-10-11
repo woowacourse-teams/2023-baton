@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.supporter.vo.ReviewCount;
+import touch.baton.domain.member.command.vo.ReviewCount;
 
 public abstract class ReviewCountFixture {
 

@@ -3,13 +3,13 @@ package touch.baton.assure.oauth;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.AssuredTestConfig;
-import touch.baton.config.infra.auth.oauth.authcode.MockAuthCodes;
+import touch.baton.config.infra.auth.oauth.authcode.FakeAuthCodes;
 import touch.baton.domain.common.exception.ClientErrorCode;
-import touch.baton.domain.member.vo.SocialId;
-import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.token.ExpireDate;
-import touch.baton.domain.oauth.token.Token;
-import touch.baton.domain.oauth.token.Tokens;
+import touch.baton.domain.member.command.vo.SocialId;
+import touch.baton.domain.oauth.command.OauthType;
+import touch.baton.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.vo.ExpireDateFixture;
 import touch.baton.infra.auth.jwt.JwtEncoder;
@@ -34,7 +34,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -59,7 +59,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -85,7 +85,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -113,7 +113,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -141,7 +141,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 헤나_액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.hyenaAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.hyenaAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -149,7 +149,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 에단_액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()
@@ -181,7 +181,7 @@ class OauthRefreshTokenAssuredTest extends AssuredTestConfig {
 
         final Tokens 액세스_토큰과_리프레시_토큰 = OauthAssuredSupport
                 .클라이언트_요청()
-                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, MockAuthCodes.ethanAuthCode())
+                .AuthCode를_통해_소셜_토큰을_발급_받은_후_사용자를_회원가입_한다(OauthType.GITHUB, FakeAuthCodes.ethanAuthCode())
 
                 .서버_응답()
                 .AuthCode를_통해_소셜_토큰_발급_및_사용자_회원가입에_성공한다()

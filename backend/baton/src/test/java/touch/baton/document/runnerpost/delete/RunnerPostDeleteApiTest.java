@@ -1,15 +1,10 @@
 package touch.baton.document.runnerpost.delete;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -29,17 +24,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
-@WebMvcTest(RunnerPostController.class)
-public class RunnerPostDeleteApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostService runnerPostService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
-    }
+class RunnerPostDeleteApiTest extends RestdocsConfig {
 
     @DisplayName("러너 게시글 삭제 API")
     @Test
@@ -52,7 +37,7 @@ public class RunnerPostDeleteApiTest extends RestdocsConfig {
         final RunnerPost spyRunnerPost = spy(runnerPost);
 
         // when
-        when(oauthRunnerRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(runner));
         when(spyRunnerPost.getId()).thenReturn(1L);
 
         // then

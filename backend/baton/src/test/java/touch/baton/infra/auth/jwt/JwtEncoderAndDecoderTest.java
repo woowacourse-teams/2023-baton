@@ -6,7 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import touch.baton.domain.oauth.exception.OauthRequestException;
+import touch.baton.domain.oauth.command.exception.OauthRequestException;
 
 import java.util.Map;
 

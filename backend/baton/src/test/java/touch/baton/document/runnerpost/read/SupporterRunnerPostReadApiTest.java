@@ -1,20 +1,15 @@
 package touch.baton.document.runnerpost.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.SupporterRunnerPost;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -36,7 +31,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
-import static org.springframework.restdocs.payload.JsonFieldType.*;
+import static org.springframework.restdocs.payload.JsonFieldType.ARRAY;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -46,17 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
 class SupporterRunnerPostReadApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostService runnerPostService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
-    }
 
     @DisplayName("러너 게시글의 지원한 서포터 목록 조회 API")
     @Test
@@ -77,8 +64,8 @@ class SupporterRunnerPostReadApiTest extends RestdocsConfig {
         // when
         given(spySupporter.getId()).willReturn(1L);
         given(spyRunnerPost.getId()).willReturn(1L);
-        given(runnerPostService.readSupporterRunnerPostsByRunnerPostId(any(), any())).willReturn(List.of(supporterRunnerPost));
-        when(oauthRunnerRepository.joinByMemberSocialId(notNull()))
+        given(runnerPostQueryService.readSupporterRunnerPostsByRunnerPostId(any(), any())).willReturn(List.of(supporterRunnerPost));
+        when(oauthRunnerCommandRepository.joinByMemberSocialId(notNull()))
                 .thenReturn(Optional.ofNullable(runner));
 
         // then

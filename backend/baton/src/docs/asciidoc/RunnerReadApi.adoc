@@ -14,13 +14,13 @@ endif::[]
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/runner-read-by-runner-id-api-test/read-runner-profile/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-read-by-guest-api-test/read-runner-profile/http-request.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/runner-read-by-runner-id-api-test/read-runner-profile/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-read-by-guest-api-test/read-runner-profile/http-response.adoc[]
 
 ===== *Http Response Fields*
 
-include::{snippets}/../../build/generated-snippets/runner-read-by-runner-id-api-test/read-runner-profile/response-fields.adoc[]
+include::{snippets}/../../build/generated-snippets/runner-read-by-guest-api-test/read-runner-profile/response-fields.adoc[]
 

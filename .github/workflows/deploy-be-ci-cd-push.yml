@@ -53,13 +53,9 @@ jobs:
       - name: Pull Latest Docker Image
         run: |
           sudo docker login --username ${{ secrets.DOCKERHUB_DEPLOY_USERNAME }} --password ${{ secrets.DOCKERHUB_DEPLOY_TOKEN }}
-          if sudo docker inspect spring-baton &>/dev/null; then
-            sudo docker stop spring-baton
-            sudo docker rm -f spring-baton
-            sudo docker image prune -af
-          fi
           sudo docker pull 2023batondeploy/2023-baton-deploy:latest
 
       - name: Docker Compose
         run: |
-          sudo docker run --name spring-baton -v /home/ubuntu/logs:/app/logs -p 8080:8080 -e TZ=Asia/Seoul 2023batondeploy/2023-baton-deploy:latest 1>> build.log 2>> error.log &
+          /home/ubuntu/zero-downtime-deploy.sh
+          sudo docker image prune -af
