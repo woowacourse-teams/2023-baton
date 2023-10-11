@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import LogoImage from '@/assets/logo-image.svg';
 import LogoImageMobile from '@/assets/logo-image-mobile.svg';
@@ -14,10 +14,21 @@ import { useNotification } from '@/hooks/query/useNotification';
 const MyMenu = () => {
   const [isNotificationDropdownOpen, setIsNotificationDropdownOpen] = useState(false);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+  const [isAllRead, setIsAllRead] = useState<boolean>(true);
 
   const { data: profile } = useHeaderProfile();
 
   const { data: notificationList } = useNotification();
+
+  useEffect(() => {
+    const isRead = notificationList.data.filter((notification) => {
+      return !notification.isRead;
+    });
+
+    if (isRead.length !== 0) {
+      setIsAllRead(false);
+    }
+  }, [isAllRead]);
 
   const handleNotificationDropdown = () => {
     setIsNotificationDropdownOpen(!isNotificationDropdownOpen);
@@ -42,7 +53,7 @@ const MyMenu = () => {
           gapFromTrigger="52px"
           isDropdownOpen={isNotificationDropdownOpen}
           trigger={
-            notificationList?.data.length === 0 ? (
+            isAllRead ? (
               <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOffIcon} />
             ) : (
               <S.NotificationIcon onClick={handleNotificationDropdown} src={NotificationOnIcon} />
