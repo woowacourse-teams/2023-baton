@@ -232,6 +232,10 @@ export const handlers = [
   rest.patch(`${BATON_BASE_URL}/oauth/logout`, async (req, res, ctx) => {
     return res(ctx.status(204));
   }),
+
+  rest.get(`${BATON_BASE_URL}/posts/runner/search/count`, async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({ count: 99 }));
+  }),
 ];
 
 const handleRequest = (
