@@ -23,7 +23,7 @@ const SupporterMyPage = () => {
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
   const { goToProfileEditPage, goToLoginPage } = usePageRouter();
-  const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(true, reviewStatus);
+  const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(false, reviewStatus);
   const { data: mySupporterProfile } = useMySupporterProfile();
 
   useEffect(() => {
