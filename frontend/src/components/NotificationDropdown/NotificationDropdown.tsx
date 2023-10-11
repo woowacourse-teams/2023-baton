@@ -12,11 +12,11 @@ interface Props {
 const NotificationDropdown = ({ notificationList }: Props) => {
   const { mutate: deleteNotification } = useNotificationDelete();
   const { mutate: patchNotificationCheck } = useNotificationCheck();
-  const { goToRunnerPostPage } = usePageRouter();
+  const { goToRunnerMyPage } = usePageRouter();
 
-  const handlePostClick = (notificationId: number, runnerPostId: number) => {
+  const handlePostClick = (notificationId: number) => {
     patchNotificationCheck(notificationId);
-    goToRunnerPostPage(runnerPostId);
+    goToRunnerMyPage();
   };
 
   const handleDeleteNotification = (e: React.MouseEvent, notificationId: number) => {
@@ -32,10 +32,10 @@ const NotificationDropdown = ({ notificationList }: Props) => {
           return (
             <S.DropdownList
               key={notification.notificationId}
-              onClick={() => handlePostClick(notification.notificationId, notification.referencedId)}
+              onClick={() => handlePostClick(notification.notificationId)}
             >
               <S.NotificationTitleContainer>
-                <S.NotificationTitle isRead={notification.isRead}>{notification.title}</S.NotificationTitle>
+                <S.NotificationTitle $isRead={notification.isRead}>{notification.title}</S.NotificationTitle>
                 <S.CloseButton onClick={(e) => handleDeleteNotification(e, notification.notificationId)}>
                   삭제
                 </S.CloseButton>
@@ -105,13 +105,13 @@ const S = {
     }
   `,
 
-  NotificationTitle: styled.p<{ isRead: boolean }>`
+  NotificationTitle: styled.p<{ $isRead: boolean }>`
     font-size: 16px;
     font-weight: 700;
     position: relative;
 
-    ${({ isRead }) =>
-      isRead
+    ${({ $isRead }) =>
+      $isRead
         ? () => ''
         : ` &::before {
       width: 4px;
