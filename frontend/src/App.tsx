@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import { styled } from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import ToastProvider from './contexts/ToastContext';
@@ -8,22 +8,24 @@ import LoadingPage from './pages/LoadingPage';
 import ModalProvider from './contexts/ModalContext';
 import { QueryClientProvider, QueryErrorResetBoundary } from '@tanstack/react-query';
 import { queryClient } from './hooks/query/queryClient';
-import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
-
-const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID;
-if (gaTrackingId) {
-  ReactGA.initialize(gaTrackingId);
-}
-
-const history = createBrowserHistory();
-history.listen((response: { location: { pathname: string } }) => {
-  ReactGA.set({ page: response.location.pathname });
-  ReactGA.pageview(response.location.pathname);
-});
+import ReactGA from 'react-ga4';
 
 const App = () => {
+  useEffect(() => {
+    const gaTrackingId = process.env.REACT_APP_GA_TRACKING_ID;
+    if (gaTrackingId) {
+      ReactGA.initialize(gaTrackingId);
+    }
+
+    const history = createBrowserHistory();
+    history.listen((response) => {
+      ReactGA.set({ page: response.location.pathname });
+      ReactGA.send(response.location.pathname);
+    });
+  }, []);
+
   ChannelService.loadScript();
 
   if (CHANNEL_SERVICE_KEY) {
