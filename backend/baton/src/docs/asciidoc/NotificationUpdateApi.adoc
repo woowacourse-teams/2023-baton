@@ -1,0 +1,29 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+==== *알림 읽음 여부 업데이트 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/notification-update-api-test/update-notification-is-read-true-by-member/http-request.adoc[]
+
+===== *Http Request Headers*
+
+include::{snippets}/../../build/generated-snippets/notification-update-api-test/update-notification-is-read-true-by-member/request-headers.adoc[]
+
+===== *Http Request Path Parameters*
+
+include::{snippets}/../../build/generated-snippets/notification-update-api-test/update-notification-is-read-true-by-member/path-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/notification-update-api-test/update-notification-is-read-true-by-member/http-response.adoc[]

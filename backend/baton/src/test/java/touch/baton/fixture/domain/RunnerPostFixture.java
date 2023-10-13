@@ -1,20 +1,20 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.common.vo.Title;
-import touch.baton.domain.common.vo.WatchedCount;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.vo.CuriousContents;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ImplementedContents;
-import touch.baton.domain.runnerpost.vo.IsReviewed;
-import touch.baton.domain.runnerpost.vo.PostscriptContents;
-import touch.baton.domain.runnerpost.vo.PullRequestUrl;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.RunnerPostTag;
-import touch.baton.domain.tag.RunnerPostTags;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.CuriousContents;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.command.vo.IsReviewed;
+import touch.baton.domain.runnerpost.command.vo.PostscriptContents;
+import touch.baton.domain.runnerpost.command.vo.PullRequestUrl;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.command.vo.Title;
+import touch.baton.domain.runnerpost.command.vo.WatchedCount;
+import touch.baton.domain.tag.command.RunnerPostTag;
+import touch.baton.domain.tag.command.RunnerPostTags;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.vo.DeadlineFixture;
 
 import java.time.LocalDateTime;
@@ -93,7 +93,7 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost create(final Runner runner, final Deadline deadline, List<Tag> tags) {
+    public static RunnerPost create(final Runner runner, final Deadline deadline, final List<Tag> tags) {
         final RunnerPost runnerPost = RunnerPost.builder()
                 .title(new Title("테스트 제목"))
                 .implementedContents(new ImplementedContents("테스트 내용"))
@@ -103,6 +103,35 @@ public abstract class RunnerPostFixture {
                 .deadline(deadline)
                 .watchedCount(new WatchedCount(0))
                 .reviewStatus(ReviewStatus.NOT_STARTED)
+                .isReviewed(IsReviewed.notReviewed())
+                .runner(runner)
+                .supporter(null)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+
+        final List<RunnerPostTag> runnerPostTags = tags.stream()
+                .map(tag -> RunnerPostTagFixture.create(runnerPost, tag))
+                .toList();
+
+        runnerPost.addAllRunnerPostTags(runnerPostTags);
+
+        return runnerPost;
+    }
+
+    public static RunnerPost create(final Runner runner,
+                                    final Deadline deadline,
+                                    final List<Tag> tags,
+                                    final ReviewStatus reviewStatus
+    ) {
+        final RunnerPost runnerPost = RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .implementedContents(new ImplementedContents("테스트 내용"))
+                .curiousContents(new CuriousContents("테스트 궁금 점"))
+                .postscriptContents(new PostscriptContents("테스트 참고 사항"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(deadline)
+                .watchedCount(new WatchedCount(0))
+                .reviewStatus(reviewStatus)
                 .isReviewed(IsReviewed.notReviewed())
                 .runner(runner)
                 .supporter(null)
@@ -135,10 +164,10 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
-    public static RunnerPost createWithReviewStatus(final Runner runner,
-                                                    final Supporter supporter,
-                                                    final ReviewStatus reviewStatus,
-                                                    final IsReviewed isReviewed
+    public static RunnerPost createWithSupporter(final Runner runner,
+                                                 final Supporter supporter,
+                                                 final ReviewStatus reviewStatus,
+                                                 final IsReviewed isReviewed
     ) {
         return RunnerPost.builder()
                 .title(new Title("테스트 제목"))

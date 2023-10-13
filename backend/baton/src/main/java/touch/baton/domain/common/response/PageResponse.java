@@ -1,38 +1,37 @@
 package touch.baton.domain.common.response;
 
-import org.springframework.data.domain.Page;
+import touch.baton.domain.common.request.PageParams;
 
 import java.util.List;
 
-public record PageResponse<T>(List<T> data,
-                              PageInfo pageInfo
-) {
+public record PageResponse<T extends IdExtractable>(List<T> data, PageInfo pageInfo) {
 
-    public static <T> PageResponse<T> from(final Page<T> page) {
-        return new PageResponse<>(page.getContent(), PageInfo.from(page));
+    public static <T extends IdExtractable> PageResponse<T> of(final List<T> responses, final PageParams pageParams) {
+        final int limit = pageParams.limit();
+        if (isLastPage(responses, limit)) {
+            return new PageResponse<>(responses, PageInfo.last());
+        }
+        final List<T> limitResponses = responses.subList(0, pageParams.getLimitForQuery());
+        return new PageResponse<>(limitResponses, PageInfo.normal(getLastElementId(limitResponses)));
     }
 
-    public record PageInfo(boolean isFirst,
-                           boolean isLast,
-                           boolean hasNext,
-                           int totalPages,
-                           long totalElements,
-                           int currentPage,
-                           int currentSize
-    ) {
+    public record PageInfo(boolean isLast, Long nextCursor) {
 
-        private static final int START_PAGE_NUMBER = 1;
-
-        public static <T> PageInfo from(final Page<T> page) {
-            return new PageInfo(
-                    page.isFirst(),
-                    page.isLast(),
-                    page.hasNext(),
-                    page.getTotalPages(),
-                    page.getTotalElements(),
-                    page.getNumber() + START_PAGE_NUMBER,
-                    page.getSize()
-            );
+        public static PageInfo last() {
+            return new PageInfo(true, null);
         }
+
+        public static PageInfo normal(final Long nextCursor) {
+            return new PageInfo(false, nextCursor);
+        }
+    }
+
+    private static <T> boolean isLastPage(final List<T> responses, final int limit) {
+        return responses.size() <= limit;
+    }
+
+    private static <T extends IdExtractable> Long getLastElementId(final List<T> responses) {
+        final int lastIndex = responses.size() - 1;
+        return responses.get(lastIndex).extractId();
     }
 }

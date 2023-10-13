@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.runnerpost.vo.ImplementedContents;
+import touch.baton.domain.runnerpost.command.vo.ImplementedContents;
 
 public abstract class ImplementedContentsFixture {
 

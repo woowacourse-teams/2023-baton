@@ -1,8 +1,8 @@
 package touch.baton.fixture.domain;
 
 import touch.baton.domain.common.vo.TagName;
-import touch.baton.domain.tag.Tag;
-import touch.baton.domain.tag.vo.TagReducedName;
+import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.tag.command.vo.TagReducedName;
 import touch.baton.fixture.vo.TagNameFixture;
 
 public abstract class TagFixture {

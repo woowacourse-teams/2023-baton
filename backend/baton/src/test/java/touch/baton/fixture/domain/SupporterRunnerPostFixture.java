@@ -1,9 +1,9 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.SupporterRunnerPost;
-import touch.baton.domain.supporter.vo.Message;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.SupporterRunnerPost;
+import touch.baton.domain.member.command.vo.Message;
+import touch.baton.domain.runnerpost.command.RunnerPost;
 
 public abstract class SupporterRunnerPostFixture {
 

@@ -2,7 +2,7 @@ package touch.baton.config.infra.auth.oauth;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import touch.baton.domain.oauth.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.RefreshToken;
 import touch.baton.infra.auth.jwt.JwtConfig;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 

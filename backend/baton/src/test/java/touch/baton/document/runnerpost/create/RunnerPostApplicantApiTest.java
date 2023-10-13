@@ -1,19 +1,14 @@
 package touch.baton.document.runnerpost.create;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostController;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.service.dto.RunnerPostApplicantCreateRequest;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -27,32 +22,25 @@ import static java.time.LocalDateTime.now;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.springframework.http.HttpHeaders.*;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
+import static org.springframework.http.HttpHeaders.LOCATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostController.class)
 class RunnerPostApplicantApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostService runnerPostService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerPostController runnerPostController = new RunnerPostController(runnerPostService);
-        restdocsSetUp(runnerPostController);
-    }
 
     @DisplayName("Supporter 가 RunnerPost 에 리뷰를 제안한다.")
     @Test
@@ -68,9 +56,9 @@ class RunnerPostApplicantApiTest extends RestdocsConfig {
         // when
         final RunnerPost spyRunnerPost = spy(runnerPost);
         when(spyRunnerPost.getId()).thenReturn(1L);
-        when(runnerPostService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
+        when(runnerPostCommandService.createRunnerPostApplicant(any(), any(), any())).thenReturn(1L);
 
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporterHyena));
 
         final String token = getAccessTokenBySocialId(supporterHyena.getMember().getSocialId().getValue());
 
@@ -97,7 +85,6 @@ class RunnerPostApplicantApiTest extends RestdocsConfig {
                         responseHeaders(
                                 headerWithName(LOCATION).description("redirect uri")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 }

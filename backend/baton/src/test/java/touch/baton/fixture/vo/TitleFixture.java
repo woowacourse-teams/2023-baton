@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.common.vo.Title;
+import touch.baton.domain.runnerpost.command.vo.Title;
 
 public abstract class TitleFixture {
 

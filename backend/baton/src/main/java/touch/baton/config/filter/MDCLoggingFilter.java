@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.core.config.Order;
 import org.slf4j.MDC;
 import org.springframework.core.Ordered;
@@ -17,8 +19,9 @@ class MDCLoggingFilter implements Filter {
 
     @Override
     public void doFilter(final ServletRequest servletRequest, final ServletResponse servletResponse, final FilterChain filterChain) throws IOException, ServletException {
-        final UUID uuid = UUID.randomUUID();
-        MDC.put("request_id", uuid.toString());
+        final String requestId = ((HttpServletRequest) servletRequest).getHeader("X-Request-ID");
+
+        MDC.put("request_id", StringUtils.defaultString(requestId, UUID.randomUUID().toString()));
         filterChain.doFilter(servletRequest, servletResponse);
         MDC.clear();
     }

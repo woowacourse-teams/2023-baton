@@ -15,7 +15,7 @@ public class FilterConfig implements WebMvcConfigurer {
     public FilterRegistrationBean<Filter> getFilterRegistrationBean() {
         final FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>(new MDCLoggingFilter());
         registrationBean.setOrder(Integer.MIN_VALUE);
-        registrationBean.setUrlPatterns(List.of("/api/**"));
+        registrationBean.setUrlPatterns(List.of("/api/*"));
         return registrationBean;
     }
 }

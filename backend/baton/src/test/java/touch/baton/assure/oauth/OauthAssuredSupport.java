@@ -8,13 +8,13 @@ import touch.baton.assure.common.AssuredSupport;
 import touch.baton.assure.common.PathParams;
 import touch.baton.assure.common.QueryParams;
 import touch.baton.domain.common.exception.ClientErrorCode;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.token.AccessToken;
-import touch.baton.domain.oauth.token.ExpireDate;
-import touch.baton.domain.oauth.token.RefreshToken;
-import touch.baton.domain.oauth.token.Token;
-import touch.baton.domain.oauth.token.Tokens;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.oauth.command.OauthType;
+import touch.baton.domain.oauth.command.token.AccessToken;
+import touch.baton.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.Tokens;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -91,6 +91,18 @@ public class OauthAssuredSupport {
             return this;
         }
 
+        public OauthClientRequestBuilder 로그아웃을_요청한다(final AccessToken 액세스_토큰) {
+            response = AssuredSupport.patch("/api/v1/oauth/logout", 액세스_토큰.getValue());
+
+            return this;
+        }
+
+        public OauthClientRequestBuilder 액세스_토큰_없이_로그아웃을_요청한다() {
+            response = AssuredSupport.patch("/api/v1/oauth/logout");
+
+            return this;
+        }
+
         public OauthServerResponseBuilder 서버_응답() {
             return new OauthServerResponseBuilder(response);
         }
@@ -151,6 +163,12 @@ public class OauthAssuredSupport {
             assertSoftly(softly -> {
                 softly.assertThat(response.statusCode()).isEqualTo(clientErrorCode.getHttpStatus().value());
                 softly.assertThat(response.jsonPath().getString("errorCode")).isEqualTo(clientErrorCode.getErrorCode());
+            });
+        }
+
+        public void 로그아웃이_성공한다() {
+            assertSoftly(softly -> {
+                softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.NO_CONTENT.value());
             });
         }
     }

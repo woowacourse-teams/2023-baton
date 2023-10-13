@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.common.vo.WatchedCount;
+import touch.baton.domain.runnerpost.command.vo.WatchedCount;
 
 public abstract class WatchedCountFixture {
 

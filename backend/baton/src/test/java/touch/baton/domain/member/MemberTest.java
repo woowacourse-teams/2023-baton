@@ -4,18 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.vo.Company;
+import touch.baton.domain.member.command.vo.GithubUrl;
+import touch.baton.domain.member.command.vo.ImageUrl;
+import touch.baton.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.OauthId;
+import touch.baton.domain.member.command.vo.SocialId;
 import touch.baton.domain.member.exception.MemberDomainException;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
 import touch.baton.fixture.domain.MemberFixture;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 class MemberTest {
 
@@ -37,19 +36,21 @@ class MemberTest {
             ).doesNotThrowAnyException();
         }
 
-        @DisplayName("이름에 null 이 들어갈 경우 예외가 발생한다.")
+        @DisplayName("이름에 null 이 들어갈 경우 기본값으로 생성한다.")
         @Test
-        void fail_if_name_is_null() {
-            assertThatThrownBy(() -> Member.builder()
-                    .memberName(null)
+        void success_if_name_is_null_then_default_value() {
+            // given
+            final Member member = Member.builder()
+                    .memberName(new MemberName(null))
                     .socialId(new SocialId("testSocialId"))
                     .oauthId(new OauthId("dsigjh98gh230gn2oinv913bcuo23nqovbvu93b12voi3bc31j"))
                     .githubUrl(new GithubUrl("github.com/hyena0608"))
                     .company(new Company("우아한형제들"))
                     .imageUrl(new ImageUrl("imageUrl"))
-                    .build()
-            ).isInstanceOf(MemberDomainException.class)
-                    .hasMessage("Member 의 name 은 null 일 수 없습니다.");
+                    .build();
+
+            // when, then
+            assertThat(member.getMemberName()).isEqualTo(new MemberName("익명의 사용자"));
         }
 
         @DisplayName("socialId에 null 이 들어갈 경우 예외가 발생한다.")

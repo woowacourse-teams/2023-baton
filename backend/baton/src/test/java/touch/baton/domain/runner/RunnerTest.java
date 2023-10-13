@@ -3,15 +3,16 @@ package touch.baton.domain.runner;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.vo.Company;
-import touch.baton.domain.member.vo.GithubUrl;
-import touch.baton.domain.member.vo.ImageUrl;
-import touch.baton.domain.member.vo.MemberName;
-import touch.baton.domain.member.vo.OauthId;
-import touch.baton.domain.member.vo.SocialId;
-import touch.baton.domain.runner.exception.RunnerDomainException;
-import touch.baton.domain.technicaltag.RunnerTechnicalTags;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.vo.Company;
+import touch.baton.domain.member.command.vo.GithubUrl;
+import touch.baton.domain.member.command.vo.ImageUrl;
+import touch.baton.domain.member.command.vo.MemberName;
+import touch.baton.domain.member.command.vo.OauthId;
+import touch.baton.domain.member.command.vo.SocialId;
+import touch.baton.domain.member.exception.RunnerDomainException;
+import touch.baton.domain.technicaltag.command.RunnerTechnicalTags;
 
 import java.util.ArrayList;
 

@@ -1,17 +1,12 @@
 package touch.baton.document.profile.supporter.update;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.controller.SupporterProfileController;
-import touch.baton.domain.supporter.service.SupporterService;
-import touch.baton.domain.supporter.service.dto.SupporterUpdateRequest;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.service.dto.SupporterUpdateRequest;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.SupporterFixture;
 
@@ -41,17 +36,7 @@ import static touch.baton.fixture.vo.MemberNameFixture.memberName;
 import static touch.baton.fixture.vo.OauthIdFixture.oauthId;
 import static touch.baton.fixture.vo.SocialIdFixture.socialId;
 
-@WebMvcTest(SupporterProfileController.class)
-public class SupporterUpdateApiTest extends RestdocsConfig {
-
-    @MockBean
-    private SupporterService supporterService;
-
-    @BeforeEach
-    void setUp() {
-        final SupporterProfileController supporterProfileController = new SupporterProfileController(supporterService);
-        restdocsSetUp(supporterProfileController);
-    }
+class SupporterUpdateApiTest extends RestdocsConfig {
 
     @DisplayName("서포터 프로필 수정 API")
     @Test
@@ -72,7 +57,7 @@ public class SupporterUpdateApiTest extends RestdocsConfig {
         final String token = getAccessTokenBySocialId(socialId);
 
         // when
-        when(oauthSupporterRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
+        when(oauthSupporterCommandRepository.joinByMemberSocialId(any())).thenReturn(Optional.ofNullable(supporter));
 
         // then
         mockMvc.perform(patch("/api/v1/profile/supporter/me")
@@ -93,7 +78,6 @@ public class SupporterUpdateApiTest extends RestdocsConfig {
                                 fieldWithPath("technicalTags.[]").type(ARRAY).description("변경할 기술 태그 목록")
                         ),
                         responseHeaders(headerWithName(LOCATION).description("redirect uri"))
-                ))
-                .andDo(print());
+                ));
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import touch.baton.domain.common.vo.TagName;
 import touch.baton.domain.tag.exception.TechnicalTagDomainException;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

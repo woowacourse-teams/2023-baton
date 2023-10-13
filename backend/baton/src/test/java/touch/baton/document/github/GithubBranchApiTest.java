@@ -1,40 +1,32 @@
 package touch.baton.document.github;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.member.controller.MemberBranchController;
-import touch.baton.domain.member.service.dto.GithubBranchManageable;
-import touch.baton.domain.member.service.dto.GithubRepoNameRequest;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.service.dto.GithubRepoNameRequest;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.util.Optional;
 
-import static org.apache.http.HttpHeaders.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.apache.http.HttpHeaders.AUTHORIZATION;
+import static org.apache.http.HttpHeaders.CONTENT_TYPE;
+import static org.apache.http.HttpHeaders.LOCATION;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(MemberBranchController.class)
 class GithubBranchApiTest extends RestdocsConfig {
-
-    @MockBean
-    private GithubBranchManageable githubBranchManageable;
-
-    @BeforeEach
-    void setup() {
-        restdocsSetUp(new MemberBranchController(githubBranchManageable));
-    }
 
     @DisplayName("깃허브 레포 브랜치 생성 API")
     @Test
@@ -46,7 +38,7 @@ class GithubBranchApiTest extends RestdocsConfig {
         final GithubRepoNameRequest request = new GithubRepoNameRequest("drunken-ditoo");
 
         // when
-        when(oauthMemberRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
+        when(oauthMemberCommandRepository.findBySocialId(any())).thenReturn(Optional.ofNullable(member));
         doNothing().when(githubBranchManageable).createBranch(eq(socialId), anyString());
 
         // then

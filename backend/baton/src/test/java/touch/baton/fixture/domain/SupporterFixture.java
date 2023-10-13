@@ -1,11 +1,11 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.member.Member;
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.supporter.vo.ReviewCount;
-import touch.baton.domain.technicaltag.SupporterTechnicalTag;
-import touch.baton.domain.technicaltag.SupporterTechnicalTags;
-import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.vo.ReviewCount;
+import touch.baton.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.domain.technicaltag.command.SupporterTechnicalTags;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 import touch.baton.fixture.vo.ReviewCountFixture;
 
 import java.util.ArrayList;
