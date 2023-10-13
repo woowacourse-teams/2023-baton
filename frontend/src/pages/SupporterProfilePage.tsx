@@ -2,55 +2,28 @@ import TechLabel from '@/components/TechLabel/TechLabel';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
 import Layout from '@/layout/Layout';
-import { GetSupporterProfileResponse } from '@/types/profile';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 import githubIcon from '@/assets/github-icon.svg';
-import { GetRunnerPostResponse } from '@/types/runnerPost';
 import RunnerPostItem from '@/components/RunnerPost/RunnerPostItem/RunnerPostItem';
-import { ToastContext } from '@/contexts/ToastContext';
-import { useFetch } from '@/hooks/useFetch';
 import useViewport from '@/hooks/useViewport';
+import { useOtherSupporterProfile } from '@/hooks/query/useOtherSupporterProfile';
+import { useOtherSupporterPost } from '@/hooks/query/useOtherSupporterPost';
+import { useOtherSupporterPostCount } from '@/hooks/query/useOtherSupporterPostCount';
 
 const SupporterProfilePage = () => {
-  const [supporterProfile, setSupporterProfile] = useState<GetSupporterProfileResponse | null>(null);
-  const [supporterProfilePost, setSupporterProfilePost] = useState<GetRunnerPostResponse | null>(null);
-
   const { supporterId } = useParams();
-
-  const { getRequest } = useFetch();
 
   const { isMobile } = useViewport();
 
-  useEffect(() => {
-    getProfile();
-    getPost();
-  }, [supporterId]);
+  const { data: supporterProfile } = useOtherSupporterProfile(Number(supporterId));
+  const { data: supporterProfilePost, hasNextPage, fetchNextPage } = useOtherSupporterPost(Number(supporterId));
+  const { data: supporterProfilePostCount } = useOtherSupporterPostCount(Number(supporterId));
 
-  const getProfile = () => {
-    getRequest(`/profile/supporter/${supporterId}`, async (response) => {
-      const data: GetSupporterProfileResponse = await response.json();
-
-      setSupporterProfile(data);
-    });
+  const handleClickMoreButton = () => {
+    fetchNextPage();
   };
-
-  const getPost = async () => {
-    if (supporterId === undefined || typeof Number(supporterId) !== 'number') return;
-
-    const params = new URLSearchParams([
-      ['supporterId', supporterId],
-      ['reviewStatus', 'DONE'],
-    ]);
-
-    getRequest(`/posts/runner/search?${params.toString()}`, async (response) => {
-      const data: GetRunnerPostResponse = await response.json();
-
-      setSupporterProfilePost(data);
-    });
-  };
-
   return (
     <Layout>
       <S.ProfileContainer>
@@ -86,13 +59,26 @@ const SupporterProfilePage = () => {
 
       <S.ReviewCountWrapper>
         <S.ReviewCountTitle>완료된 리뷰</S.ReviewCountTitle>
-        <S.ReviewCount>{supporterProfilePost?.data?.length}</S.ReviewCount>
+        <S.ReviewCount>{supporterProfilePostCount?.count}</S.ReviewCount>
       </S.ReviewCountWrapper>
       <S.PostsContainer>
-        {supporterProfilePost?.data?.map((runnerPostData) => (
+        {supporterProfilePost?.map((runnerPostData) => (
           <RunnerPostItem key={runnerPostData.runnerPostId} runnerPostData={runnerPostData} />
         ))}
       </S.PostsContainer>
+      <S.MoreButtonWrapper>
+        {hasNextPage && (
+          <Button
+            colorTheme="RED"
+            width={isMobile ? '100%' : '1200px'}
+            fontSize={isMobile ? '14px' : '18px'}
+            height="55px"
+            onClick={handleClickMoreButton}
+          >
+            더보기
+          </Button>
+        )}
+      </S.MoreButtonWrapper>
     </Layout>
   );
 };
@@ -270,5 +256,13 @@ const S = {
     @media (max-width: 768px) {
       font-size: 28px;
     }
+  `,
+
+  MoreButtonWrapper: styled.div`
+    max-width: 1200px;
+    min-width: 340px;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 20px;
   `,
 };

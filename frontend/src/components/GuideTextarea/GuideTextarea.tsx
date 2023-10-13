@@ -1,8 +1,7 @@
 import { DownArrowIcon, UpArrowIcon } from '@/assets/arrow-icon';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { css, keyframes, styled } from 'styled-components';
-import Modal from '../common/Modal/Modal';
-import useViewport from '@/hooks/useViewport';
+import { ModalContext } from '@/contexts/ModalContext';
 
 interface Props extends React.HTMLProps<HTMLTextAreaElement> {
   inputTextState: string;
@@ -38,10 +37,9 @@ const GuideTextarea = ({
 }: Props) => {
   const [isError, setIsError] = useState(isErrorOnSubmit);
   const [isTextareaOpen, setIsTextareaOpen] = useState(!isOptional);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [IsAnimated, setIsAnimated] = useState(false);
 
-  const { isMobile } = useViewport();
+  const { openModal, closeModal } = useContext(ModalContext);
 
   const handleBlur = () => {
     if (isOptional) return;
@@ -73,12 +71,18 @@ const GuideTextarea = ({
     isTextareaOpen ? closeTextarea() : openTextarea();
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const openGuideModal = () => {
+    openModal(
+      <S.ModalContainer>
+        <S.ModalTitle>{title}</S.ModalTitle>
+        <S.ModalContents>
+          {guideTexts?.map((text) => (
+            <S.GuideText>{text}</S.GuideText>
+          ))}
+        </S.ModalContents>
+        <S.ConfirmButton onClick={closeModal}>확인</S.ConfirmButton>
+      </S.ModalContainer>,
+    );
   };
 
   const handleKeyDownTitle = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -90,7 +94,7 @@ const GuideTextarea = ({
   const handleClickGuideButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    openModal();
+    openGuideModal();
   };
 
   return (
@@ -131,19 +135,6 @@ const GuideTextarea = ({
           )}
         </S.InputConfig>
       </S.TextareaContainer>
-      {isModalOpen && (
-        <Modal closeModal={closeModal} width={isMobile ? '90%' : '70%'} height="620px">
-          <S.ModalContainer>
-            <S.ModalTitle>{title}</S.ModalTitle>
-            <S.ModalContents>
-              {guideTexts?.map((text) => (
-                <S.GuideText>{text}</S.GuideText>
-              ))}
-            </S.ModalContents>
-            <S.ConfirmButton onClick={closeModal}>확인</S.ConfirmButton>
-          </S.ModalContainer>
-        </Modal>
-      )}
     </S.Container>
   );
 };
@@ -359,6 +350,18 @@ const S = {
   ModalContainer: styled.div`
     display: flex;
     flex-direction: column;
+
+    width: 720px;
+    height: 620px;
+    padding: 20px;
+
+    @media (max-width: 768px) {
+      width: 90vw;
+      height: fit-content;
+      padding: 15px;
+
+      font-size: 16px;
+    }
   `,
 
   ModalTitle: styled.div`
@@ -374,6 +377,8 @@ const S = {
     font-weight: 700;
 
     @media (max-width: 768px) {
+      padding: 10px;
+
       font-size: 20px;
     }
   `,
@@ -383,13 +388,13 @@ const S = {
     flex-direction: column;
     gap: 25px;
 
-    height: 480px;
+    height: 80%;
     padding: 30px 10px;
 
     @media (max-width: 768px) {
-      gap: 20px;
+      gap: 10px;
 
-      padding: 20px 0;
+      padding: 10px 0;
     }
   `,
 

@@ -2,10 +2,12 @@ import React from 'react';
 import App from './App';
 import { createBrowserRouter } from 'react-router-dom';
 import MainPage from './pages/MainPage';
+import NotFoundPage from './pages/NotFoundPage';
 const RunnerPostPage = React.lazy(() => import('./pages/RunnerPostDetailPage'));
 const RunnerPostCreatePage = React.lazy(() => import('./pages/RunnerPostCreatePage'));
 const LoginPage = React.lazy(() => import('./pages/LoginPage'));
-const MyPage = React.lazy(() => import('./pages/MyPage'));
+const RunnerMyPage = React.lazy(() => import('./pages/RunnerMyPage'));
+const SupporterMyPage = React.lazy(() => import('./pages/SupporterMyPage'));
 const GithubCallbackPage = React.lazy(() => import('./pages/GithubCallbackPage'));
 const ProfileEditPage = React.lazy(() => import('./pages/ProfileEditPage'));
 const SupporterSelectPage = React.lazy(() => import('./pages/SupporterSelectPage'));
@@ -13,13 +15,15 @@ const SupporterFeedbackPage = React.lazy(() => import('./pages/SupporterFeedback
 const SupporterProfilePage = React.lazy(() => import('./pages/SupporterProfilePage'));
 const RunnerProfilePage = React.lazy(() => import('./pages/RunnerProfilePage'));
 const NoticePage = React.lazy(() => import('./pages/NoticePage'));
+const ResultPage = React.lazy(() => import('./pages/ResultPage'));
 
 export const ROUTER_PATH = {
   MAIN: '/',
   RUNNER_POST: '/runner-post/:runnerPostId',
   RUNNER_POST_CREATE: '/runner-post-create/',
   SUPPORTER_SELECT: '/supporter-select/:runnerPostId',
-  MY_PAGE: '/my-page',
+  RUNNER_MYPAGE: '/my-page-runner',
+  SUPPORTER_MYPAGE: '/my-page-supporter',
   LOGIN: '/login',
   NOT_FOUND: '/*',
   RUNNER_PROFILE: '/runner-profile/:runnerId',
@@ -28,6 +32,7 @@ export const ROUTER_PATH = {
   SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
   GITHUB_CALLBACK: '/oauth/github/callback',
   NOTICE: '/notice',
+  RESULT: '/result',
 };
 
 export const router = createBrowserRouter(
@@ -52,8 +57,12 @@ export const router = createBrowserRouter(
           element: <LoginPage />,
         },
         {
-          path: ROUTER_PATH.MY_PAGE,
-          element: <MyPage />,
+          path: ROUTER_PATH.RUNNER_MYPAGE,
+          element: <RunnerMyPage />,
+        },
+        {
+          path: ROUTER_PATH.SUPPORTER_MYPAGE,
+          element: <SupporterMyPage />,
         },
         {
           path: ROUTER_PATH.PROFILE_EDIT,
@@ -80,6 +89,8 @@ export const router = createBrowserRouter(
           path: ROUTER_PATH.NOTICE,
           element: <NoticePage />,
         },
+        { path: ROUTER_PATH.RESULT, element: <ResultPage /> },
+        { path: ROUTER_PATH.NOT_FOUND, element: <NotFoundPage /> },
       ],
     },
   ],

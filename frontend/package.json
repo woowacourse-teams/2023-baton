@@ -7,6 +7,7 @@
     "dev": "webpack-dev-server --config webpack/webpack.dev.js",
     "build": "webpack --config webpack/webpack.prod.js",
     "test": "cypress run",
+    "cypress": "cypress open",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=chpt_2be44b6342a5cae"
@@ -15,12 +16,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@tanstack/react-query": "^5.0.0-rc.1",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "core-js": "^3.31.1",
     "dotenv": "^16.3.1",
+    "history": "^5.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-ga4": "^2.1.0",
     "react-router-dom": "^6.14.2",
     "styled-components": "^6.0.4"
   },

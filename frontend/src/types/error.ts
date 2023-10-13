@@ -3,7 +3,7 @@ export interface APIError {
   message: string;
 }
 
-export class CustomError extends Error {
+export class CustomApiError extends Error {
   errorCode;
   message;
 

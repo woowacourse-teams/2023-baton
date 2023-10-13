@@ -13,7 +13,7 @@
     {
       "runnerPostId": 22,
       "title": "시작안한 리뷰2",
-      "deadline": "마감기한2",
+      "deadline": "2099-10-13T11:30",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
       "applicantCount": 4,
@@ -22,7 +22,7 @@
     {
       "runnerPostId": 34,
       "title": "시작안한 리뷰3",
-      "deadline": "마감기한3",
+      "deadline": "2099-10-13T11:30",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
       "applicantCount": 4,
@@ -31,7 +31,7 @@
     {
       "runnerPostId": 45,
       "title": "시작안한 리뷰3",
-      "deadline": "마감기한3",
+      "deadline": "2099-10-13T11:30",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
       "applicantCount": 4,
@@ -40,7 +40,7 @@
     {
       "runnerPostId": 56,
       "title": "시작안한 리뷰3",
-      "deadline": "마감기한3",
+      "deadline": "2099-10-13T11:30",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
       "applicantCount": 4,
@@ -49,7 +49,7 @@
     {
       "runnerPostId": 67,
       "title": "시작안한 리뷰3",
-      "deadline": "마감기한3",
+      "deadline": "2099-10-13T11:30",
       "tags": ["java", "자바"],
       "reviewStatus": "NOT_STARTED",
       "applicantCount": 4,
@@ -93,12 +93,7 @@
     }
   ],
   "pageInfo": {
-    "isFirst": true,
     "isLast": false,
-    "hasNext": true,
-    "totalPages": 4,
-    "totalElements": 40,
-    "currentPage": 1,
-    "currentSize": 12
+    "nextCursor": 1
   }
 }
