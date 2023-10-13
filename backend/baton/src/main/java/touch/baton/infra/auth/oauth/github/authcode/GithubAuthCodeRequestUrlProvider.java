@@ -3,8 +3,8 @@ package touch.baton.infra.auth.oauth.github.authcode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
-import touch.baton.domain.oauth.OauthType;
-import touch.baton.domain.oauth.authcode.AuthCodeRequestUrlProvider;
+import touch.baton.domain.oauth.command.OauthType;
+import touch.baton.domain.oauth.command.authcode.AuthCodeRequestUrlProvider;
 import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
 
 @RequiredArgsConstructor

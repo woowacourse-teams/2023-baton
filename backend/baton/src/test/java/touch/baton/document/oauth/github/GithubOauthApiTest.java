@@ -1,24 +1,15 @@
 package touch.baton.document.oauth.github;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.TestPropertySource;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.oauth.controller.OauthController;
-import touch.baton.domain.oauth.service.OauthService;
-import touch.baton.domain.oauth.token.AccessToken;
-import touch.baton.domain.oauth.token.ExpireDate;
-import touch.baton.domain.oauth.token.RefreshToken;
-import touch.baton.domain.oauth.token.Token;
-import touch.baton.domain.oauth.token.Tokens;
-import touch.baton.infra.auth.oauth.github.GithubOauthConfig;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.oauth.command.token.AccessToken;
+import touch.baton.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.Tokens;
 
 import java.time.LocalDateTime;
 
@@ -35,39 +26,23 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static touch.baton.domain.oauth.OauthType.GITHUB;
+import static touch.baton.domain.oauth.command.OauthType.GITHUB;
 
-@EnableConfigurationProperties(GithubOauthConfig.class)
-@TestPropertySource("classpath:application.yml")
-@WebMvcTest(OauthController.class)
 class GithubOauthApiTest extends RestdocsConfig {
-
-    @MockBean
-    private OauthService oauthService;
-
-    @Autowired
-    private GithubOauthConfig githubOauthConfig;
-
-    @BeforeEach
-    void setUp() {
-        final OauthController oauthController = new OauthController(oauthService);
-        restdocsSetUp(oauthController);
-    }
 
     @DisplayName("Github 소셜 로그인을 위한 AuthCode 를 받을 수 있도록 사용자를 redirect 한다.")
     @Test
     void github_redirect_auth_code() throws Exception {
-        // given & when
-        when(oauthService.readAuthCodeRedirect(GITHUB))
-                .thenReturn(githubOauthConfig.redirectUri());
+        // given, when
+        when(oauthCommandService.readAuthCodeRedirect(GITHUB))
+                .thenReturn("https://test-redirect-url.com");
 
         // then
         mockMvc.perform(get("/api/v1/oauth/{oauthType}", "github"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(githubOauthConfig.redirectUri()))
+                .andExpect(redirectedUrl("https://test-redirect-url.com"))
                 .andDo(restDocs.document(
                         pathParameters(
                                 parameterWithName("oauthType").description("소셜 로그인 타입")
@@ -75,8 +50,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                         responseHeaders(
                                 headerWithName(LOCATION).description("Oauth 서버 리다이렉트 URL")
                         )
-                ))
-                .andDo(print());
+                ));
     }
 
     // FIXME: 2023/09/15 RFC2616 버전오류 해결해주세요.
@@ -84,7 +58,7 @@ class GithubOauthApiTest extends RestdocsConfig {
     @DisplayName("Github 소셜 로그인을 위해 AuthCode 를 받아 SocialToken 으로 교환하여 Github 프로필 정보를 찾아오고 미가입 사용자일 경우 자동으로 회원가입을 진행하고 JWT 로 변환하여 클라이언트에게 넘겨준다.")
     @Test
     void github_login() throws Exception {
-        // given & when
+        // given, when
         final RefreshToken refreshToken = RefreshToken.builder()
                 .member(mock(Member.class))
                 .token(new Token("mock refresh token"))
@@ -92,7 +66,7 @@ class GithubOauthApiTest extends RestdocsConfig {
                 .build();
         final Tokens tokens = new Tokens(new AccessToken("Bearer Jwt"), refreshToken);
 
-        when(oauthService.login(GITHUB, "authcode"))
+        when(oauthCommandService.login(GITHUB, "authcode"))
                 .thenReturn(tokens);
 
         // then
@@ -116,7 +90,6 @@ class GithubOauthApiTest extends RestdocsConfig {
                                         cookieWithName("refreshToken").description("발급된 리프레시 토큰")
                                 )
                         )
-                )
-                .andDo(print());
+                );
     }
 }

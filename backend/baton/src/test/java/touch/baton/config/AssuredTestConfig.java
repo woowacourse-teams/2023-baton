@@ -12,46 +12,45 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
 import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
-import touch.baton.assure.repository.TestMemberRepository;
+import touch.baton.assure.repository.TestMemberQueryRepository;
+import touch.baton.assure.repository.TestNotificationCommandRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
-import touch.baton.assure.repository.TestRunnerPostReadRepository;
-import touch.baton.assure.repository.TestRunnerPostRepository;
-import touch.baton.assure.repository.TestRunnerRepository;
-import touch.baton.assure.repository.TestSupporterRepository;
-import touch.baton.assure.repository.TestSupporterRunnerPostRepository;
-import touch.baton.assure.repository.TestTagRepository;
-import touch.baton.assure.repository.TestTechnicalTagRepository;
+import touch.baton.assure.repository.TestRunnerPostQueryRepository;
+import touch.baton.assure.repository.TestRunnerQueryRepository;
+import touch.baton.assure.repository.TestSupporterQueryRepository;
+import touch.baton.assure.repository.TestSupporterRunnerPostQueryRepository;
+import touch.baton.assure.repository.TestTagQuerydslRepository;
 import touch.baton.config.converter.ConverterConfig;
-import touch.baton.config.infra.auth.MockAuthTestConfig;
+import touch.baton.config.infra.auth.MockBeanAuthTestConfig;
 import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 
 @ActiveProfiles("test")
-@Import({JpaConfig.class, ConverterConfig.class, PageableTestConfig.class, MockAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
+@Import({JpaConfig.class, QuerydslConfig.class, ConverterConfig.class, PageableTestConfig.class, MockBeanAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public abstract class AssuredTestConfig {
 
     @Autowired
-    protected TestMemberRepository memberRepository;
+    protected TestMemberQueryRepository memberRepository;
 
     @Autowired
-    protected TestRunnerRepository runnerRepository;
+    protected TestRunnerQueryRepository runnerRepository;
 
     @Autowired
-    protected TestSupporterRepository supporterRepository;
+    protected TestSupporterQueryRepository supporterRepository;
 
     @Autowired
-    protected TestRunnerPostRepository runnerPostRepository;
+    protected TestRunnerPostQueryRepository runnerPostRepository;
 
     @Autowired
-    protected TestRunnerPostReadRepository runnerPostReadRepository;
+    protected TestSupporterRunnerPostQueryRepository supporterRunnerPostRepository;
 
     @Autowired
-    protected TestSupporterRunnerPostRepository supporterRunnerPostRepository;
+    protected TestTagQuerydslRepository tagQueryRepository;
 
     @Autowired
-    protected TestTagRepository tagRepository;
+    protected TestNotificationCommandRepository notificationCommandRepository;
 
     @Autowired
     protected TestRefreshTokenRepository refreshTokenRepository;

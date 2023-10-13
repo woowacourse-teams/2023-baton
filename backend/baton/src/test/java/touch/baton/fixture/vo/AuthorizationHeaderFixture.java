@@ -1,6 +1,6 @@
 package touch.baton.fixture.vo;
 
-import touch.baton.domain.oauth.AuthorizationHeader;
+import touch.baton.domain.oauth.command.AuthorizationHeader;
 
 public class AuthorizationHeaderFixture {
 

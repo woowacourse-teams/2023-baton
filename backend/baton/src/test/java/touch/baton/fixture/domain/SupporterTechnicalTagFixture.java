@@ -1,8 +1,8 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.supporter.Supporter;
-import touch.baton.domain.technicaltag.SupporterTechnicalTag;
-import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.technicaltag.command.SupporterTechnicalTag;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 
 public abstract class SupporterTechnicalTagFixture {
 

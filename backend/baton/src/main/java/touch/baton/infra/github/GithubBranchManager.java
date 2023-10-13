@@ -13,7 +13,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.common.exception.ClientRequestException;
-import touch.baton.domain.member.service.dto.GithubBranchManageable;
+import touch.baton.domain.member.command.service.GithubBranchManageable;
 import touch.baton.infra.exception.InfraException;
 import touch.baton.infra.github.request.CreateBranchRequest;
 import touch.baton.infra.github.response.ReadBranchInfoResponse;

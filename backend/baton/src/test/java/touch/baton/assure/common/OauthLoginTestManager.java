@@ -1,8 +1,9 @@
 package touch.baton.assure.common;
 
 import touch.baton.assure.oauth.OauthAssuredSupport;
-import touch.baton.domain.oauth.OauthType;
+import touch.baton.domain.oauth.command.OauthType;
 
+@SuppressWarnings("NonAsciiCharacters")
 public class OauthLoginTestManager {
 
     public String 소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(final String 테스트용_사용자_MockAuthCode) {

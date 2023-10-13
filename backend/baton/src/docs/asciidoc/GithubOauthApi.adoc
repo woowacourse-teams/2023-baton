@@ -14,24 +14,16 @@ endif::[]
 
 ===== *Http Request*
 
-include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/http-request.adoc[]
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_redirect_auth_code/http-request.adoc[]
 
 ===== *Http Request Path Paramemters*
 
-include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/path-parameters.adoc[]
-
-===== *Http Request Query Paramemters*
-
-include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/query-parameters.adoc[]
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_redirect_auth_code/path-parameters.adoc[]
 
 ===== *Http Response*
 
-include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/http-response.adoc[]
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_redirect_auth_code/http-response.adoc[]
 
 ===== *Http Response Headers*
 
-include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/response-headers.adoc[]
-
-===== *Http Response Cookies*
-
-include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_login/response-cookies.adoc[]
+include::{snippets}/../../build/generated-snippets/github-oauth-api-test/github_redirect_auth_code/response-headers.adoc[]

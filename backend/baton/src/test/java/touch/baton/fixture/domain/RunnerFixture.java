@@ -1,11 +1,11 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.common.vo.Introduction;
-import touch.baton.domain.member.Member;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.technicaltag.RunnerTechnicalTag;
-import touch.baton.domain.technicaltag.RunnerTechnicalTags;
-import touch.baton.domain.technicaltag.TechnicalTag;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.member.command.vo.Introduction;
+import touch.baton.domain.technicaltag.command.RunnerTechnicalTag;
+import touch.baton.domain.technicaltag.command.RunnerTechnicalTags;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 
 import java.util.ArrayList;
 import java.util.List;

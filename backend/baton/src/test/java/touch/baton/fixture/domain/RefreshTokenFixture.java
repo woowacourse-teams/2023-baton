@@ -1,9 +1,9 @@
 package touch.baton.fixture.domain;
 
-import touch.baton.domain.member.Member;
-import touch.baton.domain.oauth.token.ExpireDate;
-import touch.baton.domain.oauth.token.RefreshToken;
-import touch.baton.domain.oauth.token.Token;
+import touch.baton.domain.member.command.Member;
+import touch.baton.domain.oauth.command.token.ExpireDate;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
 
 public abstract class RefreshTokenFixture {
 

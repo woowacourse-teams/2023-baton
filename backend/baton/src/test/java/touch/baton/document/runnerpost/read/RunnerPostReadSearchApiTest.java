@@ -1,34 +1,26 @@
 package touch.baton.document.runnerpost.read;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import touch.baton.config.RestdocsConfig;
-import touch.baton.domain.runner.Runner;
-import touch.baton.domain.runnerpost.RunnerPost;
-import touch.baton.domain.runnerpost.controller.RunnerPostReadController;
-import touch.baton.domain.runnerpost.repository.dto.ApplicantCountMappingDto;
-import touch.baton.domain.runnerpost.service.RunnerPostReadService;
-import touch.baton.domain.runnerpost.service.RunnerPostService;
-import touch.baton.domain.runnerpost.vo.Deadline;
-import touch.baton.domain.runnerpost.vo.ReviewStatus;
-import touch.baton.domain.tag.Tag;
+import touch.baton.domain.common.request.PageParams;
+import touch.baton.domain.common.response.PageResponse;
+import touch.baton.domain.member.command.Runner;
+import touch.baton.domain.runnerpost.command.RunnerPost;
+import touch.baton.domain.runnerpost.command.vo.Deadline;
+import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
+import touch.baton.domain.runnerpost.query.controller.response.RunnerPostResponse;
+import touch.baton.domain.tag.command.Tag;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
+import touch.baton.fixture.domain.RunnerPostTagFixture;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.spy;
@@ -48,20 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
 
-@WebMvcTest(RunnerPostReadController.class)
 class RunnerPostReadSearchApiTest extends RestdocsConfig {
-
-    @MockBean
-    private RunnerPostReadService runnerPostReadService;
-
-    @MockBean
-    private RunnerPostService runnerPostService;
-
-    @BeforeEach
-    void setUp() {
-        final RunnerPostReadController runnerPostReadController = new RunnerPostReadController(runnerPostReadService, runnerPostService);
-        restdocsSetUp(runnerPostReadController);
-    }
 
     @DisplayName("태그 이름과 리뷰 상태를 조건으로 러너 게시글 페이징 조회 API")
     @Test
@@ -78,29 +57,29 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
         given(spyRunnerPost.getId()).willReturn(1L);
 
         // when
-        final List<RunnerPost> runnerPosts = List.of(spyRunnerPost);
-        final PageRequest pageOne = PageRequest.of(1, 10);
-        final PageImpl<RunnerPost> pageRunnerPosts = new PageImpl<>(runnerPosts, pageOne, runnerPosts.size());
-        when(runnerPostReadService.readRunnerPostByTagNameAndReviewStatus(any(Pageable.class), anyString(), any(ReviewStatus.class)))
-                .thenReturn(pageRunnerPosts);
-
-        when(runnerPostReadService.readApplicantCountMappingByRunnerPostIds(anyList()))
-                .thenReturn(new ApplicantCountMappingDto(Map.of(1L, 0L)));
+        final List<RunnerPostResponse.Simple> responses = List.of(RunnerPostResponse.Simple.of(
+                spyRunnerPost,
+                0L,
+                List.of(RunnerPostTagFixture.create(spyRunnerPost, javaTag), RunnerPostTagFixture.create(spyRunnerPost, springTag))
+        ));
+        final PageResponse<RunnerPostResponse.Simple> pageResponse = PageResponse.of(responses, new PageParams(2L, 10));
+        when(runnerPostQueryService.pageRunnerPostByTagNameAndReviewStatus(anyString(), any(PageParams.class), any(ReviewStatus.class)))
+                .thenReturn(pageResponse);
 
         // then
-        mockMvc.perform(get("/api/v1/posts/runner/tags/search")
-                        .queryParam("size", String.valueOf(pageOne.getPageSize()))
-                        .queryParam("page", String.valueOf(pageOne.getPageNumber()))
-                        .queryParam("reviewStatus", ReviewStatus.NOT_STARTED.name())
-                        .queryParam("tagName", javaTag.getTagName().getValue()))
+        mockMvc.perform(get("/api/v1/posts/runner")
+                        .queryParam("tagName", javaTag.getTagName().getValue())
+                        .queryParam("cursor", String.valueOf(1000L))
+                        .queryParam("limit", String.valueOf(10))
+                        .queryParam("reviewStatus", ReviewStatus.NOT_STARTED.name()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON))
                 .andDo(restDocs.document(
                         queryParameters(
-                                parameterWithName("size").description("페이지 사이즈"),
-                                parameterWithName("page").description("페이지 번호"),
-                                parameterWithName("reviewStatus").description("리뷰 상태"),
-                                parameterWithName("tagName").description("태그 이름")
+                                parameterWithName("cursor").description("(Optional) 이전 페이지 마지막 게시글 식별자값(id)"),
+                                parameterWithName("limit").description("페이지 사이즈"),
+                                parameterWithName("reviewStatus").description("(Optional) 리뷰 상태"),
+                                parameterWithName("tagName").description("(Optional) 태그 이름")
                         ),
                         responseFields(
                                 fieldWithPath("data.[].runnerPostId").type(NUMBER).description("러너 게시글 식별자값(id)"),
@@ -112,13 +91,8 @@ class RunnerPostReadSearchApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].runnerProfile.name").type(STRING).description("러너 게시글의 러너 프로필 이름"),
                                 fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
                                 fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
-                                fieldWithPath("pageInfo.isFirst").type(BOOLEAN).description("첫 번째 페이지인지"),
-                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지인지"),
-                                fieldWithPath("pageInfo.hasNext").type(BOOLEAN).description("다음 페이지가 있는지"),
-                                fieldWithPath("pageInfo.totalPages").type(NUMBER).description("총 페이지 수"),
-                                fieldWithPath("pageInfo.totalElements").type(NUMBER).description("총 데이터 수"),
-                                fieldWithPath("pageInfo.currentPage").type(NUMBER).description("현재 페이지"),
-                                fieldWithPath("pageInfo.currentSize").type(NUMBER).description("현재 페이지 데이터 수")
+                                fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부"),
+                                fieldWithPath("pageInfo.nextCursor").type(NUMBER).optional().description("다음 커서")
                         ))
                 );
     }
