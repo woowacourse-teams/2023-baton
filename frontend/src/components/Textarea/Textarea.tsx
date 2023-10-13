@@ -23,6 +23,7 @@ const TextArea = ({
   return (
     <S.InputContainer $width={width} $height={height} $padding={padding}>
       <S.InputBox
+        value={inputTextState}
         onChange={handleInputTextState}
         maxLength={maxLength}
         $fontSize={fontSize}
@@ -31,7 +32,7 @@ const TextArea = ({
       />
       {maxLength && (
         <S.InputTextLength>
-          {inputTextState?.length ?? 0} / {maxLength}
+          {inputTextState.length} / {maxLength}
         </S.InputTextLength>
       )}
     </S.InputContainer>

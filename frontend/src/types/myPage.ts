@@ -1,3 +1,4 @@
+import { pageParamsRequest } from './api';
 import { Profile } from './profile';
 import { PageInfo, ReviewStatus } from './runnerPost';
 
@@ -18,3 +19,9 @@ export interface MyPagePost {
   reviewStatus: ReviewStatus;
   supporterId: number;
 }
+
+interface requestParams {
+  reviewStatus?: ReviewStatus;
+}
+
+export interface getMyPostRequestParams extends pageParamsRequest, requestParams {}

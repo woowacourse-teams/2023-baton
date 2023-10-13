@@ -1,3 +1,4 @@
+import { pageParamsRequest } from './api';
 import { Technic } from './tags';
 
 export interface GetRunnerProfileResponse extends Profile {}
@@ -20,3 +21,9 @@ export interface Profile {
   introduction: string;
   technicalTags: Technic[];
 }
+
+interface requestParams {
+  supporterId: number;
+}
+
+export interface getSupporterPostRequestParams extends pageParamsRequest, requestParams {}

@@ -2,29 +2,19 @@ import React, { useRef, useState } from 'react';
 import TagIcon from '@/assets/tag-icon.svg';
 import { styled } from 'styled-components';
 import RunnerPostFilter from '../RunnerPostFilter/RunnerPostFilter';
-import { ReviewStatus } from '@/types/runnerPost';
-import { GetSearchTagResponse, Tag } from '@/types/tags';
-import { useFetch } from '@/hooks/useFetch';
+import { ReviewStatus, ReviewStatusFilter } from '@/types/runnerPost';
+import { useSearchTag } from '@/hooks/query/useSearchTag';
 
 interface Props {
-  reviewStatus: ReviewStatus;
-  setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus>>;
-  tag: string;
-  setTag: React.Dispatch<React.SetStateAction<string>>;
-  searchedTags: Tag[];
-  setSearchedTags: React.Dispatch<React.SetStateAction<Tag[]>>;
-  searchPosts: (reviewStatus: ReviewStatus, tag?: string) => void;
+  reviewStatus: ReviewStatus | null;
+  setReviewStatus: React.Dispatch<React.SetStateAction<ReviewStatus | null>>;
+  setEnteredTag: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const RunnerPostSearchBox = ({
-  reviewStatus,
-  setReviewStatus,
-  tag,
-  setTag,
-  searchedTags,
-  setSearchedTags,
-  searchPosts,
-}: Props) => {
+const RunnerPostSearchBox = ({ reviewStatus, setReviewStatus, setEnteredTag }: Props) => {
+  const [keyword, setKeyword] = useState('');
+  const [keywordForResponse, setKeywordForResponse] = useState('');
+
   const [isInputFocused, setIsInputFocused] = useState<boolean>(false);
   const [inputIndex, setInputIndex] = useState<number>(0);
   const [inputBuffer, setInputBuffer] = useState<string>('');
@@ -32,26 +22,28 @@ const RunnerPostSearchBox = ({
   const inputRefs = useRef<HTMLElement[]>([]);
   const timer = useRef<number | null>(null);
 
-  const { getRequest } = useFetch();
+  const { data: searchedTags } = useSearchTag(keywordForResponse);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTag(e.target.value);
+    e.preventDefault();
+
+    setKeyword(e.target.value);
     setInputBuffer(e.target.value);
 
     if (timer.current) window.clearTimeout(timer.current);
 
     timer.current = window.setTimeout(() => {
-      searchTags(e.target.value);
+      setKeyword(e.target.value);
+      setKeywordForResponse(e.target.value);
     }, 500);
   };
 
   const handleClickRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const clickedStatus = e.target.value as ReviewStatus;
+    const clickedStatus = e.target.value as ReviewStatusFilter;
 
     if (clickedStatus === reviewStatus) return;
 
-    searchPosts(clickedStatus, tag);
-    setReviewStatus(clickedStatus);
+    clickedStatus === 'ALL' ? setReviewStatus(null) : setReviewStatus(clickedStatus);
   };
 
   const handleInputFocus = () => {
@@ -65,13 +57,14 @@ const RunnerPostSearchBox = ({
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    searchPosts(reviewStatus, tag);
+    setEnteredTag(keyword);
 
     (document.activeElement as HTMLElement).blur();
   };
 
   const handleClickSearchedTag = (e: React.MouseEvent<HTMLLIElement>) => {
-    searchPosts(reviewStatus, e.currentTarget.id);
+    setEnteredTag(e.currentTarget.id);
+    setKeyword(e.currentTarget.id);
 
     (document.activeElement as HTMLElement).blur();
   };
@@ -102,7 +95,7 @@ const RunnerPostSearchBox = ({
   const handleArrowUp = () => {
     const nextIndex = inputIndex >= 1 ? inputIndex - 1 : searchedTags.length;
 
-    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1].tagName);
+    setKeyword(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1].tagName);
     setInputIndex(nextIndex);
 
     inputRefs.current[nextIndex].focus();
@@ -111,33 +104,25 @@ const RunnerPostSearchBox = ({
   const handleArrowDown = () => {
     const nextIndex = inputIndex < searchedTags.length ? inputIndex + 1 : 0;
 
-    setTag(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1].tagName);
+    setKeyword(nextIndex === 0 ? inputBuffer : searchedTags[nextIndex - 1].tagName);
     setInputIndex(nextIndex);
 
     inputRefs.current[nextIndex].focus();
   };
 
   const handleEnter = () => {
-    searchPosts(reviewStatus, tag);
+    setEnteredTag(keyword);
 
     (document.activeElement as HTMLElement).blur();
   };
 
-  const searchTags = (keyword: string) => {
-    getRequest(`/tags/search?tagName=${keyword}`, async (response) => {
-      const data: GetSearchTagResponse = await response.json();
-
-      setSearchedTags(data.data);
-    });
-  };
-
   return (
     <S.SearchBoxContainer onSubmit={handleSubmit}>
-      <RunnerPostFilter reviewStatus={reviewStatus} handleClickRadioButton={handleClickRadioButton} />
+      <RunnerPostFilter reviewStatus={reviewStatus ?? 'ALL'} handleClickRadioButton={handleClickRadioButton} />
       <S.InputContainer onFocus={handleInputFocus} onBlur={handleInputBlur} onKeyDown={handleKeyDown}>
         <S.TagInput
           placeholder="태그명 검색"
-          value={tag}
+          value={keyword}
           ref={(element) => {
             if (element) inputRefs.current[0] = element;
           }}

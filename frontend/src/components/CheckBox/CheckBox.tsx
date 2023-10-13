@@ -27,6 +27,9 @@ const CheckBox = ({ options, selectOption }: Props) => {
           </S.CheckBoxItem>
         ))}
       </S.CheckBoxList>
+      <S.SurveyAnchor href="https://forms.gle/8szmPaaJue7tCumLA" target="_blank">
+        ▶︎ 바톤을 이용하면서 불편했던 부분이 있었나요?
+      </S.SurveyAnchor>
     </S.CheckBoxContainer>
   );
 };
@@ -35,7 +38,11 @@ export default CheckBox;
 
 const S = {
   CheckBoxContainer: styled.div`
-    padding: 45px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    padding: 35px 20px;
   `,
 
   CheckBoxList: styled.ul`
@@ -55,5 +62,15 @@ const S = {
   CheckBoxItem: styled.div`
     font-size: 18px;
     color: var(--gray-800);
+  `,
+
+  SurveyAnchor: styled.a`
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+
+    &:hover {
+      text-decoration: underline;
+    }
   `,
 };

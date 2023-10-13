@@ -20,8 +20,12 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.LOGIN);
   };
 
-  const goToMyPage = () => {
-    navigate(ROUTER_PATH.MY_PAGE);
+  const goToRunnerMyPage = () => {
+    navigate(ROUTER_PATH.RUNNER_MYPAGE);
+  };
+
+  const goToSupporterMyPage = () => {
+    navigate(ROUTER_PATH.SUPPORTER_MYPAGE);
   };
 
   const goToSupporterProfilePage = (supporterId: number) => {
@@ -53,6 +57,10 @@ export const usePageRouter = () => {
     navigate(ROUTER_PATH.NOTICE);
   };
 
+  const goToResultPage = () => {
+    navigate(ROUTER_PATH.RESULT);
+  };
+
   const goBack = () => {
     navigate(-1);
   };
@@ -62,13 +70,15 @@ export const usePageRouter = () => {
     goToRunnerPostPage,
     goToRunnerPostCreatePage,
     goToLoginPage,
-    goToMyPage,
+    goToRunnerMyPage,
+    goToSupporterMyPage,
     goToSupporterProfilePage,
     goToRunnerProfilePage,
     goToSupportSelectPage,
     goToSupporterFeedbackPage,
     goToProfileEditPage,
     goToNoticePage,
+    goToResultPage,
     goBack,
   };
 };

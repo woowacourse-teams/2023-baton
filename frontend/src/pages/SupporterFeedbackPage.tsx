@@ -3,29 +3,26 @@ import CheckBox from '@/components/CheckBox/CheckBox';
 import ReviewTypeButton from '@/components/ReviewTypeButton/ReviewTypeButton';
 import Button from '@/components/common/Button/Button';
 import { DESCRIPTION_OPTIONS_BAD, DESCRIPTION_OPTIONS_GOOD, REVIEW_TYPE_OPTIONS } from '@/constants/feedback';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_COMPLETION_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ToastContext } from '@/contexts/ToastContext';
-import { useFetch } from '@/hooks/useFetch';
-import { usePageRouter } from '@/hooks/usePageRouter';
+import { useFeedbackToSupporter } from '@/hooks/query/useFeedbackToSupporter';
 import Layout from '@/layout/Layout';
-import { DescriptionOptions, PostFeedbackRequest, ReviewType, ReviewTypeOptions } from '@/types/feedback';
+import { DescriptionOptions, ReviewType, ReviewTypeOptions } from '@/types/feedback';
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 const SupporterFeedbackPage = () => {
-  const { runnerPostId, supporterId } = useParams();
+  const { runnerPostId: paramRunnerPostId, supporterId: paramSupporterId } = useParams();
 
-  const { postRequestWithAuth } = useFetch();
-
-  const { goToMyPage } = usePageRouter();
-
-  const { showErrorToast, showCompletionToast } = useContext(ToastContext);
+  const { showErrorToast } = useContext(ToastContext);
 
   const [reviewTypeOptions, setReviewTypeOptions] = useState<ReviewTypeOptions>(structuredClone(REVIEW_TYPE_OPTIONS));
   const [descriptionOptions, setDescriptionOptions] = useState<DescriptionOptions>(
     structuredClone(DESCRIPTION_OPTIONS_GOOD),
   );
+
+  const { mutate: postFeedback } = useFeedbackToSupporter();
 
   const reviewType = React.useMemo(
     () => reviewTypeOptions.filter((option) => option.selected)[0]?.value,
@@ -73,21 +70,9 @@ const SupporterFeedbackPage = () => {
     setDescriptionOptions(newOptions);
   };
 
-  const postSupporterProfile = async (feedback: PostFeedbackRequest) => {
-    const body = JSON.stringify(feedback);
-
-    postRequestWithAuth(
-      `/feedback/supporter`,
-      async () => {
-        showCompletionToast(TOAST_COMPLETION_MESSAGE.SUBMIT_FEEDBACK);
-      },
-      body,
-    );
-  };
-
   const validateIds = () => {
-    if (!Number(supporterId)) throw new Error(ERROR_DESCRIPTION.NO_SUPPORTER);
-    if (!Number(runnerPostId)) throw new Error(ERROR_DESCRIPTION.NO_POST);
+    if (!Number(paramSupporterId)) throw new Error(ERROR_DESCRIPTION.NO_SUPPORTER);
+    if (!Number(paramRunnerPostId)) throw new Error(ERROR_DESCRIPTION.NO_POST);
   };
 
   const handleClickSubmit = async () => {
@@ -100,14 +85,14 @@ const SupporterFeedbackPage = () => {
       return showErrorToast({ title: ERROR_TITLE.REQUEST, description });
     }
 
-    await postSupporterProfile({
+    const formData = {
       reviewType,
       descriptions,
-      supporterId: Number(supporterId),
-      runnerPostId: Number(runnerPostId),
-    });
+      supporterId: Number(paramSupporterId),
+      runnerPostId: Number(paramRunnerPostId),
+    };
 
-    goToMyPage();
+    postFeedback(formData);
   };
 
   useEffect(() => {
@@ -195,7 +180,7 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
+    gap: 30px;
   `,
 
   ReviewTypeList: styled.ul`
