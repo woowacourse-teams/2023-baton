@@ -6,12 +6,68 @@
 |:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|
 | <img src="https://avatars.githubusercontent.com/u/62369936?v=4" width=130px alt="에이든"> | <img src="https://avatars.githubusercontent.com/u/116625502?v=4" width=130px alt="가람"> | <img src="https://avatars.githubusercontent.com/u/103256030?v=4" width=130px alt="도리"> | <img src="https://avatars.githubusercontent.com/u/39729721?v=4" width=130px alt="디투"/> | <img src="https://avatars.githubusercontent.com/u/83010167?v=4" width=130px alt="에단"/> | <img src="https://avatars.githubusercontent.com/u/82203978?v=4" width=130px alt="헤나"/> | <img src="https://avatars.githubusercontent.com/u/67318165?v=4" width=130px alt="주디"> |
 |                          [에이든](https://github.com/gyeongza)                           |                            [가람](https://github.com/guridaek)                            |                         [도리](https://github.com/tkdrb12)                          |                             [디투](https://github.com/shb03323)                             |                          [에단](https://github.com/cookienc)                          |                           [헤나](https://github.com/hyena0608)                           |                           [주디](https://github.com/eunbii0213)                           |
- 
 
-<br>
+
+<h2>🌺 서비스 소개</h2>
+
+<h3>1️⃣ 리뷰 요청</h3>
+<p>코드 리뷰를 받고 싶으신가요?</p>
+<ul>
+  <li>코드 리뷰 요청글을 작성해주세요.</li>
+  <li>코드 리뷰를 원하는 PR을 등록해서 올려주세요.</li>
+</ul>
+
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/20edcd1f-99b5-4b91-984a-e28065ccebae">
+
+<br><br>
+
+<h3>2️⃣ 서포터 지원</h3>
+<p>코드 리뷰를 원하시나요?</p>
+<ul>
+  <li>원하는 코드에 리뷰를 제안해보세요. 📨</li>
+  <li>러너가 리뷰 제안을 수락하면 리뷰가 시작됩니다.</li>
+  <li>제안이 수락되면 알림이 울릴거에요. ⏰</li>
+</ul>
+
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/278a63a1-28ce-4270-b67a-5446ae8ce598">
+
+<br><br>
+
+<h3>3️⃣ 서포터 선택</h3>
+<p>서포터가 지원했다구요?</p>
+<ul>
+  <li>여러분의 코드에 리뷰 지원한 서포터를 확인할 수 있습니다.</li>
+  <li>코드 리뷰를 진행할 서포터를 선택해보세요! 😆</li>
+</ul>
+
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/d3026c2e-3b45-492e-99d8-36f4b523fa24">
+
+<br><br>
+
+<h3>4️⃣ 리뷰 완료</h3>
+<p>코드 리뷰가 완료되었나요?</p>
+<ul>
+  <li>리뷰가 완료되면 리뷰 완료 버튼을 눌러주세요!</li>
+  <li>리뷰가 끝나면 러너에게 알림이 갈거에요! 🔔</li>
+</ul>
+
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/40a3470c-8653-4ad1-9cac-081c7f49ce30">
+
+<br><br>
+
+<h3>5️⃣ 후기 작성</h3>
+<p>후기를 남겨주세요!</p>
+<ul>
+  <li>서포터의 코드 리뷰는 어떠셨나요?</li>
+  <li>피드백을 통해 더 나은 코드 리뷰 문화를 만들어주세요. 💌</li>
+</ul>
+
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/89661756-d0c6-4cbf-a6da-f962fa98fc07">
+
+<br><br>
 
 <details>
-<summary> <h2>📄 서비스 소개</h2> </summary>
+<summary> <h2>📄 개발자들의 메시지</h2> </summary>
 
 ### To. 개발자 지망생 🐣
 
@@ -101,30 +157,51 @@ PR을 올리고, 간단한 설명과 함께 리뷰 요청 글을 작성합니다
 
 <h2>⚒️ 기술 스택</h2>
 <h3>🎨 프론트엔드</h4>
-<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/a7a31ad6-e605-4f27-9e07-c5f20afe7392" width=830></image>
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/082a295a-d24d-458e-aa97-d7f341286595">
 
 <br><br>
 
 <h3>🐳 백엔드</h4>
-<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/57879630-42bc-4311-83f9-dc3c11cdaf14" width=1000></image>
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/57879630-42bc-4311-83f9-dc3c11cdaf14">
 
 <br><br>
 
 <h3>💸 인프라 구조</h3>
-<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/b94fd856-8538-4274-a17a-8d391d5b42f8" width=1000></image>
-
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/b94fd856-8538-4274-a17a-8d391d5b42f8">
 <br><br>
 
 <h3>💸 CI/CD 구조</h3>
-<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/235bea9a-0d33-487d-9466-d3b97e08405a" width=1000></image>
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/235bea9a-0d33-487d-9466-d3b97e08405a">
 
 <br><br>
 
 <h2>💾 데이터베이스 구조</h2>
-<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/1be77969-ceee-40f2-82d9-c82b09f17514" width="1000">
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/bfbe0596-e78d-411b-beb4-57c50aab4d10" width="1000">
 
 <br><br>
 
+<h2>🐈‍⬛ Github Actions Secrets And Variables</h2>
 
+```yaml
+DOCKERHUB_DEPLOY_TOKEN : {백엔드 도커 허브 운영 서버용 계정 토큰}
+DOCKERHUB_DEPLOY_USERNAME : {백엔드 도커 허브 운영 서버용 계정명}
+DOCKERHUB_DEV_TOKEN : {백엔드 도커 허브 개발 서버용 계정 토큰}
+DOCKERHUB_DEV_USERNAME : {백엔드 도커 허브 개발 서버용 계정명}
 
+JWT_ISSUER : {백엔드 JWT 발행자}
+JWT_SECRET_KEY : {백엔드 JWT 시크릿 키}
 
+OAUTH_GITHUB_CLIENT_ID : {백엔드 깃허브 소셜 로그인, Github Oauth Client Id}
+OAUTH_GITHUB_CLIENT_SECRET : {백엔드 깃허브 소셜 로그인, Github Oauth Client Secret Key}
+OAUTH_GITHUB_REDIRECT_URI : {백엔드 깃허브 소셜 로그인, Github Oauth Client Redirect Uri}
+OAUTH_GITHUB_SCOPE : {백엔드 깃허브 소셜 로그인, Github Oauth Scope}
+
+PERSONAL_MISSION_ACCESS_TOKEN : {백엔드 미션 브랜치 생성, Github Social Token}
+
+SUBMODULE_BE_TOKEN : {백엔드 서브모듈 토큰}
+
+REACT_APP_CHANNELTALK_KEY : {프론트엔드 채널톡 키}
+REACT_APP_DEV_BASE_URL : {프론트엔드 개발용 Base Url}
+REACT_APP_GA_TRACKING_ID : {프론트엔드 GA Tracking Id}
+REACT_APP_PROD_BASE_URL : {프론트엔드 운영용 Base Url}
+```
