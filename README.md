@@ -2,19 +2,16 @@
 
 ## 👩‍👦‍👦👨‍👨‍👧‍👧 팀원
 
-|                                       Frontend                                        |                                       Frontend                                        |                                       Frontend                                        |
-|:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|
-| <img src="https://avatars.githubusercontent.com/u/62369936?v=4" width=130px alt="에이든"> | <img src="https://avatars.githubusercontent.com/u/116625502?v=4" width=130px alt="가람"> | <img src="https://avatars.githubusercontent.com/u/103256030?v=4" width=130px alt="도리"> |
-|                          [에이든](https://github.com/gyeongza)                           |                            [가람](https://github.com/guridaek)                            |                         [도리](https://github.com/tkdrb12)                          |
-
-|                                        Backend                                         |                                        Backend                                         |                                        Backend                                         |                                        Backend                                        |
-|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|
-| <img src="https://avatars.githubusercontent.com/u/39729721?v=4" width=130px alt="디투"/> | <img src="https://avatars.githubusercontent.com/u/83010167?v=4" width=130px alt="에단"/> | <img src="https://avatars.githubusercontent.com/u/82203978?v=4" width=130px alt="헤나"/> | <img src="https://avatars.githubusercontent.com/u/67318165?v=4" width=130px alt="주디"> |
-|                             [디투](https://github.com/shb03323)                             |                          [에단](https://github.com/cookienc)                          |                           [헤나](https://github.com/hyena0608)                           |                           [주디](https://github.com/eunbii0213)                           | 
+|                                       Frontend                                        |                                       Frontend                                        |                                       Frontend                                        |                                        Backend                                         |                                        Backend                                         |                                        Backend                                         |                                        Backend                                        |
+|:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------:|
+| <img src="https://avatars.githubusercontent.com/u/62369936?v=4" width=130px alt="에이든"> | <img src="https://avatars.githubusercontent.com/u/116625502?v=4" width=130px alt="가람"> | <img src="https://avatars.githubusercontent.com/u/103256030?v=4" width=130px alt="도리"> | <img src="https://avatars.githubusercontent.com/u/39729721?v=4" width=130px alt="디투"/> | <img src="https://avatars.githubusercontent.com/u/83010167?v=4" width=130px alt="에단"/> | <img src="https://avatars.githubusercontent.com/u/82203978?v=4" width=130px alt="헤나"/> | <img src="https://avatars.githubusercontent.com/u/67318165?v=4" width=130px alt="주디"> |
+|                          [에이든](https://github.com/gyeongza)                           |                            [가람](https://github.com/guridaek)                            |                         [도리](https://github.com/tkdrb12)                          |                             [디투](https://github.com/shb03323)                             |                          [에단](https://github.com/cookienc)                          |                           [헤나](https://github.com/hyena0608)                           |                           [주디](https://github.com/eunbii0213)                           |
+ 
 
 <br>
 
-## 📄 서비스 소개
+<details>
+<summary> <h2>📄 서비스 소개</h2> </summary>
 
 ### To. 개발자 지망생 🐣
 
@@ -98,9 +95,36 @@ PR을 올리고, 간단한 설명과 함께 리뷰 요청 글을 작성합니다
 
 <p style="text-align: right; font-weight: 700">From. 바톤 🏃🏿‍♀️🏃🏾</p>
 
+</details>
+
 <br>
 
-![image](https://github.com/woowacourse-teams/2023-baton/assets/82203978/e0dac232-bb9d-4770-a3cf-f94ae31adbf2)
+<h2>⚒️ 기술 스택</h2>
+<h3>🎨 프론트엔드</h4>
+<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/a7a31ad6-e605-4f27-9e07-c5f20afe7392" width=830></image>
+
+<br><br>
+
+<h3>🐳 백엔드</h4>
+<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/57879630-42bc-4311-83f9-dc3c11cdaf14" width=1000></image>
+
+<br><br>
+
+<h3>💸 인프라 구조</h3>
+<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/b94fd856-8538-4274-a17a-8d391d5b42f8" width=1000></image>
+
+<br><br>
+
+<h3>💸 CI/CD 구조</h3>
+<image src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/235bea9a-0d33-487d-9466-d3b97e08405a" width=1000></image>
+
+<br><br>
+
+<h2>💾 데이터베이스 구조</h2>
+<img src="https://github.com/woowacourse-teams/2023-baton/assets/39729721/1be77969-ceee-40f2-82d9-c82b09f17514" width="1000">
+
+<br><br>
+
 
 
 
