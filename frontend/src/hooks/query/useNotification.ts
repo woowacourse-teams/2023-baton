@@ -7,6 +7,7 @@ export const useNotification = () => {
   const queryResult = useSuspenseQuery<GetNotificationResponse, APIError>({
     queryKey: ['notification'],
     queryFn: getNotification,
+    refetchInterval: 60 * 1000,
   });
 
   return {
