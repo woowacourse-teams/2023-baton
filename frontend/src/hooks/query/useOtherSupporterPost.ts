@@ -35,6 +35,6 @@ export const useOtherSupporterPost = (userId: number) => {
 
   return {
     ...queryResult,
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data,
   };
 };

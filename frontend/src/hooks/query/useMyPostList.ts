@@ -4,7 +4,7 @@ import { ToastContext } from '@/contexts/ToastContext';
 import { APIError } from '@/types/error';
 import { GetMyPagePostResponse, MyPagePost } from '@/types/myPage';
 import { ReviewStatus } from '@/types/runnerPost';
-import { useInfiniteQuery, useSuspenseInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
 
 const PAGE_SIZE = 10;
@@ -51,6 +51,6 @@ export const useMyPostList = (isRunner: boolean, reviewStatus?: ReviewStatus) =>
 
   return {
     ...queryResult,
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data ?? [],
   };
 };

@@ -10,6 +10,6 @@ export const useOtherSupporterPostCount = (supporterId: number) => {
   });
 
   return {
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data,
   };
 };

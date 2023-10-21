@@ -8,6 +8,6 @@ export const useSearchTag = (keyword: string) => {
   });
 
   return {
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data,
   };
 };

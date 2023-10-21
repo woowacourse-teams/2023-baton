@@ -21,6 +21,6 @@ export const useOtherSupporterProfile = (userId: number) => {
   }, [queryResult.error]);
 
   return {
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data,
   };
 };
