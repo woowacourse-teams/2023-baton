@@ -13,7 +13,7 @@ export const useReviewComplete = () => {
   const queryResult = useMutation<void, APIError, number>({
     mutationFn: (runnerPostId: number) => patchReviewComplete(runnerPostId),
 
-    onMutate: async (deletePostId: number) => {
+    onMutate: async (deletedPostId: number) => {
       await queryClient.cancelQueries({ queryKey: ['mySupporterPost', 'IN_PROGRESS'] });
 
       const previous = queryClient.getQueryData(['mySupporterPost', 'IN_PROGRESS']);
@@ -22,7 +22,7 @@ export const useReviewComplete = () => {
         if (!oldData) return undefined;
 
         const newData = oldData.pages.map((page) => {
-          return { ...page, data: page.data.filter((item) => item.runnerPostId !== deletePostId) };
+          return { ...page, data: page.data.filter((item) => item.runnerPostId !== deletedPostId) };
         });
 
         return {
@@ -40,8 +40,11 @@ export const useReviewComplete = () => {
 
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '리뷰 완료 요청이 실패했어요' });
+    },
 
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['mySupporterPost', 'IN_PROGRESS'] });
+      queryClient.invalidateQueries({ queryKey: ['mySupporterPost', 'DONE'] });
     },
   });
 

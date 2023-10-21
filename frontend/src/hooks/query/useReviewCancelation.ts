@@ -40,7 +40,9 @@ export const useReviewCancelation = () => {
 
     onError: () => {
       showErrorToast({ title: ERROR_TITLE.REQUEST, description: '리뷰 취소 요청이 실패했어요' });
+    },
 
+    onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['mySupporterPost', 'NOT_STARTED'] });
     },
   });
