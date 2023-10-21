@@ -49,8 +49,12 @@ export const usePageRouter = () => {
     );
   };
 
-  const goToProfileEditPage = () => {
-    navigate(ROUTER_PATH.PROFILE_EDIT);
+  const goToRunnerProfileEditPage = () => {
+    navigate(ROUTER_PATH.RUNNER_PROFILE_EDIT);
+  };
+
+  const goToSupporterProfileEditPage = () => {
+    navigate(ROUTER_PATH.SUPPORTER_PROFILE_EDIT);
   };
 
   const goToNoticePage = () => {
@@ -74,9 +78,10 @@ export const usePageRouter = () => {
     goToSupporterMyPage,
     goToSupporterProfilePage,
     goToRunnerProfilePage,
+    goToRunnerProfileEditPage,
     goToSupportSelectPage,
     goToSupporterFeedbackPage,
-    goToProfileEditPage,
+    goToSupporterProfileEditPage,
     goToNoticePage,
     goToResultPage,
     goBack,

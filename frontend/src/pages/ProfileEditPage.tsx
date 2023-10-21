@@ -19,7 +19,11 @@ import { validateCompany, validateIntroduction, validateName } from '@/utils/val
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
-const ProfileEditPage = () => {
+interface Props {
+  isRunner: boolean;
+}
+
+const ProfileEditPage = ({ isRunner = true }: Props) => {
   const { data: runnerProfileBefore } = useMyRunnerProfile();
   const { data: supporterProfileBefore } = useMySupporterProfile();
   const { mutate: editRunnerProfile } = useRunnerProfileEdit();
@@ -28,8 +32,6 @@ const ProfileEditPage = () => {
   const { showErrorToast } = useContext(ToastContext);
   const { openModal, closeModal } = useContext(ModalContext);
   const { goBack } = usePageRouter();
-
-  const [isRunner, setIsRunner] = useState(true);
 
   const [runnerProfile, setRunnerProfile] = useState(runnerProfileBefore);
   const [supporterProfile, setSupporterProfile] = useState(supporterProfileBefore);
@@ -141,36 +143,6 @@ const ProfileEditPage = () => {
     closeModal();
   };
 
-  const handleClickRunnerButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (isRunner) return;
-
-    if (!runnerProfile) return showErrorToast(TOAST_ERROR_MESSAGE.NO_PROFILE);
-
-    if (isModified) {
-      if (!confirm('저장하지 않고 러너 프로필로 이동할까요?')) return;
-    }
-
-    setIsRunner(true);
-    updateProfileInputValue(runnerProfile);
-  };
-
-  const handleClickSupporterButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-
-    if (!isRunner) return;
-
-    if (!supporterProfile) return showErrorToast(TOAST_ERROR_MESSAGE.NO_PROFILE);
-
-    if (isModified) {
-      if (!confirm('저장하지 않고 서포터 프로필로 이동할까요?')) return;
-    }
-
-    setIsRunner(false);
-    updateProfileInputValue(supporterProfile);
-  };
-
   const openTechTagSelectModal = () => {
     openModal(
       <TechTagSelectModal
@@ -197,7 +169,7 @@ const ProfileEditPage = () => {
     <Layout>
       <S.TitleWrapper>
         <S.BackButton onClick={handleGoBack}>{'<'}</S.BackButton>
-        <S.Title>프로필 수정</S.Title>
+        <S.Title>{`${isRunner ? '러너' : '서포터'} 프로필 수정`}</S.Title>
       </S.TitleWrapper>
       <S.ProfileContainer>
         <S.Form>
@@ -209,15 +181,6 @@ const ProfileEditPage = () => {
             />
           </S.AvatarWrapper>
           <S.ButtonContainer>
-            <S.RunnerSupporterButton $isSelected={isRunner} onClick={isRunner ? undefined : handleClickRunnerButton}>
-              러너
-            </S.RunnerSupporterButton>
-            <S.RunnerSupporterButton
-              $isSelected={!isRunner}
-              onClick={isRunner ? handleClickSupporterButton : undefined}
-            >
-              서포터
-            </S.RunnerSupporterButton>
             <S.WithdrawalButtonWrapper>
               <S.WithdrawalAnchor>회원탈퇴</S.WithdrawalAnchor>
             </S.WithdrawalButtonWrapper>
@@ -383,7 +346,7 @@ const S = {
   ButtonContainer: styled.div`
     position: relative;
     display: flex;
-    justify-content: center;
+    justify-content: end;
     gap: 15px;
 
     width: 600px;
@@ -392,7 +355,6 @@ const S = {
   `,
 
   WithdrawalButtonWrapper: styled.div`
-    position: absolute;
     display: flex;
     justify-content: flex-end;
     margin: 20px 0;
