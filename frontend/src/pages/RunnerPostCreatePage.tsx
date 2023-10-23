@@ -182,7 +182,7 @@ const RunnerPostCreatePage = () => {
             {githubUrl && (
               <S.Anchor href={githubUrl + '?tab=repositories'} target="_blank">
                 <img src={githubIcon} />
-                {!isMobile && <S.GoToGitHub>github</S.GoToGitHub>}
+                {!isMobile && <S.GoToGitHub>내 레포로 가기</S.GoToGitHub>}
               </S.Anchor>
             )}
           </S.InputContainer>
@@ -321,7 +321,7 @@ const S = {
     align-items: center;
     gap: 10px;
 
-    width: 100px;
+    width: 140px;
     height: 36px;
     border-radius: 3px;
     border: 1px solid var(--gray-800);
