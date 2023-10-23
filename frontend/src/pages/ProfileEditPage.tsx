@@ -4,7 +4,7 @@ import TechTagSelectModal from '@/components/TechTagSelectModal/TechTagSelectMod
 import TextArea from '@/components/Textarea/Textarea';
 import Avatar from '@/components/common/Avatar/Avatar';
 import Button from '@/components/common/Button/Button';
-import { ERROR_DESCRIPTION, ERROR_TITLE, TOAST_ERROR_MESSAGE } from '@/constants/message';
+import { ERROR_DESCRIPTION, ERROR_TITLE } from '@/constants/message';
 import { ModalContext } from '@/contexts/ModalContext';
 import { ToastContext } from '@/contexts/ToastContext';
 import { useMyRunnerProfile } from '@/hooks/query/useMyRunnerProfile';
@@ -33,7 +33,7 @@ const ProfileEditPage = ({ isRunner = true }: Props) => {
   const { openModal, closeModal } = useContext(ModalContext);
   const { goBack } = usePageRouter();
 
-  const [runnerProfile, setRunnerProfile] = useState(runnerProfileBefore);
+  const [runnerProfile, setRunnerProfile] = useState(isRunner ? runnerProfileBefore : supporterProfileBefore);
   const [supporterProfile, setSupporterProfile] = useState(supporterProfileBefore);
 
   const [name, setName] = useState(runnerProfile.name);
