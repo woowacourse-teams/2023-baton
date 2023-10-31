@@ -23,8 +23,8 @@ import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
 
-import { useMyGithubUrl } from '@/hooks/query/useMyGithubUrl';
 import { useRunnerPostCreation } from '@/hooks/query/useRunnerPostCreation';
+import PrUrlInput from '@/components/PrUrlInput/PrUrlInput';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
@@ -42,7 +42,6 @@ const RunnerPostCreatePage = () => {
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');
 
-  const { data: githubUrl } = useMyGithubUrl();
   const { mutate, isPending } = useRunnerPostCreation();
 
   const pushTag = (newTag: string) => {
@@ -101,6 +100,10 @@ const RunnerPostCreatePage = () => {
 
   const changePostscriptContents = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPostscriptContents(e.target.value);
+  };
+
+  const updatePullRequest = (url: string) => {
+    setPullRequestUrl(url);
   };
 
   const cancelPostWrite = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -169,24 +172,9 @@ const RunnerPostCreatePage = () => {
               fontSize={isMobile ? '14px' : '18px'}
             />
           </S.InputContainer>
-
           <S.InputContainer>
-            <InputBox
-              inputTextState={pullRequestUrl}
-              handleInputTextState={changePullRequestUrl}
-              width={isMobile ? '300px' : '500px'}
-              placeholder="코드 리뷰받을 PR 주소를 입력해주세요"
-              value={pullRequestUrl}
-            />
-
-            {githubUrl && (
-              <S.Anchor href={githubUrl + '?tab=repositories'} target="_blank">
-                <img src={githubIcon} />
-                {!isMobile && <S.GoToGitHub>github</S.GoToGitHub>}
-              </S.Anchor>
-            )}
+            <PrUrlInput value={pullRequestUrl} setValue={updatePullRequest} />
           </S.InputContainer>
-
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
             <S.Deadline

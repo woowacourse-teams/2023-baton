@@ -13,8 +13,8 @@ const parseJson = async (response: Response): Promise<any> => {
   }
 };
 
-const fetchJson = async <T>(url: string, options?: RequestInit): Promise<T> => {
-  return await fetch(`${BATON_BASE_URL}${url}`, options)
+export const fetchJson = async <T>(url: string, options?: RequestInit, baseUrl?: string): Promise<T> => {
+  return await fetch(`${baseUrl ?? BATON_BASE_URL}${url}`, options)
     .catch(() => throwErrorBadRequest())
     .then(async (response) => parseJson(response));
 };
