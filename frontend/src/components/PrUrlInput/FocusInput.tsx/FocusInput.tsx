@@ -24,7 +24,7 @@ export interface Item {
 // }
 
 const FocusInput = ({ value, setValue, handleBlur }: Props) => {
-  const [inputBuffer, setInputBuffer] = useState('');
+  const [inputBuffer, setInputBuffer] = useState(value);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoCompleteListLength, setAutoCompleteListLength] = useState(0);
 
@@ -94,6 +94,7 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
         currentIndex={currentIndex}
         setCurrentIndex={setCurrentIndex}
         inputBuffer={inputBuffer}
+        setInputBuffer={setInputBuffer}
         setAutoCompleteListLength={setAutoCompleteListLength}
         handleBlur={handleBlur}
         ref={selectItemRef}

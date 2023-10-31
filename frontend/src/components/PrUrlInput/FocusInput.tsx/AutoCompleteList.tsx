@@ -12,12 +12,16 @@ interface Props {
   currentIndex: number;
   setCurrentIndex: (index: number) => void;
   inputBuffer: string;
+  setInputBuffer: (url: string) => void;
   setAutoCompleteListLength: (length: number) => void;
   handleBlur: () => void;
 }
 
 const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEvent) => void }, Props>(
-  ({ url, setUrl, currentIndex, setCurrentIndex, inputBuffer, handleBlur, setAutoCompleteListLength }, ref) => {
+  (
+    { url, setUrl, currentIndex, setCurrentIndex, inputBuffer, setInputBuffer, handleBlur, setAutoCompleteListLength },
+    ref,
+  ) => {
     const [autoCompleteList, setAutoCompleteList] = useState<{ url: string; title: string }[]>([]);
 
     const [githubId, setGithubId] = useState('');
@@ -44,6 +48,7 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
           const list = [{ title: '내 저장소', url: myGithubInfo.githubUrl }];
           setAutoCompleteList(list);
           setAutoCompleteListLength(1);
+
           break;
 
         case 'repoName':
@@ -51,6 +56,7 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
 
           setAutoCompleteList(githubRepoInfos);
           setAutoCompleteListLength(githubRepoInfos.length);
+
           break;
 
         case 'pullRequest':
@@ -62,6 +68,7 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
 
           setAutoCompleteList(data);
           setAutoCompleteListLength(data.length);
+
           break;
 
         case 'complete':
@@ -71,7 +78,11 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
     }, [url, myGithubInfo, githubRepoInfos, githubPrInfos]);
 
     useEffect(() => {
-      if (currentIndex === 0) return;
+      if (currentIndex === 0) {
+        setUrl(inputBuffer);
+
+        return;
+      }
 
       const newUrl = autoCompleteList[currentIndex - 1]?.url ?? '';
       setUrl(newUrl);
@@ -80,16 +91,49 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
     const handleKeyDownEnter = (e: React.KeyboardEvent) => {
       e.preventDefault();
 
-      selectItem();
+      selectPointedItem();
     };
 
-    const selectItem = () => {
-      const typingPart = typingGithubUrlPart(url);
-      console.log(typingPart, url);
+    const selectItem = (newUrl: string) => {
+      const typingPart = typingGithubUrlPart(newUrl);
 
       switch (typingPart) {
         case 'userId':
-          inputBuffer = url + '/';
+          setInputBuffer(newUrl + '/');
+          setUrl(newUrl + '/');
+          setCurrentIndex(0);
+
+          const newUserId1 = newUrl.split('/').slice(-1)[0];
+          setGithubId(newUserId1);
+
+          break;
+
+        case 'repoName':
+          setInputBuffer(newUrl + '/pull/');
+          setUrl(newUrl + '/pull/');
+          setCurrentIndex(0);
+
+          const newRepoName = newUrl.split('/').slice(-1)[0];
+          const newUserId = newUrl.split('/').slice(-2)[0];
+          setGithubId(newUserId);
+          setGithubRepoName(newRepoName);
+
+          break;
+
+        case 'complete':
+          setUrl(newUrl);
+          handleBlur();
+
+          break;
+      }
+    };
+
+    const selectPointedItem = () => {
+      const typingPart = typingGithubUrlPart(url);
+
+      switch (typingPart) {
+        case 'userId':
+          setInputBuffer(url + '/');
           setUrl(url + '/');
           setCurrentIndex(0);
 
@@ -99,7 +143,7 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
           break;
 
         case 'repoName':
-          inputBuffer = url + '/pull/';
+          setInputBuffer(url + '/pull/');
           setUrl(url + '/pull/');
           setCurrentIndex(0);
 
@@ -126,7 +170,7 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
               key={item.url}
               title={item.title}
               url={item.url}
-              selectItem={(url: string) => {}}
+              selectItem={selectItem}
               pointItem={(url: string) => {}}
               isPointed={isPointed}
             />
