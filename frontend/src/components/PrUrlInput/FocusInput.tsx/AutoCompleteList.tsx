@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import styled from 'styled-components';
 import AutoCompleteItem from './AutoCompleteItem';
 import { useMyGithubInfo } from '@/hooks/query/useMyGithubInfo';
@@ -10,90 +10,133 @@ interface Props {
   url: string;
   setUrl: (url: string) => void;
   currentIndex: number;
-  handleBlur: () => void;
+  setCurrentIndex: (index: number) => void;
+  inputBuffer: string;
   setAutoCompleteListLength: (length: number) => void;
-  githubId: string;
-  githubRepoName: string;
+  handleBlur: () => void;
 }
 
-const AutoCompleteList = ({
-  url,
-  setUrl,
-  currentIndex,
-  setAutoCompleteListLength,
-  githubId,
-  githubRepoName,
-}: Props) => {
-  const [autoCompleteList, setAutoCompleteList] = useState<{ url: string; title: string }[]>([]);
+const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEvent) => void }, Props>(
+  ({ url, setUrl, currentIndex, setCurrentIndex, inputBuffer, handleBlur, setAutoCompleteListLength }, ref) => {
+    const [autoCompleteList, setAutoCompleteList] = useState<{ url: string; title: string }[]>([]);
 
-  const { data: myGithubInfo } = useMyGithubInfo();
-  const { data: githubRepoInfos } = useGithubRepoList(githubId);
-  const { data: githubPrInfos } = useGithubPrList(githubId, githubRepoName);
+    const [githubId, setGithubId] = useState('');
+    const [githubRepoName, setGithubRepoName] = useState('');
 
-  useEffect(() => {
-    const typingPart = typingGithubUrlPart(url);
+    const { data: myGithubInfo } = useMyGithubInfo();
+    const { data: githubRepoInfos } = useGithubRepoList(githubId);
+    const { data: githubPrInfos } = useGithubPrList(githubId, githubRepoName);
 
-    switch (typingPart) {
-      case 'domain':
-      case 'userId':
-        if (!myGithubInfo) return;
+    useImperativeHandle(ref, () => {
+      return {
+        handleKeyDownEnter,
+      };
+    });
 
-        const list = [{ title: '내 저장소', url: myGithubInfo.githubUrl }];
-        setAutoCompleteList(list);
-        setAutoCompleteListLength(1);
-        break;
+    useEffect(() => {
+      const typingPart = typingGithubUrlPart(url);
 
-      case 'repoName':
-        if (!githubRepoInfos) return;
+      switch (typingPart) {
+        case 'domain':
+        case 'userId':
+          if (!myGithubInfo) return;
 
-        setAutoCompleteList(githubRepoInfos);
-        setAutoCompleteListLength(githubRepoInfos.length);
-        break;
+          const list = [{ title: '내 저장소', url: myGithubInfo.githubUrl }];
+          setAutoCompleteList(list);
+          setAutoCompleteListLength(1);
+          break;
 
-      case 'pullRequest':
-        if (!githubPrInfos) return;
+        case 'repoName':
+          if (!githubRepoInfos) return;
 
-        const data = githubPrInfos.data.map((item) => {
-          return { title: item.title, url: 'https://github.com' + item.link };
-        });
+          setAutoCompleteList(githubRepoInfos);
+          setAutoCompleteListLength(githubRepoInfos.length);
+          break;
 
-        setAutoCompleteList(data);
-        setAutoCompleteListLength(data.length);
-        break;
+        case 'pullRequest':
+          if (!githubPrInfos) return;
 
-      case 'complete':
-      default:
-        break;
-    }
-  }, [url, myGithubInfo, githubRepoInfos, githubPrInfos]);
+          const data = githubPrInfos.data.map((item) => {
+            return { title: item.title, url: 'https://github.com' + item.link };
+          });
 
-  useEffect(() => {
-    if (currentIndex === 0) return;
+          setAutoCompleteList(data);
+          setAutoCompleteListLength(data.length);
+          break;
 
-    const newUrl = autoCompleteList[currentIndex - 1]?.url ?? '';
-    setUrl(newUrl);
-  }, [currentIndex]);
+        case 'complete':
+        default:
+          break;
+      }
+    }, [url, myGithubInfo, githubRepoInfos, githubPrInfos]);
 
-  return (
-    <div>
-      <S.InputUnderLine />
-      {autoCompleteList?.map((item, i) => {
-        const isPointed = i + 1 === currentIndex;
-        return (
-          <AutoCompleteItem
-            key={item.url}
-            title={item.title}
-            url={item.url}
-            selectItem={(url: string) => {}}
-            pointItem={(url: string) => {}}
-            isPointed={isPointed}
-          />
-        );
-      })}
-      <S.ListEndSpace />
-    </div>
-  );
-};
+    useEffect(() => {
+      if (currentIndex === 0) return;
+
+      const newUrl = autoCompleteList[currentIndex - 1]?.url ?? '';
+      setUrl(newUrl);
+    }, [currentIndex]);
+
+    const handleKeyDownEnter = (e: React.KeyboardEvent) => {
+      e.preventDefault();
+
+      selectItem();
+    };
+
+    const selectItem = () => {
+      const typingPart = typingGithubUrlPart(url);
+      console.log(typingPart, url);
+
+      switch (typingPart) {
+        case 'userId':
+          inputBuffer = url + '/';
+          setUrl(url + '/');
+          setCurrentIndex(0);
+
+          const newUserId1 = url.split('/').slice(-1)[0];
+          setGithubId(newUserId1);
+
+          break;
+
+        case 'repoName':
+          inputBuffer = url + '/pull/';
+          setUrl(url + '/pull/');
+          setCurrentIndex(0);
+
+          const newRepoName = url.split('/').slice(-1)[0];
+          const newUserId = url.split('/').slice(-2)[0];
+          setGithubId(newUserId);
+          setGithubRepoName(newRepoName);
+
+          break;
+
+        case 'complete':
+          handleBlur();
+          break;
+      }
+    };
+
+    return (
+      <>
+        <S.InputUnderLine />
+        {autoCompleteList?.map((item, i) => {
+          const isPointed = i + 1 === currentIndex;
+          return (
+            <AutoCompleteItem
+              key={item.url}
+              title={item.title}
+              url={item.url}
+              selectItem={(url: string) => {}}
+              pointItem={(url: string) => {}}
+              isPointed={isPointed}
+            />
+          );
+        })}
+        <S.ListEndSpace />
+      </>
+    );
+  },
+);
 
 export default AutoCompleteList;
 

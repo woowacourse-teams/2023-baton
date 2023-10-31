@@ -24,23 +24,25 @@ export interface Item {
 // }
 
 const FocusInput = ({ value, setValue, handleBlur }: Props) => {
-  const [githubId, setGithubId] = useState('');
-  const [githubRepoName, setGithubRepoName] = useState('');
-
-  const inputBuffer = useRef('');
+  const [inputBuffer, setInputBuffer] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoCompleteListLength, setAutoCompleteListLength] = useState(0);
+
+  const selectItemRef = useRef<{ handleKeyDownEnter: (e: React.KeyboardEvent) => void } | null>(null);
 
   const inputRef = useCallback((element: HTMLInputElement) => {
     element?.focus();
   }, []);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    inputBuffer.current = e.target.value;
-
+    setInputBuffer(e.target.value);
     setValue(e.target.value);
 
     setCurrentIndex(0);
+  };
+
+  const handleKeyDownEnter = (e: React.KeyboardEvent) => {
+    selectItemRef.current?.handleKeyDownEnter(e);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -59,7 +61,7 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
         handleKeyDownArrowDown();
         break;
       case 'Enter':
-        selectItem();
+        handleKeyDownEnter(e);
         break;
     }
   };
@@ -83,39 +85,6 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
     setCurrentIndex(nextIndex);
   };
 
-  const selectItem = () => {
-    const typingPart = typingGithubUrlPart(value);
-    console.log(typingPart, value);
-
-    switch (typingPart) {
-      case 'userId':
-        inputBuffer.current = value + '/';
-        setValue(value + '/');
-        setCurrentIndex(0);
-
-        const newUserId1 = value.split('/').slice(-1)[0];
-        setGithubId(newUserId1);
-
-        break;
-
-      case 'repoName':
-        inputBuffer.current = value + '/pull/';
-        setValue(value + '/pull/');
-        setCurrentIndex(0);
-
-        const newRepoName = value.split('/').slice(-1)[0];
-        const newUserId = value.split('/').slice(-2)[0];
-        setGithubId(newUserId);
-        setGithubRepoName(newRepoName);
-
-        break;
-
-      case 'complete':
-        handleBlur();
-        break;
-    }
-  };
-
   return (
     <S.Container onKeyDown={handleKeyDown}>
       <S.Input value={value} onChange={handleChangeInput} ref={inputRef} />
@@ -123,10 +92,11 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
         url={value}
         setUrl={setValue}
         currentIndex={currentIndex}
+        setCurrentIndex={setCurrentIndex}
+        inputBuffer={inputBuffer}
         setAutoCompleteListLength={setAutoCompleteListLength}
         handleBlur={handleBlur}
-        githubId={githubId}
-        githubRepoName={githubRepoName}
+        ref={selectItemRef}
       />
     </S.Container>
   );
