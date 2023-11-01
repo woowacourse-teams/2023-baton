@@ -12,8 +12,14 @@ export const useGithubPrList = (userId: string, repoName: string, enabled?: bool
 
     queryFn: async () => getGithubPrList(userId, repoName, 1, enabled ?? true),
 
-    select: (data) => {
-      return { ...data, isDummy: !enabled };
+    select: (response) => {
+      if (typeof response?.data !== 'object') return { data: [], isDummy: !enabled };
+
+      const mappedData = response.data.map((item) => {
+        return { title: item.title, url: 'https://github.com' + item.link };
+      });
+
+      return { data: mappedData, isDummy: !enabled };
     },
   });
 

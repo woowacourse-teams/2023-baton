@@ -37,25 +37,23 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoCompleteListLength, setAutoCompleteListLength] = useState(0);
 
-  const selectItemRef = useRef<{ handleKeyDownEnter: (e: React.KeyboardEvent) => void } | null>(null);
+  const selectItemRef = useRef<{ selectPointedItem: () => void } | null>(null);
 
   const inputRef = useCallback((element: HTMLInputElement) => {
     element?.focus();
   }, []);
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputBuffer(e.target.value);
-    setValue(e.target.value);
+    const input = e.target.value;
+
+    setInputBuffer(input);
+    setValue(input);
 
     setCurrentIndex(0);
   };
 
-  const handleKeyDownEnter = (e: React.KeyboardEvent) => {
-    selectItemRef.current?.handleKeyDownEnter(e);
-  };
-
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (!['ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) {
+    if (!['ArrowUp', 'ArrowDown', 'Enter', '/'].includes(e.key)) {
       return;
     }
 
@@ -70,9 +68,16 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
         handleKeyDownArrowDown();
         break;
       case 'Enter':
-        handleKeyDownEnter(e);
+        handleKeyDownEnter();
+        break;
+      case '/':
+        handleKeyDownEnter();
         break;
     }
+  };
+
+  const handleKeyDownEnter = () => {
+    selectItemRef.current?.selectPointedItem();
   };
 
   const handleKeyDownArrowUp = () => {

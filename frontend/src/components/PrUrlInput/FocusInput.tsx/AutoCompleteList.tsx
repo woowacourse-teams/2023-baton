@@ -17,7 +17,7 @@ interface Props {
   handleBlur: () => void;
 }
 
-const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEvent) => void }, Props>(
+const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
   (
     { url, setUrl, currentIndex, setCurrentIndex, inputBuffer, setInputBuffer, handleBlur, setAutoCompleteListLength },
     ref,
@@ -33,7 +33,7 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
 
     useImperativeHandle(ref, () => {
       return {
-        handleKeyDownEnter,
+        selectPointedItem,
       };
     });
 
@@ -66,12 +66,8 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
 
           if (githubPrInfos.isDummy) return;
 
-          const data = githubPrInfos.data.map((item) => {
-            return { title: item.title, url: 'https://github.com' + item.link };
-          });
-
-          setAutoCompleteList(data);
-          setAutoCompleteListLength(data.length);
+          setAutoCompleteList(githubPrInfos.data);
+          setAutoCompleteListLength(githubPrInfos.data.length);
 
           break;
 
@@ -91,12 +87,6 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
       const newUrl = autoCompleteList[currentIndex - 1]?.url ?? '';
       setUrl(newUrl);
     }, [currentIndex]);
-
-    const handleKeyDownEnter = (e: React.KeyboardEvent) => {
-      e.preventDefault();
-
-      selectPointedItem();
-    };
 
     const selectItem = (newUrl: string) => {
       const typingPart = typingGithubUrlPart(newUrl);

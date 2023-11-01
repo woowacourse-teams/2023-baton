@@ -13,6 +13,8 @@ export const useGithubRepoList = (userId: string, typingRepoName?: string, enabl
     queryFn: async () => getGithubRepoList(userId, 1, enabled ?? true),
 
     select: (response) => {
+      if (typeof response?.data !== 'object') return { data: [], isDummy: !enabled };
+
       // fork된 저장소일 경우 해당 저장소의 원본 저장소 정보를 반환
       const mappedData = response.data.map((item) => {
         return {
@@ -20,7 +22,6 @@ export const useGithubRepoList = (userId: string, typingRepoName?: string, enabl
           url: `https://github.com/${item.originUser ?? userId}/${item.originRepoName ?? item.title}`,
         };
       });
-
       return { data: mappedData, isDummy: !enabled };
     },
   });
