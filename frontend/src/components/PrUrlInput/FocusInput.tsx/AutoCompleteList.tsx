@@ -4,7 +4,7 @@ import AutoCompleteItem from './AutoCompleteItem';
 import { useMyGithubInfo } from '@/hooks/query/useMyGithubInfo';
 import { useGithubRepoList } from '@/hooks/query/github/useGithubRepoList';
 import { useGithubPrList } from '@/hooks/query/github/useGithubPrList';
-import { typingGithubUrlPart } from '@/utils/githubUrl';
+import { checkTypingPullRequestUrl, checkTypingRepositoryUrl, typingGithubUrlPart } from '@/utils/githubUrl';
 
 interface Props {
   url: string;
@@ -28,8 +28,8 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
     const [githubRepoName, setGithubRepoName] = useState('');
 
     const { data: myGithubInfo } = useMyGithubInfo();
-    const { data: githubRepoInfos } = useGithubRepoList(githubId);
-    const { data: githubPrInfos } = useGithubPrList(githubId, githubRepoName);
+    const { data: githubRepoInfos } = useGithubRepoList(githubId, '', checkTypingRepositoryUrl(url));
+    const { data: githubPrInfos } = useGithubPrList(githubId, githubRepoName, checkTypingPullRequestUrl(url));
 
     useImperativeHandle(ref, () => {
       return {
@@ -54,13 +54,17 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
         case 'repoName':
           if (!githubRepoInfos) return;
 
-          setAutoCompleteList(githubRepoInfos);
-          setAutoCompleteListLength(githubRepoInfos.length);
+          if (githubRepoInfos.isDummy) return;
+
+          setAutoCompleteList(githubRepoInfos.data);
+          setAutoCompleteListLength(githubRepoInfos.data.length);
 
           break;
 
         case 'pullRequest':
           if (!githubPrInfos) return;
+
+          if (githubPrInfos.isDummy) return;
 
           const data = githubPrInfos.data.map((item) => {
             return { title: item.title, url: 'https://github.com' + item.link };
@@ -162,21 +166,25 @@ const AutoCompleteList = forwardRef<{ handleKeyDownEnter: (e: React.KeyboardEven
 
     return (
       <>
-        <S.InputUnderLine />
-        {autoCompleteList?.map((item, i) => {
-          const isPointed = i + 1 === currentIndex;
-          return (
-            <AutoCompleteItem
-              key={item.url}
-              title={item.title}
-              url={item.url}
-              selectItem={selectItem}
-              pointItem={(url: string) => {}}
-              isPointed={isPointed}
-            />
-          );
-        })}
-        <S.ListEndSpace />
+        {autoCompleteList.length > 0 && (
+          <>
+            <S.InputUnderLine />
+            {autoCompleteList?.map((item, i) => {
+              const isPointed = i + 1 === currentIndex;
+              return (
+                <AutoCompleteItem
+                  key={item.url}
+                  title={item.title}
+                  url={item.url}
+                  selectItem={selectItem}
+                  pointItem={(url: string) => {}}
+                  isPointed={isPointed}
+                />
+              );
+            })}
+            <S.ListEndSpace />
+          </>
+        )}
       </>
     );
   },

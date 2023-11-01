@@ -1,7 +1,6 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import AutoCompleteList from './AutoCompleteList';
-import { typingGithubUrlPart } from '@/utils/githubUrl';
 
 interface Props {
   value: string;
@@ -22,6 +21,16 @@ export interface Item {
 //     </S.Anchor>
 //   );
 // }
+
+const FallbackUI = () => {
+  return (
+    <>
+      <S.InputUnderLine />
+      Loading...
+      <S.ListEndSpace />
+    </>
+  );
+};
 
 const FocusInput = ({ value, setValue, handleBlur }: Props) => {
   const [inputBuffer, setInputBuffer] = useState(value);
@@ -88,17 +97,19 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
   return (
     <S.Container onKeyDown={handleKeyDown}>
       <S.Input value={value} onChange={handleChangeInput} ref={inputRef} />
-      <AutoCompleteList
-        url={value}
-        setUrl={setValue}
-        currentIndex={currentIndex}
-        setCurrentIndex={setCurrentIndex}
-        inputBuffer={inputBuffer}
-        setInputBuffer={setInputBuffer}
-        setAutoCompleteListLength={setAutoCompleteListLength}
-        handleBlur={handleBlur}
-        ref={selectItemRef}
-      />
+      <Suspense fallback={<FallbackUI />}>
+        <AutoCompleteList
+          url={value}
+          setUrl={setValue}
+          currentIndex={currentIndex}
+          setCurrentIndex={setCurrentIndex}
+          inputBuffer={inputBuffer}
+          setInputBuffer={setInputBuffer}
+          setAutoCompleteListLength={setAutoCompleteListLength}
+          handleBlur={handleBlur}
+          ref={selectItemRef}
+        />
+      </Suspense>
     </S.Container>
   );
 };
@@ -131,5 +142,16 @@ const S = {
     &:focus {
       outline: none;
     }
+  `,
+
+  InputUnderLine: styled.div`
+    border-top: 1px solid var(--gray-300);
+    height: 15px;
+  `,
+
+  ListEndSpace: styled.div`
+    height: 15px;
+    width: 100%;
+    border-radius: 5px;
   `,
 };
