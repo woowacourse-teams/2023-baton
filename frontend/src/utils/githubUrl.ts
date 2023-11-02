@@ -45,3 +45,21 @@ export const typingGithubUrlPart = (url: string): TypingGithubUrlPart => {
 
   return 'domain';
 };
+
+export const extractUserId = (githubUrl: string) => {
+  const githubUrlRegex = new RegExp(/https:\/\/github\.com\/([a-zA-Z0-9-_.]+)/);
+
+  const match = githubUrl.match(githubUrlRegex);
+  const userId = match?.[1];
+
+  return userId;
+};
+
+export const extractRepoName = (githubUrl: string) => {
+  const githubUrlRegex = new RegExp(/https:\/\/github\.com\/([a-zA-Z0-9-_.]+)\/([a-zA-Z0-9-_.]+)/);
+
+  const match = githubUrl.match(githubUrlRegex);
+  const userId = match?.[2];
+
+  return userId;
+};

@@ -4,16 +4,22 @@ import AutoCompleteItem from './AutoCompleteItem';
 import { useMyGithubInfo } from '@/hooks/query/useMyGithubInfo';
 import { useGithubRepoList } from '@/hooks/query/github/useGithubRepoList';
 import { useGithubPrList } from '@/hooks/query/github/useGithubPrList';
-import { checkTypingPullRequestUrl, checkTypingRepositoryUrl, typingGithubUrlPart } from '@/utils/githubUrl';
+import {
+  checkTypingPullRequestUrl,
+  checkTypingRepositoryUrl,
+  extractRepoName,
+  extractUserId,
+  typingGithubUrlPart,
+} from '@/utils/githubUrl';
 
 interface Props {
   url: string;
-  setUrl: (url: string) => void;
+  setUrl: React.Dispatch<React.SetStateAction<string>>;
   currentIndex: number;
-  setCurrentIndex: (index: number) => void;
+  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
   inputBuffer: string;
-  setInputBuffer: (url: string) => void;
-  setAutoCompleteListLength: (length: number) => void;
+  setInputBuffer: React.Dispatch<React.SetStateAction<string>>;
+  setAutoCompleteListLength: React.Dispatch<React.SetStateAction<number>>;
   handleBlur: () => void;
 }
 
@@ -36,6 +42,12 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
         selectPointedItem,
       };
     });
+
+    const changeUrl = (url: string) => {
+      setInputBuffer(url);
+      setUrl(url);
+      setCurrentIndex(0);
+    };
 
     useEffect(() => {
       const typingPart = typingGithubUrlPart(url);
@@ -89,22 +101,18 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
 
       switch (typingPart) {
         case 'userId':
-          setInputBuffer(newUrl + '/');
-          setUrl(newUrl + '/');
-          setCurrentIndex(0);
+          changeUrl(newUrl + '/');
 
-          const newUserId1 = newUrl.split('/').slice(-1)[0];
-          setGithubId(newUserId1);
+          const newUserID = extractUserId(newUrl + '/') ?? '';
+          setGithubId(newUserID);
 
           break;
 
         case 'repoName':
-          setInputBuffer(newUrl + '/pull/');
-          setUrl(newUrl + '/pull/');
-          setCurrentIndex(0);
+          changeUrl(newUrl + '/pull/');
 
-          const newRepoName = newUrl.split('/').slice(-1)[0];
-          const newUserId = newUrl.split('/').slice(-2)[0];
+          const newUserId = extractUserId(newUrl + '/pull/') ?? '';
+          const newRepoName = extractRepoName(newUrl + '/pull/') ?? '';
           setGithubId(newUserId);
           setGithubRepoName(newRepoName);
 
@@ -123,28 +131,24 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
 
       switch (typingPart) {
         case 'domain':
-          setInputBuffer('https://github.com/');
-          setUrl('https://github.com/');
-          setCurrentIndex(0);
+          changeUrl('https://github.com/');
 
           break;
         case 'userId':
-          setInputBuffer(url + '/');
-          setUrl(url + '/');
-          setCurrentIndex(0);
+          changeUrl(url + '/');
 
-          const newUserId1 = url.split('/').slice(-1)[0];
-          setGithubId(newUserId1);
+          const newUserID = extractUserId(url + '/') ?? '';
+          console.log(extractUserId(url + '/'));
+
+          setGithubId(newUserID);
 
           break;
 
         case 'repoName':
-          setInputBuffer(url + '/pull/');
-          setUrl(url + '/pull/');
-          setCurrentIndex(0);
+          changeUrl(url + '/pull/');
 
-          const newRepoName = url.split('/').slice(-1)[0];
-          const newUserId = url.split('/').slice(-2)[0];
+          const newRepoName = extractRepoName(url + '/pull/') ?? '';
+          const newUserId = extractUserId(url + '/pull/') ?? '';
           setGithubId(newUserId);
           setGithubRepoName(newRepoName);
 
