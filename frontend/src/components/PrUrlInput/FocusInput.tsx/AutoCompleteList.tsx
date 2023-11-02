@@ -115,7 +115,7 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
         case 'domain':
           updateListToMyGithub();
 
-          setExplanation('깃허브 도메인을 입력하는 중이에요');
+          setExplanation('깃허브 도메인이 잘못되었어요');
 
           break;
 
@@ -144,13 +144,15 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           break;
 
         default:
+          setExplanation('잘못된 도메인이에요');
+
           break;
       }
     }, [url, myGithubInfo]);
 
     useEffect(() => {
       if (currentIndex === 0) {
-        setUrl(inputBuffer);
+        if (inputBuffer) setUrl(inputBuffer);
 
         return;
       }
