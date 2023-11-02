@@ -1,6 +1,9 @@
 import React, { Suspense, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import AutoCompleteList from './AutoCompleteList';
+import Spinner from '@/components/common/Spinner/Spinner';
+import DropletSpinner from '@/components/common/Spinner/DropletSpinner';
+import Fallback from './Fallback';
 
 interface Props {
   value: string;
@@ -21,16 +24,6 @@ export interface Item {
 //     </S.Anchor>
 //   );
 // }
-
-const FallbackUI = () => {
-  return (
-    <>
-      <S.InputUnderLine />
-      <S.LoadingIcon>Loading...</S.LoadingIcon>
-      <S.ListEndSpace />
-    </>
-  );
-};
 
 const FocusInput = ({ value, setValue, handleBlur }: Props) => {
   const [inputBuffer, setInputBuffer] = useState(value);
@@ -102,7 +95,7 @@ const FocusInput = ({ value, setValue, handleBlur }: Props) => {
   return (
     <S.Container onKeyDown={handleKeyDown}>
       <S.Input value={value} onChange={handleChangeInput} ref={inputRef} />
-      <Suspense fallback={<FallbackUI />}>
+      <Suspense fallback={<Fallback />}>
         <AutoCompleteList
           url={value}
           setUrl={setValue}
@@ -125,11 +118,16 @@ const S = {
   Container: styled.div`
     position: absolute;
 
-    width: 100%;
+    width: 700px;
+
     border-radius: 15px;
     box-shadow: 2px 2px 4px 2.5px rgba(0, 0, 0, 0.25);
 
     background-color: white;
+
+    @media (max-width: 768px) {
+      width: calc(100% - 30px);
+    }
   `,
 
   Input: styled.input`
@@ -158,9 +156,5 @@ const S = {
     height: 15px;
     width: 100%;
     border-radius: 5px;
-  `,
-
-  LoadingIcon: styled.div`
-    padding-left: 30px;
   `,
 };

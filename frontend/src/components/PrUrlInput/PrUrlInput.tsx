@@ -38,22 +38,21 @@ export default PrUrlInput;
 
 const S = {
   Container: styled.div`
-    position: relative;
+    width: 100%;
     min-height: 50px;
-
-    width: 700px;
-
-    @media (max-width: 768px) {
-      width: 100%;
-    }
   `,
 
   NotFocusInput: styled.input`
+    width: 700px;
     height: 50px;
     font-size: 18px;
 
     &::placeholder {
       font-size: 18px;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
     }
   `,
 };
