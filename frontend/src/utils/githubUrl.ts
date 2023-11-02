@@ -63,3 +63,11 @@ export const extractRepoName = (githubUrl: string) => {
 
   return userId;
 };
+
+export const extractPrNumber = (githubUrl: string) => {
+  if (!checkCorrectPullRequestUrl(githubUrl)) return;
+
+  const prNumber = githubUrl.split('/').slice(-1)[0];
+
+  return prNumber;
+};

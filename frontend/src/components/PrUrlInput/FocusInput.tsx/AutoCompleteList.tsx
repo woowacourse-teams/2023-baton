@@ -7,6 +7,7 @@ import { useGithubPrList } from '@/hooks/query/github/useGithubPrList';
 import {
   checkTypingPullRequestUrl,
   checkTypingRepositoryUrl,
+  extractPrNumber,
   extractRepoName,
   extractUserId,
   typingGithubUrlPart,
@@ -14,7 +15,7 @@ import {
 
 interface Props {
   url: string;
-  setUrl: React.Dispatch<React.SetStateAction<string>>;
+  setUrl: (url: string) => void;
   currentIndex: number;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
   inputBuffer: string;
@@ -30,8 +31,10 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
   ) => {
     const [autoCompleteList, setAutoCompleteList] = useState<{ url: string; title: string }[]>([]);
 
-    const [githubId, setGithubId] = useState('');
-    const [githubRepoName, setGithubRepoName] = useState('');
+    const [explanation, setExplanation] = useState('');
+
+    const [githubId, setGithubId] = useState(extractUserId(url) ?? '');
+    const [githubRepoName, setGithubRepoName] = useState(extractRepoName(url) ?? '');
 
     const { data: myGithubInfo } = useMyGithubInfo();
     const { data: githubRepoInfos } = useGithubRepoList(githubId, '', checkTypingRepositoryUrl(url));
@@ -49,17 +52,31 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
       setCurrentIndex(0);
     };
 
+    const updateListToMyGithub = () => {
+      if (!myGithubInfo) return;
+
+      const myGithubList = [{ title: '내 저장소', url: myGithubInfo.githubUrl }];
+
+      setAutoCompleteList(myGithubList);
+      setAutoCompleteListLength(1);
+    };
+
     useEffect(() => {
       const typingPart = typingGithubUrlPart(url);
 
       switch (typingPart) {
-        case 'domain':
         case 'userId':
-          if (!myGithubInfo) return;
+          updateListToMyGithub();
 
-          const list = [{ title: '내 저장소', url: myGithubInfo.githubUrl }];
-          setAutoCompleteList(list);
-          setAutoCompleteListLength(1);
+          const userId = extractUserId(url);
+          setExplanation(`유저 이름을 입력하는 중이에요 ${userId ? `( ${userId} )` : ''}`);
+
+          break;
+
+        case 'domain':
+          updateListToMyGithub();
+
+          setExplanation('깃허브 도메인을 입력하는 중이에요');
 
           break;
 
@@ -69,6 +86,9 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           setAutoCompleteList(githubRepoInfos.data);
           setAutoCompleteListLength(githubRepoInfos.data.length);
 
+          const repoName = extractRepoName(url);
+          setExplanation(`저장소 이름을 입력하는 중이에요 ${repoName ? `( ${repoName} )` : ''}`);
+
           break;
 
         case 'pullRequest':
@@ -77,9 +97,15 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           setAutoCompleteList(githubPrInfos.data);
           setAutoCompleteListLength(githubPrInfos.data.length);
 
+          setExplanation(`PR 순서를 입력하는 중이에요`);
+
           break;
 
         case 'complete':
+          const prNumber = extractPrNumber(url);
+          setExplanation(`PR 순서를 입력하는 중이에요 ${prNumber ? `( ${prNumber} )` : ''}`);
+          break;
+
         default:
           break;
       }
@@ -162,25 +188,22 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
 
     return (
       <>
-        {autoCompleteList.length > 0 && (
-          <>
-            <S.InputUnderLine />
-            {autoCompleteList?.map((item, i) => {
-              const isPointed = i + 1 === currentIndex;
-              return (
-                <AutoCompleteItem
-                  key={item.url}
-                  title={item.title}
-                  url={item.url}
-                  selectItem={selectItem}
-                  pointItem={(url: string) => {}}
-                  isPointed={isPointed}
-                />
-              );
-            })}
-            <S.ListEndSpace />
-          </>
-        )}
+        <S.InputUnderLine />
+        <S.Explanation>{explanation}</S.Explanation>
+        {autoCompleteList?.map((item, i) => {
+          const isPointed = i + 1 === currentIndex;
+          return (
+            <AutoCompleteItem
+              key={item.url}
+              title={item.title}
+              url={item.url}
+              selectItem={selectItem}
+              pointItem={(url: string) => {}}
+              isPointed={isPointed}
+            />
+          );
+        })}
+        {autoCompleteList.length > 0 && <S.ListEndSpace />}
       </>
     );
   },
@@ -190,8 +213,10 @@ export default AutoCompleteList;
 
 const S = {
   InputUnderLine: styled.div`
+    position: relative;
+
     border-top: 1px solid var(--gray-300);
-    height: 15px;
+    height: 20px;
   `,
 
   ListItem: styled.li`
@@ -217,8 +242,18 @@ const S = {
   `,
 
   ListEndSpace: styled.div`
-    height: 15px;
+    height: 25px;
     width: 100%;
     border-radius: 5px;
+  `,
+
+  Explanation: styled.div`
+    width: 100%;
+    padding: 0 30px;
+
+    font-size: 12px;
+    margin-bottom: 16px;
+
+    color: var(--gray-500);
   `,
 };
