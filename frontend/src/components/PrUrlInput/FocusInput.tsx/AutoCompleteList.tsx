@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import AutoCompleteItem from './AutoCompleteItem';
 import { useMyGithubInfo } from '@/hooks/query/useMyGithubInfo';
@@ -40,6 +40,41 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
     const { data: githubRepoInfos } = useGithubRepoList(githubId, '', checkTypingRepositoryUrl(url));
     const { data: githubPrInfos } = useGithubPrList(githubId, githubRepoName, checkTypingPullRequestUrl(url));
 
+    const filterAutoCompleteList = (list: { title: string; url: string }[]) => {
+      const maxLength = 5;
+      const typingPart = typingGithubUrlPart(inputBuffer);
+
+      switch (typingPart) {
+        case 'repoName':
+          const repoName = extractRepoName(url) ?? '';
+
+          const includedInputRepoNameList = list.filter((item) => {
+            const urlRepoName = extractRepoName(item.url) ?? '';
+            return urlRepoName.includes(repoName);
+          });
+
+          return includedInputRepoNameList.slice(0, maxLength);
+
+        case 'complete':
+        case 'pullRequest':
+          const prNumber = extractPrNumber(url) ?? '';
+
+          const includedInputPrNumberList = list.filter((item) => {
+            const urlPrNumber = extractPrNumber(item.url) ?? '';
+            return urlPrNumber.includes(prNumber);
+          });
+
+          return includedInputPrNumberList.slice(0, maxLength);
+
+        default:
+          return autoCompleteList.slice(0, maxLength);
+      }
+    };
+
+    const filteredAutoCompleteList = useMemo<{ title: string; url: string }[]>(() => {
+      return filterAutoCompleteList(autoCompleteList);
+    }, [inputBuffer, autoCompleteList]);
+
     useImperativeHandle(ref, () => {
       return {
         selectPointedItem,
@@ -60,6 +95,10 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
       setAutoCompleteList(myGithubList);
       setAutoCompleteListLength(1);
     };
+
+    useEffect(() => {
+      setAutoCompleteListLength(filteredAutoCompleteList.length);
+    }, [filteredAutoCompleteList]);
 
     useEffect(() => {
       const typingPart = typingGithubUrlPart(url);
@@ -84,7 +123,6 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           if (githubRepoInfos.isDummy) return;
 
           setAutoCompleteList(githubRepoInfos.data);
-          setAutoCompleteListLength(githubRepoInfos.data.length);
 
           const repoName = extractRepoName(url);
           setExplanation(`저장소 이름을 입력하는 중이에요 ${repoName ? `( ${repoName} )` : ''}`);
@@ -95,7 +133,6 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           if (githubPrInfos.isDummy) return;
 
           setAutoCompleteList(githubPrInfos.data);
-          setAutoCompleteListLength(githubPrInfos.data.length);
 
           setExplanation(`PR 순서를 입력하는 중이에요`);
 
@@ -118,7 +155,7 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
         return;
       }
 
-      const newUrl = autoCompleteList[currentIndex - 1]?.url ?? '';
+      const newUrl = filteredAutoCompleteList[currentIndex - 1]?.url ?? '';
       setUrl(newUrl);
     }, [currentIndex]);
 
@@ -190,7 +227,7 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
       <>
         <S.InputUnderLine />
         <S.Explanation>{explanation}</S.Explanation>
-        {autoCompleteList?.map((item, i) => {
+        {filteredAutoCompleteList.map((item, i) => {
           const isPointed = i + 1 === currentIndex;
           return (
             <AutoCompleteItem
@@ -198,12 +235,11 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
               title={item.title}
               url={item.url}
               selectItem={selectItem}
-              pointItem={(url: string) => {}}
               isPointed={isPointed}
             />
           );
         })}
-        {autoCompleteList.length > 0 && <S.ListEndSpace />}
+        {filteredAutoCompleteList.length > 0 && <S.ListEndSpace />}
       </>
     );
   },
