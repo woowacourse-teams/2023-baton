@@ -52,8 +52,6 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           break;
 
         case 'repoName':
-          if (!githubRepoInfos) return;
-
           if (githubRepoInfos.isDummy) return;
 
           setAutoCompleteList(githubRepoInfos.data);
@@ -62,8 +60,6 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           break;
 
         case 'pullRequest':
-          if (!githubPrInfos) return;
-
           if (githubPrInfos.isDummy) return;
 
           setAutoCompleteList(githubPrInfos.data);
@@ -75,7 +71,7 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
         default:
           break;
       }
-    }, [url, myGithubInfo, githubRepoInfos, githubPrInfos]);
+    }, [url, myGithubInfo]);
 
     useEffect(() => {
       if (currentIndex === 0) {
@@ -126,6 +122,12 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
       const typingPart = typingGithubUrlPart(url);
 
       switch (typingPart) {
+        case 'domain':
+          setInputBuffer('https://github.com/');
+          setUrl('https://github.com/');
+          setCurrentIndex(0);
+
+          break;
         case 'userId':
           setInputBuffer(url + '/');
           setUrl(url + '/');
