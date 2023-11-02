@@ -145,6 +145,10 @@ const S = {
     &:focus {
       outline: none;
     }
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   InputUnderLine: styled.div`

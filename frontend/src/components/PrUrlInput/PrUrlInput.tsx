@@ -49,10 +49,16 @@ const S = {
 
     &::placeholder {
       font-size: 18px;
+
+      @media (max-width: 768px) {
+        font-size: 16px;
+      }
     }
 
     @media (max-width: 768px) {
       width: 100%;
+
+      font-size: 16px;
     }
   `,
 };

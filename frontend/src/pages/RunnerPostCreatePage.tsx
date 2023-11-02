@@ -154,8 +154,8 @@ const RunnerPostCreatePage = () => {
               inputTextState={title}
               handleInputTextState={changeTitle}
               maxLength={30}
+              height="50px"
               width={isMobile ? '300px' : '800px'}
-              height="40px"
               fontSize={isMobile ? '20px' : '38px'}
               maxLengthFontSize={isMobile ? '14px' : '18px'}
               fontWeight="700"
@@ -169,7 +169,7 @@ const RunnerPostCreatePage = () => {
               pushTag={pushTag}
               popTag={removeTag}
               width="100%"
-              fontSize={isMobile ? '14px' : '18px'}
+              fontSize={isMobile ? '16px' : '18px'}
             />
           </S.InputContainer>
           <S.InputContainer>
@@ -257,6 +257,8 @@ const S = {
   InputContainer: styled.div`
     display: flex;
     justify-content: start;
+    align-items: center;
+    min-height: 50px;
   `,
 
   Form: styled.form`
@@ -264,8 +266,17 @@ const S = {
     flex-direction: column;
     gap: 30px;
 
-    &:first-child {
+    & > :first-child {
       margin-top: 60px;
+      margin-bottom: 10px;
+
+      @media (max-width: 768px) {
+        margin-bottom: 0px;
+      }
+    }
+
+    & > :nth-child(5) {
+      margin-top: 10px;
     }
   `,
 
@@ -279,6 +290,10 @@ const S = {
     color: var(--gray-800);
     font-size: 18px;
     font-weight: 500px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   Deadline: styled.input`
@@ -286,6 +301,10 @@ const S = {
 
     &:focus {
       outline: 0;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 16px;
     }
   `,
 
