@@ -40,10 +40,15 @@ const S = {
   Container: styled.div`
     position: relative;
     min-height: 50px;
+
+    width: 700px;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   `,
 
   NotFocusInput: styled.input`
-    width: 700px;
     height: 50px;
     font-size: 18px;
 

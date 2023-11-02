@@ -18,7 +18,7 @@ const AutoCompleteItem = ({ title, url, isPointed, selectItem }: Props) => {
 
   return (
     <S.ListItem $isPointed={isPointed} onMouseDown={handleClickItem}>
-      {title}
+      <S.ListText>{title}</S.ListText>
     </S.ListItem>
   );
 };
@@ -36,8 +36,6 @@ const S = {
 
     background-color: ${({ $isPointed }) => $isPointed && 'var(--gray-100)'};
 
-    font-size: 14px;
-
     cursor: pointer;
 
     &:hover {
@@ -48,5 +46,15 @@ const S = {
       background-color: var(--gray-100);
       outline: none;
     }
+  `,
+
+  ListText: styled.div`
+    width: 100%;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   `,
 };

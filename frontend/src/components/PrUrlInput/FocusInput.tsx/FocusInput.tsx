@@ -26,7 +26,7 @@ const FallbackUI = () => {
   return (
     <>
       <S.InputUnderLine />
-      Loading...
+      <S.LoadingIcon>Loading...</S.LoadingIcon>
       <S.ListEndSpace />
     </>
   );
@@ -125,7 +125,7 @@ const S = {
   Container: styled.div`
     position: absolute;
 
-    width: 700px;
+    width: 100%;
     border-radius: 15px;
     box-shadow: 2px 2px 4px 2.5px rgba(0, 0, 0, 0.25);
 
@@ -133,7 +133,7 @@ const S = {
   `,
 
   Input: styled.input`
-    width: 640px;
+    width: 100%;
     padding: 0 30px;
     height: 50px;
     border-radius: 20px;
@@ -158,5 +158,9 @@ const S = {
     height: 15px;
     width: 100%;
     border-radius: 5px;
+  `,
+
+  LoadingIcon: styled.div`
+    padding-left: 30px;
   `,
 };
