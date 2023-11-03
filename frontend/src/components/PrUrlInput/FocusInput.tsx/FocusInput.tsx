@@ -17,7 +17,7 @@ export interface Item {
 }
 
 const FocusInput = ({ value, setValue, prefixValue, handleBlur }: Props) => {
-  //prefix값이 존재할 경우 buffer을 prefix로 초기화
+  //prefix값이 존재할 경우 buffer 상태를 prefix로 초기화
   const [inputBuffer, setInputBuffer] = useState(value || (prefixValue ?? ''));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoCompleteListLength, setAutoCompleteListLength] = useState(0);
@@ -38,7 +38,12 @@ const FocusInput = ({ value, setValue, prefixValue, handleBlur }: Props) => {
     const input = e.target.value;
 
     // prefixValue가 무조건 value앞에 접두사로 존재
-    if (input.slice(0, prefixValue?.length ?? 0) !== prefixValue) return;
+    if (input.slice(0, prefixValue?.length ?? 0) !== prefixValue) {
+      setInputBuffer(prefixValue ?? '');
+      setValue(prefixValue ?? '');
+
+      return;
+    }
 
     setInputBuffer(input);
     setValue(input);
