@@ -125,6 +125,7 @@ const AutoCompleteList = forwardRef<{ selectPointedItem: () => void }, Props>(
           setAutoCompleteList(githubRepoInfos.data);
 
           const repoName = extractRepoName(url);
+
           setExplanation(`저장소 이름을 입력하는 중이에요 ${repoName ? `( ${repoName} )` : ''}`);
 
           break;

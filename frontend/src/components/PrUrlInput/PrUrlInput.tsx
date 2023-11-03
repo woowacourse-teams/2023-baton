@@ -26,7 +26,7 @@ const PrUrlInput = ({ value, setValue }: Props) => {
   return (
     <S.Container onBlur={handleBlur} onFocus={handleFocus}>
       {isFocus ? (
-        <FocusInput value={value} setValue={setValue} handleBlur={handleBlur} initialValue={'https://github.com/'} />
+        <FocusInput value={value} setValue={setValue} handleBlur={handleBlur} prefixValue={'https://github.com/'} />
       ) : (
         <S.NotFocusInput defaultValue={value} placeholder="PR 주소를 입력해주세요" />
       )}

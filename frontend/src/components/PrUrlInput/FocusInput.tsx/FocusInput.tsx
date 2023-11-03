@@ -7,7 +7,7 @@ import ShortCutIcon from '@/assets/select-window-icon.svg';
 interface Props {
   value: string;
   setValue: (value: string) => void;
-  initialValue?: string;
+  prefixValue?: string;
   handleBlur: () => void;
 }
 
@@ -16,8 +16,9 @@ export interface Item {
   title: string;
 }
 
-const FocusInput = ({ value, setValue, initialValue, handleBlur }: Props) => {
-  const [inputBuffer, setInputBuffer] = useState(value ?? initialValue ?? '');
+const FocusInput = ({ value, setValue, prefixValue, handleBlur }: Props) => {
+  //prefix값이 존재할 경우 buffer을 prefix로 초기화
+  const [inputBuffer, setInputBuffer] = useState(value || (prefixValue ?? ''));
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoCompleteListLength, setAutoCompleteListLength] = useState(0);
 
@@ -26,7 +27,7 @@ const FocusInput = ({ value, setValue, initialValue, handleBlur }: Props) => {
   useEffect(() => {
     if (value) return;
 
-    setValue(initialValue ?? '');
+    setValue(prefixValue ?? '');
   }, []);
 
   const inputRef = useCallback((element: HTMLInputElement) => {
@@ -35,6 +36,9 @@ const FocusInput = ({ value, setValue, initialValue, handleBlur }: Props) => {
 
   const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
+
+    // prefixValue가 무조건 value앞에 접두사로 존재
+    if (input.slice(0, prefixValue?.length ?? 0) !== prefixValue) return;
 
     setInputBuffer(input);
     setValue(input);
