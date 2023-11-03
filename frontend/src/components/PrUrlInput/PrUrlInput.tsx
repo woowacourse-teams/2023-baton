@@ -24,7 +24,7 @@ const PrUrlInput = ({ value, setValue }: Props) => {
   };
 
   return (
-    <S.Container onBlur={handleBlur} onFocus={handleFocus}>
+    <S.Container onBlur={handleBlur} onFocus={handleFocus} aria-label="pr url input">
       {isFocus ? (
         <FocusInput value={value} setValue={setValue} handleBlur={handleBlur} prefixValue={'https://github.com/'} />
       ) : (

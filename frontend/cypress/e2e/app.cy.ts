@@ -55,13 +55,13 @@ describe('러너 E2E 테스트', () => {
     typeAll('form input', [
       '제제제제제목목목목목',
       'react{enter}js{enter}javascript{enter}자바스크립트{enter}자스{enter}',
-      '주소주소',
     ]);
 
-    typeAll('div textarea', [
-      '구현 기능에 대한 설명입니다. 구현 기능에 대한 설명입니다.',
-      '아쉬운 점은 없습니다. 아쉬운 점은 없습니다.',
-    ]);
+    cy.get('div[aria-label="pr url input"]').click();
+    cy.wait(300);
+    cy.get('input[aria-label="focus url input"]').invoke('val', 'https://github.com/ex/ex/pull/1').type('2');
+
+    typeAll('div textarea', ['구현 기능에 대한 설명입니다. 구현 기능에 대한 설명입니다.', '아쉬운 점']);
 
     cy.get('button[aria-label="리뷰 요청 글 생성"]').click();
 
@@ -69,8 +69,13 @@ describe('러너 E2E 테스트', () => {
 
     cy.get('div[aria-label="에러 메시지"]').should('be.visible');
 
-    cy.get('input[value="주소주소"]').clear();
-    cy.get('input[value=""]').type('https://github.com/woowacourse-teams/2023-baton/pull/1');
+    typeAll('div textarea', [
+      '구현 기능에 대한 설명입니다. 구현 기능에 대한 설명입니다',
+      '아쉬운 점 아쉬운 점 아쉬운 점 아쉬운 점 아쉬운 점 아쉬운 점 ',
+    ]);
+
+    // cy.get('input[value="주소주소"]').clear();
+    // cy.get('input[value=""]').type('https://github.com/woowacourse-teams/2023-baton/pull/1');
 
     cy.get('button[aria-label="리뷰 요청 글 생성"]').click();
 

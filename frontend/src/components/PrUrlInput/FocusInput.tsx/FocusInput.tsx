@@ -107,7 +107,7 @@ const FocusInput = ({ value, setValue, prefixValue, handleBlur }: Props) => {
   return (
     <S.Container onKeyDown={handleKeyDown}>
       <S.InputContainer>
-        <S.Input value={value} onChange={handleChangeInput} ref={inputRef} />
+        <S.Input value={value} onChange={handleChangeInput} ref={inputRef} aria-label="focus url input" />
         <S.ShortcutContainer>
           <S.ShortcutIcon src={ShortCutIcon} onMouseDown={handleMouseDownShortCut} />
           <div>링크 바로가기</div>
