@@ -6,14 +6,27 @@ import { GetRunnerProfileResponse } from '@/types/profile';
 import { useQuery } from '@tanstack/react-query';
 import { useContext, useEffect } from 'react';
 
-export const useMyGithubUrl = () => {
+interface GithubInfo {
+  githubId: string;
+  githubUrl: string;
+}
+
+export const useMyGithubInfo = () => {
   const { showErrorToast } = useContext(ToastContext);
 
   /* githubUrl은 수정할 수 없으므로 staleTime을 Infinity로 설정 */
-  const queryResult = useQuery<GetRunnerProfileResponse, APIError, string>({
-    queryKey: ['myGithubUrl'],
+  const queryResult = useQuery<GetRunnerProfileResponse, APIError, GithubInfo>({
+    queryKey: ['myGithubInfo'],
+
     queryFn: getMyRunnerProfile,
-    select: (data) => data.githubUrl,
+
+    select: (data) => {
+      return {
+        githubUrl: data.githubUrl,
+        githubId: data.githubUrl.split('/').slice(-1)[0],
+      };
+    },
+
     staleTime: Infinity,
   });
 
@@ -24,6 +37,7 @@ export const useMyGithubUrl = () => {
   }, [queryResult.error]);
 
   return {
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    ...queryResult,
+    data: queryResult.data,
   };
 };

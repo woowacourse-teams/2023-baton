@@ -20,6 +20,8 @@ import { GetMyPagePostResponse, getMyPostRequestParams } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
 import { GetNotificationResponse } from '@/types/notification';
+import { CustomApiError } from '@/types/error';
+import { throwErrorBadRequest } from './error';
 
 export const getRunnerPost = ({ limit, reviewStatus, cursor, tagName }: getRunnerPostRequestParams) => {
   const params = new URLSearchParams({

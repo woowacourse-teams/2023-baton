@@ -63,16 +63,19 @@ const TagInput = ({ tags, pushTag, popTag, width, fontSize }: Props) => {
             </Tag>
           </S.TagItem>
         ))}
-        <S.InputBoxContainer>
-          <S.InputBox
-            onKeyDown={onkeyDownInput}
-            ref={inputRef}
-            placeholder="태그를 입력해주세요"
-            onFocus={onFocus}
-            onBlur={outFocus}
-          />
-          {isFocus && <S.InputDescription>엔터를 입력하여 태그를 등록할 수 있습니다.</S.InputDescription>}
-        </S.InputBoxContainer>
+        {tags.length < 5 && (
+          <S.InputBoxContainer>
+            <S.InputBox
+              onKeyDown={onkeyDownInput}
+              ref={inputRef}
+              placeholder="태그를 입력해주세요"
+              onFocus={onFocus}
+              onBlur={outFocus}
+              maxLength={15}
+            />
+            {isFocus && <S.InputDescription>엔터를 입력하여 태그를 등록할 수 있습니다.</S.InputDescription>}
+          </S.InputBoxContainer>
+        )}
       </S.TagList>
     </S.TagInputContainer>
   );
@@ -108,7 +111,11 @@ const S = {
     gap: 10px;
   `,
 
-  TagItem: styled.li``,
+  TagItem: styled.li`
+    display: flex;
+    align-items: center;
+    height: 36px;
+  `,
 
   InputBoxContainer: styled.div`
     position: relative;
@@ -116,9 +123,12 @@ const S = {
 
   InputDescription: styled.div`
     position: absolute;
+    display: flex;
+    align-items: center;
     top: 35px;
 
     width: 230px;
+    height: 50px;
     padding: 20px 10px;
 
     background-color: var(--gray-500);

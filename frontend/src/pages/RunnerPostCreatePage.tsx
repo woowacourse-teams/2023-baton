@@ -23,8 +23,8 @@ import useViewport from '@/hooks/useViewport';
 import GuideTextarea from '@/components/GuideTextarea/GuideTextarea';
 import { CURIOUS_GUIDE_MESSAGE, IMPLEMENTED_GUIDE_MESSAGE, POSTSCRIPT_GUIDE_MESSAGE } from '@/constants/guide';
 
-import { useMyGithubUrl } from '@/hooks/query/useMyGithubUrl';
 import { useRunnerPostCreation } from '@/hooks/query/useRunnerPostCreation';
+import PrUrlInput from '@/components/PrUrlInput/PrUrlInput';
 
 const RunnerPostCreatePage = () => {
   const nowDate = new Date();
@@ -42,7 +42,6 @@ const RunnerPostCreatePage = () => {
   const [curiousContents, setCuriousContents] = useState<string>('');
   const [postscriptContents, setPostscriptContents] = useState<string>('');
 
-  const { data: githubUrl } = useMyGithubUrl();
   const { mutate, isPending } = useRunnerPostCreation();
 
   const pushTag = (newTag: string) => {
@@ -103,6 +102,10 @@ const RunnerPostCreatePage = () => {
     setPostscriptContents(e.target.value);
   };
 
+  const updatePullRequest = (url: string) => {
+    setPullRequestUrl(url);
+  };
+
   const cancelPostWrite = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
@@ -151,8 +154,8 @@ const RunnerPostCreatePage = () => {
               inputTextState={title}
               handleInputTextState={changeTitle}
               maxLength={30}
+              height="50px"
               width={isMobile ? '300px' : '800px'}
-              height="40px"
               fontSize={isMobile ? '20px' : '38px'}
               maxLengthFontSize={isMobile ? '14px' : '18px'}
               fontWeight="700"
@@ -166,27 +169,12 @@ const RunnerPostCreatePage = () => {
               pushTag={pushTag}
               popTag={removeTag}
               width="100%"
-              fontSize={isMobile ? '14px' : '18px'}
+              fontSize={isMobile ? '16px' : '18px'}
             />
           </S.InputContainer>
-
           <S.InputContainer>
-            <InputBox
-              inputTextState={pullRequestUrl}
-              handleInputTextState={changePullRequestUrl}
-              width={isMobile ? '300px' : '500px'}
-              placeholder="코드 리뷰받을 PR 주소를 입력해주세요"
-              value={pullRequestUrl}
-            />
-
-            {githubUrl && (
-              <S.Anchor href={githubUrl + '?tab=repositories'} target="_blank">
-                <img src={githubIcon} />
-                {!isMobile && <S.GoToGitHub>github</S.GoToGitHub>}
-              </S.Anchor>
-            )}
+            <PrUrlInput value={pullRequestUrl} setValue={updatePullRequest} />
           </S.InputContainer>
-
           <S.InputContainer>
             <S.InputName>마감기한</S.InputName>
             <S.Deadline
@@ -269,6 +257,8 @@ const S = {
   InputContainer: styled.div`
     display: flex;
     justify-content: start;
+    align-items: center;
+    min-height: 50px;
   `,
 
   Form: styled.form`
@@ -276,8 +266,17 @@ const S = {
     flex-direction: column;
     gap: 30px;
 
-    &:first-child {
+    & > :first-child {
       margin-top: 60px;
+      margin-bottom: 10px;
+
+      @media (max-width: 768px) {
+        margin-bottom: 0px;
+      }
+    }
+
+    & > :nth-child(5) {
+      margin-top: 10px;
     }
   `,
 
@@ -291,6 +290,10 @@ const S = {
     color: var(--gray-800);
     font-size: 18px;
     font-weight: 500px;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
   `,
 
   Deadline: styled.input`
@@ -298,6 +301,10 @@ const S = {
 
     &:focus {
       outline: 0;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 16px;
     }
   `,
 
