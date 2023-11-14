@@ -22,6 +22,7 @@ export const useSelectionSupporter = () => {
     onSuccess: () => {
       showCompletionToast(TOAST_COMPLETION_MESSAGE.SUPPORTER_SELECT);
       queryClient.invalidateQueries({ queryKey: ['myRunnerPost', 'IN_PROGRESS'] });
+      queryClient.invalidateQueries({ queryKey: ['myRunnerPost', 'NOT_STARTED'] });
       goToRunnerMyPage();
     },
 

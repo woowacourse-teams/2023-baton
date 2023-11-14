@@ -43,6 +43,6 @@ export const useRunnerPostList = (reviewStatus: ReviewStatus | null, tagName?: s
 
   return {
     ...queryResult,
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data ?? [],
   };
 };

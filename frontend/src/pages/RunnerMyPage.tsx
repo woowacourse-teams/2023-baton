@@ -99,7 +99,7 @@ const RunnerMyPage = () => {
                 fontSize={isMobile ? '16px' : '26px'}
               />
             </S.FilterWrapper>
-            <MyPagePostList filteredPostList={myPostList} isRunner={true} />
+            <MyPagePostList filteredPostList={myPostList ?? []} isRunner={true} />
             <S.MoreButtonWrapper>
               {hasNextPage && (
                 <Button

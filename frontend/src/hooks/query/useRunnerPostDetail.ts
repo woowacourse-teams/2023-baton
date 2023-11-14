@@ -21,6 +21,6 @@ export const useRunnerPostDetail = (runnerPostId: number, isLogin: boolean) => {
   }, [queryResult.error]);
 
   return {
-    data: queryResult.data as NonNullable<typeof queryResult.data>,
+    data: queryResult.data,
   };
 };
