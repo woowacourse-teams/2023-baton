@@ -22,7 +22,7 @@ const SupporterMyPage = () => {
 
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
-  const { goToProfileEditPage, goToLoginPage } = usePageRouter();
+  const { goToSupporterProfileEditPage, goToLoginPage } = usePageRouter();
   const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(false, reviewStatus);
   const { data: mySupporterProfile } = useMySupporterProfile();
 
@@ -60,7 +60,7 @@ const SupporterMyPage = () => {
           colorTheme="WHITE"
           fontSize={isMobile ? '12px' : '16px'}
           fontWeight={400}
-          onClick={goToProfileEditPage}
+          onClick={goToSupporterProfileEditPage}
         >
           수정하기
         </Button>

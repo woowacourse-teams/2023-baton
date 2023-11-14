@@ -22,7 +22,7 @@ const RunnerMyPage = () => {
 
   const { isMobile } = useViewport();
   const { showErrorToast } = useContext(ToastContext);
-  const { goToProfileEditPage, goToLoginPage } = usePageRouter();
+  const { goToRunnerProfileEditPage, goToLoginPage } = usePageRouter();
   const { data: myPostList, hasNextPage, fetchNextPage } = useMyPostList(true, reviewStatus);
   const { data: myRunnerProfile } = useMyRunnerProfile();
 
@@ -60,7 +60,7 @@ const RunnerMyPage = () => {
           colorTheme="WHITE"
           fontSize={isMobile ? '12px' : '16px'}
           fontWeight={400}
-          onClick={goToProfileEditPage}
+          onClick={goToRunnerProfileEditPage}
         >
           수정하기
         </Button>

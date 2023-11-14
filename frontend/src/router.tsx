@@ -28,7 +28,8 @@ export const ROUTER_PATH = {
   NOT_FOUND: '/*',
   RUNNER_PROFILE: '/runner-profile/:runnerId',
   SUPPORTER_PROFILE: '/supporter-profile/:supporterId',
-  PROFILE_EDIT: '/profile-edit',
+  RUNNER_PROFILE_EDIT: '/runner-profile-edit',
+  SUPPORTER_PROFILE_EDIT: '/supporter-profile-edit',
   SUPPORTER_FEEDBACK: '/supporter-feedback/:runnerPostId/:supporterId',
   GITHUB_CALLBACK: '/oauth/github/callback',
   NOTICE: '/notice',
@@ -65,8 +66,12 @@ export const router = createBrowserRouter(
           element: <SupporterMyPage />,
         },
         {
-          path: ROUTER_PATH.PROFILE_EDIT,
-          element: <ProfileEditPage />,
+          path: ROUTER_PATH.RUNNER_PROFILE_EDIT,
+          element: <ProfileEditPage isRunner={true} />,
+        },
+        {
+          path: ROUTER_PATH.SUPPORTER_PROFILE_EDIT,
+          element: <ProfileEditPage isRunner={false} />,
         },
         { path: ROUTER_PATH.GITHUB_CALLBACK, element: <GithubCallbackPage /> },
         {
