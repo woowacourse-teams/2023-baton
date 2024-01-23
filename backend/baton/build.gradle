@@ -66,6 +66,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	// database
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
