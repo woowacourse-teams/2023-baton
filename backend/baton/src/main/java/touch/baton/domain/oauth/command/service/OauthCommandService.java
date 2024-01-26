@@ -2,7 +2,6 @@ package touch.baton.domain.oauth.command.service;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
@@ -21,17 +20,15 @@ import touch.baton.domain.oauth.command.exception.OauthRequestException;
 import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthSupporterCommandRepository;
-import touch.baton.domain.oauth.command.repository.RefreshTokenCommandRepository;
+import touch.baton.domain.oauth.command.repository.RefreshTokenCommandRepository2;
 import touch.baton.domain.oauth.command.token.AccessToken;
-import touch.baton.domain.oauth.command.token.ExpireDate;
-import touch.baton.domain.oauth.command.token.RefreshToken;
-import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.RefreshToken2;
+import touch.baton.domain.oauth.command.token.Token2;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.domain.technicaltag.command.SupporterTechnicalTags;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Optional;
@@ -47,12 +44,9 @@ public class OauthCommandService {
     private final OauthMemberCommandRepository oauthMemberCommandRepository;
     private final OauthRunnerCommandRepository oauthRunnerCommandRepository;
     private final OauthSupporterCommandRepository oauthSupporterCommandRepository;
-    private final RefreshTokenCommandRepository refreshTokenCommandRepository;
+    private final RefreshTokenCommandRepository2 refreshTokenCommandRepository2;
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
-
-    @Value("${refresh_token.expire_minutes}")
-    private int refreshTokenExpireMinutes;
 
     public String readAuthCodeRedirect(final OauthType oauthType) {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);
@@ -66,10 +60,10 @@ public class OauthCommandService {
             final Member savedMember = signUpMember(oauthInformation);
             saveNewRunner(savedMember);
             saveNewSupporter(savedMember);
-            return createTokens(oauthInformation.getSocialId(), savedMember);
+            return createTokens(savedMember);
         }
 
-        return createTokens(oauthInformation.getSocialId(), maybeMember.get());
+        return createTokens(maybeMember.get());
     }
 
     private Member signUpMember(final OauthInformation oauthInformation) {
@@ -85,82 +79,66 @@ public class OauthCommandService {
         return oauthMemberCommandRepository.save(newMember);
     }
 
-    private Runner saveNewRunner(final Member member) {
+    private void saveNewRunner(final Member member) {
         final Runner newRunner = Runner.builder()
                 .member(member)
                 .build();
 
-        return oauthRunnerCommandRepository.save(newRunner);
+        oauthRunnerCommandRepository.save(newRunner);
     }
 
-    private Supporter saveNewSupporter(final Member member) {
+    private void saveNewSupporter(final Member member) {
         final Supporter newSupporter = Supporter.builder()
                 .reviewCount(new ReviewCount(0))
                 .member(member)
                 .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
                 .build();
 
-        return oauthSupporterCommandRepository.save(newSupporter);
+        oauthSupporterCommandRepository.save(newSupporter);
     }
 
-    private Tokens createTokens(final SocialId socialId, final Member member) {
-        final AccessToken accessToken = createAccessToken(socialId);
-
-        final String randomTokens = UUID.randomUUID().toString();
-        final Token token = new Token(randomTokens);
-        final LocalDateTime expireDate = LocalDateTime.now().plusMinutes(refreshTokenExpireMinutes);
-        final RefreshToken refreshToken = RefreshToken.builder()
-                .member(member)
-                .token(token)
-                .expireDate(new ExpireDate(expireDate))
-                .build();
-
-        final Optional<RefreshToken> maybeRefreshToken = refreshTokenCommandRepository.findByMember(member);
-        if (maybeRefreshToken.isPresent()) {
-            final RefreshToken findRefreshToken = maybeRefreshToken.get();
-            findRefreshToken.updateToken(new Token(randomTokens), refreshTokenExpireMinutes);
-            return new Tokens(accessToken, findRefreshToken);
-        }
-
-        refreshTokenCommandRepository.save(refreshToken);
-        return new Tokens(accessToken, refreshToken);
-    }
-
-    public Tokens reissueAccessToken(final AuthorizationHeader authHeader, final String refreshToken) {
+    public Tokens reissueAccessToken(final AuthorizationHeader authHeader, final Token2 refreshToken) {
         final Claims claims = jwtDecoder.parseExpiredAuthorizationHeader(authHeader);
         final SocialId socialId = new SocialId(claims.get("socialId", String.class));
         final Member findMember = oauthMemberCommandRepository.findBySocialId(socialId)
                 .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_SOCIAL_ID_IS_WRONG));
 
-        final RefreshToken findRefreshToken = refreshTokenCommandRepository.findByToken(new Token(refreshToken))
+        final RefreshToken2 findRefreshToken = refreshTokenCommandRepository2.findById(findMember.getSocialId())
                 .orElseThrow(() -> new OauthRequestException(ClientErrorCode.REFRESH_TOKEN_IS_NOT_FOUND));
-
-        if (findRefreshToken.isNotOwner(findMember)) {
+        if (findRefreshToken.isNotOwner(refreshToken)) {
             throw new OauthRequestException(ClientErrorCode.ACCESS_TOKEN_AND_REFRESH_TOKEN_HAVE_DIFFERENT_OWNER);
         }
-        if (findRefreshToken.isExpired()) {
-            throw new OauthRequestException(ClientErrorCode.REFRESH_TOKEN_IS_ALREADY_EXPIRED);
-        }
 
-        return reissueTokens(socialId, findRefreshToken);
+        return createTokens(findMember);
     }
 
-    private Tokens reissueTokens(final SocialId socialId, final RefreshToken refreshToken) {
-        final AccessToken accessToken = createAccessToken(socialId);
+    private Tokens createTokens(final Member member) {
+        final AccessToken accessToken = createAccessToken(member.getSocialId());
+        final RefreshToken2 refreshToken2 = createRefreshToken(member);
 
-        refreshToken.updateToken(new Token(UUID.randomUUID().toString()), refreshTokenExpireMinutes);
-
-        return new Tokens(accessToken, refreshToken);
+        return new Tokens(accessToken, refreshToken2);
     }
 
     private AccessToken createAccessToken(final SocialId socialId) {
-        final String jwtToken = jwtEncoder.jwtToken(Map.of(
-                "socialId", socialId.getValue())
-        );
+        final String jwtToken = jwtEncoder.jwtToken(
+                Map.of("socialId", socialId.getValue()));
         return new AccessToken(jwtToken);
     }
 
+    private RefreshToken2 createRefreshToken(final Member member) {
+        final Token2 token = new Token2(UUID.randomUUID().toString());
+        final RefreshToken2 refreshToken2 = RefreshToken2.builder()
+                .socialId(member.getSocialId())
+                .member(member)
+                .token(token)
+                .build();
+
+        refreshTokenCommandRepository2.save(refreshToken2);
+
+        return refreshToken2;
+    }
+
     public void logout(final Member member) {
-        refreshTokenCommandRepository.deleteByMember(member);
+        refreshTokenCommandRepository2.deleteById(member.getSocialId());
     }
 }
