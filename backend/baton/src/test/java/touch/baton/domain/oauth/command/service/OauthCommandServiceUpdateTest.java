@@ -15,17 +15,15 @@ import touch.baton.domain.oauth.command.exception.OauthRequestException;
 import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthSupporterCommandRepository;
-import touch.baton.domain.oauth.command.repository.RefreshTokenCommandRepository;
-import touch.baton.domain.oauth.command.token.ExpireDate;
-import touch.baton.domain.oauth.command.token.RefreshToken;
-import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.repository.RefreshTokenCommandRepository2;
+import touch.baton.domain.oauth.command.token.RefreshToken2;
+import touch.baton.domain.oauth.command.token.Token2;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.infra.auth.jwt.JwtConfig;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.infra.auth.jwt.JwtEncoder;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -56,7 +54,7 @@ class OauthCommandServiceUpdateTest {
     private OauthSupporterCommandRepository oauthSupporterCommandRepository;
 
     @Mock
-    private RefreshTokenCommandRepository refreshTokenCommandRepository;
+    private RefreshTokenCommandRepository2 refreshTokenCommandRepository2;
 
     private JwtEncoder jwtEncoder;
 
@@ -70,7 +68,7 @@ class OauthCommandServiceUpdateTest {
         jwtDecoder = new JwtDecoder(normalJwtConfig);
         jwtEncoder = new JwtEncoder(normalJwtConfig);
 
-        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository, jwtEncoder, jwtDecoder);
+        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository2, jwtEncoder, jwtDecoder);
 
         final JwtConfig expiredJwtConfig = new JwtConfig("secret-key-secret-key-secret-key-secret-key-secret-key-secret-key", "test-issuer", -1);
         expiredJwtEncoder = new JwtEncoder(expiredJwtConfig);
@@ -78,22 +76,23 @@ class OauthCommandServiceUpdateTest {
 
     @DisplayName("만료된 jwt 와 만료되지 않은 refreshToken 이 주어지면 토큰들이 정상 발급된다.")
     @Test
-    void success_reissueAccessToken() {
+    void success_reissueAccessToken2() {
         // given
         final Member tokenOwner = MemberFixture.createEthan();
         final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
-        final RefreshToken beforeRefreshToken = RefreshToken.builder()
+        final RefreshToken2 ownerRefreshToken = RefreshToken2.builder()
+                .socialId(tokenOwner.getSocialId())
                 .member(tokenOwner)
-                .token(new Token(refreshTokenValue))
-                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
+                .token(new Token2(refreshTokenValue))
                 .build();
 
-        given(oauthMemberCommandRepository.findBySocialId(eq(new SocialId(tokenOwner.getSocialId().getValue())))).willReturn(Optional.of(tokenOwner));
-        given(refreshTokenCommandRepository.findByToken(eq(new Token(refreshTokenValue)))).willReturn(Optional.of(beforeRefreshToken));
+        final SocialId tokenOwnerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
+        given(oauthMemberCommandRepository.findBySocialId(eq(tokenOwnerSocialId))).willReturn(Optional.of(tokenOwner));
+        given(refreshTokenCommandRepository2.findById(eq(tokenOwnerSocialId))).willReturn(Optional.of(ownerRefreshToken));
 
         // when
-        final Tokens tokens = oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, refreshTokenValue);
+        final Tokens tokens = oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue));
 
         // then
         assertSoftly(softly -> {
@@ -109,16 +108,11 @@ class OauthCommandServiceUpdateTest {
     void fail_reissueAccessToken_when_jwt_is_not_expired() {
         // given
         final Member tokenOwner = MemberFixture.createEthan();
-        final AuthorizationHeader normalJwtToken = bearerAuthorizationHeader(jwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
-        final RefreshToken beforeRefreshToken = RefreshToken.builder()
-                .member(tokenOwner)
-                .token(new Token(refreshTokenValue))
-                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
-                .build();
+        final AuthorizationHeader validAuthorizationHeader = bearerAuthorizationHeader(jwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
 
         // when, then
-        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(normalJwtToken, refreshTokenValue)).isInstanceOf(OauthRequestException.class);
+        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(validAuthorizationHeader, new Token2(refreshTokenValue))).isInstanceOf(OauthRequestException.class);
     }
 
     @DisplayName("없는 socialId 가 재발급 요청하면 오류가 발생한다.")
@@ -126,13 +120,13 @@ class OauthCommandServiceUpdateTest {
     void fail_reissueAccessToken_when_socialId_not_exists() {
         // given
         final Member tokenOwner = MemberFixture.createEthan();
-        final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
+        final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
 
         given(oauthMemberCommandRepository.findBySocialId(eq(new SocialId(tokenOwner.getSocialId().getValue())))).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, refreshTokenValue)).isInstanceOf(OauthRequestException.class);
+        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue))).isInstanceOf(OauthRequestException.class);
     }
 
     @DisplayName("refreshToken 이 없으면 재발급 요청하면 오류가 발생한다.")
@@ -140,35 +134,37 @@ class OauthCommandServiceUpdateTest {
     void fail_reissueAccessToken_when_refreshToken_not_exists() {
         // given
         final Member tokenOwner = MemberFixture.createEthan();
-        final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
+        final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
 
-        given(oauthMemberCommandRepository.findBySocialId(eq(new SocialId(tokenOwner.getSocialId().getValue())))).willReturn(Optional.of(tokenOwner));
-        given(refreshTokenCommandRepository.findByToken(eq(new Token(refreshTokenValue)))).willReturn(Optional.empty());
+        final SocialId tokenOwnerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
+        given(oauthMemberCommandRepository.findBySocialId(eq(tokenOwnerSocialId))).willReturn(Optional.of(tokenOwner));
+        given(refreshTokenCommandRepository2.findById(eq(tokenOwnerSocialId))).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, refreshTokenValue)).isInstanceOf(OauthRequestException.class);
+        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue))).isInstanceOf(OauthRequestException.class);
     }
 
     @DisplayName("주인이 아닌 accessToken 으로 재발급 요청하면 오류가 발생한다.")
     @Test
     void fail_reissueAccessToken_when_not_owner_of_accessToken() {
         // given
-        final Member tokenOwner = MemberFixture.createEthan();
-        final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
-        final String refreshTokenValue = "ethan-refresh-token";
-        final RefreshToken beforeRefreshToken = RefreshToken.builder()
-                .member(tokenOwner)
-                .token(new Token(refreshTokenValue))
-                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
+        final String notOwnerRefreshTokenValue = "hyena-refresh-token";
+        final Member notTokenOwner = MemberFixture.createHyena();
+        final AuthorizationHeader notOwnerAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", notTokenOwner.getSocialId().getValue())));
+        final RefreshToken2 notOwnerRefreshToken = RefreshToken2.builder()
+                .socialId(notTokenOwner.getSocialId())
+                .member(notTokenOwner)
+                .token(new Token2(notOwnerRefreshTokenValue))
                 .build();
 
-        final Member notTokenOwner = MemberFixture.createHyena();
-        given(oauthMemberCommandRepository.findBySocialId(eq(new SocialId(tokenOwner.getSocialId().getValue())))).willReturn(Optional.of(notTokenOwner));
-        given(refreshTokenCommandRepository.findByToken(eq(new Token(refreshTokenValue)))).willReturn(Optional.of(beforeRefreshToken));
+        final SocialId notTokenOwnerSocialId = new SocialId(notTokenOwner.getSocialId().getValue());
+        given(oauthMemberCommandRepository.findBySocialId(eq(notTokenOwnerSocialId))).willReturn(Optional.of(notTokenOwner));
+        given(refreshTokenCommandRepository2.findById(eq(notTokenOwnerSocialId))).willReturn(Optional.of(notOwnerRefreshToken));
 
         // when, then
-        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, refreshTokenValue)).isInstanceOf(OauthRequestException.class);
+        final String ownerRefreshTokenValue = "ethan-refresh-token";
+        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(notOwnerAuthorizationHeader, new Token2(ownerRefreshTokenValue))).isInstanceOf(OauthRequestException.class);
     }
 
     @DisplayName("만료된 refreshToken 으로  재발급 요청하면 오류가 발생한다.")
@@ -178,16 +174,12 @@ class OauthCommandServiceUpdateTest {
         final Member tokenOwner = MemberFixture.createEthan();
         final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
-        final RefreshToken beforeRefreshToken = RefreshToken.builder()
-                .member(tokenOwner)
-                .token(new Token(refreshTokenValue))
-                .expireDate(new ExpireDate(LocalDateTime.now().minusDays(14)))
-                .build();
 
-        given(oauthMemberCommandRepository.findBySocialId(eq(new SocialId(tokenOwner.getSocialId().getValue())))).willReturn(Optional.of(tokenOwner));
-        given(refreshTokenCommandRepository.findByToken(eq(new Token(refreshTokenValue)))).willReturn(Optional.of(beforeRefreshToken));
+        final SocialId ownerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
+        given(oauthMemberCommandRepository.findBySocialId(eq(ownerSocialId))).willReturn(Optional.of(tokenOwner));
+        given(refreshTokenCommandRepository2.findById(eq(ownerSocialId))).willReturn(Optional.empty());
 
         // when, then
-        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, refreshTokenValue)).isInstanceOf(OauthRequestException.class);
+        assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue))).isInstanceOf(OauthRequestException.class);
     }
 }

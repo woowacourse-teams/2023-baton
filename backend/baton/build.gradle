@@ -83,6 +83,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	testImplementation 'org.testcontainers:mysql'
+	testImplementation 'it.ozimov:embedded-redis:0.7.2'
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
