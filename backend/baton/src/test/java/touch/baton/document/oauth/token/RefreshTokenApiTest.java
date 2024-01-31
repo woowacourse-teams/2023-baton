@@ -6,18 +6,16 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.oauth.command.AuthorizationHeader;
 import touch.baton.domain.oauth.command.token.AccessToken;
-import touch.baton.domain.oauth.command.token.ExpireDate;
-import touch.baton.domain.oauth.command.token.RefreshToken;
-import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.RefreshToken2;
+import touch.baton.domain.oauth.command.token.Token2;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.fixture.domain.MemberFixture;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 
-import static org.apache.http.HttpHeaders.AUTHORIZATION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
 import static org.springframework.restdocs.cookies.CookieDocumentation.requestCookies;
 import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
@@ -33,15 +31,16 @@ class RefreshTokenApiTest extends RestdocsConfig {
     @Test
     void refresh() throws Exception {
         // given, when
-        final RefreshToken refreshToken = RefreshToken.builder()
-                .token(new Token("refresh-token"))
+        final RefreshToken2 refreshToken = RefreshToken2.builder()
+                .socialId("mock socialId")
+                .token(new Token2("refresh-token"))
                 .member(MemberFixture.createEthan())
-                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
+                .timeout(30L)
                 .build();
         final Tokens tokens = new Tokens(new AccessToken("renew access token"), refreshToken);
         final Cookie cookie = createCookie();
 
-        given(oauthCommandService.reissueAccessToken(any(AuthorizationHeader.class), any(String.class))).willReturn(tokens);
+        given(oauthCommandService.reissueAccessToken(any(AuthorizationHeader.class), any(Token2.class))).willReturn(tokens);
 
         // then
         mockMvc.perform(post("/api/v1/oauth/refresh")

@@ -6,14 +6,11 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.command.token.AccessToken;
-import touch.baton.domain.oauth.command.token.ExpireDate;
-import touch.baton.domain.oauth.command.token.RefreshToken;
-import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.RefreshToken2;
+import touch.baton.domain.oauth.command.token.Token2;
 import touch.baton.domain.oauth.command.token.Tokens;
 
-import java.time.LocalDateTime;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.codec.CharEncoding.UTF_8;
 import static org.mockito.BDDMockito.when;
 import static org.mockito.Mockito.mock;
 import static org.springframework.http.HttpHeaders.LOCATION;
@@ -59,10 +56,11 @@ class GithubOauthApiTest extends RestdocsConfig {
     @Test
     void github_login() throws Exception {
         // given, when
-        final RefreshToken refreshToken = RefreshToken.builder()
+        final RefreshToken2 refreshToken = RefreshToken2.builder()
+                .socialId("mock socialId")
                 .member(mock(Member.class))
-                .token(new Token("mock refresh token"))
-                .expireDate(new ExpireDate(LocalDateTime.now().plusDays(30)))
+                .token(new Token2("mock refresh token"))
+                .timeout(30L)
                 .build();
         final Tokens tokens = new Tokens(new AccessToken("Bearer Jwt"), refreshToken);
 
