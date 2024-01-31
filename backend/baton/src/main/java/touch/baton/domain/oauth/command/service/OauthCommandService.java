@@ -2,6 +2,7 @@ package touch.baton.domain.oauth.command.service;
 
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.exception.ClientErrorCode;
@@ -47,6 +48,9 @@ public class OauthCommandService {
     private final RefreshTokenCommandRepository2 refreshTokenCommandRepository2;
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
+
+    @Value("${refresh_token.expire_minutes}")
+    private Long refreshTokenExpireMinutes;
 
     public String readAuthCodeRedirect(final OauthType oauthType) {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);
@@ -103,7 +107,7 @@ public class OauthCommandService {
         final Member findMember = oauthMemberCommandRepository.findBySocialId(socialId)
                 .orElseThrow(() -> new OauthRequestException(ClientErrorCode.JWT_CLAIM_SOCIAL_ID_IS_WRONG));
 
-        final RefreshToken2 findRefreshToken = refreshTokenCommandRepository2.findById(findMember.getSocialId())
+        final RefreshToken2 findRefreshToken = refreshTokenCommandRepository2.findById(findMember.getSocialId().getValue())
                 .orElseThrow(() -> new OauthRequestException(ClientErrorCode.REFRESH_TOKEN_IS_NOT_FOUND));
         if (findRefreshToken.isNotOwner(refreshToken)) {
             throw new OauthRequestException(ClientErrorCode.ACCESS_TOKEN_AND_REFRESH_TOKEN_HAVE_DIFFERENT_OWNER);
@@ -128,9 +132,10 @@ public class OauthCommandService {
     private RefreshToken2 createRefreshToken(final Member member) {
         final Token2 token = new Token2(UUID.randomUUID().toString());
         final RefreshToken2 refreshToken2 = RefreshToken2.builder()
-                .socialId(member.getSocialId())
+                .socialId(member.getSocialId().getValue())
                 .member(member)
                 .token(token)
+                .timeout(refreshTokenExpireMinutes)
                 .build();
 
         refreshTokenCommandRepository2.save(refreshToken2);
@@ -139,6 +144,6 @@ public class OauthCommandService {
     }
 
     public void logout(final Member member) {
-        refreshTokenCommandRepository2.deleteById(member.getSocialId());
+        refreshTokenCommandRepository2.deleteById(member.getSocialId().getValue());
     }
 }

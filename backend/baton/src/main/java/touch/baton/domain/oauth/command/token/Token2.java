@@ -1,9 +1,11 @@
 package touch.baton.domain.oauth.command.token;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.util.ObjectUtils;
 
 @Getter
+@EqualsAndHashCode
 public class Token2 {
 
     private String value;
