@@ -12,12 +12,12 @@ import touch.baton.domain.oauth.command.token.exception.RefreshTokenDomainExcept
 @EqualsAndHashCode
 @Getter
 @RedisHash(value = "token:refresh")
-public class RefreshToken2 {
+public class RefreshToken {
 
     @Id
     private String socialId;
 
-    private Token2 token;
+    private Token token;
 
     private Member member;
 
@@ -25,7 +25,7 @@ public class RefreshToken2 {
     private Long timeout;
 
     @Builder
-    public RefreshToken2(final String socialId, final Token2 token, final Member member, final Long timeout) {
+    public RefreshToken(final String socialId, final Token token, final Member member, final Long timeout) {
         validateNotNull(socialId, token, member, timeout);
         this.socialId = socialId;
         this.token = token;
@@ -33,7 +33,7 @@ public class RefreshToken2 {
         this.timeout = timeout;
     }
 
-    private void validateNotNull(final String socialId, final Token2 token, final Member member, final Long timeout) {
+    private void validateNotNull(final String socialId, final Token token, final Member member, final Long timeout) {
         if (socialId == null) {
             throw new RefreshTokenDomainException("RefreshToken 의 socialId 는 null 일 수 없습니다.");
         }
@@ -48,7 +48,7 @@ public class RefreshToken2 {
         }
     }
 
-    public boolean isNotOwner(final Token2 target) {
+    public boolean isNotOwner(final Token target) {
         return !token.equals(target);
     }
 }

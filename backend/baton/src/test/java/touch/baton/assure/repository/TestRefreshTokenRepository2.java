@@ -2,7 +2,7 @@ package touch.baton.assure.repository;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
-import touch.baton.domain.oauth.command.token.RefreshToken2;
+import touch.baton.domain.oauth.command.token.RefreshToken;
 
 import java.time.Duration;
 
@@ -15,7 +15,7 @@ public class TestRefreshTokenRepository2  {
         this.redisTemplate = redisTemplate;
     }
 
-    public void expireRefreshToken(final RefreshToken2 refreshToken) {
+    public void expireRefreshToken(final RefreshToken refreshToken) {
         redisTemplate.expire(String.format("token:refresh:%s", refreshToken.getSocialId()), Duration.ZERO);
     }
 }

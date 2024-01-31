@@ -4,13 +4,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.util.ObjectUtils;
 
-@Getter
 @EqualsAndHashCode
-public class Token2 {
+@Getter
+public class Token {
 
     private String value;
 
-    public Token2(final String value) {
+    public Token(final String value) {
         validateNotNull(value);
         this.value = value;
     }
@@ -21,3 +21,4 @@ public class Token2 {
         }
     }
 }
+

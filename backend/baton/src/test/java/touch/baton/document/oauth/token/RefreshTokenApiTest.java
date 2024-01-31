@@ -6,8 +6,8 @@ import org.junit.jupiter.api.Test;
 import touch.baton.config.RestdocsConfig;
 import touch.baton.domain.oauth.command.AuthorizationHeader;
 import touch.baton.domain.oauth.command.token.AccessToken;
-import touch.baton.domain.oauth.command.token.RefreshToken2;
-import touch.baton.domain.oauth.command.token.Token2;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.fixture.domain.MemberFixture;
 
@@ -31,16 +31,16 @@ class RefreshTokenApiTest extends RestdocsConfig {
     @Test
     void refresh() throws Exception {
         // given, when
-        final RefreshToken2 refreshToken = RefreshToken2.builder()
+        final RefreshToken refreshToken = RefreshToken.builder()
                 .socialId("mock socialId")
-                .token(new Token2("refresh-token"))
+                .token(new Token("refresh-token"))
                 .member(MemberFixture.createEthan())
                 .timeout(30L)
                 .build();
         final Tokens tokens = new Tokens(new AccessToken("renew access token"), refreshToken);
         final Cookie cookie = createCookie();
 
-        given(oauthCommandService.reissueAccessToken(any(AuthorizationHeader.class), any(Token2.class))).willReturn(tokens);
+        given(oauthCommandService.reissueAccessToken(any(AuthorizationHeader.class), any(Token.class))).willReturn(tokens);
 
         // then
         mockMvc.perform(post("/api/v1/oauth/refresh")

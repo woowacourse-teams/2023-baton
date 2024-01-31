@@ -20,8 +20,8 @@ import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.command.AuthorizationHeader;
 import touch.baton.domain.oauth.command.OauthType;
 import touch.baton.domain.oauth.command.service.OauthCommandService;
-import touch.baton.domain.oauth.command.token.RefreshToken2;
-import touch.baton.domain.oauth.command.token.Token2;
+import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 
@@ -77,7 +77,7 @@ public class OauthCommandController {
 
         final AuthorizationHeader authorizationHeader = new AuthorizationHeader(request.getHeader(AUTHORIZATION));
 
-        final Tokens tokens = oauthCommandService.reissueAccessToken(authorizationHeader, new Token2(refreshToken));
+        final Tokens tokens = oauthCommandService.reissueAccessToken(authorizationHeader, new Token(refreshToken));
 
         setCookie(response, tokens.refreshToken());
 
@@ -86,7 +86,7 @@ public class OauthCommandController {
                 .build();
     }
 
-    private void setCookie(final HttpServletResponse response, final RefreshToken2 refreshToken) {
+    private void setCookie(final HttpServletResponse response, final RefreshToken refreshToken) {
         final ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken.getToken().getValue())
                 .httpOnly(true)
                 .secure(true)

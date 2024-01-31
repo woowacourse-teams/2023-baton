@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-class RefreshToken2Test {
+class RefreshTokenTest {
 
     private static final Member owner = Member.builder()
             .memberName(new MemberName("러너 사용자"))
@@ -35,10 +35,10 @@ class RefreshToken2Test {
         @DisplayName("성공한다.")
         @Test
         void success() {
-            assertThatCode(() -> RefreshToken2.builder()
+            assertThatCode(() -> RefreshToken.builder()
                     .socialId(owner.getSocialId().getValue())
                     .member(owner)
-                    .token(new Token2("refresh-token"))
+                    .token(new Token("refresh-token"))
                     .timeout(30L)
                     .build());
         }
@@ -46,10 +46,10 @@ class RefreshToken2Test {
         @DisplayName("SocialId가 null 이면 실패한다.")
         @Test
         void fail_if_socialId_is_null() {
-            assertThatThrownBy(() -> RefreshToken2.builder()
+            assertThatThrownBy(() -> RefreshToken.builder()
                     .socialId(null)
                     .member(owner)
-                    .token(new Token2("refresh-token"))
+                    .token(new Token("refresh-token"))
                     .timeout(30L)
                     .build()
             ).isInstanceOf(RefreshTokenDomainException.class);
@@ -58,10 +58,10 @@ class RefreshToken2Test {
         @DisplayName("사용자가 null 이면 실패한다.")
         @Test
         void fail_if_member_is_null() {
-            assertThatThrownBy(() -> RefreshToken2.builder()
+            assertThatThrownBy(() -> RefreshToken.builder()
                     .socialId(owner.getSocialId().getValue())
                     .member(null)
-                    .token(new Token2("refresh-token"))
+                    .token(new Token("refresh-token"))
                     .timeout(30L)
                     .build()
             ).isInstanceOf(RefreshTokenDomainException.class);
@@ -70,7 +70,7 @@ class RefreshToken2Test {
         @DisplayName("토큰이 null 이면 실패한다.")
         @Test
         void fail_if_token_is_null() {
-            assertThatThrownBy(() -> RefreshToken2.builder()
+            assertThatThrownBy(() -> RefreshToken.builder()
                     .socialId(owner.getSocialId().getValue())
                     .member(owner)
                     .token(null)
@@ -82,10 +82,10 @@ class RefreshToken2Test {
         @DisplayName("만료일이 null 이면 실패한다.")
         @Test
         void fail_if_expireDate_is_null() {
-            assertThatThrownBy(() -> RefreshToken2.builder()
+            assertThatThrownBy(() -> RefreshToken.builder()
                     .socialId(owner.getSocialId().getValue())
                     .member(owner)
-                    .token(new Token2("refresh-token"))
+                    .token(new Token("refresh-token"))
                     .timeout(null)
                     .build()
             ).isInstanceOf(RefreshTokenDomainException.class);
@@ -96,14 +96,14 @@ class RefreshToken2Test {
     @Test
     void isNotOwner() {
         // given
-        final RefreshToken2 refreshToken = RefreshToken2.builder()
+        final RefreshToken refreshToken = RefreshToken.builder()
                 .socialId(owner.getSocialId().getValue())
                 .member(owner)
-                .token(new Token2("owner-refresh-token"))
+                .token(new Token("owner-refresh-token"))
                 .timeout(30L)
                 .build();
 
-        final Token2 notOwnerRefreshToken = new Token2("not-owner-refresh-token");
+        final Token notOwnerRefreshToken = new Token("not-owner-refresh-token");
 
         // when, then
         assertAll(
