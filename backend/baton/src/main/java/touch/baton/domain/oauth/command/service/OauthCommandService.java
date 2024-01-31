@@ -1,7 +1,6 @@
 package touch.baton.domain.oauth.command.service;
 
 import io.jsonwebtoken.Claims;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 @Transactional
 @Service
 public class OauthCommandService {
@@ -49,8 +47,19 @@ public class OauthCommandService {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
 
-    @Value("${refresh_token.expire_minutes}")
     private Long refreshTokenExpireMinutes;
+
+    public OauthCommandService(final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite, final OauthInformationClientComposite oauthInformationClientComposite, final OauthMemberCommandRepository oauthMemberCommandRepository, final OauthRunnerCommandRepository oauthRunnerCommandRepository, final OauthSupporterCommandRepository oauthSupporterCommandRepository, final RefreshTokenCommandRepository2 refreshTokenCommandRepository2, final JwtEncoder jwtEncoder, final JwtDecoder jwtDecoder, @Value("${refresh_token.expire_minutes}") final Long refreshTokenExpireMinutes) {
+        this.authCodeRequestUrlProviderComposite = authCodeRequestUrlProviderComposite;
+        this.oauthInformationClientComposite = oauthInformationClientComposite;
+        this.oauthMemberCommandRepository = oauthMemberCommandRepository;
+        this.oauthRunnerCommandRepository = oauthRunnerCommandRepository;
+        this.oauthSupporterCommandRepository = oauthSupporterCommandRepository;
+        this.refreshTokenCommandRepository2 = refreshTokenCommandRepository2;
+        this.jwtEncoder = jwtEncoder;
+        this.jwtDecoder = jwtDecoder;
+        this.refreshTokenExpireMinutes = refreshTokenExpireMinutes;
+    }
 
     public String readAuthCodeRedirect(final OauthType oauthType) {
         return authCodeRequestUrlProviderComposite.findRequestUrl(oauthType);

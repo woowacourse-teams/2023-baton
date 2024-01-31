@@ -50,7 +50,7 @@ class OauthCommandServiceDeleteTest {
 
     @BeforeEach
     void setUp() {
-        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository2, jwtEncoder, jwtDecoder);
+        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository2, jwtEncoder, jwtDecoder, 30L);
     }
 
     @Test

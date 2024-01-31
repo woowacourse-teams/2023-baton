@@ -68,7 +68,7 @@ class OauthCommandServiceUpdateTest {
         jwtDecoder = new JwtDecoder(normalJwtConfig);
         jwtEncoder = new JwtEncoder(normalJwtConfig);
 
-        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository2, jwtEncoder, jwtDecoder);
+        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository2, jwtEncoder, jwtDecoder, 30L);
 
         final JwtConfig expiredJwtConfig = new JwtConfig("secret-key-secret-key-secret-key-secret-key-secret-key-secret-key", "test-issuer", -1);
         expiredJwtEncoder = new JwtEncoder(expiredJwtConfig);
@@ -85,6 +85,7 @@ class OauthCommandServiceUpdateTest {
                 .socialId(tokenOwner.getSocialId().getValue())
                 .member(tokenOwner)
                 .token(new Token2(refreshTokenValue))
+                .timeout(30L)
                 .build();
 
         final SocialId tokenOwnerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
@@ -156,6 +157,7 @@ class OauthCommandServiceUpdateTest {
                 .socialId(notTokenOwner.getSocialId().getValue())
                 .member(notTokenOwner)
                 .token(new Token2(notOwnerRefreshTokenValue))
+                .timeout(30L)
                 .build();
 
         final SocialId notTokenOwnerSocialId = new SocialId(notTokenOwner.getSocialId().getValue());
