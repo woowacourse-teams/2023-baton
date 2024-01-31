@@ -16,7 +16,9 @@ public class RefreshToken2 {
 
     @Id
     private String socialId;
+
     private Token2 token;
+
     private Member member;
 
     @TimeToLive
