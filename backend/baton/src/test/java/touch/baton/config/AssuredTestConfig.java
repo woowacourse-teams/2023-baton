@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -22,9 +23,11 @@ import touch.baton.assure.repository.TestSupporterRunnerPostQueryRepository;
 import touch.baton.assure.repository.TestTagQuerydslRepository;
 import touch.baton.config.converter.ConverterConfig;
 import touch.baton.config.infra.auth.MockBeanAuthTestConfig;
+import touch.baton.config.infra.database.TestRedisContainerConfig;
 import touch.baton.config.infra.github.MockGithubBranchServiceConfig;
 
 @ActiveProfiles("test")
+@ExtendWith(TestRedisContainerConfig.class)
 @Import({JpaConfig.class, QuerydslConfig.class, ConverterConfig.class, PageableTestConfig.class, MockBeanAuthTestConfig.class, MockGithubBranchServiceConfig.class, JwtTestManager.class})
 @TestExecutionListeners(value = AssuredTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
