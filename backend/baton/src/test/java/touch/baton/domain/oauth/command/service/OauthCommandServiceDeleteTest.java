@@ -62,6 +62,6 @@ class OauthCommandServiceDeleteTest {
         oauthCommandService.logout(ethan);
 
         // then
-        verify(refreshTokenCommandRepository2, only()).deleteById(ethan.getSocialId());
+        verify(refreshTokenCommandRepository2, only()).deleteById(ethan.getSocialId().getValue());
     }
 }

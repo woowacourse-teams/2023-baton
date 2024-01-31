@@ -82,14 +82,14 @@ class OauthCommandServiceUpdateTest {
         final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
         final RefreshToken2 ownerRefreshToken = RefreshToken2.builder()
-                .socialId(tokenOwner.getSocialId())
+                .socialId(tokenOwner.getSocialId().getValue())
                 .member(tokenOwner)
                 .token(new Token2(refreshTokenValue))
                 .build();
 
         final SocialId tokenOwnerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(eq(tokenOwnerSocialId))).willReturn(Optional.of(tokenOwner));
-        given(refreshTokenCommandRepository2.findById(eq(tokenOwnerSocialId))).willReturn(Optional.of(ownerRefreshToken));
+        given(refreshTokenCommandRepository2.findById(eq(tokenOwnerSocialId.getValue()))).willReturn(Optional.of(ownerRefreshToken));
 
         // when
         final Tokens tokens = oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue));
@@ -139,7 +139,7 @@ class OauthCommandServiceUpdateTest {
 
         final SocialId tokenOwnerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(eq(tokenOwnerSocialId))).willReturn(Optional.of(tokenOwner));
-        given(refreshTokenCommandRepository2.findById(eq(tokenOwnerSocialId))).willReturn(Optional.empty());
+        given(refreshTokenCommandRepository2.findById(eq(tokenOwnerSocialId.getValue()))).willReturn(Optional.empty());
 
         // when, then
         assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue))).isInstanceOf(OauthRequestException.class);
@@ -153,14 +153,14 @@ class OauthCommandServiceUpdateTest {
         final Member notTokenOwner = MemberFixture.createHyena();
         final AuthorizationHeader notOwnerAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", notTokenOwner.getSocialId().getValue())));
         final RefreshToken2 notOwnerRefreshToken = RefreshToken2.builder()
-                .socialId(notTokenOwner.getSocialId())
+                .socialId(notTokenOwner.getSocialId().getValue())
                 .member(notTokenOwner)
                 .token(new Token2(notOwnerRefreshTokenValue))
                 .build();
 
         final SocialId notTokenOwnerSocialId = new SocialId(notTokenOwner.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(eq(notTokenOwnerSocialId))).willReturn(Optional.of(notTokenOwner));
-        given(refreshTokenCommandRepository2.findById(eq(notTokenOwnerSocialId))).willReturn(Optional.of(notOwnerRefreshToken));
+        given(refreshTokenCommandRepository2.findById(eq(notTokenOwnerSocialId.getValue()))).willReturn(Optional.of(notOwnerRefreshToken));
 
         // when, then
         final String ownerRefreshTokenValue = "ethan-refresh-token";
@@ -177,7 +177,7 @@ class OauthCommandServiceUpdateTest {
 
         final SocialId ownerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(eq(ownerSocialId))).willReturn(Optional.of(tokenOwner));
-        given(refreshTokenCommandRepository2.findById(eq(ownerSocialId))).willReturn(Optional.empty());
+        given(refreshTokenCommandRepository2.findById(eq(ownerSocialId.getValue()))).willReturn(Optional.empty());
 
         // when, then
         assertThatThrownBy(() -> oauthCommandService.reissueAccessToken(expiredAuthorizationHeader, new Token2(refreshTokenValue))).isInstanceOf(OauthRequestException.class);

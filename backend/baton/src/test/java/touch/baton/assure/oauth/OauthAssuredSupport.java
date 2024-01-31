@@ -11,12 +11,10 @@ import touch.baton.domain.common.exception.ClientErrorCode;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.command.OauthType;
 import touch.baton.domain.oauth.command.token.AccessToken;
-import touch.baton.domain.oauth.command.token.ExpireDate;
-import touch.baton.domain.oauth.command.token.RefreshToken;
-import touch.baton.domain.oauth.command.token.Token;
+import touch.baton.domain.oauth.command.token.RefreshToken2;
+import touch.baton.domain.oauth.command.token.Token2;
 import touch.baton.domain.oauth.command.token.Tokens;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -140,12 +138,11 @@ public class OauthAssuredSupport {
 
         public Tokens 액세스_토큰과_리프레시_토큰을_반환한다(final Member ethan) {
             final String accessToken = response.header(AUTHORIZATION);
-
-            final LocalDateTime expireDate = LocalDateTime.now().plusDays(30);
-            final RefreshToken refreshToken = RefreshToken.builder()
+            final RefreshToken2 refreshToken = RefreshToken2.builder()
+                    .socialId(ethan.getSocialId().getValue())
                     .member(ethan)
-                    .token(new Token(response.cookie("refreshToken")))
-                    .expireDate(new ExpireDate(expireDate))
+                    .token(new Token2(response.cookie("refreshToken")))
+                    .timeout(30L)
                     .build();
 
             return new Tokens(new AccessToken(accessToken), refreshToken);
