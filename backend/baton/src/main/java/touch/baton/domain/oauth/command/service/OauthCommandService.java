@@ -47,9 +47,9 @@ public class OauthCommandService {
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
 
-    private Long refreshTokenExpireMinutes;
+    private Long refreshTokenExpireSeconds;
 
-    public OauthCommandService(final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite, final OauthInformationClientComposite oauthInformationClientComposite, final OauthMemberCommandRepository oauthMemberCommandRepository, final OauthRunnerCommandRepository oauthRunnerCommandRepository, final OauthSupporterCommandRepository oauthSupporterCommandRepository, final RefreshTokenCommandRepository refreshTokenCommandRepository, final JwtEncoder jwtEncoder, final JwtDecoder jwtDecoder, @Value("${refresh_token.expire_minutes}") final Long refreshTokenExpireMinutes) {
+    public OauthCommandService(final AuthCodeRequestUrlProviderComposite authCodeRequestUrlProviderComposite, final OauthInformationClientComposite oauthInformationClientComposite, final OauthMemberCommandRepository oauthMemberCommandRepository, final OauthRunnerCommandRepository oauthRunnerCommandRepository, final OauthSupporterCommandRepository oauthSupporterCommandRepository, final RefreshTokenCommandRepository refreshTokenCommandRepository, final JwtEncoder jwtEncoder, final JwtDecoder jwtDecoder, @Value("${refresh_token.expire_seconds}") final Long refreshTokenExpireSeconds) {
         this.authCodeRequestUrlProviderComposite = authCodeRequestUrlProviderComposite;
         this.oauthInformationClientComposite = oauthInformationClientComposite;
         this.oauthMemberCommandRepository = oauthMemberCommandRepository;
@@ -58,7 +58,7 @@ public class OauthCommandService {
         this.refreshTokenCommandRepository = refreshTokenCommandRepository;
         this.jwtEncoder = jwtEncoder;
         this.jwtDecoder = jwtDecoder;
-        this.refreshTokenExpireMinutes = refreshTokenExpireMinutes;
+        this.refreshTokenExpireSeconds = refreshTokenExpireSeconds;
     }
 
     public String readAuthCodeRedirect(final OauthType oauthType) {
@@ -144,7 +144,7 @@ public class OauthCommandService {
                 .socialId(member.getSocialId().getValue())
                 .member(member)
                 .token(token)
-                .timeout(refreshTokenExpireMinutes)
+                .timeout(refreshTokenExpireSeconds)
                 .build();
 
         refreshTokenCommandRepository.save(refreshToken);
