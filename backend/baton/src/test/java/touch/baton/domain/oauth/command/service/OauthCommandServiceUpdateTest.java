@@ -20,6 +20,7 @@ import touch.baton.domain.oauth.command.token.RefreshToken;
 import touch.baton.domain.oauth.command.token.Token;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RefreshTokenFixture;
 import touch.baton.infra.auth.jwt.JwtConfig;
 import touch.baton.infra.auth.jwt.JwtDecoder;
 import touch.baton.infra.auth.jwt.JwtEncoder;
@@ -81,12 +82,9 @@ class OauthCommandServiceUpdateTest {
         final Member tokenOwner = MemberFixture.createEthan();
         final AuthorizationHeader expiredAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", tokenOwner.getSocialId().getValue())));
         final String refreshTokenValue = "ethan-refresh-token";
-        final RefreshToken ownerRefreshToken = RefreshToken.builder()
-                .socialId(tokenOwner.getSocialId().getValue())
-                .member(tokenOwner)
-                .token(new Token(refreshTokenValue))
-                .timeout(30L)
-                .build();
+        final RefreshToken ownerRefreshToken = RefreshTokenFixture.create(tokenOwner.getSocialId().getValue(),
+                new Token(refreshTokenValue),
+                tokenOwner);
 
         final SocialId tokenOwnerSocialId = new SocialId(tokenOwner.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(eq(tokenOwnerSocialId))).willReturn(Optional.of(tokenOwner));
@@ -153,12 +151,10 @@ class OauthCommandServiceUpdateTest {
         final String notOwnerRefreshTokenValue = "hyena-refresh-token";
         final Member notTokenOwner = MemberFixture.createHyena();
         final AuthorizationHeader notOwnerAuthorizationHeader = bearerAuthorizationHeader(expiredJwtEncoder.jwtToken(Map.of("socialId", notTokenOwner.getSocialId().getValue())));
-        final RefreshToken notOwnerRefreshToken = RefreshToken.builder()
-                .socialId(notTokenOwner.getSocialId().getValue())
-                .member(notTokenOwner)
-                .token(new Token(notOwnerRefreshTokenValue))
-                .timeout(30L)
-                .build();
+        final RefreshToken notOwnerRefreshToken = RefreshTokenFixture.create(
+                notTokenOwner.getSocialId().getValue(),
+                new Token(notOwnerRefreshTokenValue),
+                notTokenOwner);
 
         final SocialId notTokenOwnerSocialId = new SocialId(notTokenOwner.getSocialId().getValue());
         given(oauthMemberCommandRepository.findBySocialId(eq(notTokenOwnerSocialId))).willReturn(Optional.of(notTokenOwner));
