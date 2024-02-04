@@ -2,7 +2,7 @@ package touch.baton.fixture.vo;
 
 import touch.baton.domain.oauth.command.AuthorizationHeader;
 
-public class AuthorizationHeaderFixture {
+public abstract class AuthorizationHeaderFixture {
 
     private static final String BEARER = "Bearer ";
 

@@ -15,7 +15,7 @@ import touch.baton.assure.common.JwtTestManager;
 import touch.baton.assure.common.OauthLoginTestManager;
 import touch.baton.assure.repository.TestMemberQueryRepository;
 import touch.baton.assure.repository.TestNotificationCommandRepository;
-import touch.baton.assure.repository.TestRefreshTokenRepository2;
+import touch.baton.assure.repository.TestRefreshTokenRepository;
 import touch.baton.assure.repository.TestRunnerPostQueryRepository;
 import touch.baton.assure.repository.TestRunnerQueryRepository;
 import touch.baton.assure.repository.TestSupporterQueryRepository;
@@ -56,7 +56,7 @@ public abstract class AssuredTestConfig {
     protected TestNotificationCommandRepository notificationCommandRepository;
 
     @Autowired
-    protected TestRefreshTokenRepository2 refreshTokenRepository;
+    protected TestRefreshTokenRepository refreshTokenRepository;
 
     @Autowired
     protected JwtTestManager jwtTestManager;

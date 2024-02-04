@@ -11,10 +11,8 @@ import touch.baton.domain.oauth.command.client.OauthInformationClientComposite;
 import touch.baton.domain.oauth.command.repository.OauthMemberCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthRunnerCommandRepository;
 import touch.baton.domain.oauth.command.repository.OauthSupporterCommandRepository;
-import touch.baton.domain.oauth.command.repository.RefreshTokenCommandRepository;
 import touch.baton.fixture.domain.MemberFixture;
 import touch.baton.infra.auth.jwt.JwtDecoder;
-import touch.baton.infra.auth.jwt.JwtEncoder;
 
 import static org.mockito.BDDMockito.verify;
 import static org.mockito.Mockito.only;
@@ -40,17 +38,14 @@ class OauthCommandServiceDeleteTest {
     private OauthSupporterCommandRepository oauthSupporterCommandRepository;
 
     @Mock
-    private RefreshTokenCommandRepository refreshTokenCommandRepository;
-
-    @Mock
-    private JwtEncoder jwtEncoder;
+    private TokenFacade tokenFacade;
 
     @Mock
     private JwtDecoder jwtDecoder;
 
     @BeforeEach
     void setUp() {
-        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, refreshTokenCommandRepository, jwtEncoder, jwtDecoder, 30L);
+        oauthCommandService = new OauthCommandService(authCodeRequestUrlProviderComposite, oauthInformationClientComposite, oauthMemberCommandRepository, oauthRunnerCommandRepository, oauthSupporterCommandRepository, tokenFacade, jwtDecoder);
     }
 
     @Test
@@ -62,6 +57,6 @@ class OauthCommandServiceDeleteTest {
         oauthCommandService.logout(ethan);
 
         // then
-        verify(refreshTokenCommandRepository, only()).deleteById(ethan.getSocialId().getValue());
+        verify(tokenFacade, only()).logout(ethan.getSocialId());
     }
 }
