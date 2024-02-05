@@ -24,12 +24,12 @@ public class TokenFacade {
     private final RefreshTokenCommandRepository refreshTokenCommandRepository;
     private final JwtEncoder jwtEncoder;
 
-    private Long refreshTokenExpireSeconds;
+    private Long refreshTokenExpireMinutes;
 
-    public TokenFacade(final RefreshTokenCommandRepository refreshTokenCommandRepository, final JwtEncoder jwtEncoder, @Value("${refresh_token.expire_seconds}") final Long refreshTokenExpireSeconds) {
+    public TokenFacade(final RefreshTokenCommandRepository refreshTokenCommandRepository, final JwtEncoder jwtEncoder, @Value("${spring.redis.refresh_token.expire_minutes}") final Long refreshTokenExpireMinutes) {
         this.refreshTokenCommandRepository = refreshTokenCommandRepository;
         this.jwtEncoder = jwtEncoder;
-        this.refreshTokenExpireSeconds = refreshTokenExpireSeconds;
+        this.refreshTokenExpireMinutes = refreshTokenExpireMinutes;
     }
 
     public Tokens reissueAccessToken(final Member member, final Token refreshToken) {
@@ -61,7 +61,7 @@ public class TokenFacade {
                 .socialId(member.getSocialId().getValue())
                 .member(member)
                 .token(token)
-                .timeout(refreshTokenExpireSeconds)
+                .timeout(refreshTokenExpireMinutes)
                 .build();
 
         refreshTokenCommandRepository.save(refreshToken);

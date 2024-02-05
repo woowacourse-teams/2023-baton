@@ -9,6 +9,8 @@ import org.springframework.data.redis.core.TimeToLive;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.command.token.exception.RefreshTokenDomainException;
 
+import java.util.concurrent.TimeUnit;
+
 @EqualsAndHashCode
 @Getter
 @RedisHash(value = "token:refresh")
@@ -21,7 +23,7 @@ public class RefreshToken {
 
     private Member member;
 
-    @TimeToLive
+    @TimeToLive(unit = TimeUnit.MINUTES)
     private Long timeout;
 
     @Builder

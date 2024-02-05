@@ -18,6 +18,8 @@ spring:
   redis:
     host: localhost
     port: 6379
+    refresh_token:
+      expire_minutes: 1
 
 logging:
   config: classpath:logs/log4j2.xml
@@ -25,8 +27,6 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
 
-refresh_token:
-  expire_seconds: 30
 
 oauth:
   github:
