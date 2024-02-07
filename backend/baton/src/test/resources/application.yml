@@ -18,6 +18,8 @@ spring:
   redis:
     host: localhost
     port: 6379
+    username: default
+    password: test
     refresh_token:
       expire_minutes: 1
 
