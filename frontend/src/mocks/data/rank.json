@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "rank": 1,
+      "name": "에단",
+      "supporterId": 1,
+      "reviewedCount": 3,
+      "imageUrl": "profile.jpg",
+      "githubUrl": "github.com/cookienc",
+      "technicalTags": ["java", "spring"]
+    },
+    {
+      "rank": 2,
+      "name": "에이든",
+      "supporterId": 2,
+      "reviewedCount": 0,
+      "imageUrl": "profile.jpg",
+      "githubUrl": "github.com/나이든",
+      "technicalTags": ["javascript", "react"]
+    }
+  ]
+}
