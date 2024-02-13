@@ -55,11 +55,11 @@ const S = {
 
 const themeStyles = {
   RED: css`
-    border: 1px solid var(--white-color);
+    border: 1px solid var(--white);
 
     background: var(--baton-red);
 
-    color: var(--white-color);
+    color: var(--white);
   `,
 
   WHITE: css`
