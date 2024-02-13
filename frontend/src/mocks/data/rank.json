@@ -6,7 +6,7 @@
       "supporterId": 1,
       "reviewedCount": 3,
       "imageUrl": "profile.jpg",
-      "githubUrl": "github.com/cookienc",
+      "githubUrl": "https://github.com/cookienc",
       "technicalTags": ["java", "spring"]
     },
     {
@@ -15,8 +15,35 @@
       "supporterId": 2,
       "reviewedCount": 0,
       "imageUrl": "profile.jpg",
-      "githubUrl": "github.com/나이든",
-      "technicalTags": ["javascript", "react"]
+      "githubUrl": "https://github.com/나이든",
+      "technicalTags": ["javascript", "react", "typescript"]
+    },
+    {
+      "rank": 3,
+      "name": "제이미",
+      "supporterId": 3,
+      "reviewedCount": 5,
+      "imageUrl": "profile2.jpg",
+      "githubUrl": "https://github.com/jamie3",
+      "technicalTags": ["javascript", "react", "typescript"]
+    },
+    {
+      "rank": 4,
+      "name": "캐롤",
+      "supporterId": 4,
+      "reviewedCount": 2,
+      "imageUrl": "profile3.jpg",
+      "githubUrl": "https://github.com/carol4",
+      "technicalTags": ["java", "spring"]
+    },
+    {
+      "rank": 5,
+      "name": "브라이언",
+      "supporterId": 5,
+      "reviewedCount": 4,
+      "imageUrl": "profile4.jpg",
+      "githubUrl": "https://github.com/brian5",
+      "technicalTags": ["java", "spring"]
     }
   ]
 }
