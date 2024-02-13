@@ -20,6 +20,7 @@ import { GetMyPagePostResponse, getMyPostRequestParams } from '@/types/myPage';
 import { PostFeedbackRequest } from '@/types/feedback';
 import { GetSupporterCandidateResponse } from '@/types/supporterCandidate';
 import { GetNotificationResponse } from '@/types/notification';
+import { GetSupporterRankResponse, Rank } from '@/types/rank';
 
 export const getRunnerPost = ({ limit, reviewStatus, cursor, tagName }: getRunnerPostRequestParams) => {
   const params = new URLSearchParams({
@@ -101,6 +102,10 @@ export const getOtherSupporterProfile = (userId: number) => {
 
 export const getOtherSupporterPostCount = (userId: number) => {
   return request.get<GetOtherSupporterPostCountResponse>(`/posts/runner/search/count?supporterId=${userId}`, false);
+};
+
+export const getSupporterRank = () => {
+  return request.get<GetSupporterRankResponse>('/rank/supporter', false);
 };
 
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {
