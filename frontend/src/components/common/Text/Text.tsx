@@ -19,7 +19,7 @@ const Text = styled.span<TextProps>(
     textAlign,
     fontWeight: $bold ? 'bold' : fontWeight,
   }),
-  ({ typography = 't5' }) => typographyMap[typography],
+  ({ typography = 't6' }) => typographyMap[typography],
 );
 
 export default Text;
