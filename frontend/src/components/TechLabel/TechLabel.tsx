@@ -9,6 +9,7 @@ interface TechData {
 
 interface Props {
   tag: string;
+  hideText?: boolean;
 }
 
 const techMapping: Record<string, TechData> = {
@@ -19,13 +20,13 @@ const techMapping: Record<string, TechData> = {
   spring: { icon: <SpringIcon />, labelColor: '#c5eea9' },
 };
 
-const TechLabel = ({ tag }: Props) => {
+const TechLabel = ({ tag, hideText }: Props) => {
   const techData = techMapping[tag];
 
   return (
     <S.TagContainer $labelColor={techData.labelColor}>
       {techData.icon}
-      <p>{tag}</p>
+      {hideText ? null : <p>{tag}</p>}
     </S.TagContainer>
   );
 };
