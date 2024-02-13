@@ -24,7 +24,7 @@ const TechLabel = ({ tag, hideText }: Props) => {
   const techData = techMapping[tag];
 
   return (
-    <S.TagContainer $labelColor={techData.labelColor}>
+    <S.TagContainer $labelColor={techData.labelColor} $hideText={hideText}>
       {techData.icon}
       {hideText ? null : <p>{tag}</p>}
     </S.TagContainer>
@@ -34,12 +34,12 @@ const TechLabel = ({ tag, hideText }: Props) => {
 export default TechLabel;
 
 const S = {
-  TagContainer: styled.div<{ $labelColor: string }>`
+  TagContainer: styled.div<{ $labelColor: string; $hideText: boolean | undefined }>`
     display: flex;
     align-items: center;
     gap: 4px;
 
-    padding: 1px 8px;
+    padding: ${({ $hideText }) => ($hideText ? 0 : '1px 8px')};
 
     font-size: 12px;
     line-height: 18px;
