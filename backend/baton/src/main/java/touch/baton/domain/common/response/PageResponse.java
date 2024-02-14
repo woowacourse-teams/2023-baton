@@ -15,14 +15,34 @@ public record PageResponse<T extends IdExtractable>(List<T> data, PageInfo pageI
         return new PageResponse<>(limitResponses, PageInfo.normal(getLastElementId(limitResponses)));
     }
 
-    public record PageInfo(boolean isLast, Long nextCursor) {
+    public static <T extends IdExtractable> PageResponse<T> of(final List<T> responses,
+                                                             final PageParams pageParams,
+                                                             final long total
+    ) {
+        final int limit = pageParams.limit();
+        if (isLastPage(responses, limit)) {
+            return new PageResponse<>(responses, PageInfo.last(total));
+        }
+        final List<T> limitResponses = responses.subList(0, pageParams.getLimitForQuery());
+        return new PageResponse<>(limitResponses, PageInfo.normal(getLastElementId(limitResponses), total));
+    }
+
+    public record PageInfo(boolean isLast, Long nextCursor, Long totalCount) {
 
         public static PageInfo last() {
-            return new PageInfo(true, null);
+            return new PageInfo(true, null, null);
+        }
+
+        public static PageInfo last(final Long totalCount) {
+            return new PageInfo(true, null, totalCount);
         }
 
         public static PageInfo normal(final Long nextCursor) {
-            return new PageInfo(false, nextCursor);
+            return new PageInfo(false, nextCursor, null);
+        }
+
+        public static PageInfo normal(final Long nextCursor, final Long totalCount) {
+            return new PageInfo(false, nextCursor, totalCount);
         }
     }
 
