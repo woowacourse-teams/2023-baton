@@ -4,15 +4,17 @@ import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
-import touch.baton.domain.notification.command.Notification;
-import touch.baton.domain.notification.command.vo.NotificationReferencedId;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.member.command.SupporterRunnerPost;
+import touch.baton.domain.member.command.vo.ReviewCount;
+import touch.baton.domain.notification.command.Notification;
+import touch.baton.domain.notification.command.vo.NotificationReferencedId;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.Tag;
+import touch.baton.domain.technicaltag.command.TechnicalTag;
 import touch.baton.fixture.domain.NotificationFixture;
 import touch.baton.fixture.domain.RunnerFixture;
 import touch.baton.fixture.domain.RunnerPostFixture;
@@ -22,6 +24,7 @@ import touch.baton.fixture.domain.SupporterRunnerPostFixture;
 import touch.baton.fixture.domain.TagFixture;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 import static touch.baton.fixture.vo.TagNameFixture.tagName;
@@ -48,6 +51,20 @@ public abstract class RepositoryTestConfig {
     protected Supporter persistSupporter(final Member member) {
         em.persist(member);
         final Supporter supporter = SupporterFixture.create(member);
+        em.persist(supporter);
+        return supporter;
+    }
+
+    protected Supporter persistSupporter(final ReviewCount reviewCount, final Member member) {
+        em.persist(member);
+        final Supporter supporter = SupporterFixture.create(reviewCount, member);
+        em.persist(supporter);
+        return supporter;
+    }
+
+    protected Supporter persistSupporter(final ReviewCount reviewCount, final Member member, final List<TechnicalTag> technicalTags) {
+        em.persist(member);
+        final Supporter supporter = SupporterFixture.create(reviewCount, member, technicalTags);
         em.persist(supporter);
         return supporter;
     }
