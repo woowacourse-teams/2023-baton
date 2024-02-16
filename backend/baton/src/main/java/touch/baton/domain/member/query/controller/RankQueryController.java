@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import touch.baton.domain.member.query.controller.response.RankResponses;
 import touch.baton.domain.member.query.service.RankQueryService;
@@ -16,8 +17,7 @@ public class RankQueryController {
     private final RankQueryService rankQueryService;
 
     @GetMapping("/supporter")
-    public ResponseEntity<RankResponses> readMostReviewSupporter() {
-        return ResponseEntity.ok(rankQueryService.readMostReviewSupporter());
+    public ResponseEntity<RankResponses> readMostReviewSupporter(@RequestParam(defaultValue = "5") final int limit) {
+        return ResponseEntity.ok(rankQueryService.readMostReviewSupporter(limit));
     }
-
 }

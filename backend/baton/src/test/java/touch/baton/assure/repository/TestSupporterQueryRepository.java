@@ -16,9 +16,10 @@ public interface TestSupporterQueryRepository extends SupporterQueryRepository {
     }
 
     @Query("""
-            select s, m
+            select s
             from Supporter s
-            join fetch Member m on m.id = s.member.id
+            join fetch s.member m
+            join fetch s.supporterTechnicalTags stt
             where m.socialId = :socialId
             """)
     Optional<Supporter> joinMemberBySocialId(@Param("socialId") final SocialId socialId);

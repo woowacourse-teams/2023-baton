@@ -5,7 +5,7 @@ import touch.baton.domain.member.command.Supporter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public record RankResponses(List<SupporterResponse> datas) {
+public record RankResponses(List<SupporterResponse> data) {
 
     public static RankResponses from(final List<Supporter> supporters) {
         final AtomicInteger rank = new AtomicInteger(1);

@@ -13,9 +13,7 @@ public class RankQueryService {
 
     private final RankQuerydslRepository rankQueryDslRepository;
 
-    public RankResponses readMostReviewSupporter() {
-        final int maxCount = 5;
-
+    public RankResponses readMostReviewSupporter(final int maxCount) {
         return RankResponses.from(rankQueryDslRepository.findMostReviewSupporterByCount(maxCount));
     }
 }

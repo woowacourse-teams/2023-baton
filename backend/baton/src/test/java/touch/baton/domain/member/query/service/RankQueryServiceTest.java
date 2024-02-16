@@ -60,15 +60,16 @@ class RankQueryServiceTest extends ServiceTestConfig {
         persistSupporter(new ReviewCount(11), fifthRankMember, fifthMembersTechnicalTags);
 
         // when
-        final RankResponses actual = rankQueryService.readMostReviewSupporter();
+        final int maxCount = 5;
+        final RankResponses actual = rankQueryService.readMostReviewSupporter(maxCount);
 
         // then
         assertAll(
-                () -> assertResponse(actual.datas().get(0), 1, "first", 15),
-                () -> assertResponse(actual.datas().get(1), 2, "second", 14),
-                () -> assertResponse(actual.datas().get(2), 3, "third", 13),
-                () -> assertResponse(actual.datas().get(3), 4, "fourth", 12),
-                () -> assertResponse(actual.datas().get(4), 5, "fifth", 11)
+                () -> assertResponse(actual.data().get(0), 1, "first", 15),
+                () -> assertResponse(actual.data().get(1), 2, "second", 14),
+                () -> assertResponse(actual.data().get(2), 3, "third", 13),
+                () -> assertResponse(actual.data().get(3), 4, "fourth", 12),
+                () -> assertResponse(actual.data().get(4), 5, "fifth", 11)
         );
     }
 
@@ -77,7 +78,7 @@ class RankQueryServiceTest extends ServiceTestConfig {
                 () -> assertThat(response.rank()).isEqualTo(rank),
                 () -> assertThat(response.name()).isEqualTo(memberName),
                 () -> assertThat(response.reviewedCount()).isEqualTo(reviewCount),
-                () -> assertThat(response.supporterId()).isNotEqualTo(0),
+                () -> assertThat(response.supporterId()).isNotZero(),
                 () -> assertThat(response.imageUrl()).isNotBlank(),
                 () -> assertThat(response.githubUrl()).isNotBlank(),
                 () -> assertThat(response.technicalTags()).isNotEmpty())
