@@ -4,7 +4,6 @@ import jakarta.annotation.Nullable;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.web.server.Cookie.SameSite;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -22,14 +21,15 @@ import touch.baton.domain.oauth.command.AuthorizationHeader;
 import touch.baton.domain.oauth.command.OauthType;
 import touch.baton.domain.oauth.command.service.OauthCommandService;
 import touch.baton.domain.oauth.command.token.RefreshToken;
+import touch.baton.domain.oauth.command.token.Token;
 import touch.baton.domain.oauth.command.token.Tokens;
 import touch.baton.domain.oauth.query.controller.resolver.AuthMemberPrincipal;
 
 import java.io.IOException;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
+import static org.springframework.boot.web.server.Cookie.SameSite.NONE;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 import static org.springframework.http.HttpStatus.FOUND;
 
 @RequiredArgsConstructor
@@ -77,7 +77,7 @@ public class OauthCommandController {
 
         final AuthorizationHeader authorizationHeader = new AuthorizationHeader(request.getHeader(AUTHORIZATION));
 
-        final Tokens tokens = oauthCommandService.reissueAccessToken(authorizationHeader, refreshToken);
+        final Tokens tokens = oauthCommandService.reissueAccessToken(authorizationHeader, new Token(refreshToken));
 
         setCookie(response, tokens.refreshToken());
 
@@ -90,11 +90,11 @@ public class OauthCommandController {
         final ResponseCookie responseCookie = ResponseCookie.from("refreshToken", refreshToken.getToken().getValue())
                 .httpOnly(true)
                 .secure(true)
-                .maxAge(Duration.between(LocalDateTime.now(), refreshToken.getExpireDate().getValue()).toSeconds())
-                .sameSite(SameSite.NONE.attributeValue())
+                .maxAge(refreshToken.getTimeout())
+                .sameSite(NONE.attributeValue())
                 .path("/")
                 .build();
-        response.addHeader("Set-Cookie", responseCookie.toString());
+        response.addHeader(SET_COOKIE, responseCookie.toString());
     }
 
     @PatchMapping("/logout")

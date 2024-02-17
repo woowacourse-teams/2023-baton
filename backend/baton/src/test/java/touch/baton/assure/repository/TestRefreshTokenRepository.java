@@ -1,22 +1,25 @@
 package touch.baton.assure.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
-import touch.baton.domain.oauth.command.token.ExpireDate;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
 import touch.baton.domain.oauth.command.token.RefreshToken;
-import touch.baton.domain.oauth.command.token.Token;
 
-public interface TestRefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+import java.time.Duration;
 
-    @Modifying
-    @Transactional
-    @Query("""
-            update RefreshToken rt
-            set rt.expireDate = :expireDate
-            where rt.token = :token
-            """)
-    void changeExpireDateByToken(@Param("token") final Token token, @Param("expireDate") final ExpireDate expireDate);
+@Repository
+public class TestRefreshTokenRepository {
+
+    private final RedisTemplate<String, String> redisTemplate;
+
+    public TestRefreshTokenRepository(final RedisTemplate<String, String> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+    public void save(final RefreshToken refreshToken) {
+        redisTemplate.opsForHash().put(String.format("token:refresh:%s", refreshToken.getSocialId()), refreshToken.getToken().getValue(), Duration.ofSeconds(30));
+    }
+
+    public void expireRefreshToken(final RefreshToken refreshToken) {
+        redisTemplate.expire(String.format("token:refresh:%s", refreshToken.getSocialId()), Duration.ZERO);
+    }
 }
