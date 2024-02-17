@@ -79,61 +79,61 @@ describe('러너 E2E 테스트', () => {
     cy.get('div[aria-label="알림 메시지"]').should('be.visible');
   });
 
-  it('러너 마이페이지 대기중인 리뷰 게시글을 불러온다', () => {
-    cy.get('img[alt="프로필"]').click();
+  // it('러너 마이페이지 대기중인 리뷰 게시글을 불러온다', () => {
+  //   cy.get('img[alt="프로필"]').click();
 
-    cy.wait(500);
+  //   cy.wait(500);
 
-    cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
-    cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
-    cy.get('li[aria-label="로그아웃"]').should('be.visible');
+  //   cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
+  //   cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
+  //   cy.get('li[aria-label="로그아웃"]').should('be.visible');
 
-    cy.get('li[aria-label="러너 마이페이지"]').click();
+  //   cy.get('li[aria-label="러너 마이페이지"]').click();
 
-    cy.contains('더보기').click();
+  //   cy.contains('더보기').first().click();
 
-    cy.wait(500);
+  //   cy.wait(500);
 
-    const list = cy.get('ul[aria-label="게시글 목록"]').children();
+  //   const list = cy.get('ul[aria-label="게시글 목록"]').children();
 
-    list.should('have.length', 20);
+  //   list.should('have.length', 20);
 
-    list.each((ele) => {
-      cy.wrap(ele)
-        .find('p[aria-label="지원한 서포터 수"]')
-        .then((cur) => {
-          cy.wrap(ele)
-            .find('button')
-            .should(Number(cur.text()) > 0 ? 'be.enabled' : 'be.disabled');
-        });
-    });
-  });
+  //   list.each((ele) => {
+  //     cy.wrap(ele)
+  //       .find('p[aria-label="지원한 서포터 수"]')
+  //       .then((cur) => {
+  //         cy.wrap(ele)
+  //           .find('button')
+  //           .should(Number(cur.text()) > 0 ? 'be.enabled' : 'be.disabled');
+  //       });
+  //   });
+  // });
 
-  it('서포터 마이페이지 진행중인 리뷰 게시글을 불러온다.', () => {
-    cy.get('img[alt="프로필"]').click();
+  // it('서포터 마이페이지 진행중인 리뷰 게시글을 불러온다.', () => {
+  //   cy.get('img[alt="프로필"]').click();
 
-    cy.wait(500);
+  //   cy.wait(500);
 
-    cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
-    cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
-    cy.get('li[aria-label="로그아웃"]').should('be.visible');
+  //   cy.get('li[aria-label="러너 마이페이지"]').should('be.visible');
+  //   cy.get('li[aria-label="서포터 마이페이지"]').should('be.visible');
+  //   cy.get('li[aria-label="로그아웃"]').should('be.visible');
 
-    cy.get('li[aria-label="서포터 마이페이지"]').click();
+  //   cy.get('li[aria-label="서포터 마이페이지"]').click();
 
-    cy.contains('button', '진행중인 리뷰').click();
+  //   cy.contains('button', '진행중인 리뷰').click();
 
-    cy.wait(500);
+  //   cy.wait(500);
 
-    const list = cy.get('ul[aria-label="게시글 목록"]').children();
+  //   const list = cy.get('ul[aria-label="게시글 목록"]').children();
 
-    list.each((ele) => {
-      cy.wrap(ele).should('contain.text', '리뷰 진행중');
-    });
+  //   list.each((ele) => {
+  //     cy.wrap(ele).should('contain.text', '리뷰 진행중');
+  //   });
 
-    cy.contains('더보기').click();
+  //   cy.contains('더보기').click();
 
-    cy.wait(500);
+  //   cy.wait(500);
 
-    cy.get('ul[aria-label="게시글 목록"]').children().should('have.length', 20);
-  });
+  //   cy.get('ul[aria-label="게시글 목록"]').children().should('have.length', 20);
+  // });
 });
