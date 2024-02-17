@@ -1,77 +1,56 @@
 package touch.baton.domain.oauth.command.token;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import touch.baton.domain.common.BaseEntity;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.TimeToLive;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.oauth.command.token.exception.RefreshTokenDomainException;
 
-import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
-import static lombok.AccessLevel.PROTECTED;
+import java.util.concurrent.TimeUnit;
 
+@EqualsAndHashCode
 @Getter
-@NoArgsConstructor(access = PROTECTED)
-@Entity
-public class RefreshToken extends BaseEntity {
+@RedisHash(value = "token:refresh")
+public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-    private Long id;
+    private String socialId;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id", foreignKey = @ForeignKey(name = "fk_refresh_token_to_member"), nullable = false)
-    private Member member;
-
-    @Embedded
     private Token token;
 
-    @Embedded
-    private ExpireDate expireDate;
+    private Member member;
+
+    @TimeToLive(unit = TimeUnit.MINUTES)
+    private Long timeout;
 
     @Builder
-    private RefreshToken(final Member member, final Token token, final ExpireDate expireDate) {
-        this(null, member, token, expireDate);
-    }
-
-    private RefreshToken(final Long id, final Member member, final Token token, final ExpireDate expireDate) {
-        validateNotNull(member, token, expireDate);
-        this.id = id;
-        this.member = member;
+    public RefreshToken(final String socialId, final Token token, final Member member, final Long timeout) {
+        validateNotNull(socialId, token, member, timeout);
+        this.socialId = socialId;
         this.token = token;
-        this.expireDate = expireDate;
+        this.member = member;
+        this.timeout = timeout;
     }
 
-    private void validateNotNull(final Member member, final Token token, final ExpireDate expireDate) {
-        if (member == null) {
-            throw new RefreshTokenDomainException("RefreshToken 의 member 는 null 일 수 없습니다.");
+    private void validateNotNull(final String socialId, final Token token, final Member member, final Long timeout) {
+        if (socialId == null) {
+            throw new RefreshTokenDomainException("RefreshToken 의 socialId 는 null 일 수 없습니다.");
         }
         if (token == null) {
             throw new RefreshTokenDomainException("RefreshToken 의 token 은 null 일 수 없습니다.");
         }
-        if (expireDate == null) {
-            throw new RefreshTokenDomainException("RefreshToken 의 expireDate 는 null 일 수 없습니다.");
+        if (member == null) {
+            throw new RefreshTokenDomainException("RefreshToken 의 member 는 null 일 수 없습니다.");
+        }
+        if (timeout == null) {
+            throw new RefreshTokenDomainException("RefreshToken 의 timeout 은 null 일 수 없습니다.");
         }
     }
 
-    public void updateToken(final Token token, final int expiredMinutes) {
-        this.token = token;
-        expireDate.refreshExpireTokenDate(expiredMinutes);
-    }
-
-    public boolean isNotOwner(final Member member) {
-        return !this.member.equals(member);
-    }
-
-    public boolean isExpired() {
-        return expireDate.isExpired();
+    public boolean isNotOwner(final Token target) {
+        return !token.equals(target);
     }
 }

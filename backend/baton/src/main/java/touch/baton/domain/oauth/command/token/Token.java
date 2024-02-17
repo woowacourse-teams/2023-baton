@@ -1,21 +1,13 @@
 package touch.baton.domain.oauth.command.token;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.util.ObjectUtils;
-
-import static lombok.AccessLevel.PROTECTED;
 
 @EqualsAndHashCode
 @Getter
-@NoArgsConstructor(access = PROTECTED)
-@Embeddable
 public class Token {
 
-    @Column(name = "token", nullable = false, columnDefinition = "text")
     private String value;
 
     public Token(final String value) {
@@ -29,3 +21,4 @@ public class Token {
         }
     }
 }
+

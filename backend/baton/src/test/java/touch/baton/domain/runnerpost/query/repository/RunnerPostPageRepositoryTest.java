@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
+import touch.baton.domain.common.vo.Page;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
@@ -22,7 +23,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
-import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.*;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.IN_PROGRESS;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.OVERDUE;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
 class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
@@ -49,15 +53,16 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         em.close();
 
         // when
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, null);
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, null);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds.subList(1, 1 + limit);
 
         // then
         assertSoftly(softly -> {
-           softly.assertThat(runnerPosts).hasSize(limit);
-           softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+           softly.assertThat(runnerPosts.contents()).hasSize(limit);
+           softly.assertThat(runnerPosts.contents().stream().mapToLong(RunnerPost::getId))
                    .isEqualTo(expected);
+            softly.assertThat(runnerPosts.total()).isEqualTo(persistSize);
         });
     }
 
@@ -78,15 +83,16 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         em.close();
 
         // when
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, null, null);
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, null, null);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds;
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(runnerPosts).hasSize(limit);
-            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+            softly.assertThat(runnerPosts.contents()).hasSize(limit);
+            softly.assertThat(runnerPosts.contents().stream().mapToLong(RunnerPost::getId))
                     .isEqualTo(expected);
+            softly.assertThat(runnerPosts.total()).isEqualTo(runnerPostCount);
         });
     }
 
@@ -109,15 +115,16 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         em.close();
 
         // when
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, reviewStatus);
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, null, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds.subList(1, 1 + limit);
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(runnerPosts).hasSize(limit);
-            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+            softly.assertThat(runnerPosts.contents()).hasSize(limit);
+            softly.assertThat(runnerPosts.contents().stream().mapToLong(RunnerPost::getId))
                     .isEqualTo(expected);
+            softly.assertThat(runnerPosts.total()).isEqualTo(persistSize);
         });
     }
 
@@ -138,15 +145,16 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         em.close();
 
         // when
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, null, reviewStatus);
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, null, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds;
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(runnerPosts).hasSize(limit);
-            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+            softly.assertThat(runnerPosts.contents()).hasSize(limit);
+            softly.assertThat(runnerPosts.contents().stream().mapToLong(RunnerPost::getId))
                     .isEqualTo(expected);
+            softly.assertThat(runnerPosts.total()).isEqualTo(runnerPostCount);
         });
     }
 
@@ -176,15 +184,16 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
 
         // when
         final TagReducedName tagReducedName = TagReducedName.from(tagName);
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, tagReducedName, reviewStatus);
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(previousLastId, limit, tagReducedName, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds.subList(1, 1 + limit);
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(runnerPosts).hasSize(limit);
-            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+            softly.assertThat(runnerPosts.contents()).hasSize(limit);
+            softly.assertThat(runnerPosts.contents().stream().mapToLong(RunnerPost::getId))
                     .isEqualTo(expected);
+            softly.assertThat(runnerPosts.total()).isEqualTo(persistSize);
         });
     }
 
@@ -199,7 +208,8 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
         final Tag tag = persistTag(tagName);
 
         final List<Long> runnerPostIds = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        final int persistRunnerPostCount = 10;
+        for (int i = 0; i < persistRunnerPostCount; i++) {
             final RunnerPost runnerPost = persistRunnerPost(runner, reviewStatus);
             persistRunnerPostTag(runnerPost, tag);
             runnerPostIds.add(runnerPost.getId());
@@ -211,15 +221,16 @@ class RunnerPostPageRepositoryTest extends RepositoryTestConfig {
 
         // when
         final TagReducedName tagReducedName = TagReducedName.from(tagName);
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, tagReducedName, reviewStatus);
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(null, limit, tagReducedName, reviewStatus);
         runnerPostIds.sort(Comparator.reverseOrder());
         final List<Long> expected = runnerPostIds;
 
         // then
         assertSoftly(softly -> {
-            softly.assertThat(runnerPosts).hasSize(limit);
-            softly.assertThat(runnerPosts.stream().mapToLong(RunnerPost::getId))
+            softly.assertThat(runnerPosts.contents()).hasSize(limit);
+            softly.assertThat(runnerPosts.contents().stream().mapToLong(RunnerPost::getId))
                     .isEqualTo(expected);
+            softly.assertThat(runnerPosts.total()).isEqualTo(persistRunnerPostCount);
         });
     }
 
