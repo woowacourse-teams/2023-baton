@@ -61,7 +61,7 @@ class RankQueryServiceTest extends ServiceTestConfig {
 
         // when
         final int maxCount = 5;
-        final RankResponses actual = rankQueryService.readMostReviewSupporter(maxCount);
+        final RankResponses<RankResponses.SupporterRank> actual = rankQueryService.readMostReviewSupporter(maxCount);
 
         // then
         assertAll(
@@ -73,7 +73,7 @@ class RankQueryServiceTest extends ServiceTestConfig {
         );
     }
 
-    private static void assertResponse(final RankResponses.SupporterResponse response, final int rank, final String memberName, final int reviewCount) {
+    private static void assertResponse(final RankResponses.SupporterRank response, final int rank, final String memberName, final int reviewCount) {
         assertAll(
                 () -> assertThat(response.rank()).isEqualTo(rank),
                 () -> assertThat(response.name()).isEqualTo(memberName),

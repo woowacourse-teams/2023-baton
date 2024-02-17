@@ -26,12 +26,12 @@ public class RankReadApiTest extends RestdocsConfig {
     @Test
     void readMostReviewSupporter() throws Exception {
         // given
-        final List<RankResponses.SupporterResponse> response = List.of(
-                new RankResponses.SupporterResponse(1, "ethan", 1L, 10, "imageUrl", "githubUrl", "우아한테크코스", List.of("java", "spring")),
-                new RankResponses.SupporterResponse(2, "hyena", 2L, 9, "imageUrl", "githubUrl", "우아한테크코스", List.of("java", "spring")),
-                new RankResponses.SupporterResponse(3, "ditoo", 3L, 8, "imageUrl", "githubUrl", "우아한테크코스", List.of("java", "spring")),
-                new RankResponses.SupporterResponse(4, "aiden", 4L, 7, "imageUrl", "githubUrl", "우아한테크코스", List.of("javascript", "react")),
-                new RankResponses.SupporterResponse(5, "ditoo", 5L, 6, "imageUrl", "githubUrl", "우아한테크코스", List.of("javascript", "react"))
+        final List<RankResponses.SupporterRank> response = List.of(
+                new RankResponses.SupporterRank(1, "ethan", 1L, 10, "imageUrl", "githubUrl", "우아한테크코스", List.of("java", "spring")),
+                new RankResponses.SupporterRank(2, "hyena", 2L, 9, "imageUrl", "githubUrl", "우아한테크코스", List.of("java", "spring")),
+                new RankResponses.SupporterRank(3, "ditoo", 3L, 8, "imageUrl", "githubUrl", "우아한테크코스", List.of("java", "spring")),
+                new RankResponses.SupporterRank(4, "aiden", 4L, 7, "imageUrl", "githubUrl", "우아한테크코스", List.of("javascript", "react")),
+                new RankResponses.SupporterRank(5, "ditoo", 5L, 6, "imageUrl", "githubUrl", "우아한테크코스", List.of("javascript", "react"))
         );
 
         // when

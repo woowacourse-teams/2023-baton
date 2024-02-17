@@ -5,12 +5,12 @@ import touch.baton.domain.member.command.Supporter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public record RankResponses(List<SupporterResponse> data) {
+public record RankResponses<T extends Rankable>(List<T> data) {
 
-    public static RankResponses from(final List<Supporter> supporters) {
+    public static RankResponses<SupporterRank> from(final List<Supporter> supporters) {
         final AtomicInteger rank = new AtomicInteger(1);
-        final List<SupporterResponse> responses = supporters.stream()
-                .map(supporter -> new SupporterResponse(
+        final List<SupporterRank> responses = supporters.stream()
+                .map(supporter -> new SupporterRank(
                         rank.getAndIncrement(),
                         supporter.getMember().getMemberName().getValue(),
                         supporter.getId(),
@@ -23,10 +23,10 @@ public record RankResponses(List<SupporterResponse> data) {
                                 .toList()))
                 .toList();
 
-        return new RankResponses(responses);
+        return new RankResponses<>(responses);
     }
 
-    public record SupporterResponse(
+    public record SupporterRank(
             int rank,
             String name,
             long supporterId,
@@ -35,7 +35,7 @@ public record RankResponses(List<SupporterResponse> data) {
             String githubUrl,
             String company,
             List<String> technicalTags
-    ) {
+    ) implements Rankable {
 
     }
 }
