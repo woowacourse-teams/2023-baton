@@ -6,6 +6,7 @@ import touch.baton.domain.feedback.command.repository.SupporterFeedbackCommandRe
 import touch.baton.domain.member.command.repository.MemberCommandRepository;
 import touch.baton.domain.member.command.repository.SupporterCommandRepository;
 import touch.baton.domain.member.command.repository.SupporterRunnerPostCommandRepository;
+import touch.baton.domain.member.query.repository.RankQuerydslRepository;
 import touch.baton.domain.member.query.repository.RunnerQueryRepository;
 import touch.baton.domain.member.query.repository.SupporterQueryRepository;
 import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
@@ -76,6 +77,9 @@ public abstract class ServiceTestConfig extends RepositoryTestConfig {
 
     @Autowired
     protected NotificationQuerydslRepository notificationQuerydslRepository;
+
+    @Autowired
+    protected RankQuerydslRepository rankQuerydslRepository;
 
     @Autowired
     protected ApplicationEventPublisher publisher;

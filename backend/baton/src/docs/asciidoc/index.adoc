@@ -78,3 +78,8 @@ include::NotificationUpdateApi.adoc[]
 === *알림 삭제*
 
 include::NotificationDeleteApi.adoc[]
+
+== *[ 랭킹 ]*
+
+=== *랭킹 조회*
+include::RankReadAPI.adoc[]
