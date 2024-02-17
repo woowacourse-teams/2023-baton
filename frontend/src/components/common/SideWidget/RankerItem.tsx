@@ -72,6 +72,10 @@ const ListWrapper = styled(Flex)`
 
 const CustomFlex = styled(Flex)`
   min-width: 200px;
+
+  @media (max-width: 768px) {
+    min-width: 230px;
+  }
 `;
 
 export default RankerItem;
