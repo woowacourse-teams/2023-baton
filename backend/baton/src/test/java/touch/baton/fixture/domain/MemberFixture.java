@@ -37,6 +37,17 @@ public abstract class MemberFixture {
                 .build();
     }
 
+    public static Member create(final MemberName memberName) {
+        return Member.builder()
+                .memberName(memberName)
+                .socialId(socialId(String.format("%s socialId", memberName.getValue())))
+                .oauthId(oauthId(String.format("oauth_%s", memberName.getValue())))
+                .githubUrl(githubUrl("https://github.com/"))
+                .company(company("우아한테크코스 5기 백엔드"))
+                .imageUrl(imageUrl("https://"))
+                .build();
+    }
+
     public static Member createHyena() {
         return create(
                 memberName("헤나"),
