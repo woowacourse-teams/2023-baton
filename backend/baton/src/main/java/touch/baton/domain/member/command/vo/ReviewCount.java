@@ -24,4 +24,8 @@ public class ReviewCount {
     public ReviewCount(final int value) {
         this.value = value;
     }
+
+    public void increase() {
+        this.value += 1;
+    }
 }

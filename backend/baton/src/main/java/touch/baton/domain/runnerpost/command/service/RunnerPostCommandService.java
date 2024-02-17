@@ -137,6 +137,7 @@ public class RunnerPostCommandService {
         }
 
         foundRunnerPost.finishReview();
+        supporter.increaseReviewCount();
 
         eventPublisher.publishEvent(new RunnerPostReviewStatusDoneEvent(foundRunnerPost.getId()));
     }
