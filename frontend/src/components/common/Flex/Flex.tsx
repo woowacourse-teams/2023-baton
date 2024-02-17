@@ -13,7 +13,7 @@ const Flex = styled.div<FlexProps>(({ align, justify, direction, gap }) => ({
   alignItems: align,
   justifyContent: justify,
   flexDirection: direction,
-  gap: `${gap}px`,
+  gap: gap ? `${gap}px` : undefined,
 }));
 
 export default Flex;
