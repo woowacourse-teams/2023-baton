@@ -9,15 +9,17 @@ interface TextProps {
   display?: CSSProperties['display'];
   textAlign?: CSSProperties['textAlign'];
   fontWeight?: CSSProperties['fontWeight'];
+  textDecoration?: string;
   $bold?: boolean;
 }
 
 const Text = styled.span<TextProps>(
-  ({ color = 'label', display, textAlign, fontWeight, $bold }) => ({
+  ({ color = 'label', display, textAlign, fontWeight, $bold, textDecoration }) => ({
     color: colors[color],
     display,
     textAlign,
     fontWeight: $bold ? 'bold' : fontWeight,
+    textDecoration,
   }),
   ({ typography = 't6' }) => typographyMap[typography],
 );
