@@ -6,6 +6,7 @@ export interface Rank {
   imageUrl: string;
   githubUrl: string;
   technicalTags: string[];
+  company: string;
 }
 
 export interface GetSupporterRankResponse {

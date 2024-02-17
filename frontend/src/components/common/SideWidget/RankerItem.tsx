@@ -22,7 +22,7 @@ const RankerItem = ({ supporter, onClick }: RankerItemProps) => {
             <Flex direction="column" align="start">
               <Text>{supporter.name}</Text>
               <Text typography="t8" color="gray500">
-                @우아한테크코스
+                @{supporter.company}
               </Text>
             </Flex>
             <Flex gap={4}>
@@ -32,10 +32,10 @@ const RankerItem = ({ supporter, onClick }: RankerItemProps) => {
             </Flex>
           </Flex>
         </Flex>
-        <Flex gap={5} align="end">
+        <CustomFlex gap={5} align="end" justify="end">
           <Text>완료한 리뷰</Text>
           <Text $bold={true}>{supporter.reviewedCount}</Text>
-        </Flex>
+        </CustomFlex>
       </Flex>
     </ListWrapper>
   );
@@ -66,6 +66,10 @@ const ListWrapper = styled.li`
   @media (max-width: 768px) {
     animation: ${fadeIn} 0.5s ease-out forwards;
   }
+`;
+
+const CustomFlex = styled(Flex)`
+  min-width: 100px;
 `;
 
 export default RankerItem;

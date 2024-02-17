@@ -7,7 +7,8 @@
       "reviewedCount": 3,
       "imageUrl": "profile.jpg",
       "githubUrl": "https://github.com/cookienc",
-      "technicalTags": ["java", "spring"]
+      "technicalTags": ["java", "spring"],
+      "company": "우아한테크코스"
     },
     {
       "rank": 2,
@@ -16,16 +17,18 @@
       "reviewedCount": 0,
       "imageUrl": "profile.jpg",
       "githubUrl": "https://github.com/나이든",
-      "technicalTags": ["javascript", "react", "typescript"]
+      "technicalTags": ["javascript", "react", "typescript"],
+      "company": "우아한테크코스"
     },
     {
       "rank": 3,
-      "name": "제이미",
+      "name": "에이든ㅁㄴㅇㅁㄴㅇㅁ",
       "supporterId": 3,
       "reviewedCount": 5,
       "imageUrl": "profile2.jpg",
       "githubUrl": "https://github.com/jamie3",
-      "technicalTags": ["javascript", "react", "typescript"]
+      "technicalTags": ["javascript", "react", "typescript"],
+      "company": "한국외국어대학교ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㅁㅁ"
     },
     {
       "rank": 4,
@@ -34,7 +37,8 @@
       "reviewedCount": 2,
       "imageUrl": "profile3.jpg",
       "githubUrl": "https://github.com/carol4",
-      "technicalTags": ["java", "spring"]
+      "technicalTags": ["java", "spring"],
+      "company": "우아한테크코스"
     },
     {
       "rank": 5,
@@ -43,7 +47,8 @@
       "reviewedCount": 4,
       "imageUrl": "profile4.jpg",
       "githubUrl": "https://github.com/brian5",
-      "technicalTags": ["java", "spring"]
+      "technicalTags": ["java", "spring"],
+      "company": "우아한테크코스"
     }
   ]
 }
