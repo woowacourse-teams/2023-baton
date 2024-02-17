@@ -56,6 +56,12 @@ const underLine = css`
 const S = {
   FilterContainer: styled.ul`
     width: max-content;
+
+    @media (max-width: 768px) {
+      max-width: 340px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
   `,
 
   LabelList: styled.li`
@@ -65,13 +71,11 @@ const S = {
     list-style: none;
 
     @media (max-width: 768px) {
-      gap: 12px;
+      gap: 14px;
     }
   `,
 
   StatusLabel: styled.label`
-    display: flex;
-
     :hover {
       cursor: pointer;
     }

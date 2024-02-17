@@ -155,6 +155,8 @@ const S = {
     display: flex;
     justify-content: space-between;
     align-items: end;
+    flex-wrap: wrap;
+    gap: 30px;
 
     margin-bottom: 36px;
 
