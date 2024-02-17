@@ -17,6 +17,7 @@ public record RankResponses(List<SupporterResponse> data) {
                         supporter.getReviewCount().getValue(),
                         supporter.getMember().getImageUrl().getValue(),
                         supporter.getMember().getGithubUrl().getValue(),
+                        supporter.getMember().getCompany().getValue(),
                         supporter.getSupporterTechnicalTags().getSupporterTechnicalTags().stream()
                                 .map(supporterTechnicalTag -> supporterTechnicalTag.getTechnicalTag().getTagName().getValue())
                                 .toList()))
@@ -32,6 +33,7 @@ public record RankResponses(List<SupporterResponse> data) {
             int reviewedCount,
             String imageUrl,
             String githubUrl,
+            String company,
             List<String> technicalTags
     ) {
 

@@ -63,6 +63,7 @@ public class RankQueryAssuredSupport {
                     리뷰수,
                     member.getImageUrl().getValue(),
                     member.getGithubUrl().getValue(),
+                    member.getCompany().getValue(),
                     Collections.emptyList());
         }
     }
