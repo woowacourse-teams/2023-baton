@@ -26,6 +26,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
         final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final Long 러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
+        final long 전체_게시글_수 = 1;
 
         final RunnerPost 러너_게시글 = runnerPostRepository.getByRunnerPostId(러너_게시글_식별자값);
         final long 서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(러너_게시글_식별자값);
@@ -39,7 +40,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last();
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last(전체_게시글_수);
         final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보
@@ -63,6 +64,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
 
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
+        final long 전체_게시글_수 = 2;
 
         final RunnerPost 다음_페이지_러너_게시글 = runnerPostRepository.getByRunnerPostId(다음_페이지_러너_게시글_식별자값);
         final long 다음_페이지_게시글_서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(다음_페이지_러너_게시글_식별자값);
@@ -76,7 +78,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last();
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last(전체_게시글_수);
         final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보
@@ -99,6 +101,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
         final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final Long 러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
+        final long 전체_게시글_수 = 1;
 
         final RunnerPost 러너_게시글 = runnerPostRepository.getByRunnerPostId(러너_게시글_식별자값);
         final long 서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(러너_게시글_식별자값);
@@ -112,7 +115,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last();
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last(전체_게시글_수);
         final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보
@@ -136,6 +139,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
 
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
+        final long 전체_게시글_수 = 2;
 
         final RunnerPost 다음_페이지_러너_게시글 = runnerPostRepository.getByRunnerPostId(다음_페이지_러너_게시글_식별자값);
         final long 다음_페이지_게시글_서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(다음_페이지_러너_게시글_식별자값);
@@ -149,7 +153,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last();
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last(전체_게시글_수);
         final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보
@@ -172,6 +176,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
         final String 액세스_토큰 = oauthLoginTestManager.소셜_회원가입을_진행한_후_액세스_토큰을_반환한다(FakeAuthCodes.hyenaAuthCode());
 
         final Long 러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
+        final long 전체_게시글_수 = 1;
 
         final RunnerPost 러너_게시글 = runnerPostRepository.getByRunnerPostId(러너_게시글_식별자값);
         final long 서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(러너_게시글_식별자값);
@@ -185,7 +190,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last();
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last(전체_게시글_수);
         final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보
@@ -209,6 +214,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
 
         final Long 다음_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
         final Long 이전_페이지_러너_게시글_식별자값 = 러너_게시글_생성을_성공하고_러너_게시글_식별자값을_반환한다(액세스_토큰);
+        final long 전체_게시글_수 = 2;
 
         final RunnerPost 현재_페이지_러너_게시글 = runnerPostRepository.getByRunnerPostId(다음_페이지_러너_게시글_식별자값);
         final long 현재_페이지_게시글_서포터_지원자_수 = runnerPostRepository.countApplicantByRunnerPostId(다음_페이지_러너_게시글_식별자값);
@@ -222,7 +228,7 @@ class RunnerPostPageAssuredTest extends AssuredTestConfig {
                 ReviewStatus.NOT_STARTED,
                 List.of("자바", "스프링")
         );
-        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last();
+        final PageResponse.PageInfo 기대된_페이징_정보 = PageResponse.PageInfo.last(전체_게시글_수);
         final PageResponse<RunnerPostResponse.Simple> 기대된_러너_게시글_전체_Simple_페이징_응답 = 러너_게시글_전체_Simple_페이징_응답(
                 List.of(기대된_러너_게시글_Simple_응답),
                 기대된_페이징_정보

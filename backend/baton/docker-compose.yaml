@@ -1,6 +1,7 @@
 services:
   mysql:
     image: 'mysql:latest'
+    container_name: 'baton-mysql'
     environment:
       - 'MYSQL_DATABASE=mydatabase'
       - 'MYSQL_PASSWORD=secret'
@@ -8,3 +9,12 @@ services:
       - 'MYSQL_USER=myuser'
     ports:
       - '3307:3306'
+  redis:
+    image: 'redis:7.0-alpine'
+    container_name: 'baton-redis'
+    ports:
+      - '16379:6379'
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis/users.acl:/etc/redis/users.acl

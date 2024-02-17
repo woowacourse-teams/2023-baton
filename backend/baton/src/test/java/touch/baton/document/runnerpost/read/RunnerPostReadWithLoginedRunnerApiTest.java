@@ -108,7 +108,8 @@ class RunnerPostReadWithLoginedRunnerApiTest extends RestdocsConfig {
                                         .description("서포터 id (서포터가 존재할 때 NUMBER, 아닌 경우에 NULL)"),
                                 fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
                                 fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부"),
-                                fieldWithPath("pageInfo.nextCursor").type(NUMBER).optional().description("다음 커서")
+                                fieldWithPath("pageInfo.nextCursor").type(NUMBER).optional().description("다음 커서"),
+                                fieldWithPath("pageInfo.totalCount").type(NUMBER).optional().description("전체 페이지 수").ignored()
                         ))
                 );
     }

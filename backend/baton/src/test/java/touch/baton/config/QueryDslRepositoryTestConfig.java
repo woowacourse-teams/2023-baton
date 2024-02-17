@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import touch.baton.domain.member.query.repository.RankQuerydslRepository;
 import touch.baton.domain.notification.query.repository.NotificationQuerydslRepository;
 import touch.baton.domain.runnerpost.query.repository.RunnerPostPageRepository;
 import touch.baton.domain.tag.query.repository.TagQuerydslRepository;
@@ -33,5 +34,10 @@ public class QueryDslRepositoryTestConfig {
     @Bean
     public TagQuerydslRepository tagQuerydslRepository() {
         return new TagQuerydslRepository(jpaQueryFactory());
+    }
+
+    @Bean
+    public RankQuerydslRepository queryDslRepository() {
+        return new RankQuerydslRepository(jpaQueryFactory());
     }
 }

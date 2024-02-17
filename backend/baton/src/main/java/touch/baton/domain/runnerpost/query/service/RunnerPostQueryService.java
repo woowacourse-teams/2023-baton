@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import touch.baton.domain.common.request.PageParams;
 import touch.baton.domain.common.response.PageResponse;
+import touch.baton.domain.common.vo.Page;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.SupporterRunnerPost;
 import touch.baton.domain.member.query.repository.SupporterRunnerPostQueryRepository;
@@ -42,13 +43,13 @@ public class RunnerPostQueryService {
                                                                                           final PageParams pageParams,
                                                                                           final ReviewStatus reviewStatus
     ) {
-        final List<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.getLimitForQuery(), TagReducedName.nullableInstance(tagName), reviewStatus);
-        final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts);
-        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts);
-        final List<RunnerPostResponse.Simple> responses = runnerPosts.stream()
+        final Page<RunnerPost> runnerPosts = runnerPostPageRepository.pageByReviewStatusAndTagReducedName(pageParams.cursor(), pageParams.getLimitForQuery(), TagReducedName.nullableInstance(tagName), reviewStatus);
+        final List<RunnerPostTag> runnerPostTags = runnerPostPageRepository.findRunnerPostTagsByRunnerPosts(runnerPosts.contents());
+        final RunnerPostsApplicantCount runnerPostsApplicantCount = readRunnerPostsApplicantCount(runnerPosts.contents());
+        final List<RunnerPostResponse.Simple> responses = runnerPosts.contents().stream()
                 .map(runnerPost -> RunnerPostResponse.Simple.of(runnerPost, runnerPostsApplicantCount.getApplicantCountById(runnerPost.getId()), runnerPostTags))
                 .toList();
-        return PageResponse.of(responses, pageParams);
+        return PageResponse.of(responses, pageParams, runnerPosts.total());
     }
 
     public PageResponse<RunnerPostResponse.Simple> pageRunnerPostBySupporterIdAndReviewStatus(final PageParams pageParams,
