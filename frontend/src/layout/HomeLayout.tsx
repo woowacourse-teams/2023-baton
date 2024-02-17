@@ -27,7 +27,7 @@ const S = {
 
   ChildrenWrapper: styled.article<{ $maxWidth?: string }>`
     display: grid;
-    grid-template-columns: 2.5fr 1fr;
+    grid-template-columns: 2.5fr 0.8fr;
     gap: 50px;
     max-width: ${({ $maxWidth }) => $maxWidth || '1280px'};
     width: 100%;

@@ -13,29 +13,31 @@ interface RankerItemProps {
 
 const RankerItem = ({ supporter, onClick }: RankerItemProps) => {
   return (
-    <ListWrapper key={supporter.supporterId} onClick={onClick}>
-      <Flex justify="space-between" gap={10}>
-        <Flex gap={10} align="center">
-          <Text typography="t7">{supporter.rank}</Text>
-          <Avatar width="35px" height="35px" imageUrl={supporter.imageUrl} />
-          <Flex direction="column" align="start" gap={8}>
+    <ListWrapper as="li" align="center" key={supporter.supporterId} onClick={onClick}>
+      <Flex align="center" gap={10}>
+        <Text typography="t7">{supporter.rank}</Text>
+        <Avatar width="35px" height="35px" imageUrl={supporter.imageUrl} />
+        <Flex direction="column" gap={10}>
+          <Flex gap={10} align="center">
             <Flex direction="column" align="start">
               <Text>{supporter.name}</Text>
               <Text typography="t8" color="gray500">
                 @{supporter.company}
               </Text>
             </Flex>
+          </Flex>
+          <CustomFlex justify="space-between">
             <Flex gap={4}>
               {supporter.technicalTags?.map((tech) => (
                 <TechLabel key={tech} tag={tech} hideText={true} />
               ))}
             </Flex>
-          </Flex>
+            <Flex gap={5}>
+              <Text>완료한 리뷰</Text>
+              <Text $bold={true}>{supporter.reviewedCount}</Text>
+            </Flex>
+          </CustomFlex>
         </Flex>
-        <CustomFlex gap={5} align="end" justify="end">
-          <Text>완료한 리뷰</Text>
-          <Text $bold={true}>{supporter.reviewedCount}</Text>
-        </CustomFlex>
       </Flex>
     </ListWrapper>
   );
@@ -52,7 +54,7 @@ const fadeIn = keyframes`
   }
 `;
 
-const ListWrapper = styled.li`
+const ListWrapper = styled(Flex)`
   padding: 10px 15px;
 
   & {
@@ -69,7 +71,7 @@ const ListWrapper = styled.li`
 `;
 
 const CustomFlex = styled(Flex)`
-  min-width: 100px;
+  min-width: 200px;
 `;
 
 export default RankerItem;

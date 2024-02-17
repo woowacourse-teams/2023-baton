@@ -138,7 +138,7 @@ const S = {
     margin: 72px 0 53px 0;
 
     @media (max-width: 768px) {
-      margin: 40px 0 40px 0;
+      margin: 40px 0 20px 0;
     }
   `,
 

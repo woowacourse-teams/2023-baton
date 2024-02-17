@@ -41,7 +41,7 @@ const S = {
 
     padding: ${({ $hideText }) => ($hideText ? 0 : '1px 8px')};
 
-    font-size: 12px;
+    font-size: ${({ $hideText }) => ($hideText ? '14px' : '12px')};
     line-height: 18px;
 
     border-radius: 2em;

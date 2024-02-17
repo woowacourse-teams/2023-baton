@@ -28,7 +28,6 @@ const SideWidget = ({ children, title }: SideWidgetProps) => {
 };
 
 const Container = styled.div`
-  min-width: 280px;
   margin-bottom: 20px;
 `;
 
@@ -65,7 +64,7 @@ const SideWidgetList = ({ data }: SideWidgetListProps) => {
 
   return (
     <ListWrapper>
-      <ListContainer>
+      <ListContainer as="ul" direction="column">
         {isMobile ? (
           <RankerItem
             supporter={data[currentIndex]}
@@ -87,8 +86,9 @@ const SideWidgetList = ({ data }: SideWidgetListProps) => {
 };
 const ListWrapper = styled.div``;
 
-const ListContainer = styled.ul`
+const ListContainer = styled(Flex)`
   padding: 8px 10px;
+  gap: 8px;
 `;
 
 // const IconContainer = styled(Flex)`
