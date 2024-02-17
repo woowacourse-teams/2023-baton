@@ -26,6 +26,6 @@ public class ReviewCount {
     }
 
     public void increase() {
-        this.value += 1;
+        value += 1;
     }
 }

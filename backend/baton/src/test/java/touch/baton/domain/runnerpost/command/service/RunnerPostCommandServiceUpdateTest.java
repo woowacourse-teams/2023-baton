@@ -7,6 +7,7 @@ import touch.baton.config.ServiceTestConfig;
 import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
+import touch.baton.domain.member.command.vo.ReviewCount;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.exception.RunnerPostBusinessException;
 import touch.baton.domain.runnerpost.command.exception.RunnerPostDomainException;
@@ -143,6 +144,7 @@ class RunnerPostCommandServiceUpdateTest extends ServiceTestConfig {
         // given
         final IsReviewed isReviewed = IsReviewed.notReviewed();
         final RunnerPost targetRunnerPost = runnerPostQueryRepository.save(RunnerPostFixture.createWithSupporter(runner, assignedSupporter, IN_PROGRESS, isReviewed));
+        final ReviewCount originalReviewCount = new ReviewCount(assignedSupporter.getReviewCount().getValue());
 
         // when
         runnerPostCommandService.updateRunnerPostReviewStatusDone(targetRunnerPost.getId(), assignedSupporter);
@@ -152,6 +154,7 @@ class RunnerPostCommandServiceUpdateTest extends ServiceTestConfig {
         assertThat(maybeRunnerPost).isPresent();
         final RunnerPost actualRunnerPost = maybeRunnerPost.get();
         assertThat(actualRunnerPost.getReviewStatus()).isEqualTo(ReviewStatus.DONE);
+        assertThat(assignedSupporter.getReviewCount()).isEqualTo(new ReviewCount(originalReviewCount.getValue() + 1));
     }
 
     @DisplayName("없는 게시글의 상태를 리뷰 완료로 변경할 수 없다.")
