@@ -8,7 +8,7 @@
     "lib": ["dom", "dom.iterable", "esnext"] /* 컴파일 과정에 사용될 라이브러리 파일 설정 */,
     "allowJs": true /* JavaScript 파일 컴파일 허용 */,
     // "checkJs": true,                       /* .js 파일 오류 리포트 설정 */
-    "jsx": "react" /* 생성될 JSX 코드 설정: 'preserve', 'react-native', or 'react'. */,
+    "jsx": "react-jsx" /* 생성될 JSX 코드 설정: 'preserve', 'react-native', or 'react'. */,
     // "declaration": true,                   /* '.d.ts' 파일 생성 설정 */
     // "declarationMap": true,                /* 해당하는 각 '.d.ts'파일에 대한 소스 맵 생성 */
     // "sourceMap": true,                     /* 소스맵 '.map' 파일 생성 설정 */

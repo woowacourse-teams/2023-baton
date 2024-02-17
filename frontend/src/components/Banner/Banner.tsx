@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import bannerBackground from '@/assets/banner/banner_background.png';
-import eventBanner from '@/assets/banner/event_banner.webp';
+import eventBanner from '@/assets/banner/banner.webp';
 import { usePageRouter } from '@/hooks/usePageRouter';
 
 const Banner = () => {
@@ -27,24 +26,12 @@ const S = {
     align-items: center;
 
     width: 100%;
-    height: 292px;
-
-    background-image: url(${bannerBackground});
-
-    @media (max-width: 768px) {
-      height: 120px;
-    }
+    height: 100%;
   `,
 
   BannerContents: styled.img`
-    width: 904px;
-    height: 240px;
+    width: 240px;
 
     cursor: pointer;
-
-    @media (max-width: 768px) {
-      width: 340px;
-      height: 90px;
-    }
   `,
 };

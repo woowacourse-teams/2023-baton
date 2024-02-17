@@ -6,6 +6,7 @@ import LogoImageMobile from '@/assets/logo-image-mobile.svg';
 import Button from '@/components/common/Button/Button';
 import { isLogin } from '@/apis/auth';
 import MyMenu from './MyMenu';
+import { colors } from '@/styles/colorPalette';
 
 const Header = () => {
   const { goToMainPage, goToLoginPage } = usePageRouter();
@@ -34,11 +35,15 @@ const S = {
   HeaderWrapper: styled.header`
     display: flex;
     justify-content: center;
+    position: sticky;
+    top: 0;
 
     width: 100%;
-    padding: 0 30px;
+    padding: 0 16px;
 
     border-bottom: 0.3px solid #333333;
+    background-color: ${colors.white};
+    z-index: 7;
   `,
 
   HeaderContainer: styled.div`
@@ -46,9 +51,9 @@ const S = {
     justify-content: space-between;
     align-items: center;
 
-    max-width: 1200px;
+    max-width: 1280px;
     width: 100%;
-    height: 80px;
+    height: 60px;
   `,
 
   NotificationContainer: styled.div``,
@@ -65,8 +70,8 @@ const S = {
   `,
 
   Logo: styled.div`
-    width: 197px;
-    height: 35px;
+    width: 170px;
+    height: 30px;
 
     background-image: url(${LogoImage});
     background-size: cover;
@@ -99,7 +104,7 @@ const S = {
     border-radius: 50px;
 
     background-color: var(--baton-red);
-    color: var(--white-color);
+    color: var(--white);
     font-size: 14px;
   `,
 };

@@ -1,4 +1,3 @@
-import Banner from '@/components/Banner/Banner';
 import RunnerPostList from '@/components/RunnerPost/RunnerPostList/RunnerPostList';
 import RunnerPostSearchBox from '@/components/RunnerPost/RunnerPostSearchBox/RunnerPostSearchBox';
 import Button from '@/components/common/Button/Button';
@@ -7,11 +6,15 @@ import { ToastContext } from '@/contexts/ToastContext';
 import { usePageRouter } from '@/hooks/usePageRouter';
 import { useRunnerPostList } from '@/hooks/query/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
-import Layout from '@/layout/Layout';
-import { ReviewStatus, ReviewStatusFilter } from '@/types/runnerPost';
-import React, { useContext, useState } from 'react';
+import { ReviewStatus } from '@/types/runnerPost';
+import { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { isLogin } from '@/apis/auth';
+import SideWidget from '@/components/common/SideWidget/SideWidget';
+import { useRank } from '@/hooks/query/useRank';
+import HomeLayout from '@/layout/HomeLayout';
+import Text from '@/components/common/Text/Text';
+import { Link } from 'react-router-dom';
 
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
@@ -23,6 +26,7 @@ const MainPage = () => {
   const [reviewStatus, setReviewStatus] = useState<ReviewStatus | null>(null);
 
   const { data: runnerPostList, hasNextPage, fetchNextPage } = useRunnerPostList(reviewStatus, enteredTag);
+  const { data: rankList } = useRank();
 
   const handleClickMoreButton = () => {
     fetchNextPage();
@@ -39,9 +43,26 @@ const MainPage = () => {
     goToRunnerPostCreatePage();
   };
 
+  if (!rankList) {
+    return null;
+  }
+
   return (
-    <Layout maxWidth="none">
-      <Banner />
+    <HomeLayout>
+      {isMobile ? (
+        <S.SideWidgetContainer>
+          <S.SideWidgetWrapper>
+            <SideWidget title="🥇 코드 리뷰 랭킹">
+              <SideWidget.List data={rankList.data}></SideWidget.List>
+            </SideWidget>
+          </S.SideWidgetWrapper>
+
+          <Text as="p" typography="t7" textAlign="end" color="gray600" textDecoration="underline">
+            <Link to="/notice">코드 리뷰 받을 프로젝트가 없다면?</Link>
+          </Text>
+        </S.SideWidgetContainer>
+      ) : null}
+
       <S.MainContainer>
         <S.TitleWrapper>
           <S.Title>서포터를 찾고 있어요 👀</S.Title>
@@ -83,7 +104,21 @@ const MainPage = () => {
           </S.MoreButtonWrapper>
         </S.RunnerPostContainer>
       </S.MainContainer>
-    </Layout>
+
+      {!isMobile && (
+        <S.SideWidgetContainer>
+          <S.SideWidgetWrapper>
+            <SideWidget title="💻 구현 미션">
+              <SideWidget.Banner></SideWidget.Banner>
+            </SideWidget>
+
+            <SideWidget title="🥇 코드 리뷰 랭킹">
+              <SideWidget.List data={rankList.data}></SideWidget.List>
+            </SideWidget>
+          </S.SideWidgetWrapper>
+        </S.SideWidgetContainer>
+      )}
+    </HomeLayout>
   );
 };
 
@@ -91,12 +126,11 @@ export default MainPage;
 
 const S = {
   MainContainer: styled.div`
-    max-width: 1200px;
-    padding: 0 20px;
-    margin: 0 auto;
+    min-width: 480px;
 
     @media (max-width: 768px) {
       padding: 0;
+      min-width: auto;
     }
   `,
 
@@ -104,7 +138,7 @@ const S = {
     margin: 72px 0 53px 0;
 
     @media (max-width: 768px) {
-      margin: 40px 0 40px 0;
+      margin: 40px 0 20px 0;
     }
   `,
 
@@ -121,6 +155,8 @@ const S = {
     display: flex;
     justify-content: space-between;
     align-items: end;
+    flex-wrap: wrap;
+    gap: 30px;
 
     margin-bottom: 36px;
 
@@ -171,7 +207,7 @@ const S = {
   `,
 
   MoreButtonWrapper: styled.div`
-    max-width: 1200px;
+    max-width: 1280px;
     width: 100%;
     margin-bottom: 20px;
 
@@ -185,5 +221,20 @@ const S = {
     flex-direction: column;
     align-items: center;
     gap: 50px;
+  `,
+
+  SideWidgetContainer: styled.div`
+    position: relative;
+  `,
+
+  SideWidgetWrapper: styled.div`
+    display: block;
+    position: sticky;
+    top: 88px;
+
+    @media (max-width: 768px) {
+      min-width: 340px;
+      position: initial;
+    }
   `,
 };

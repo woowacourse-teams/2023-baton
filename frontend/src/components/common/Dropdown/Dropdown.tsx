@@ -61,7 +61,7 @@ const S = {
   DropdownMenuContainer: styled.div<{ $gapFromTrigger: string }>`
     position: absolute;
     top: ${({ $gapFromTrigger }) => $gapFromTrigger};
-    background-color: var(--white-color);
+    background-color: var(--white);
     border-radius: 0 0 10px 10px;
     border: 1px solid var(--gray-400);
     box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.05);

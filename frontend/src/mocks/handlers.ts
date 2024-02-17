@@ -11,6 +11,7 @@ import supporterProfilePost from './data/supporterProfilePost.json';
 import myPagePostList from './data/myPagePost/myPagePostList.json';
 import tagList from './data/tagList.json';
 import notificationList from './data/notification.json';
+import rank from './data/rank.json';
 import { BATON_BASE_URL } from '@/constants';
 import { getRestMinute } from '@/utils/jwt';
 
@@ -235,6 +236,10 @@ export const handlers = [
 
   rest.get(`${BATON_BASE_URL}/posts/runner/search/count`, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json({ count: 99 }));
+  }),
+
+  rest.get(`${BATON_BASE_URL}/rank/supporter`, async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.set('Content-Type', 'application/json'), ctx.json(rank));
   }),
 ];
 
