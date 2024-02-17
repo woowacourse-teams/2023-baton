@@ -16,6 +16,14 @@ spring:
         default-page-size: 10
         one-indexed-parameters: true
 
+  redis:
+    host: ${REDIS_HOST}
+    port: ${REDIS_PORT}
+    username: ${REDIS_USERNAME}
+    password: ${REDIS_PASSWORD
+    refresh_token:
+      expire_minutes: ${REFRESH_TOKEN_MINUTES}
+
 logging:
   config: classpath:logs/log4j2.xml
   level:
@@ -40,6 +48,3 @@ jwt:
     secret_key: ${JWT_SECRET_KEY}
     issuer: ${JWT_ISSUER}
     expire_minutes: ${JWT_EXPIRE_MINUTES}
-
-refresh_token:
-  expire_minutes: ${REFRESH_TOKEN_MINUTES}
