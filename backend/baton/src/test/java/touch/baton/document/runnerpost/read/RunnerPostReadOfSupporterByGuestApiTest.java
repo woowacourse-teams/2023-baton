@@ -97,7 +97,8 @@ class RunnerPostReadOfSupporterByGuestApiTest extends RestdocsConfig {
                                 fieldWithPath("data.[].runnerProfile.imageUrl").type(STRING).description("러너 게시글의 러너 프로필 이미지"),
                                 fieldWithPath("data.[].tags.[]").type(ARRAY).description("러너 게시글의 태그 목록"),
                                 fieldWithPath("pageInfo.isLast").type(BOOLEAN).description("마지막 페이지 여부"),
-                                fieldWithPath("pageInfo.nextCursor").type(NUMBER).optional().description("다음 커서")
+                                fieldWithPath("pageInfo.nextCursor").type(NUMBER).optional().description("다음 커서"),
+                                fieldWithPath("pageInfo.totalCount").type(NUMBER).optional().description("전체 페이지 수").ignored()
                         ))
                 );
     }
