@@ -13,6 +13,8 @@ import { isLogin } from '@/apis/auth';
 import SideWidget from '@/components/common/SideWidget/SideWidget';
 import { useRank } from '@/hooks/query/useRank';
 import HomeLayout from '@/layout/HomeLayout';
+import Text from '@/components/common/Text/Text';
+import { Link } from 'react-router-dom';
 
 const MainPage = () => {
   const { goToRunnerPostCreatePage, goToLoginPage } = usePageRouter();
@@ -47,6 +49,20 @@ const MainPage = () => {
 
   return (
     <HomeLayout>
+      {isMobile ? (
+        <S.SideWidgetContainer>
+          <S.SideWidgetWrapper>
+            <SideWidget title="🥇 코드 리뷰 랭킹">
+              <SideWidget.List data={rankList.data}></SideWidget.List>
+            </SideWidget>
+          </S.SideWidgetWrapper>
+
+          <Text as="p" typography="t7" textAlign="end" color="gray600" textDecoration="underline">
+            <Link to="/notice">코드 리뷰 받을 프로젝트가 없다면?</Link>
+          </Text>
+        </S.SideWidgetContainer>
+      ) : null}
+
       <S.MainContainer>
         <S.TitleWrapper>
           <S.Title>서포터를 찾고 있어요 👀</S.Title>
@@ -89,7 +105,7 @@ const MainPage = () => {
         </S.RunnerPostContainer>
       </S.MainContainer>
 
-      {isMobile ? null : (
+      {!isMobile && (
         <S.SideWidgetContainer>
           <S.SideWidgetWrapper>
             <SideWidget title="💻 구현 미션">
@@ -213,5 +229,10 @@ const S = {
     display: block;
     position: sticky;
     top: 88px;
+
+    @media (max-width: 768px) {
+      min-width: 340px;
+      position: initial;
+    }
   `,
 };

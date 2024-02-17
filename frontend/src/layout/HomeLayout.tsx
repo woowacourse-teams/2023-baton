@@ -34,7 +34,7 @@ const S = {
     padding: 8px 16px;
 
     @media (max-width: 768px) {
-      display: flex;
+      display: block;
       padding: 15px;
     }
   `,

@@ -1,13 +1,13 @@
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import Flex from '../Flex/Flex';
 import Text from '../Text/Text';
-import { JavaIcon, SpringIcon } from '@/assets/technicalLabelIcon';
 import { Rank } from '@/types/rank';
-import TechLabel from '@/components/TechLabel/TechLabel';
-import Avatar from '../Avatar/Avatar';
-import { colors } from '@/styles/colorPalette';
 import Banner from '@/components/Banner/Banner';
 import { usePageRouter } from '@/hooks/usePageRouter';
+import useViewport from '@/hooks/useViewport';
+import { useEffect, useState } from 'react';
+import RankerItem from './RankerItem';
+import { DownArrowIcon, UpArrowIcon } from '@/assets/arrow-icon';
 
 interface SideWidgetProps {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ const SideWidget = ({ children, title }: SideWidgetProps) => {
 };
 
 const Container = styled.div`
-  min-width: 250px;
+  min-width: 280px;
   margin-bottom: 20px;
 `;
 
@@ -43,60 +43,57 @@ interface SideWidgetListProps {
 
 const SideWidgetList = ({ data }: SideWidgetListProps) => {
   const { goToSupporterProfilePage } = usePageRouter();
+  const { isMobile } = useViewport();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  // const [showMore, setShowMore] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [data.length, currentIndex]);
 
   const handleClickRanker = (id: number) => {
     goToSupporterProfilePage(id);
   };
 
+  // const handleShowMore = () => {
+  //   setShowMore((prevShowMore) => !prevShowMore);
+  // };
+
   return (
-    <div>
+    <ListWrapper>
       <ListContainer>
-        {data?.map((supporter) => {
-          return (
-            <ListWrapper key={supporter.supporterId} onClick={() => handleClickRanker(supporter.supporterId)}>
-              <CustomFlex justify="space-between">
-                <Flex gap={10} align="center">
-                  <div>{supporter.rank}</div>
-                  <Avatar width="15px" height="15px" imageUrl={supporter.imageUrl} />
-                  <Text>{supporter.name}</Text>
-                  <Flex gap={4}>
-                    {supporter.technicalTags?.map((tech) => (
-                      <TechLabel key={tech} tag={tech} hideText={true} />
-                    ))}
-                  </Flex>
-                </Flex>
-                <Flex gap={5}>
-                  <Text>완료한 리뷰</Text>
-                  <Text $bold={true}>{supporter.reviewedCount}</Text>
-                </Flex>
-              </CustomFlex>
-            </ListWrapper>
-          );
-        })}
+        {isMobile ? (
+          <RankerItem
+            supporter={data[currentIndex]}
+            onClick={() => handleClickRanker(data[currentIndex].supporterId)}
+          />
+        ) : (
+          data.map((supporter) => (
+            <RankerItem supporter={supporter} onClick={() => handleClickRanker(supporter.supporterId)} />
+          ))
+        )}
       </ListContainer>
-    </div>
+      {/* {isMobile && (
+        <IconContainer justify="center" onClick={handleShowMore}>
+          {showMore ? <UpArrowIcon /> : <DownArrowIcon />}
+        </IconContainer>
+      )} */}
+    </ListWrapper>
   );
 };
+const ListWrapper = styled.div``;
 
 const ListContainer = styled.ul`
   padding: 8px 10px;
 `;
 
-const ListWrapper = styled.li`
-  padding: 10px 15px;
-
-  & {
-    cursor: pointer;
-  }
-
-  &:hover {
-    background-color: ${colors.gray100};
-  }
-`;
-
-const CustomFlex = styled(Flex)`
-  gap: 10px;
-`;
+// const IconContainer = styled(Flex)`
+//   padding: 5px;
+// `;
 
 const SideWidgetBanner = () => {
   return (
