@@ -4,8 +4,8 @@ import {
   GetDetailedRunnerPostResponse,
   GetOtherSupporterPostCountResponse,
   GetRunnerPostResponse,
-  ReviewStatus,
   getRunnerPostRequestParams,
+  GetPostCountResponse,
 } from '@/types/runnerPost';
 import { GetSearchTagResponse } from '@/types/tags';
 import {
@@ -106,6 +106,10 @@ export const getOtherSupporterPostCount = (userId: number) => {
 
 export const getSupporterRank = () => {
   return request.get<GetSupporterRankResponse>('/rank/supporter', false);
+};
+
+export const getPostCount = () => {
+  return request.get<GetPostCountResponse>('/posts/runner/count', false);
 };
 
 export const postRunnerPostCreation = (formData: CreateRunnerPostRequest) => {

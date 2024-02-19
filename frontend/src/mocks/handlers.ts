@@ -12,6 +12,7 @@ import myPagePostList from './data/myPagePost/myPagePostList.json';
 import tagList from './data/tagList.json';
 import notificationList from './data/notification.json';
 import rank from './data/rank.json';
+import postCount from './data/postCount.json';
 import { BATON_BASE_URL } from '@/constants';
 import { getRestMinute } from '@/utils/jwt';
 
@@ -64,6 +65,10 @@ export const handlers = [
 
   rest.post(`${BATON_BASE_URL}/posts/runner`, async (req, res, ctx) => {
     return res(ctx.delay(300), ctx.status(201));
+  }),
+
+  rest.get(`${BATON_BASE_URL}/posts/runner/count`, async (req, res, ctx) => {
+    return res(ctx.delay(300), ctx.status(200), ctx.json(postCount));
   }),
 
   rest.get(`${BATON_BASE_URL}/profile/me`, async (req, res, ctx) => {

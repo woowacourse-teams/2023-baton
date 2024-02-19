@@ -3,8 +3,9 @@ import { css, keyframes, styled } from 'styled-components';
 import { REVIEW_STATUS_FILTER_TEXT } from '@/constants';
 import Text from '@/components/common/Text/Text';
 import Flex from '@/components/common/Flex/Flex';
-import { ReviewStatusFilter } from '@/types/runnerPost';
-import useTotalCount from '@/hooks/query/useTotalCount';
+import { PostCount, ReviewStatusFilter } from '@/types/runnerPost';
+import { usePostCount } from '@/hooks/query/usePostCount';
+import useViewport from '@/hooks/useViewport';
 
 interface Props {
   reviewStatus: ReviewStatusFilter;
@@ -12,7 +13,26 @@ interface Props {
 }
 
 const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
-  const { totalCounts, isAllLoaded } = useTotalCount();
+  const { data: totalCount } = usePostCount();
+  const { isMobile } = useViewport();
+
+  function transformPostCountToReviewStatusFilter(postCount: PostCount): { [key in ReviewStatusFilter]: number } {
+    const all = Object.values(postCount).reduce((acc, currentValue) => acc + currentValue, 0);
+
+    return {
+      NOT_STARTED: postCount.notStarted,
+      IN_PROGRESS: postCount.inProgress,
+      OVERDUE: postCount.overdue,
+      DONE: postCount.done,
+      ALL: all,
+    };
+  }
+
+  if (!totalCount) {
+    return <div style={isMobile ? { height: '38px' } : { height: '46px' }}></div>;
+  }
+
+  const reviewStatusCounts = transformPostCountToReviewStatusFilter(totalCount);
 
   return (
     <S.FilterContainer>
@@ -34,7 +54,7 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
                   <Flex align="end" gap={3}>
                     <Text color={isSelected ? 'red' : 'gray600'}>{text}</Text>
                     <Text color={isSelected ? 'red' : 'gray600'} typography="t8">
-                      ({isAllLoaded ? totalCounts[value as ReviewStatusFilter] : 0})
+                      ({reviewStatusCounts[value as ReviewStatusFilter]})
                     </Text>
                   </Flex>
                 </S.Label>

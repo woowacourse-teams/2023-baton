@@ -19,6 +19,17 @@ export interface RunnerPost {
   reviewStatus: ReviewStatus;
 }
 
+export interface PostCount {
+  notStarted: number;
+  inProgress: number;
+  overdue: number;
+  done: number;
+}
+
+export interface GetPostCountResponse {
+  data: PostCount;
+}
+
 export interface RunnerProfile {
   name: string;
   imageUrl: string;
@@ -63,7 +74,7 @@ export interface PageInfo {
 
 interface requestParams {
   tagName?: string;
-  reviewStatus: ReviewStatus | ReviewStatusFilter | null;
+  reviewStatus: ReviewStatus | null;
 }
 
 export interface getRunnerPostRequestParams extends pageParamsRequest, requestParams {}

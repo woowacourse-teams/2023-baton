@@ -103,7 +103,6 @@
   ],
   "pageInfo": {
     "isLast": false,
-    "nextCursor": 1,
-    "totalCount": 129
+    "nextCursor": 1
   }
 }
