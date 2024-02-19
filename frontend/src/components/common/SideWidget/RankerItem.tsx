@@ -15,7 +15,7 @@ const RankerItem = ({ supporter, onClick }: RankerItemProps) => {
   return (
     <ListWrapper as="li" align="center" key={supporter.supporterId} onClick={onClick}>
       <Flex align="center" gap={10}>
-        <Text typography="t7">{supporter.rank}</Text>
+        <Text>{supporter.rank}</Text>
         <Avatar width="35px" height="35px" imageUrl={supporter.imageUrl} />
         <Flex direction="column" gap={10}>
           <Flex gap={10} align="center">

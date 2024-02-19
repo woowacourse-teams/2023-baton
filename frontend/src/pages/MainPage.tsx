@@ -77,10 +77,10 @@ const MainPage = () => {
           </S.LeftSideContainer>
           <S.RightSideContainer>
             <Button
-              width={isMobile ? '160px' : '190px'}
+              width={'160px'}
               onClick={handleClickPostButton}
               colorTheme="WHITE"
-              fontSize={isMobile ? '14px' : '18px'}
+              fontSize={isMobile ? '14px' : '16px'}
               ariaLabel="리뷰 요청 글 작성"
             >
               리뷰 요청 글 작성하기
@@ -135,7 +135,7 @@ const S = {
   `,
 
   TitleWrapper: styled.header`
-    margin: 72px 0 53px 0;
+    margin: 20px 0 53px 0;
 
     @media (max-width: 768px) {
       margin: 40px 0 20px 0;

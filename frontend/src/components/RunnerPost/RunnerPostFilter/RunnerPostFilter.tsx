@@ -32,8 +32,8 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
                 />
                 <S.Label $isSelected={isSelected}>
                   <Flex align="end" gap={3}>
-                    <Text color={isSelected ? 'red' : 'label'}>{text}</Text>
-                    <Text color={isSelected ? 'red' : 'label'} typography="t8">
+                    <Text color={isSelected ? 'red' : 'gray600'}>{text}</Text>
+                    <Text color={isSelected ? 'red' : 'gray600'} typography="t8">
                       ({isAllLoaded ? totalCounts[value as ReviewStatusFilter] : 0})
                     </Text>
                   </Flex>

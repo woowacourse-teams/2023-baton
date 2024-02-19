@@ -18,7 +18,7 @@ const SideWidget = ({ children, title }: SideWidgetProps) => {
   return (
     <Container>
       <Flex direction="column" gap={10}>
-        <Text typography="t4" $bold={true}>
+        <Text typography="t5" $bold={true}>
           {title}
         </Text>
         <ContentsContainer>{children}</ContentsContainer>

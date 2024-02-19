@@ -7,15 +7,12 @@ import Label from '@/components/common/Label/Label';
 import { REVIEW_STATUS_LABEL_TEXT } from '@/constants';
 import eyeIcon from '@/assets/eye-icon.svg';
 import applicantIcon from '@/assets/applicant-icon.svg';
-import useViewport from '@/hooks/useViewport';
 
 const RunnerPostItem = ({
   runnerPostData: { runnerPostId, title, deadline, tags, runnerProfile, watchedCount, applicantCount, reviewStatus },
 }: {
   runnerPostData: RunnerPost;
 }) => {
-  const { isMobile } = useViewport();
-
   const { goToRunnerPostPage } = usePageRouter();
 
   const handlePostClick = () => {
@@ -29,9 +26,9 @@ const RunnerPostItem = ({
         <S.DeadLineContainer>
           <S.DeadLine>{deadline.replace('T', ' ')} 까지</S.DeadLine>
           <Label
-            height={isMobile ? '18px' : '22px'}
+            height={'18px'}
             colorTheme={reviewStatus === 'NOT_STARTED' ? 'WHITE' : reviewStatus === 'IN_PROGRESS' ? 'RED' : 'GRAY'}
-            fontSize={isMobile ? '10px' : ''}
+            fontSize={'10px'}
           >
             {REVIEW_STATUS_LABEL_TEXT[reviewStatus]}
           </Label>
@@ -45,11 +42,7 @@ const RunnerPostItem = ({
       <S.RightSideContainer>
         {runnerProfile ? (
           <S.ProfileContainer>
-            <Avatar
-              width={isMobile ? '30px' : '50px'}
-              height={isMobile ? '30px' : '50px'}
-              imageUrl={runnerProfile.imageUrl}
-            />
+            <Avatar width={'30px'} height={'30px'} imageUrl={runnerProfile.imageUrl} />
             <S.ProfileName>{runnerProfile.name}</S.ProfileName>
           </S.ProfileContainer>
         ) : null}
@@ -76,7 +69,7 @@ const S = {
     min-width: 340px;
     width: 100%;
     height: max-content;
-    padding: 35px 40px;
+    padding: 25px 30px;
 
     border: 0.5px solid var(--gray-500);
     border-radius: 12px;
@@ -89,16 +82,12 @@ const S = {
       transform: scale(1.015);
       outline: 1.5px solid var(--baton-red);
     }
-
-    @media (max-width: 768px) {
-      padding: 25px 30px;
-    }
   `,
 
   PostTitle: styled.p`
     margin-bottom: 15px;
 
-    font-size: 28px;
+    font-size: 20px;
     font-weight: 700;
 
     @media (max-width: 768px) {
@@ -114,6 +103,7 @@ const S = {
 
   DeadLine: styled.p`
     margin-bottom: 60px;
+    font-size: 14px;
 
     color: var(--gray-600);
 
