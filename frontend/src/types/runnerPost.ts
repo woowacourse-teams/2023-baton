@@ -58,11 +58,12 @@ export interface CreateRunnerPostRequest {
 export interface PageInfo {
   isLast: boolean;
   nextCursor: number;
+  totalCount: number;
 }
 
 interface requestParams {
   tagName?: string;
-  reviewStatus: ReviewStatus | null;
+  reviewStatus: ReviewStatus | ReviewStatusFilter | null;
 }
 
 export interface getRunnerPostRequestParams extends pageParamsRequest, requestParams {}

@@ -7,7 +7,7 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { useRunnerPostList } from '@/hooks/query/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
 import { ReviewStatus } from '@/types/runnerPost';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { isLogin } from '@/apis/auth';
 import SideWidget from '@/components/common/SideWidget/SideWidget';

@@ -1,28 +1,47 @@
 import React from 'react';
 import { css, keyframes, styled } from 'styled-components';
-import { REVIEW_STATUS_FILTER_TEXT, REVIEW_STATUS_LABEL_TEXT } from '@/constants';
+import { REVIEW_STATUS_FILTER_TEXT } from '@/constants';
+import Text from '@/components/common/Text/Text';
+import Flex from '@/components/common/Flex/Flex';
+import { ReviewStatusFilter } from '@/types/runnerPost';
+import useTotalCount from '@/hooks/query/useTotalCount';
 
 interface Props {
-  reviewStatus: string;
+  reviewStatus: ReviewStatusFilter;
   handleClickRadioButton: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
+  const { totalCounts, isAllLoaded } = useTotalCount();
+
   return (
     <S.FilterContainer>
       <S.LabelList>
-        {Object.entries(REVIEW_STATUS_FILTER_TEXT).map(([value, text]) => (
-          <S.StatusLabel key={value}>
-            <S.RadioButton
-              type="radio"
-              name="reviewStatus"
-              value={value}
-              checked={reviewStatus === value}
-              onChange={handleClickRadioButton}
-            />
-            <S.Label $isSelected={reviewStatus === value}>{text}</S.Label>
-          </S.StatusLabel>
-        ))}
+        {Object.entries(REVIEW_STATUS_FILTER_TEXT).map(([value, text]) => {
+          const isSelected = reviewStatus === value;
+
+          return (
+            <Flex align="center" key={value}>
+              <S.StatusLabel>
+                <S.RadioButton
+                  type="radio"
+                  name="reviewStatus"
+                  value={value}
+                  checked={isSelected}
+                  onChange={handleClickRadioButton}
+                />
+                <S.Label $isSelected={isSelected}>
+                  <Flex align="end" gap={3}>
+                    <Text color={isSelected ? 'red' : 'label'}>{text}</Text>
+                    <Text color={isSelected ? 'red' : 'label'} typography="t8">
+                      ({isAllLoaded ? totalCounts[value as ReviewStatusFilter] : 0})
+                    </Text>
+                  </Flex>
+                </S.Label>
+              </S.StatusLabel>
+            </Flex>
+          );
+        })}
       </S.LabelList>
     </S.FilterContainer>
   );
@@ -96,7 +115,6 @@ const S = {
 
     font-size: 18px;
     font-weight: 700;
-    color: ${({ $isSelected }) => ($isSelected ? 'var(--baton-red)' : 'var(--gray-600)')};
 
     &::after {
       ${({ $isSelected }) => ($isSelected ? underLine : null)}
