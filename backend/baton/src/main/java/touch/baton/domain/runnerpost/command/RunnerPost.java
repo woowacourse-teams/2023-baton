@@ -210,6 +210,7 @@ public class RunnerPost extends BaseEntity {
 
     public void finishReview() {
         updateReviewStatus(ReviewStatus.DONE);
+        this.supporter.increaseReviewCount();
     }
 
     public void finishFeedback() {
