@@ -30,7 +30,6 @@ class RankQueryServiceTest extends ServiceTestConfig {
     @Test
     void readMostReviewSupporter() {
         // given
-
         for (int reviewedCount = 0; reviewedCount < 5; reviewedCount++) {
             persistSupporter(new ReviewCount(reviewedCount), MemberFixture.create(memberName("member" + reviewedCount)));
         }
@@ -70,6 +69,48 @@ class RankQueryServiceTest extends ServiceTestConfig {
                 () -> assertResponse(actual.data().get(2), 3, "third", 13),
                 () -> assertResponse(actual.data().get(3), 4, "fourth", 12),
                 () -> assertResponse(actual.data().get(4), 5, "fifth", 11)
+        );
+    }
+
+    @DisplayName("Supporter의 ReviewCount가 높은 순으로 count 개수 만큼 조회하고, 그 중 ReviewCount가 0이면 제외된다.")
+    @Test
+    void readMostReviewSupporter_when_has_zero_reviewCount() {
+        // given
+        final TechnicalTag javaTag = technicalTagQueryRepository.save(TechnicalTagFixture.createJava());
+        final TechnicalTag springTag = technicalTagQueryRepository.save(TechnicalTagFixture.createSpring());
+        final TechnicalTag reactTag = technicalTagQueryRepository.save(TechnicalTagFixture.createReact());
+
+        final Member fourthRankMember = persistMember(MemberFixture.create(memberName("fourth")));
+        final List<TechnicalTag> fourthRankMembersTechnicalTags = List.of(javaTag, springTag);
+        persistSupporter(new ReviewCount(12), fourthRankMember, fourthRankMembersTechnicalTags);
+
+        final Member thirdRankMember = persistMember(MemberFixture.create(memberName("third")));
+        final List<TechnicalTag> thirdRankMembersTechnicalTags = List.of(javaTag, reactTag);
+        persistSupporter(new ReviewCount(13), thirdRankMember, thirdRankMembersTechnicalTags);
+
+        final Member firstRankMember = persistMember(MemberFixture.create(memberName("first")));
+        final List<TechnicalTag> firstRankMembersTechnicalTags = List.of(javaTag, springTag);
+        persistSupporter(new ReviewCount(15), firstRankMember, firstRankMembersTechnicalTags);
+
+        final Member secondRankMember = persistMember(MemberFixture.create(memberName("second")));
+        final List<TechnicalTag> secondRankMembersTechnicalTags = List.of(javaTag);
+        persistSupporter(new ReviewCount(14), secondRankMember, secondRankMembersTechnicalTags);
+
+        final Member fifthRankMember = persistMember(MemberFixture.create(memberName("fifth")));
+        final List<TechnicalTag> fifthMembersTechnicalTags = List.of(reactTag);
+        persistSupporter(new ReviewCount(0), fifthRankMember, fifthMembersTechnicalTags);
+
+        // when
+        final int maxCount = 5;
+        final RankResponses<RankResponses.SupporterRank> actual = rankQueryService.readMostReviewSupporter(maxCount);
+
+        // then
+        assertAll(
+                () -> assertThat(actual.data()).hasSize(4),
+                () -> assertResponse(actual.data().get(0), 1, "first", 15),
+                () -> assertResponse(actual.data().get(1), 2, "second", 14),
+                () -> assertResponse(actual.data().get(2), 3, "third", 13),
+                () -> assertResponse(actual.data().get(3), 4, "fourth", 12)
         );
     }
 

@@ -120,6 +120,10 @@ public class Supporter extends BaseEntity {
         this.member.updateCompany(company);
     }
 
+    public void increaseReviewCount() {
+        this.reviewCount.increase();
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

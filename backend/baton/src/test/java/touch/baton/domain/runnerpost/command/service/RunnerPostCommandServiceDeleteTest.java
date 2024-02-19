@@ -29,6 +29,7 @@ class RunnerPostCommandServiceDeleteTest extends ServiceTestConfig {
     void setUp() {
         runnerPostCommandService = new RunnerPostCommandService(
                 runnerPostCommandRepository,
+                runnerPostQueryRepository,
                 tagCommandRepository,
                 supporterCommandRepository,
                 supporterRunnerPostCommandRepository,
