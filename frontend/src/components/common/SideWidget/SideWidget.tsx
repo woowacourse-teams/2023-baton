@@ -72,7 +72,11 @@ const SideWidgetList = ({ data }: SideWidgetListProps) => {
           />
         ) : (
           data.map((supporter) => (
-            <RankerItem supporter={supporter} onClick={() => handleClickRanker(supporter.supporterId)} />
+            <RankerItem
+              key={supporter.supporterId}
+              supporter={supporter}
+              onClick={() => handleClickRanker(supporter.supporterId)}
+            />
           ))
         )}
       </ListContainer>
