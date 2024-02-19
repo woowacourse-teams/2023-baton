@@ -24,8 +24,10 @@ import touch.baton.domain.member.command.service.GithubBranchManageable;
 import touch.baton.domain.member.command.service.RunnerCommandService;
 import touch.baton.domain.member.command.service.SupporterCommandService;
 import touch.baton.domain.member.query.controller.MemberQueryController;
+import touch.baton.domain.member.query.controller.RankQueryController;
 import touch.baton.domain.member.query.controller.RunnerQueryController;
 import touch.baton.domain.member.query.controller.SupporterQueryController;
+import touch.baton.domain.member.query.service.RankQueryService;
 import touch.baton.domain.member.query.service.RunnerQueryService;
 import touch.baton.domain.member.query.service.SupporterQueryService;
 import touch.baton.domain.notification.command.controller.NotificationCommandController;
@@ -66,7 +68,8 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
         MemberBranchController.class,
         OauthCommandController.class,
         NotificationCommandController.class,
-        NotificationQueryController.class
+        NotificationQueryController.class,
+        RankQueryController.class
 })
 @Import({RestDocsResultConfig.class})
 public abstract class RestdocsConfig {
@@ -126,6 +129,9 @@ public abstract class RestdocsConfig {
 
     @MockBean
     protected NotificationCommandService notificationCommandService;
+
+    @MockBean
+    protected RankQueryService rankQueryService;
 
     @BeforeEach
     void restdocsSetUp(final WebApplicationContext webApplicationContext) {

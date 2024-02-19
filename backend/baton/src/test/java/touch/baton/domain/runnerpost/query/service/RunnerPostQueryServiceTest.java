@@ -77,6 +77,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
+        final int totalJavaTagAndNotStartedPost = 2;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -122,7 +123,8 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                totalJavaTagAndNotStartedPost
         );
 
         // then
@@ -138,6 +140,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
+        final int totalJavaTagAndNotStartedPost = 3;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -160,17 +163,17 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 NOT_STARTED
         ));
 
-        runnerPostQueryRepository.save(RunnerPostFixture.create(
-                hyenaRunner,
-                deadline(now().plusHours(100)),
-                List.of(springTag),
-                NOT_STARTED
-        ));
-
         final RunnerPost previousRunnerPost = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(javaTag),
+                NOT_STARTED
+        ));
+
+        runnerPostQueryRepository.save(RunnerPostFixture.create(
+                hyenaRunner,
+                deadline(now().plusHours(100)),
+                List.of(springTag),
                 NOT_STARTED
         ));
 
@@ -190,7 +193,8 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                totalJavaTagAndNotStartedPost
         );
 
         // then
@@ -206,6 +210,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
+        final int totalNotStartedPost = 3;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -249,11 +254,13 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag),
                 RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
         );
+
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                totalNotStartedPost
         );
 
         // then
@@ -269,6 +276,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
+        final int notStartedPost = 4;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -323,8 +331,10 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                notStartedPost
         );
+
         // then
         assertThat(actual).isEqualTo(expected);
     }
@@ -373,10 +383,12 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostOne, springTag),
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag)
         );
+        final int total = 2;
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                total
         );
 
         // then
@@ -392,6 +404,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
+        final int totalJavaTagPost = 3;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -407,18 +420,18 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 ReviewStatus.OVERDUE
         ));
 
-        runnerPostQueryRepository.save(RunnerPostFixture.create(
-                hyenaRunner,
-                deadline(now().plusHours(100)),
-                List.of(springTag),
-                ReviewStatus.IN_PROGRESS
-        ));
-
         final RunnerPost previousRunnerPost = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
                 deadline(now().plusHours(100)),
                 List.of(javaTag),
                 NOT_STARTED
+        ));
+
+        runnerPostQueryRepository.save(RunnerPostFixture.create(
+                hyenaRunner,
+                deadline(now().plusHours(100)),
+                List.of(springTag),
+                ReviewStatus.IN_PROGRESS
         ));
 
         // when
@@ -437,7 +450,8 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                totalJavaTagPost
         );
 
         // then
@@ -489,11 +503,13 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 RunnerPostTagFixture.create(expectedRunnerPostTwo, javaTag),
                 RunnerPostTagFixture.create(expectedRunnerPostThree, springTag)
         );
+        final int total = 3;
         final PageResponse<RunnerPostResponse.Simple> expected = PageResponse.of(
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                total
         );
 
         // then
@@ -509,6 +525,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
+        final int totalPost = 4;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -556,7 +573,8 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostThree, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
-                pageParams
+                pageParams,
+                totalPost
         );
 
         // then
@@ -759,9 +777,6 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
     @Test
     void existsRunnerPostApplicantByRunnerPostIdAndMemberId_if_runnerPost_is_not_exist_then_return_false() {
         // given
-        final Member savedMemberDitoo = memberCommandRepository.save(MemberFixture.createDitoo());
-        final Runner savedRunnerDitoo = runnerQueryRepository.save(RunnerFixture.createRunner(savedMemberDitoo));
-
         final Member savedMemberHyena = memberCommandRepository.save(MemberFixture.createHyena());
 
         // when

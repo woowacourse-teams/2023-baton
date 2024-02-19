@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import touch.baton.domain.common.vo.Page;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.domain.tag.command.RunnerPostTag;
@@ -26,7 +27,7 @@ public class RunnerPostPageRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<RunnerPost> pageByReviewStatusAndTagReducedName(final Long previousLastId,
+    public Page<RunnerPost> pageByReviewStatusAndTagReducedName(final Long previousLastId,
                                                                 final int limit,
                                                                 final TagReducedName tagReducedName,
                                                                 final ReviewStatus reviewStatus
@@ -44,7 +45,17 @@ public class RunnerPostPageRepository {
                     .where(tag.tagReducedName.eq(tagReducedName));
         }
 
-        return query.fetch();
+        final JPAQuery<RunnerPost> countQuery = jpaQueryFactory.selectFrom(runnerPost)
+                .where(reviewStatusEq(reviewStatus));
+
+        if (tagReducedName != null) {
+            countQuery.leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
+                    .leftJoin(runnerPostTag.tag, tag)
+                    .where(tag.tagReducedName.eq(tagReducedName));
+        }
+
+        final long count = countQuery.stream().count();
+        return new Page<>(query.fetch(), count);
     }
 
     public List<RunnerPost> pageBySupporterIdAndReviewStatus(final Long previousLastId,

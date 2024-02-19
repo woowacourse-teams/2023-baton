@@ -20,6 +20,7 @@ import touch.baton.domain.runnerpost.command.repository.RunnerPostCommandReposit
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostApplicantCreateRequest;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostCreateRequest;
 import touch.baton.domain.runnerpost.command.service.dto.RunnerPostUpdateRequest;
+import touch.baton.domain.runnerpost.query.repository.RunnerPostQueryRepository;
 import touch.baton.domain.tag.command.RunnerPostTag;
 import touch.baton.domain.tag.command.Tag;
 import touch.baton.domain.tag.command.repository.TagCommandRepository;
@@ -34,6 +35,7 @@ import java.util.Objects;
 public class RunnerPostCommandService {
 
     private final RunnerPostCommandRepository runnerPostCommandRepository;
+    private final RunnerPostQueryRepository runnerPostQueryRepository;
     private final TagCommandRepository tagCommandRepository;
     private final SupporterCommandRepository supporterCommandRepository;
     private final SupporterRunnerPostCommandRepository supporterRunnerPostCommandRepository;
@@ -125,7 +127,7 @@ public class RunnerPostCommandService {
     }
 
     public void updateRunnerPostReviewStatusDone(final Long runnerPostId, final Supporter supporter) {
-        final RunnerPost foundRunnerPost = runnerPostCommandRepository.findById(runnerPostId)
+        final RunnerPost foundRunnerPost = runnerPostQueryRepository.joinSupporterByRunnerPostId(runnerPostId)
                 .orElseThrow(() -> new RunnerPostBusinessException("해당 식별자의 러너 게시글이 존재하지 않습니다."));
 
         if (Objects.isNull(foundRunnerPost.getSupporter())) {

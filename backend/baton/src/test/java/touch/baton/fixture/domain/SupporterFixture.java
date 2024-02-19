@@ -25,6 +25,16 @@ public abstract class SupporterFixture {
     }
 
     public static Supporter create(final ReviewCount reviewCount,
+                                   final Member member
+    ) {
+        return Supporter.builder()
+                .reviewCount(reviewCount)
+                .member(member)
+                .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
+                .build();
+    }
+
+    public static Supporter create(final ReviewCount reviewCount,
                                    final Member member,
                                    final SupporterTechnicalTags supporterTechnicalTags
     ) {

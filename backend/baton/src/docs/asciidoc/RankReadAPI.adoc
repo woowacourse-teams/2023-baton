@@ -1,0 +1,29 @@
+ifndef::snippets[]
+:snippets: ../../../build/generated-snippets
+endif::[]
+:doctype: book
+:icons: font
+:source-highlighter: highlight.js
+:toc: left
+:toclevels: 3
+:sectlinks:
+:operation-http-request-title: Example Request
+:operation-http-response-title: Example Response
+
+==== *완료된 리뷰가 많은 서포터 랭킹 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/rank-read-api-test/read-most-review-supporter/http-request.adoc[]
+
+===== *Http Request Query Parameters*
+
+include::{snippets}/../../build/generated-snippets/rank-read-api-test/read-most-review-supporter/query-parameters.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/rank-read-api-test/read-most-review-supporter/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/rank-read-api-test/read-most-review-supporter/response-fields.adoc[]
