@@ -22,7 +22,7 @@ const RankerItem = ({ supporter, onClick }: RankerItemProps) => {
             <Flex direction="column" align="start">
               <Text>{supporter.name}</Text>
               <Text typography="t8" color="gray500">
-                @{supporter.company}
+                {supporter.company ? `@${supporter.company}` : ''}
               </Text>
             </Flex>
           </Flex>
