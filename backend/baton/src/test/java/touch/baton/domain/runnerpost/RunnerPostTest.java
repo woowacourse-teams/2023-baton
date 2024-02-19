@@ -1,5 +1,6 @@
 package touch.baton.domain.runnerpost;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -71,11 +72,16 @@ class RunnerPostTest {
             .runnerTechnicalTags(RunnerTechnicalTagsFixture.create(new ArrayList<>()))
             .build();
 
-    private final Supporter supporter = Supporter.builder()
-            .reviewCount(new ReviewCount(10))
-            .member(supporterMember)
-            .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
-            .build();
+    private Supporter supporter;
+
+    @BeforeEach
+    void setUp() {
+        supporter = Supporter.builder()
+                .reviewCount(new ReviewCount(10))
+                .member(supporterMember)
+                .supporterTechnicalTags(new SupporterTechnicalTags(new ArrayList<>()))
+                .build();
+    }
 
     @DisplayName("runnerPostTags 전체를 추가할 수 있다.")
     @Test
@@ -583,5 +589,35 @@ class RunnerPostTest {
             assertThatThrownBy(() -> runnerPost.updateReviewStatus(reviewStatus))
                     .isInstanceOf(RunnerPostDomainException.class);
         }
+    }
+
+    @DisplayName("리뷰완료가 되면 ReviewStatus가 Done으로 바뀌고 리뷰를 작성한 ReviewCount가 1 증가한다.")
+    @Test
+    void finishReview() {
+        // given
+        final ReviewCount originReviewCount = new ReviewCount(supporter.getReviewCount().getValue());
+        final RunnerPost runnerPost = RunnerPost.builder()
+                .title(new Title("러너가 작성하는 리뷰 요청 게시글의 테스트 제목입니다."))
+                .implementedContents(new ImplementedContents("안녕하세요. 테스트 내용입니다."))
+                .curiousContents(new CuriousContents("궁금한 점입니다."))
+                .postscriptContents(new PostscriptContents("잘 부탁드립니다."))
+                .pullRequestUrl(new PullRequestUrl("https://github.com"))
+                .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                .watchedCount(new WatchedCount(0))
+                .reviewStatus(ReviewStatus.IN_PROGRESS)
+                .isReviewed(IsReviewed.notReviewed())
+                .runner(runner)
+                .supporter(supporter)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+
+        // when
+        runnerPost.finishReview();
+
+        // then
+        assertAll(
+                () -> assertThat(runnerPost.getReviewStatus()).isEqualTo(ReviewStatus.DONE),
+                () -> assertThat(supporter.getReviewCount()).isEqualTo(new ReviewCount(originReviewCount.getValue() + 1))
+        );
     }
 }
