@@ -77,7 +77,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
-        final int totalJavaTagPost = 3;
+        final int totalJavaTagAndNotStartedPost = 2;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -124,7 +124,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
                 pageParams,
-                totalJavaTagPost
+                totalJavaTagAndNotStartedPost
         );
 
         // then
@@ -140,7 +140,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
-        final int totalJavaTagPost = 4;
+        final int totalJavaTagAndNotStartedPost = 3;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -194,7 +194,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                 List.of(RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
                 pageParams,
-                totalJavaTagPost
+                totalJavaTagAndNotStartedPost
         );
 
         // then
@@ -210,7 +210,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
-        final int totalPost = 4;
+        final int totalNotStartedPost = 3;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -260,7 +260,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                         RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
                 pageParams,
-                totalPost
+                totalNotStartedPost
         );
 
         // then
@@ -276,7 +276,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
 
         final Tag javaTag = tagCommandRepository.save(TagFixture.create(tagName("자바")));
         final Tag springTag = tagCommandRepository.save(TagFixture.create(tagName("스프링")));
-        final int totalPost = 5;
+        final int notStartedPost = 4;
 
         final RunnerPost expectedRunnerPostOne = runnerPostQueryRepository.save(RunnerPostFixture.create(
                 hyenaRunner,
@@ -332,7 +332,7 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
                         RunnerPostResponse.Simple.of(expectedRunnerPostTwo, 0L, runnerPostTags),
                         RunnerPostResponse.Simple.of(expectedRunnerPostOne, 0L, runnerPostTags)),
                 pageParams,
-                totalPost
+                notStartedPost
         );
 
         // then
