@@ -56,6 +56,7 @@ const fadeIn = keyframes`
 
 const ListWrapper = styled(Flex)`
   padding: 10px 15px;
+  border-radius: 12px;
 
   & {
     cursor: pointer;
