@@ -93,25 +93,25 @@ const NoticePage = () => {
               <S.EventImageWrapper>
                 <S.EventImage src={EventImage}></S.EventImage>
               </S.EventImageWrapper>
-              <S.EventMessage>🥲 코드 리뷰를 받아보고 싶은데 스스로 구현해 본 프로젝트는 없는데.. </S.EventMessage>
-              <S.EventMessage>🤔 내가 짠 코드는 어떨까?</S.EventMessage>
-              <br />
-              <S.EventMessage>
-                라는 고민을 가진 분들을 위해 바톤에서 작은 미션을 준비했습니다. 보스 몬스터 잡기 미션을 직접 구현해보고
-              </S.EventMessage>
               <S.EventMessage>
                 <S.EventMessageBold>
-                  바톤에 리뷰 요청 글을 작성하신 분들에 한해 바톤에서 직접 코드 리뷰를 해드릴 예정
+                  🥲 코드 리뷰를 받아보고 싶은데 스스로 구현해 본 프로젝트는 없는데..
                 </S.EventMessageBold>
-                입니다.
               </S.EventMessage>
+              <S.EventMessage>
+                <S.EventMessageBold>🤔 내가 짠 코드는 어떨까?</S.EventMessageBold>
+              </S.EventMessage>
+              <br />
+              <S.EventMessage>라는 고민을 가진 분들을 위해 바톤에서 작은 미션을 준비했습니다.</S.EventMessage>
               <S.EventMessage>
                 <br />
-                <S.EventMessageBold>사용 언어는 java, javascript 두 가지이며</S.EventMessageBold>
-                <S.EventMessageBold>아래 미션 시작하기 버튼을 통해 시작</S.EventMessageBold>하실 수 있습니다.
+                <S.EventMessageBold>
+                  사용 언어는 java, javascript 두 가지이며 아래 미션 시작하기 버튼을 통해 시작
+                </S.EventMessageBold>
+                하실 수 있습니다.
               </S.EventMessage>
               <S.EventMessage>
-                공부하면서 궁금했던 점들을 미션 구현을 통해 정리해보고 바톤에서
+                공부하면서 궁금했던 점들을 미션 구현을 통해 정리해보고 바톤에서{' '}
                 <S.EventMessageBold>코드 리뷰 받아보세요 !</S.EventMessageBold>
               </S.EventMessage>
 

@@ -16,6 +16,11 @@ export const REVIEW_STATUS_FILTER_TEXT: Record<ReviewStatusFilter, string> = {
 };
 
 export const REVIEW_STATUS: ReviewStatus[] = Object.keys(REVIEW_STATUS_LABEL_TEXT) as ReviewStatus[];
+
+export const REVIEW_STATUS_FILTER: ReviewStatusFilter[] = Object.keys(
+  REVIEW_STATUS_FILTER_TEXT,
+) as ReviewStatusFilter[];
+
 export const RUNNER_POST_OPTIONS = ['대기중인 리뷰', '진행중인 리뷰', '완료된 리뷰'];
 export const SUPPORTER_POST_OPTIONS = ['신청한 리뷰', '진행중인 리뷰', '완료된 리뷰'];
 

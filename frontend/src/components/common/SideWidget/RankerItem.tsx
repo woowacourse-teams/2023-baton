@@ -15,14 +15,14 @@ const RankerItem = ({ supporter, onClick }: RankerItemProps) => {
   return (
     <ListWrapper as="li" align="center" key={supporter.supporterId} onClick={onClick}>
       <Flex align="center" gap={10}>
-        <Text typography="t7">{supporter.rank}</Text>
+        <Text>{supporter.rank}</Text>
         <Avatar width="35px" height="35px" imageUrl={supporter.imageUrl} />
         <Flex direction="column" gap={10}>
           <Flex gap={10} align="center">
             <Flex direction="column" align="start">
               <Text>{supporter.name}</Text>
               <Text typography="t8" color="gray500">
-                @{supporter.company}
+                {supporter.company ? `@${supporter.company}` : ''}
               </Text>
             </Flex>
           </Flex>
@@ -56,6 +56,7 @@ const fadeIn = keyframes`
 
 const ListWrapper = styled(Flex)`
   padding: 10px 15px;
+  border-radius: 12px;
 
   & {
     cursor: pointer;
