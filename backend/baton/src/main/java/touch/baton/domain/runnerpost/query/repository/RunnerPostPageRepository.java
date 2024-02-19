@@ -45,7 +45,8 @@ public class RunnerPostPageRepository {
                     .where(tag.tagReducedName.eq(tagReducedName));
         }
 
-        final JPAQuery<RunnerPost> countQuery = jpaQueryFactory.selectFrom(runnerPost);
+        final JPAQuery<RunnerPost> countQuery = jpaQueryFactory.selectFrom(runnerPost)
+                .where(reviewStatusEq(reviewStatus));
 
         if (tagReducedName != null) {
             countQuery.leftJoin(runnerPost.runnerPostTags.runnerPostTags, runnerPostTag)
