@@ -51,7 +51,7 @@ const MyMenu = () => {
       <S.NotificationContainer>
         <Dropdown
           onClose={handleCloseDropdown}
-          gapFromTrigger="52px"
+          gapFromTrigger="42px"
           isDropdownOpen={isNotificationDropdownOpen}
           trigger={
             <S.NotificationIcon
@@ -67,7 +67,7 @@ const MyMenu = () => {
       </S.NotificationContainer>
       <Dropdown
         onClose={handleCloseDropdown}
-        gapFromTrigger="57px"
+        gapFromTrigger="47px"
         isDropdownOpen={isProfileDropdownOpen}
         trigger={
           <S.AvatarContainer onClick={handleProfileDropdown}>
