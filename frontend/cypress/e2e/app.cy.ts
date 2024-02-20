@@ -23,6 +23,8 @@ describe('러너 E2E 테스트', () => {
   });
 
   it('게시글을 검색한다.', () => {
+    cy.wait(1000);
+
     cy.contains('리뷰 완료').click();
     cy.wait(500);
 

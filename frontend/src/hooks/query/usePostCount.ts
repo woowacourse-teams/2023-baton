@@ -1,12 +1,12 @@
 import { getPostCount } from '@/apis/apis';
 import { PostCount } from '@/types/runnerPost';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 
 export const usePostCount = () => {
-  const queryResult = useQuery<PostCount>({
+  const queryResult = useSuspenseQuery<PostCount>({
     queryKey: ['runnerPostCount'],
 
-    queryFn: () => getPostCount().then((res) => res.data),
+    queryFn: () => getPostCount().then((res) => res),
   });
 
   return {

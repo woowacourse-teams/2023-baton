@@ -7,7 +7,7 @@ import { usePageRouter } from '@/hooks/usePageRouter';
 import { useRunnerPostList } from '@/hooks/query/useRunnerPostList';
 import useViewport from '@/hooks/useViewport';
 import { ReviewStatus } from '@/types/runnerPost';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { isLogin } from '@/apis/auth';
 import SideWidget from '@/components/common/SideWidget/SideWidget';
@@ -123,6 +123,16 @@ const MainPage = () => {
 };
 
 export default MainPage;
+
+const FilterSkeleton = styled.div`
+  height: 104px;
+  width: 442px;
+
+  @media (max-width: 768px) {
+    height: 92px;
+    width: 340px;
+  }
+`;
 
 const S = {
   MainContainer: styled.div`

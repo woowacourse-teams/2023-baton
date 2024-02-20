@@ -1,8 +1,6 @@
 {
-  "data": {
-    "notStarted": 1,
-    "inProgress": 2,
-    "overdue": 3,
-    "done": 4
-  }
+  "notStarted": 1,
+  "inProgress": 2,
+  "overdue": 3,
+  "done": 4
 }

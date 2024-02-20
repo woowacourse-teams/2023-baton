@@ -14,7 +14,6 @@ interface Props {
 
 const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
   const { data: totalCount } = usePostCount();
-  const { isMobile } = useViewport();
 
   function transformPostCountToReviewStatusFilter(postCount: PostCount): { [key in ReviewStatusFilter]: number } {
     const all = Object.values(postCount).reduce((acc, currentValue) => acc + currentValue, 0);
@@ -26,10 +25,6 @@ const RunnerPostFilter = ({ reviewStatus, handleClickRadioButton }: Props) => {
       DONE: postCount.done,
       ALL: all,
     };
-  }
-
-  if (!totalCount) {
-    return <div style={isMobile ? { height: '38px' } : { height: '46px' }}></div>;
   }
 
   const reviewStatusCounts = transformPostCountToReviewStatusFilter(totalCount);
@@ -76,6 +71,18 @@ const appear = keyframes`
  100% {
   transform: scaleX(1);
  }
+`;
+
+const pulseAnimation = keyframes`
+  0% {
+    background-color: #e0e0e0;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #e0e0e0;
+  }
 `;
 
 const underLine = css`
