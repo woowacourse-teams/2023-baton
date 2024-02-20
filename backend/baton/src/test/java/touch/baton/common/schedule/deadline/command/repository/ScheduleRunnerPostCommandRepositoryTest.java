@@ -1,4 +1,4 @@
-package touch.baton.common.schedule;
+package touch.baton.common.schedule.deadline.command.repository;
 
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,13 +20,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.*;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.DONE;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.NOT_STARTED;
+import static touch.baton.domain.runnerpost.command.vo.ReviewStatus.OVERDUE;
 import static touch.baton.fixture.vo.DeadlineFixture.deadline;
 
-class ScheduleRunnerPostQueryRepositoryTest extends RepositoryTestConfig {
+class ScheduleRunnerPostCommandRepositoryTest extends RepositoryTestConfig {
 
     @Autowired
-    private ScheduleRunnerPostRepository scheduleRunnerPostRepository;
+    private RunnerPostDeadlineCommandRepository runnerPostDeadlineCommandRepository;
 
     @Autowired
     private EntityManager em;
@@ -53,8 +55,8 @@ class ScheduleRunnerPostQueryRepositoryTest extends RepositoryTestConfig {
         em.persist(runnerPostTwo);
 
         // when
-        scheduleRunnerPostRepository.updateAllPassedDeadline();
-        final List<ReviewStatus> actual = scheduleRunnerPostRepository.findAll().stream()
+        runnerPostDeadlineCommandRepository.updateAllPassedDeadline();
+        final List<ReviewStatus> actual = runnerPostDeadlineCommandRepository.findAll().stream()
                 .map(RunnerPost::getReviewStatus)
                 .toList();
 
@@ -75,8 +77,8 @@ class ScheduleRunnerPostQueryRepositoryTest extends RepositoryTestConfig {
         em.persist(runnerPostTwo);
 
         // when
-        scheduleRunnerPostRepository.updateAllPassedDeadline();
-        final List<ReviewStatus> actual = scheduleRunnerPostRepository.findAll().stream()
+        runnerPostDeadlineCommandRepository.updateAllPassedDeadline();
+        final List<ReviewStatus> actual = runnerPostDeadlineCommandRepository.findAll().stream()
                 .map(RunnerPost::getReviewStatus)
                 .toList();
 
@@ -97,8 +99,8 @@ class ScheduleRunnerPostQueryRepositoryTest extends RepositoryTestConfig {
         em.persist(runnerPostTwo);
 
         // when
-        scheduleRunnerPostRepository.updateAllPassedDeadline();
-        final List<ReviewStatus> actual = scheduleRunnerPostRepository.findAll().stream()
+        runnerPostDeadlineCommandRepository.updateAllPassedDeadline();
+        final List<ReviewStatus> actual = runnerPostDeadlineCommandRepository.findAll().stream()
                 .map(RunnerPost::getReviewStatus)
                 .toList();
 

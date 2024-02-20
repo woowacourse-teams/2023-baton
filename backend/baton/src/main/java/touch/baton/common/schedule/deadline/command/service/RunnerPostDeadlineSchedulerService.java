@@ -1,4 +1,4 @@
-package touch.baton.common.schedule;
+package touch.baton.common.schedule.deadline.command.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class SchedulerService {
+public class RunnerPostDeadlineSchedulerService {
 
     private static final int CYCLE = 60000;
 
