@@ -26,10 +26,6 @@ export interface PostCount {
   done: number;
 }
 
-export interface GetPostCountResponse {
-  data: PostCount;
-}
-
 export interface RunnerProfile {
   name: string;
   imageUrl: string;
