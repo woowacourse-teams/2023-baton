@@ -2,18 +2,24 @@ package touch.baton.domain.runnerpost.query.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import touch.baton.config.RepositoryTestConfig;
+import touch.baton.domain.member.command.Member;
 import touch.baton.domain.member.command.Runner;
 import touch.baton.domain.member.command.Supporter;
 import touch.baton.domain.runnerpost.command.RunnerPost;
 import touch.baton.domain.runnerpost.command.repository.dto.RunnerPostApplicantCountDto;
 import touch.baton.domain.runnerpost.command.vo.ReviewStatus;
 import touch.baton.fixture.domain.MemberFixture;
+import touch.baton.fixture.domain.RunnerPostFixture;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -193,5 +199,45 @@ class RunnerPostQueryRepositoryTest extends RepositoryTestConfig {
 
         // then
         assertThat(actual.intValue()).isEqualTo(expected);
+    }
+
+    @DisplayName("전체 글에서 리뷰 상태별로 게시글 개수를 조회할 수 있다.")
+    @MethodSource("provideCountByReviewStatus")
+    @ParameterizedTest
+    void countByReviewStatus(final Long notStartedCount,
+                             final Long inProgressCount,
+                             final Long doneCount,
+                             final Long overdueCount,
+                             final ReviewStatus targetReviewStatus,
+                             final Long expected
+    ) {
+        // given
+        final Member member = persistMember(MemberFixture.createEthan());
+        final Runner runner = persistRunner(member);
+
+        for (int i = 0; i < notStartedCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.NOT_STARTED));
+        }
+        for (int i = 0; i < inProgressCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.IN_PROGRESS));
+        }
+        for (int i = 0; i < doneCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.DONE));
+        }
+        for (int i = 0; i < overdueCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.OVERDUE));
+        }
+
+        // when, then
+        assertThat(runnerPostQueryRepository.countByReviewStatus(targetReviewStatus)).isEqualTo(expected);
+    }
+
+    private static Stream<Arguments> provideCountByReviewStatus() {
+        return Stream.of(
+                Arguments.of(4L, 3L, 2L, 1L, ReviewStatus.NOT_STARTED, 4L),
+                Arguments.of(4L, 3L, 2L, 1L, ReviewStatus.IN_PROGRESS, 3L),
+                Arguments.of(4L, 3L, 2L, 1L, ReviewStatus.DONE, 2L),
+                Arguments.of(4L, 3L, 2L, 1L, ReviewStatus.OVERDUE, 1L)
+        );
     }
 }
