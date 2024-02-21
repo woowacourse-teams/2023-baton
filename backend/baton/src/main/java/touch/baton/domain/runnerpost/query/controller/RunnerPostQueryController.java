@@ -125,4 +125,9 @@ public class RunnerPostQueryController {
         final long runnerPostCount = runnerPostQueryService.countRunnerPostByRunnerIdAndReviewStatus(runner.getId(), reviewStatus);
         return ResponseEntity.ok(RunnerPostResponse.Count.from(runnerPostCount));
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<RunnerPostResponse.StatusCount> countAllRunnerPostByReviewStatus() {
+        return ResponseEntity.ok(runnerPostQueryService.countAllRunnerPostByReviewStatus());
+    }
 }

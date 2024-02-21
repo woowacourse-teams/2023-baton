@@ -72,6 +72,23 @@ public abstract class RunnerPostFixture {
                 .build();
     }
 
+    public static RunnerPost create(final Runner runner, final ReviewStatus reviewStatus) {
+        return RunnerPost.builder()
+                .title(new Title("테스트 제목"))
+                .implementedContents(new ImplementedContents("테스트 내용"))
+                .curiousContents(new CuriousContents("테스트 궁금 점"))
+                .postscriptContents(new PostscriptContents("테스트 참고 사항"))
+                .pullRequestUrl(new PullRequestUrl("https://테스트"))
+                .deadline(new Deadline(LocalDateTime.now().plusHours(100)))
+                .watchedCount(new WatchedCount(0))
+                .reviewStatus(reviewStatus)
+                .isReviewed(IsReviewed.notReviewed())
+                .runner(runner)
+                .supporter(null)
+                .runnerPostTags(new RunnerPostTags(new ArrayList<>()))
+                .build();
+    }
+
     public static RunnerPost create(final Runner runner,
                                     final Deadline deadline,
                                     final ReviewStatus reviewStatus,

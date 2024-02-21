@@ -130,6 +130,15 @@ public class RunnerPostQueryService {
         return runnerPostQueryRepository.countBySupporterIdAndReviewStatus(supporterId, reviewStatus);
     }
 
+    public RunnerPostResponse.StatusCount countAllRunnerPostByReviewStatus() {
+        long notStartedCount = runnerPostQueryRepository.countByReviewStatus(ReviewStatus.NOT_STARTED);
+        long inProgressCount = runnerPostQueryRepository.countByReviewStatus(ReviewStatus.IN_PROGRESS);
+        long doneCount = runnerPostQueryRepository.countByReviewStatus(ReviewStatus.DONE);
+        long overdueCount = runnerPostQueryRepository.countByReviewStatus(ReviewStatus.OVERDUE);
+
+        return new RunnerPostResponse.StatusCount(notStartedCount, inProgressCount, doneCount, overdueCount);
+    }
+
     @Transactional
     public void increaseWatchedCount(final RunnerPost runnerPost) {
         runnerPost.increaseWatchedCount();

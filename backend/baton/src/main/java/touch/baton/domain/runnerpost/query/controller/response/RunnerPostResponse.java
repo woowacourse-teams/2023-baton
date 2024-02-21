@@ -147,4 +147,12 @@ public record RunnerPostResponse() {
                 .map(runnerPostTag -> runnerPostTag.getTag().getTagName().getValue())
                 .toList();
     }
+
+    public record StatusCount(
+            long notStarted,
+            long inProgress,
+            long done,
+            long overdue
+    ) {
+    }
 }
