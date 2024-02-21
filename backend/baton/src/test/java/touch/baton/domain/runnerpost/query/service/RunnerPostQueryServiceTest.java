@@ -871,4 +871,36 @@ class RunnerPostQueryServiceTest extends ServiceTestConfig {
         // then
         assertThat(actual).isEqualTo(expected);
     }
+
+    @DisplayName("전체 글에서 리뷰 상태별로 게시글 개수를 조회할 수 있다.")
+    @Test
+    void countByReviewStatus(
+    ) {
+        // given
+        final Member member = persistMember(MemberFixture.createEthan());
+        final Runner runner = persistRunner(member);
+
+        final int notStartedCount = 4;
+        for (int i = 0; i < notStartedCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.NOT_STARTED));
+        }
+        final int inProgressCount = 3;
+        for (int i = 0; i < inProgressCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.IN_PROGRESS));
+        }
+        final int doneCount = 2;
+        for (int i = 0; i < doneCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.DONE));
+        }
+        final int overdueCount = 1;
+        for (int i = 0; i < overdueCount; i++) {
+            persistRunnerPost(RunnerPostFixture.create(runner, ReviewStatus.OVERDUE));
+        }
+
+        // when
+        final RunnerPostResponse.StatusCount actual = runnerPostQueryService.countAllRunnerPostByReviewStatus();
+
+        // then
+        assertThat(actual).isEqualTo(new RunnerPostResponse.StatusCount(notStartedCount, inProgressCount, doneCount, overdueCount));
+    }
 }
