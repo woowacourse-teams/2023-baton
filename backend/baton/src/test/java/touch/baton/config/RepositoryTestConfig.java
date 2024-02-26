@@ -80,11 +80,6 @@ public abstract class RepositoryTestConfig {
         return runnerPost;
     }
 
-    protected RunnerPost persistRunnerPost(final RunnerPost runnerPost) {
-        em.persist(runnerPost);
-        return runnerPost;
-    }
-
     protected SupporterRunnerPost persistApplicant(final Supporter supporter, final RunnerPost runnerPost) {
         final SupporterRunnerPost applicant = SupporterRunnerPostFixture.create(runnerPost, supporter);
         em.persist(applicant);
