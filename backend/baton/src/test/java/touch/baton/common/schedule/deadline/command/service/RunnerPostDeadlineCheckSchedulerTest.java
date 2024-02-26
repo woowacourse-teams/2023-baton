@@ -1,10 +1,13 @@
 package touch.baton.common.schedule.deadline.command.service;
 
-import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.transaction.TestTransaction;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.support.TransactionTemplate;
 import touch.baton.common.fixture.DeadlineOutboxFixture;
 import touch.baton.common.schedule.deadline.command.repository.DeadlineOutboxCommandRepository;
 import touch.baton.common.schedule.deadline.command.repository.RunnerPostDeadlineCommandRepository;
@@ -23,6 +26,9 @@ import touch.baton.fixture.vo.ReviewCountFixture;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -41,15 +47,19 @@ class RunnerPostDeadlineCheckSchedulerTest extends ServiceTestConfig {
     @Autowired
     private DeadlineOutboxCommandRepository deadlineOutboxCommandRepository;
 
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
+
     private RunnerPostDeadlineCheckScheduler runnerPostDeadlineCheckScheduler;
+
+    private TransactionTemplate transactionTemplate;
 
     @BeforeEach
     void setUp() {
+        transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         runnerPostDeadlineCheckScheduler = new RunnerPostDeadlineCheckScheduler(runnerPostDeadlineCommandRepository, runnerPostDeadlineQueryRepository, deadlineOutboxCommandRepository);
     }
-
-    @Autowired
-    private EntityManager em;
 
     @DisplayName("1분 전에 deadline 이 지난 runnerPost 는 OVERDUE 된다.")
     @Test
@@ -104,10 +114,56 @@ class RunnerPostDeadlineCheckSchedulerTest extends ServiceTestConfig {
         runnerPostDeadlineCheckScheduler.finishReview(runnerPost.getId());
 
         // then
+        assertAll(() -> assertThat(runnerPost.getSupporter().getReviewCount()).isEqualTo(ReviewCountFixture.reviewCount(originReviewCount.getValue() + 1)), () -> assertThat(runnerPost.getReviewStatus()).isEqualTo(DONE), () -> assertThat(deadlineOutboxCommandRepository.findAll()).isEmpty());
+    }
+
+    @DisplayName("다수의 스케줄이 동시에 실행되도 ReviewCount는 1개만 증가한다.")
+    @Test
+    void finishReview_when_multiple_request() throws InterruptedException {
+        // given
+        final Runner runner = persistRunner(MemberFixture.createHyena());
+        final RunnerPost runnerPost = persistRunnerPost(runner);
+        final Supporter supporter = persistSupporter(MemberFixture.createEthan());
+        persistAssignSupporter(supporter, runnerPost);
+        deadlineOutboxCommandRepository.save(DeadlineOutboxFixture.deadlineOutbox(runnerPost.getId(), Instant.now()));
+
+        transactionCommit();
+
+        final ReviewCount originReviewCount = ReviewCountFixture.reviewCount(supporter.getReviewCount().getValue());
+        final int requests = 10;
+        final ExecutorService executorService = Executors.newFixedThreadPool(requests);
+        final CountDownLatch latch = new CountDownLatch(requests);
+
+        // when
+        for (int i = 0; i < requests; i++) {
+            executorService.submit(() ->
+                    transactionTemplate.execute((none) -> {
+                        try {
+                            runnerPostDeadlineCheckScheduler.finishReview(runnerPost.getId());
+                        } catch (final Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            latch.countDown();
+                        }
+                        return null;
+                    })
+            );
+        }
+
+        latch.await();
+        executorService.shutdown();
+
+        // then
+        final RunnerPost actual = runnerPostQueryRepository.joinSupporterByRunnerPostId(runnerPost.getId()).get();
         assertAll(
-                () -> assertThat(runnerPost.getSupporter().getReviewCount()).isEqualTo(ReviewCountFixture.reviewCount(originReviewCount.getValue() + 1)),
-                () -> assertThat(runnerPost.getReviewStatus()).isEqualTo(DONE),
+                () -> assertThat(actual.getSupporter().getReviewCount()).isEqualTo(ReviewCountFixture.reviewCount(originReviewCount.getValue() + 1)),
+                () -> assertThat(actual.isReviewStatusDone()).isTrue(),
                 () -> assertThat(deadlineOutboxCommandRepository.findAll()).isEmpty()
         );
+    }
+
+    private void transactionCommit() {
+        TestTransaction.flagForCommit();
+        TestTransaction.end();
     }
 }

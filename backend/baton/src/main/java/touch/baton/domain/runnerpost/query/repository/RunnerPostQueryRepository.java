@@ -24,8 +24,8 @@ public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Lon
     @Query("""
         select rp
         from RunnerPost rp
-        join fetch Supporter s on s.id = rp.supporter.id
-        join fetch Member m on m.id = s.member.id
+        join fetch rp.supporter s
+        join fetch s.member
         where rp.id = :runnerPostId
         """)
     Optional<RunnerPost> joinSupporterByRunnerPostId(@Param("runnerPostId") final Long runnerPostId);

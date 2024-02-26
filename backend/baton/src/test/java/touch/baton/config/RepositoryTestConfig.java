@@ -89,6 +89,7 @@ public abstract class RepositoryTestConfig {
     protected void persistAssignSupporter(final Supporter supporter, final RunnerPost runnerPost) {
         runnerPost.assignSupporter(supporter);
         em.persist(runnerPost);
+        em.flush();
     }
 
     protected Tag persistTag(final String tagName) {
