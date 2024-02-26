@@ -285,6 +285,10 @@ public class RunnerPost extends BaseEntity {
         return reviewStatus.isNotStarted();
     }
 
+    public boolean isReviewStatusDone() {
+        return reviewStatus.isSame(ReviewStatus.DONE);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
