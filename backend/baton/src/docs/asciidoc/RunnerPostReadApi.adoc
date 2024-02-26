@@ -209,3 +209,17 @@ include::{snippets}/../../build/generated-snippets/tag-read-api-test/read-tags-b
 ===== *Http Response Fields*
 
 include::{snippets}/../../build/generated-snippets/tag-read-api-test/read-tags-by-reduced-name/response-fields.adoc[]
+
+==== *러너 게시글 상태별 총 개수 조회 API*
+
+===== *Http Request*
+
+include::{snippets}/../../build/generated-snippets/runner-post-status-count-api-test/count-all-runner-post-by-review-status/http-request.adoc[]
+
+===== *Http Response*
+
+include::{snippets}/../../build/generated-snippets/runner-post-status-count-api-test/count-all-runner-post-by-review-status/http-response.adoc[]
+
+===== *Http Response Fields*
+
+include::{snippets}/../../build/generated-snippets/runner-post-status-count-api-test/count-all-runner-post-by-review-status/response-fields.adoc[]

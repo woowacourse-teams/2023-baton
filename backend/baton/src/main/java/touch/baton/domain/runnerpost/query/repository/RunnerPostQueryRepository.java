@@ -54,4 +54,12 @@ public interface RunnerPostQueryRepository extends JpaRepository<RunnerPost, Lon
             where rp.supporter.id = :supporterId and rp.reviewStatus = :reviewStatus
             """)
     long countBySupporterIdAndReviewStatus(@Param("supporterId") final Long supporterId, @Param("reviewStatus") final ReviewStatus reviewStatus);
+
+
+    @Query("""
+            select count(1)
+            from RunnerPost rp
+            where rp.reviewStatus = :reviewStatus
+            """)
+    long countByReviewStatus(@Param("reviewStatus") ReviewStatus reviewStatus);
 }

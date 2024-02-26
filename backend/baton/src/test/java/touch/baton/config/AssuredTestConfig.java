@@ -17,6 +17,7 @@ import touch.baton.assure.repository.TestMemberQueryRepository;
 import touch.baton.assure.repository.TestNotificationCommandRepository;
 import touch.baton.assure.repository.TestRankQueryRepository;
 import touch.baton.assure.repository.TestRefreshTokenRepository;
+import touch.baton.assure.repository.TestRunnerPostCommandRepository;
 import touch.baton.assure.repository.TestRunnerPostQueryRepository;
 import touch.baton.assure.repository.TestRunnerQueryRepository;
 import touch.baton.assure.repository.TestSupporterQueryRepository;
@@ -40,6 +41,9 @@ public abstract class AssuredTestConfig {
 
     @Autowired
     protected TestRunnerQueryRepository runnerRepository;
+
+    @Autowired
+    protected TestRunnerPostCommandRepository runnerPostCommandRepository;
 
     @Autowired
     protected TestSupporterQueryRepository supporterRepository;

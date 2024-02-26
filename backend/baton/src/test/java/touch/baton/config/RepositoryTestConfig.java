@@ -69,6 +69,11 @@ public abstract class RepositoryTestConfig {
         return supporter;
     }
 
+    protected RunnerPost persistRunnerPost(final RunnerPost runnerPost) {
+        em.persist(runnerPost);
+        return runnerPost;
+    }
+
     protected RunnerPost persistRunnerPost(final Runner runner) {
         final RunnerPost runnerPost = RunnerPostFixture.create(runner, deadline(LocalDateTime.now().plusHours(100)));
         em.persist(runnerPost);
