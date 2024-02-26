@@ -1,5 +1,6 @@
 package touch.baton.common.schedule.deadline.command.service;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,6 +60,14 @@ class RunnerPostDeadlineCheckSchedulerTest extends ServiceTestConfig {
         transactionTemplate = new TransactionTemplate(platformTransactionManager);
         transactionTemplate.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         runnerPostDeadlineCheckScheduler = new RunnerPostDeadlineCheckScheduler(runnerPostDeadlineCommandRepository, runnerPostDeadlineQueryRepository, deadlineOutboxCommandRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+        runnerPostCommandRepository.deleteAll();
+        supporterCommandRepository.deleteAll();
+        runnerQueryRepository.deleteAll();
+        memberCommandRepository.deleteAll();
     }
 
     @DisplayName("1분 전에 deadline 이 지난 runnerPost 는 OVERDUE 된다.")
@@ -141,7 +150,6 @@ class RunnerPostDeadlineCheckSchedulerTest extends ServiceTestConfig {
                         try {
                             runnerPostDeadlineCheckScheduler.finishReview(runnerPost.getId());
                         } catch (final Exception e) {
-                            e.printStackTrace();
                         } finally {
                             latch.countDown();
                         }
