@@ -19,7 +19,6 @@ export const useOtherSupporterPost = (userId: number) => {
     initialPageParam: 0,
 
     getNextPageParam: (nextPage) => {
-      if (!nextPage || !nextPage.pageInfo) return undefined;
       if (nextPage.pageInfo.isLast) return undefined;
       return nextPage.pageInfo.nextCursor;
     },
