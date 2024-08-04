@@ -27,8 +27,8 @@ export const useRunnerPostList = (reviewStatus: ReviewStatus | null, tagName?: s
     initialPageParam: 0,
 
     getNextPageParam: (nextPage) => {
+      if (!nextPage || !nextPage.pageInfo) return undefined;
       if (nextPage.pageInfo.isLast) return undefined;
-
       return nextPage.pageInfo.nextCursor;
     },
 
